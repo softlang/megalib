@@ -25,7 +25,8 @@ relname :
 	'defines' |
 	'conformsTo' |
 	'correspondsTo' |
-	'facilitates';
+	'facilitates' |
+	'uses';
 
 ENTNAME : [a-z,A-Z,0-9]+ ;
 ENTTYPENAME : [a-z,A-Z,0-9]+ ;
