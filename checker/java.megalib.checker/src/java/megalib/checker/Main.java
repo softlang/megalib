@@ -4,6 +4,8 @@
 package java.megalib.checker;
 
 import java.io.IOException;
+import java.megalib.antlr.MegalibLexer;
+import java.megalib.antlr.MegalibParser;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
