@@ -1,6 +1,6 @@
 grammar Megalib;
 @header {
-package java.megalib.antlr;
+package org.java.megalib.antlr;
 }
 
 model : decl* ;
