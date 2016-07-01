@@ -3,30 +3,20 @@ grammar Megalib;
 package org.java.megalib.antlr;
 }
 
-model : decl* ;
+//Head of the construct, containing entity or function
+declartation: (((entity)|(function))(' ')*)* EOF;
 
-decl : entdecl | enttypedecl | reldecl ;
-entdecl : ENTNAME ':' enttype ;
-enttypedecl : ENTTYPENAME '<' enttype ;
-reldecl : ENTNAME relname ENTNAME ;
+//function used for relation init
+function: object '<' (object ('#' object)+);
 
+//entity used for entity init
+entity: object '< Entity' | object '<' object;
 
-enttype : 
-	'Language' |
-	'Technology' |
-	'Artifact' |
-	'Function' |
-	'Concept';
-relname : 
-	'partOf' |
-	'subsetOf' |
-	'elementOf' |
-	'implements' |
-	'defines' |
-	'conformsTo' |
-	'correspondsTo' |
-	'facilitates' |
-	'uses';
+//word used in defintions above
+object: Word;
+
+//definition of word
+Word: ('abc')*; 
 
 ENTNAME : [a-z,A-Z,0-9]+ ;
 ENTTYPENAME : [a-z,A-Z,0-9]+ ;
