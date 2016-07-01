@@ -4,7 +4,6 @@
     <!--ANT 1.7 is required                                        -->
     <!--define folder properties-->
     <property name="dir.buildfile" value="."/>
-    <property name="dir.workspace" value="/Users/mmay/Documents/Local Projects/eclipse workspace"/>
     <property name="dir.jarfile" value="${dir.buildfile}"/>
     <target name="create_run_jar">
         <jar destfile="${dir.jarfile}/checker.jar" filesetmanifest="mergewithoutmain">
@@ -13,9 +12,7 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${dir.jarfile}/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="/Users/mmay/Downloads/antlr-4.5.3-complete.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/Users/mmay/.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/Users/mmay/.p2/pool/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/checker_lib/antlr-4.5.3-complete.jar"/>
         </jar>
     </target>
 </project>
