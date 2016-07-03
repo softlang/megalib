@@ -1,4 +1,4 @@
-package org.java.megalib.checker;
+package org.java.megalib.checker.services;
 
 
 import java.util.HashMap;
@@ -19,12 +19,12 @@ public class Listener extends MegalibBaseListener {
 
 	@Override
 	public void enterEntity(EntityContext ctx) {
-		//Case if childCount == 2 -> Entity is used in decleration
+		//Case if childCount == 2 -> Entity is used in declaration
 		//If store not contains entity, add to store
 		if (ctx.getChildCount() == 2 && !store.containsKey(ctx.getChild(0).getText())) {
 			store.put(ctx.getChild(0).getText(), "Entity");
 			
-		//Case if childCount > 2 -> A previous defined entity is use
+		//Case if childCount > 2 -> A previous defined entity is used
 		} else if (ctx.getChildCount() > 2) {
 			//get name of entity behind the <
 			String temp = ctx.getChild(2).getText();
