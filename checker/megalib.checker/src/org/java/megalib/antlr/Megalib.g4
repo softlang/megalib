@@ -13,4 +13,4 @@ entity: object '<Entity' | object '<' object;
 object: WORD;
 
 //definition of word
-WORD: ('abc')*;
+WORD: [a-z,A-Z]+;
