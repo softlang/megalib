@@ -4,3 +4,5 @@
 /MegalibLexer.tokens
 /MegalibListener.java
 /MegalibParser.java
+/MegalibBaseVisitor.java
+/MegalibVisitor.java
