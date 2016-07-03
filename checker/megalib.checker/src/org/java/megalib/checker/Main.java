@@ -32,8 +32,8 @@ public class Main {
 	    Listener listener = new Listener();
 	    treeWalker.walk(listener, ctx);
 	    System.out.println("");
-	    System.out.println(listener.store);
-	    System.out.println(listener.functionStore);
+	    System.out.println(listener.entities);
+	    System.out.println(listener.relations);
 	}
 	
 }

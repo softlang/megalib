@@ -1,13 +1,15 @@
 grammar Megalib;
 
 //Head of the construct, containing entity or function
-declaration: (entity ';' | function ';')+ EOF;
+declaration: (entity ';' | relation ';')+ EOF;
 
 //function used for relation init
-function: object '<' object ('#' object)+;
+relation: object '<' object ('#' object)+;
 
 //entity used for entity init
 entity: object '<Entity' | object '<' object;
+
+typeDeclaration: object ':' object;
 
 //word used in defintions above
 object: WORD;
