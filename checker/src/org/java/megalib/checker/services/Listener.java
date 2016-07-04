@@ -43,7 +43,7 @@ public class Listener extends MegalibBaseListener {
 	}
 
 	@Override
-	public void enterRelation(RelationContext ctx) {
+	public void enterRelationDeclaration(RelationDeclarationContext ctx) {
 		// get childCount of ctx to get border for for-loop
 		int i = ctx.getChildCount();
 		// set missingEntity to false
@@ -87,6 +87,7 @@ public class Listener extends MegalibBaseListener {
 		}
 	}
 
+	@Override
 	public void enterTypeDeclaration(TypeDeclarationContext ctx) {
 		// check if entity exists
 		if (entities.containsKey(ctx.getChild(2).getText()))
@@ -100,7 +101,8 @@ public class Listener extends MegalibBaseListener {
 			System.out.println("At: '" + ctx.getText() + "' unknown entity gets assigned!");
 	}
 
-	public void enterRelationDeclaration(RelationDeclarationContext ctx) {
+	@Override
+	public void enterRelation(RelationContext ctx) {
 		// check if relation symbol exists
 		if (relations.containsKey(ctx.getChild(2).getText())) {
 			// get Map with all possibilites for relation symbol

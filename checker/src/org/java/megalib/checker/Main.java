@@ -31,6 +31,7 @@ public class Main {
 	    ParseTreeWalker treeWalker = new ParseTreeWalker();
 	    Listener listener = new Listener();
 	    treeWalker.walk(listener, ctx);
+	    
 	    System.out.println("");
 	    System.out.println(listener.entities);
 	    System.out.println(listener.relations);
