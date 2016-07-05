@@ -20,7 +20,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		MegalibLexer lexer = new MegalibLexer(new ANTLRInputStream("abc<Entity;aaa<abc;of<abc#abc;karl:abc;joe:aaa;of<aaa#aaa;karl of joe;"));
+		MegalibLexer lexer = new MegalibLexer(new ANTLRInputStream("abc<Entity;aaa<abc;of<abc#abc;karl:abc;joe:aaa;of<aaa#aaa;karl of joe;car:abc#abc#aaa-->abc;car(joe#joe#joe) ->karl;"));
 
 	    CommonTokenStream token = new CommonTokenStream(lexer);	 
 
@@ -36,6 +36,7 @@ public class Main {
 	    System.out.println(listener.entities);
 	    System.out.println(listener.relations);
 	    System.out.println(listener.objects);
+	    System.out.println(listener.functions);
 	}
 	
 }

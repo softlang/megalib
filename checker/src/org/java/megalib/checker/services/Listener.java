@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.java.megalib.antlr.MegalibBaseListener;
 import org.java.megalib.antlr.MegalibParser.EntityContext;
+import org.java.megalib.antlr.MegalibParser.FunctionContext;
+import org.java.megalib.antlr.MegalibParser.FunctionDeclarationContext;
 import org.java.megalib.antlr.MegalibParser.RelationContext;
 import org.java.megalib.antlr.MegalibParser.RelationDeclarationContext;
 import org.java.megalib.antlr.MegalibParser.TypeDeclarationContext;
@@ -18,7 +20,9 @@ public class Listener extends MegalibBaseListener {
 	public Map<String, String> objects = new HashMap<String, String>();
 	// Map with <RelationName, <Key, [entity1,entity2,...]>>
 	public Map<String, Map<Integer, LinkedList<String>>> relations = new HashMap<String, Map<Integer, LinkedList<String>>>();
-
+	//Map with <FunctionName, [FunctionObject1,FunctionObject,...,Output]
+	public Map<String, LinkedList<String>> functions = new HashMap<String, LinkedList<String>>();
+	
 	@Override
 	public void enterEntity(EntityContext ctx) {
 		// Case if childCount == 2 -> Entity is used in declaration
@@ -114,26 +118,89 @@ public class Listener extends MegalibBaseListener {
 				String left = objects.get(ctx.getChild(0).getText());
 				String right = objects.get(ctx.getChild(4).getText());
 				boolean check = false;
-				
-				LinkedList<String> tempList = new LinkedList<String>();				
-				//recursive check if a combination of top-types is in Map
+
+				LinkedList<String> tempList = new LinkedList<String>();
+				// recursive check if a combination of top-types is in Map
 				String tempLeft = left;
 				while ("Entity" != tempLeft && !check) {
 					String tempRight = right;
-					while ("Entity" != tempRight && !check){
-					tempList = new LinkedList<String>();
-					tempList.add(tempLeft);
-					tempList.add(tempRight);
-					if (temp.containsKey(tempList.hashCode()))
-						check = true;
-					tempRight = entities.get(tempRight);}
-				tempLeft = entities.get(tempLeft);
+					while ("Entity" != tempRight && !check) {
+						tempList = new LinkedList<String>();
+						tempList.add(tempLeft);
+						tempList.add(tempRight);
+						if (temp.containsKey(tempList.hashCode()))
+							check = true;
+						tempRight = entities.get(tempRight);
+					}
+					tempLeft = entities.get(tempLeft);
 				}
-				if(!check)
-				System.out.println("At: '" + ctx.getText() + "'Types of objects are not allowed in this relation");
+				if (!check)
+					System.out.println("At: '" + ctx.getText() + "'Types of objects are not allowed in this relation");
 			} else
 				System.out.println("At: '" + ctx.getText() + "' undefined objects were used");
 		} else
 			System.out.println("At: '" + ctx.getText() + "' unknown relationsymbol used");
+	}
+
+	public void enterFunctionDeclaration(FunctionDeclarationContext ctx) {
+		// create first temp and check variables
+		LinkedList<String> temp = new LinkedList<String>();
+		boolean missingEntity = false;
+		// check that function name is not already use elsewhere (check in
+		// functions list missing, see also TypeDeclaration
+		if (!entities.containsKey(ctx.getChild(0).getText()) && !objects.containsKey(ctx.getChild(0).getText())
+				&& !relations.containsKey(ctx.getChild(0).getText())) {
+		} else {
+			missingEntity = true;
+			System.out.println("At: '" + ctx.getText() + "' function named used or another instance");
+		}
+
+		// iterate over all entities and check that they are initialized
+		for (int i = 2; i < ctx.getChildCount() && !missingEntity; i = i + 2) {
+			if (!entities.containsKey(ctx.getChild(i).getText())) {
+				System.out.println("At:'" + ctx.getText() + "' undefined entities were used");
+				missingEntity = true;
+			}
+			// add entities to list
+			temp.add(ctx.getChild(i).getText());
+		}
+		// if any entity had not existed stop else add to Map
+		if (!missingEntity) {
+			functions.put(ctx.getChild(0).getText(), temp);
+		}
+
+	}
+
+	public void enterFunction(FunctionContext ctx) {
+		// create first temp and check variables
+		LinkedList<String> temp = new LinkedList<String>();
+		boolean missingEntity = false;
+		boolean check = true;
+		// check that function name is in function Map
+		if (!functions.containsKey(ctx.getChild(0).getText())) {
+			missingEntity = true;
+			System.out.println("At: '" + ctx.getText() + "' function name unknown");
+		}
+
+		temp = functions.get(ctx.getChild(0).getText());
+		// iterate over all entities and check that they or their top-types
+		// correspond to them in the function list
+		for (int i = 2; i < ctx.getChildCount() && !missingEntity; i = i + 2) {
+			//get actualy entity type of object
+			String entity = objects.get(ctx.getChild(i).getText());
+			check = false;
+			//recursive raise from sub entity to their main entity and check if one belongs to the one in the list
+			while (entity != "Entity") {
+				//if one found set check to true and stop while loop
+				if (entity.equals(temp.get((int) (i / 2) - 1))) {
+					check = true;
+					break;
+				}
+				entity = entities.get(entity);
+			}
+			//if no one found print error at which object
+			if (!check)
+			System.out.println("Error at " + ((i / 2)) + " object");
+		}
 	}
 }
