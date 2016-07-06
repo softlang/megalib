@@ -24,21 +24,40 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		try {
-			FileInputStream fileStream = new FileLoader().load("./TestFiles/testFile.megal");
-			MegalibParser parser = new ParserGenerator().generate(fileStream);
-
-		    Listener result = check(parser.declaration());
-		    printResults(result);
-		} 
+			String filepath = getFilepathOfArguments(args);
+			doCheck(filepath);
+		}
+		catch (EmptyFileNameException ex) {
+			System.out.println("No filepath specified!");
+		}
 		catch (FileNotFoundException ex) {
-			
+			System.out.println("The File wasn't found on your harddrive!");
 		} 
 		catch (IOException ex) {
-			
+			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
 		}
 	}
+	
+	private static String getFilepathOfArguments(String[] arguments) throws EmptyFileNameException{
+		if (argumentsExists(arguments)) {
+			return arguments[2];
+		}
+		throw new EmptyFileNameException();
+	}
 
-	private static Listener check(DeclarationContext ctx) {
+	private static boolean argumentsExists(String[] arguments) {
+		return arguments.length>0 && arguments[0].contains("-f") && !arguments[2].isEmpty();
+	}
+
+	private static void doCheck(String filepath) throws FileNotFoundException, IOException {
+		FileInputStream fileStream = new FileLoader().load(filepath);
+		MegalibParser parser = new ParserGenerator().generate(fileStream);
+
+		Listener result = walkOverSyntaxTree(parser.declaration());
+		printResults(result);
+	}
+
+	private static Listener walkOverSyntaxTree(DeclarationContext ctx) {
 		ParseTreeWalker treeWalker = new ParseTreeWalker();
 		Listener listener = new Listener();
 		treeWalker.walk(listener, ctx);
