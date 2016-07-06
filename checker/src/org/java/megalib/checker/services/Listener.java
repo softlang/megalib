@@ -20,22 +20,16 @@ public class Listener extends MegalibBaseListener {
 	public Map<String, String> objects = new HashMap<String, String>();
 	// Map with <RelationName, <Key, [entity1,entity2,...]>>
 	public Map<String, Map<Integer, LinkedList<String>>> relations = new HashMap<String, Map<Integer, LinkedList<String>>>();
-	//Map with <FunctionName, [FunctionObject1,FunctionObject,...,Output]
+	// Map with <FunctionName, [FunctionObject1,FunctionObject,...,Output]
 	public Map<String, LinkedList<String>> functions = new HashMap<String, LinkedList<String>>();
-	
+
 	@Override
 	public void enterEntity(EntityContext ctx) {
-		// Case if childCount == 2 -> Entity is used in declaration
-		// If store not contains entity, add to store
-		if (ctx.getChildCount() == 2 && !entities.containsKey(ctx.getChild(0).getText())) {
-			entities.put(ctx.getChild(0).getText(), "Entity");
-
-			// Case if childCount > 2 -> A previous defined entity is used
-		} else if (ctx.getChildCount() > 2) {
+		if (!entities.containsKey(ctx.getChild(0).getText())) {
 			// get name of entity behind the <
 			String temp = ctx.getChild(2).getText();
-			// check if temp exists in store
-			if (entities.containsKey(temp)) {
+			// check if temp exists in store or if temp is equal to Entity
+			if (entities.containsKey(temp) || temp.equals("Entity")) {
 				// add defined object to store
 				entities.put(ctx.getChild(0).getText(), temp);
 			} else
@@ -94,29 +88,29 @@ public class Listener extends MegalibBaseListener {
 	@Override
 	public void enterTypeDeclaration(TypeDeclarationContext ctx) {
 		// check if entity exists
-		if (entities.containsKey(ctx.getChild(2).getText()))
+		if (entities.containsKey(ctx.getChild(2).getText())) {
 			// check for name errors with entites, objects and relations
 			if (!entities.containsKey(ctx.getChild(0).getText()) && !objects.containsKey(ctx.getChild(0).getText())
 					&& !relations.containsKey(ctx.getChild(0).getText()))
-			objects.put(ctx.getChild(0).getText(), ctx.getChild(2).getText());
+				objects.put(ctx.getChild(0).getText(), ctx.getChild(2).getText());
 			else
-			System.out.println("At: '" + ctx.getText() + "' Object name already used before!");
-		else
+				System.out.println("At: '" + ctx.getText() + "' Object name already used before!");
+		} else
 			System.out.println("At: '" + ctx.getText() + "' unknown entity gets assigned!");
 	}
 
 	@Override
 	public void enterRelation(RelationContext ctx) {
 		// check if relation symbol exists
-		if (relations.containsKey(ctx.getChild(2).getText())) {
+		if (relations.containsKey(ctx.getChild(1).getText())) {
 			// get Map with all possibilites for relation symbol
-			Map<Integer, LinkedList<String>> temp = relations.get(ctx.getChild(2).getText());
+			Map<Integer, LinkedList<String>> temp = relations.get(ctx.getChild(1).getText());
 
 			// check that only instantiated objects get used
-			if (objects.containsKey(ctx.getChild(0).getText()) && objects.containsKey(ctx.getChild(4).getText())) {
+			if (objects.containsKey(ctx.getChild(0).getText()) && objects.containsKey(ctx.getChild(2).getText())) {
 				// create List and get Hashcode to compare in Map
 				String left = objects.get(ctx.getChild(0).getText());
-				String right = objects.get(ctx.getChild(4).getText());
+				String right = objects.get(ctx.getChild(2).getText());
 				boolean check = false;
 
 				LinkedList<String> tempList = new LinkedList<String>();
@@ -186,21 +180,23 @@ public class Listener extends MegalibBaseListener {
 		// iterate over all entities and check that they or their top-types
 		// correspond to them in the function list
 		for (int i = 2; i < ctx.getChildCount() && !missingEntity; i = i + 2) {
-			//get actualy entity type of object
+			// get actualy entity type of object
 			String entity = objects.get(ctx.getChild(i).getText());
 			check = false;
-			//recursive raise from sub entity to their main entity and check if one belongs to the one in the list
-			while (entity != "Entity") {
-				//if one found set check to true and stop while loop
-				if (entity.equals(temp.get((int) (i / 2) - 1))) {
+			// recursive raise from sub entity to their main entity and check if
+			// one belongs to the one in the list
+			while (entity != "Entity" && entity != null) {
+				// if one found set check to true and stop while loop
+				if (entity.equals(temp.get((i / 2) - 1))) {
 					check = true;
 					break;
 				}
 				entity = entities.get(entity);
 			}
-			//if no one found print error at which object
+			// if no one found print error at which object
 			if (!check)
-			System.out.println("Error at " + ((i / 2)) + " object");
+				System.out.println("Error at " + ctx.getText() + " at the " + ((i / 2)) + ". object: ("
+						+ ctx.getChild((i / 2)).getText() + ")");
 		}
 	}
 }
