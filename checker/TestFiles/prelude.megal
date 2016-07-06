@@ -1,0 +1,15 @@
+Language < Entity;
+Technology < Entity;
+Artifact < Entity;
+System < Entity;
+Function < Entity;
+Relation < Entity;
+Concept < Entity;
+File < Artifact;
+Folder < Artifact;
+Resource < Artifact;
+Transient < Artifact;
+Fragment < Artifact;
+partOf < Artifact # Artifact;
+partOf < Artifact # System;
+partOf < Technology # Technology;

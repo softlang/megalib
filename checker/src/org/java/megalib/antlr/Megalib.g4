@@ -20,6 +20,5 @@ functionDeclaration: object ':' object ('#' object)* '-->' object;
 //word used in defintions above
 object: WORD;
 
-//definition of word
-WORD: [a-z,A-Z]+;
 WS: (' '|'\t'|'\f'|'\n'|'\r')+ -> skip;
+WORD: [a-zA-Z]+;
