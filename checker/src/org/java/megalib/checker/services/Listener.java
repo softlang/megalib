@@ -15,13 +15,13 @@ import org.java.megalib.antlr.MegalibParser.TypeDeclarationContext;
 public class Listener extends MegalibBaseListener {
 
 	// Map with <EntityName, EntityType>
-	public Map<String, String> entities = new HashMap<String, String>();
+	private Map<String, String> entities = new HashMap<String, String>();
 	// Map with <ObjectName, EntityName>
-	public Map<String, String> objects = new HashMap<String, String>();
+	private Map<String, String> objects = new HashMap<String, String>();
 	// Map with <RelationName, <Key, [entity1,entity2,...]>>
-	public Map<String, Map<Integer, LinkedList<String>>> relations = new HashMap<String, Map<Integer, LinkedList<String>>>();
+	private Map<String, Map<Integer, LinkedList<String>>> relations = new HashMap<String, Map<Integer, LinkedList<String>>>();
 	//Map with <FunctionName, [FunctionObject1,FunctionObject,...,Output]
-	public Map<String, LinkedList<String>> functions = new HashMap<String, LinkedList<String>>();
+	private Map<String, LinkedList<String>> functions = new HashMap<String, LinkedList<String>>();
 	
 	@Override
 	public void enterEntity(EntityContext ctx) {
@@ -203,4 +203,21 @@ public class Listener extends MegalibBaseListener {
 			System.out.println("Error at " + ((i / 2)) + " object");
 		}
 	}
+	
+	public Map<String, String> getEntities() {
+		return entities;
+	}
+
+	public Map<String, String> getObjects() {
+		return objects;
+	}
+
+	public Map<String, Map<Integer, LinkedList<String>>> getRelations() {
+		return relations;
+	}
+
+	public Map<String, LinkedList<String>> getFunctions() {
+		return functions;
+	}
+
 }
