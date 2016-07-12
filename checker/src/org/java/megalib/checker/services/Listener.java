@@ -5,9 +5,11 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import org.java.megalib.antlr.MegalibBaseListener;
+import org.java.megalib.antlr.MegalibParser.DescriptionContext;
 import org.java.megalib.antlr.MegalibParser.EntityContext;
 import org.java.megalib.antlr.MegalibParser.FunctionContext;
 import org.java.megalib.antlr.MegalibParser.FunctionDeclarationContext;
+import org.java.megalib.antlr.MegalibParser.ImportsContext;
 import org.java.megalib.antlr.MegalibParser.RelationContext;
 import org.java.megalib.antlr.MegalibParser.RelationDeclarationContext;
 import org.java.megalib.antlr.MegalibParser.TypeDeclarationContext;
@@ -90,8 +92,7 @@ public class Listener extends MegalibBaseListener {
 		// check if entity exists
 		if (entities.containsKey(ctx.getChild(2).getText())) {
 			// check for name errors with entites, objects and relations
-			if (!entities.containsKey(ctx.getChild(0).getText()) && !objects.containsKey(ctx.getChild(0).getText())
-					&& !relations.containsKey(ctx.getChild(0).getText()))
+			if (contains(ctx.getChild(0).getText()))
 				objects.put(ctx.getChild(0).getText(), ctx.getChild(2).getText());
 			else
 				System.out.println("At: '" + ctx.getText() + "' Object name already used before!");
@@ -142,11 +143,9 @@ public class Listener extends MegalibBaseListener {
 		boolean missingEntity = false;
 		// check that function name is not already use elsewhere (check in
 		// functions list missing, see also TypeDeclaration
-		if (!entities.containsKey(ctx.getChild(0).getText()) && !objects.containsKey(ctx.getChild(0).getText())
-				&& !relations.containsKey(ctx.getChild(0).getText())) {
-		} else {
+		if (contains(ctx.getChild(0).getText())) {
 			missingEntity = true;
-			System.out.println("At: '" + ctx.getText() + "' function named used or another instance");
+			System.out.println("At: '" + ctx.getText() + "' function named used for another instance");
 		}
 
 		// iterate over all entities and check that they are initialized
@@ -195,9 +194,32 @@ public class Listener extends MegalibBaseListener {
 			}
 			// if no one found print error at which object
 			if (!check)
-				System.out.println("Error at " + ctx.getText() + " at the " + ((i / 2)) + ". object: ("
-						+ ctx.getChild((i / 2)).getText() + ")");
+				System.out.println("Error at " + ctx.getText() + " at the " + ((i / 2)) + "object.)");
 		}
+	}
+	
+	public void enterDescription(DescriptionContext ctx){
+		if(!contains(ctx.getChild(0).getText()))
+			System.out.println("Error at " + ctx.getText() + "object is unknown");
+	}
+	
+	public void enterImports(ImportsContext ctx){
+		String name = ctx.getChild(1).getText();
+		//TODO add checker etc.
+		/* entities.putAll(listener.getEntites());
+		 * objects.putAll(listener.getObjects());
+		 * functions.putAll(listener.getFunctions());
+		 * relations.putAll(listener.getRelations());
+		 */ 
+	}
+	
+	public boolean contains(String name){
+		if (entities.containsKey(name) || objects.containsKey(name)
+				|| relations.containsKey(name) || functions.containsKey(name))
+			return true;
+		else
+			return false;
+		
 	}
 	
 	public Map<String, String> getEntities() {
