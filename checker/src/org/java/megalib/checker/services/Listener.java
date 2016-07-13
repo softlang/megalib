@@ -1,5 +1,6 @@
 package org.java.megalib.checker.services;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class Listener extends MegalibBaseListener {
 	private Map<String, Map<Integer, LinkedList<String>>> relations = new HashMap<String, Map<Integer, LinkedList<String>>>();
 	// Map with <FunctionName, [FunctionObject1,FunctionObject,...,Output]
 	private Map<String, LinkedList<String>> functions = new HashMap<String, LinkedList<String>>();
-
+	
 	@Override
 	public void enterEntity(EntityContext ctx) {
 		if (!entities.containsKey(ctx.getChild(0).getText())) {
@@ -36,10 +37,10 @@ public class Listener extends MegalibBaseListener {
 				entities.put(ctx.getChild(0).getText(), temp);
 			} else
 				// if entity behind < not kown print error
-				System.out.println("At:" + ctx.getText() + " use of unknown entity");
+				System.out.println("Error at:" + ctx.getText() + "! Entity Type is unkown");
 		} else
 			// if entity before < is always in store show error
-			System.out.println("At: '" + ctx.getText() + "' is a double initialization of one entity");
+			System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ctx.getChild(0).getText()+" is already used before");
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class Listener extends MegalibBaseListener {
 		for (int j = 2; j < i; j = j + 2) {
 			if (!entities.containsKey(ctx.getChild(j).getText())) {
 				missingEntity = false;
-				System.out.println("At: '" + ctx.getText() + "' an unknown entity is used");
+				System.out.println("Error at:" + ctx.getText() + "! Entity Type is unkown");
 				break;
 			}
 		}
@@ -76,7 +77,7 @@ public class Listener extends MegalibBaseListener {
 			// check if hashcode of list is already in Map as a key
 			if (temp2.containsKey(temp.hashCode())) {
 				// show error log
-				System.out.println("At: '" + ctx.getText() + "' Rule already exists");
+				System.out.println("Error at: '" + ctx.getText() + "'! Rule already exists for this relationship");
 			} else {
 				// if hashcode does not exists add enitity list temp to Map
 				// temp2 and add it to functionStore
@@ -95,9 +96,9 @@ public class Listener extends MegalibBaseListener {
 			if (contains(ctx.getChild(0).getText()))
 				objects.put(ctx.getChild(0).getText(), ctx.getChild(2).getText());
 			else
-				System.out.println("At: '" + ctx.getText() + "' Object name already used before!");
+				System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ctx.getChild(0).getText()+" is already used before");
 		} else
-			System.out.println("At: '" + ctx.getText() + "' unknown entity gets assigned!");
+			System.out.println("Error at:" + ctx.getText() + "! Entity Type is unkown");
 	}
 
 	@Override
@@ -129,6 +130,7 @@ public class Listener extends MegalibBaseListener {
 					}
 					tempLeft = entities.get(tempLeft);
 				}
+				//TODO change prints, WS problem in message
 				if (!check)
 					System.out.println("At: '" + ctx.getText() + "'Types of objects are not allowed in this relation");
 			} else
@@ -145,7 +147,7 @@ public class Listener extends MegalibBaseListener {
 		// functions list missing, see also TypeDeclaration
 		if (contains(ctx.getChild(0).getText())) {
 			missingEntity = true;
-			System.out.println("At: '" + ctx.getText() + "' function named used for another instance");
+			System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ctx.getChild(0).getText()+" is already used before");
 		}
 
 		// iterate over all entities and check that they are initialized
@@ -205,12 +207,19 @@ public class Listener extends MegalibBaseListener {
 	
 	public void enterImports(ImportsContext ctx){
 		String name = ctx.getChild(1).getText();
-		//TODO add checker etc.
-		/* entities.putAll(listener.getEntites());
-		 * objects.putAll(listener.getObjects());
-		 * functions.putAll(listener.getFunctions());
-		 * relations.putAll(listener.getRelations());
-		 */ 
+		Checker checker = new Checker();
+		Listener listener;
+		try {
+			//TODO creation of filepath
+			//String filepath =  something like "Previouspath/" name.concat(".megal");
+			listener = checker.doCheck("filepath");
+			entities.putAll(listener.getEntities());
+			objects.putAll(listener.getObjects());
+			functions.putAll(listener.getFunctions());
+			relations.putAll(listener.getRelations()); 
+		} catch (IOException e) {
+			System.out.println("Can not find import file: "+name);
+		}
 	}
 	
 	public boolean contains(String name){
