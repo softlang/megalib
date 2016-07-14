@@ -106,7 +106,7 @@ public class Listener extends MegalibBaseListener {
 		// check if entity exists
 		if (entities.containsKey(ctx.getChild(2).getText())) {
 			// check for name errors with entites, objects and relations
-			if (contains(ctx.getChild(0).getText()))
+			if (!contains(ctx.getChild(0).getText()))
 				objects.put(ctx.getChild(0).getText(), ctx.getChild(2).getText());
 			else
 				System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ctx.getChild(0).getText()+" is already used before");
@@ -145,11 +145,11 @@ public class Listener extends MegalibBaseListener {
 				}
 				//TODO change prints, WS problem in message
 				if (!check)
-					System.out.println("At: '" + ctx.getText() + "'Types of objects are not allowed in this relation");
+					System.out.println("Error at: '" + ctxToString(ctx) + "'Types of objects are not allowed in this relation");
 			} else
-				System.out.println("At: '" + ctx.getText() + "' undefined objects were used");
+				System.out.println("Error at: '" + ctxToString(ctx) + "' undefined object(s) were used");
 		} else
-			System.out.println("At: '" + ctx.getText() + "' unknown relationsymbol used");
+			System.out.println("Error at: '" + ctxToString(ctx) + "' unknown relationsymbol '"+ctx.getChild(1).getText()+"' used");
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class Listener extends MegalibBaseListener {
 		// iterate over all entities and check that they are initialized
 		for (int i = 2; i < ctx.getChildCount() && !missingEntity; i = i + 2) {
 			if (!entities.containsKey(ctx.getChild(i).getText())) {
-				System.out.println("At:'" + ctx.getText() + "' undefined entities were used");
+				System.out.println("Error at:'" + ctx.getText() + "' undefined entities were used");
 				missingEntity = true;
 			}
 			// add entities to list
@@ -189,7 +189,7 @@ public class Listener extends MegalibBaseListener {
 		// check that function name is in function Map
 		if (!functions.containsKey(ctx.getChild(0).getText())) {
 			missingEntity = true;
-			System.out.println("At: '" + ctx.getText() + "' function name unknown");
+			System.out.println("Error at: '" + ctxToString(ctx) + "' function name '"+ctx.getChild(0).getText()+"' unknown");
 		}
 
 		temp = functions.get(ctx.getChild(0).getText());
@@ -211,14 +211,14 @@ public class Listener extends MegalibBaseListener {
 			}
 			// if no one found print error at which object
 			if (!check)
-				System.out.println("Error at " + ctx.getText() + " at the " + ((i / 2)) + "object.)");
+				System.out.println("Error at " + ctxToString(ctx) + " at the " + ((i / 2)) + "object.)");
 		}
 	}
 	
 	@Override
 	public void enterDescription(DescriptionContext ctx){
 		if(!contains(ctx.getChild(0).getText()))
-			System.out.println("Error at " + ctx.getText() + "object is unknown");
+			System.out.println("Error at " + ctxToString(ctx) + "object is unknown");
 	}
 	
 	@Override
@@ -243,6 +243,39 @@ public class Listener extends MegalibBaseListener {
 		return entities.containsKey(name) || objects.containsKey(name)
 				|| relations.containsKey(name) || functions.containsKey(name);
 		
+	}
+	
+	public String ctxToString(RelationContext ctx){
+		String text = "";
+		for(int i = 0; i<ctx.getChildCount();i++){
+			if(i<ctx.getChildCount()-1)
+			text = text.concat(ctx.getChild(i).getText()+" ");
+			else
+			text = text.concat(ctx.getChild(i).getText());
+		}
+		return text;
+	}
+	
+	public String ctxToString(FunctionContext ctx){
+		String text = "";
+		for(int i = 0; i<ctx.getChildCount();i++){
+			if(i<ctx.getChildCount()-1)
+			text = text.concat(ctx.getChild(i).getText()+" ");
+			else
+			text = text.concat(ctx.getChild(i).getText());
+		}
+		return text;
+	}
+	
+	public String ctxToString(DescriptionContext ctx){
+		String text = "";
+		for(int i = 0; i<ctx.getChildCount();i++){
+			if(i<ctx.getChildCount()-1)
+			text = text.concat(ctx.getChild(i).getText()+" ");
+			else
+			text = text.concat(ctx.getChild(i).getText());
+		}
+		return text;
 	}
 	
 	public Map<String, String> getEntities() {

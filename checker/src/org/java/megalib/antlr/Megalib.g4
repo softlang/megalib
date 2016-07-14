@@ -1,7 +1,7 @@
 grammar Megalib;
 
 //Head of the construct, containing entity or function
-declaration: module? (imports)* ((entity | relation | typeDeclaration | relationDeclaration| functionDeclaration| function| description)';')+ EOF;
+declaration: module? (imports)* (entity | relation | typeDeclaration | relationDeclaration| functionDeclaration| function| description)+ EOF;
 
 module: 'module' object;
 
