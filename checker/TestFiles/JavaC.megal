@@ -1,0 +1,12 @@
+module JavaC import Prelude
+Java : Language
+JavaByteCode : Language
+Compiler < Technology
+javac : Compiler
+aJavaProgram : Artifact
+aJavaByteCodeProgram : Artifact
+aJavaProgram elementOf Java
+aJavaByteCodeProgram elementOf JavaByteCode
+compilation : Java -> JavaByteCode
+javac implements compilation
+compilation(aJavaProgram) mapsTo aJavaByteCodeProgram

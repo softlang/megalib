@@ -1,10 +1,13 @@
 package org.java.megalib.checker.services;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.antlr.v4.runtime.BaseErrorListener;
 import org.java.megalib.antlr.MegalibBaseListener;
 import org.java.megalib.antlr.MegalibParser.DescriptionContext;
 import org.java.megalib.antlr.MegalibParser.EntityContext;
@@ -16,31 +19,41 @@ import org.java.megalib.antlr.MegalibParser.RelationDeclarationContext;
 import org.java.megalib.antlr.MegalibParser.TypeDeclarationContext;
 
 public class Listener extends MegalibBaseListener {
-
-	// Map with <EntityName, EntityType>
-	private Map<String, String> entities = new HashMap<String, String>();
-	// Map with <ObjectName, EntityName>
-	private Map<String, String> objects = new HashMap<String, String>();
-	// Map with <RelationName, <Key, [entity1,entity2,...]>>
-	private Map<String, Map<Integer, LinkedList<String>>> relations = new HashMap<String, Map<Integer, LinkedList<String>>>();
-	// Map with <FunctionName, [FunctionObject1,FunctionObject,...,Output]
-	private Map<String, LinkedList<String>> functions = new HashMap<String, LinkedList<String>>();
+	private Map<String, String> entities;
+	private Map<String, String> objects;
+	private Map<String, Map<Integer, LinkedList<String>>> relations;
+	private Map<String, LinkedList<String>> functions;
+	
+	public Listener(){
+		entities = new HashMap<String,String>();
+		objects = new HashMap<String, String>();
+		relations = new HashMap<String, Map<Integer, LinkedList<String>>>();
+		functions = new HashMap<String, LinkedList<String>>();
+	}
 	
 	@Override
 	public void enterEntity(EntityContext ctx) {
-		if (!entities.containsKey(ctx.getChild(0).getText())) {
-			// get name of entity behind the <
-			String temp = ctx.getChild(2).getText();
-			// check if temp exists in store or if temp is equal to Entity
-			if (entities.containsKey(temp) || temp.equals("Entity")) {
-				// add defined object to store
-				entities.put(ctx.getChild(0).getText(), temp);
-			} else
-				// if entity behind < not kown print error
-				System.out.println("Error at:" + ctx.getText() + "! Entity Type is unkown");
-		} else
-			// if entity before < is always in store show error
-			System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ctx.getChild(0).getText()+" is already used before");
+		String derived = ctx.getChild(0).getText();
+		String type = ctx.getChild(2).getText();
+		
+		if (entityIsKnown(derived)) {
+			System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ derived +" is already used before");
+			return;
+		}		
+		if (!typeIsKnown(type)) {
+			System.out.println("Error at:" + ctx.getText() + "! Entity Type is unkown");
+			return;
+		}
+		
+		entities.put(derived, type);
+	}
+
+	private boolean entityIsKnown(String derived) {
+		return entities.containsKey(derived);
+	}
+	
+	private boolean typeIsKnown(String type){
+		return entityIsKnown(type) || type.equals("Entity");
 	}
 
 	@Override
@@ -139,6 +152,7 @@ public class Listener extends MegalibBaseListener {
 			System.out.println("At: '" + ctx.getText() + "' unknown relationsymbol used");
 	}
 
+	@Override
 	public void enterFunctionDeclaration(FunctionDeclarationContext ctx) {
 		// create first temp and check variables
 		LinkedList<String> temp = new LinkedList<String>();
@@ -166,6 +180,7 @@ public class Listener extends MegalibBaseListener {
 
 	}
 
+	@Override
 	public void enterFunction(FunctionContext ctx) {
 		// create first temp and check variables
 		LinkedList<String> temp = new LinkedList<String>();
@@ -200,19 +215,21 @@ public class Listener extends MegalibBaseListener {
 		}
 	}
 	
+	@Override
 	public void enterDescription(DescriptionContext ctx){
 		if(!contains(ctx.getChild(0).getText()))
 			System.out.println("Error at " + ctx.getText() + "object is unknown");
 	}
 	
+	@Override
 	public void enterImports(ImportsContext ctx){
 		String name = ctx.getChild(1).getText();
 		Checker checker = new Checker();
-		Listener listener;
 		try {
-			//TODO creation of filepath
-			//String filepath =  something like "Previouspath/" name.concat(".megal");
-			listener = checker.doCheck("filepath");
+			String workingDir = Paths.get("").toAbsolutePath().normalize().toString();
+			String filepath = workingDir.concat(File.separator + "TestFiles" + File.separator + name + ".megal");
+			
+			Listener listener = checker.doCheck(filepath);
 			entities.putAll(listener.getEntities());
 			objects.putAll(listener.getObjects());
 			functions.putAll(listener.getFunctions());
@@ -223,11 +240,8 @@ public class Listener extends MegalibBaseListener {
 	}
 	
 	public boolean contains(String name){
-		if (entities.containsKey(name) || objects.containsKey(name)
-				|| relations.containsKey(name) || functions.containsKey(name))
-			return true;
-		else
-			return false;
+		return entities.containsKey(name) || objects.containsKey(name)
+				|| relations.containsKey(name) || functions.containsKey(name);
 		
 	}
 	
