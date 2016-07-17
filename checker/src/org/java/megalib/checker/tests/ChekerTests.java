@@ -27,7 +27,7 @@ public class ChekerTests {
 	@Before
 	public void setUp() throws Exception {
 		sut = new Checker();
-		filepath = "./TestFiles/testFile.megal";
+		filepath = "./TestFiles/JavaC.megal";
 	}
 	
 	@Test

@@ -40,7 +40,7 @@ public class Listener extends MegalibBaseListener {
 			System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ derived +" is already used before");
 			return;
 		}		
-		if (!typeIsKnown(type)) {
+		if (!entityIsKnown(type)) {
 			System.out.println("Error at:" + ctx.getText() + "! Entity Type is unkown");
 			return;
 		}
@@ -48,72 +48,67 @@ public class Listener extends MegalibBaseListener {
 		entities.put(derived, type);
 	}
 
-	private boolean entityIsKnown(String derived) {
-		return entities.containsKey(derived);
+	private boolean entityIsKnown(String name) {
+		return entities.containsKey(name) || name.equals("Entity");
 	}
 	
-	private boolean typeIsKnown(String type){
-		return entityIsKnown(type) || type.equals("Entity");
+	private boolean objectIsKnown(String name) {
+		return objects.containsKey(name);
+	}
+		
+	private boolean relationIsKnown(String name) {
+		return relations.containsKey(name);
+	}
+
+	private boolean functionIsKnown(String name) {
+		return functions.containsKey(name);
+	}
+	
+	private boolean isKnown(String name){
+		return entityIsKnown(name) || objectIsKnown(name)
+				|| relationIsKnown(name) || functionIsKnown(name);
 	}
 
 	@Override
 	public void enterRelationDeclaration(RelationDeclarationContext ctx) {
-		// get childCount of ctx to get border for for-loop
-		int i = ctx.getChildCount();
-		// set missingEntity to false
-		boolean missingEntity = false;
-		// create temp LinkedList, to add function elements
-		LinkedList<String> temp = new LinkedList<String>();
-		// iterate over function elements, if one entity is unknown abort and
-		// print error
-		for (int j = 2; j < i; j = j + 2) {
-			if (!entities.containsKey(ctx.getChild(j).getText())) {
-				missingEntity = false;
+		LinkedList<String> listOfTypes = new LinkedList<String>();
+		Map<Integer, LinkedList<String>> actualRelationVarations = new HashMap<Integer, LinkedList<String>>();
+				
+		for (int i = 2; i < ctx.getChildCount(); i = i + 2) {			
+			if (!entityIsKnown(ctx.getChild(i).getText())) {
 				System.out.println("Error at:" + ctx.getText() + "! Entity Type is unkown");
-				break;
+				return;
 			}
+			listOfTypes.add(ctx.getChild(i).getText());
 		}
-
-		// if all entities in temp are known continue
-		if (!missingEntity) {
-			// add all entities to temp
-			for (int j = 2; j < i; j = j + 2)
-				temp.add(ctx.getChild(j).getText());
-			// create new Map temp2
-			Map<Integer, LinkedList<String>> temp2 = new HashMap<Integer, LinkedList<String>>();
-
-			// assign temp2 value of existing Map if there exists one for this
-			// entity
-			if (relations.containsKey(ctx.getChild(0).getText()))
-				temp2 = relations.get(ctx.getChild(0).getText());
-
-			// check if hashcode of list is already in Map as a key
-			if (temp2.containsKey(temp.hashCode())) {
-				// show error log
-				System.out.println("Error at: '" + ctx.getText() + "'! Rule already exists for this relationship");
-			} else {
-				// if hashcode does not exists add enitity list temp to Map
-				// temp2 and add it to functionStore
-				temp2.put(temp.hashCode(), temp);
-				relations.put(ctx.getChild(0).getText(), temp2);
-			}
-
+		
+		if (relations.containsKey(ctx.getChild(0).getText()))
+			actualRelationVarations = relations.get(ctx.getChild(0).getText());
+		if (actualRelationVarations.containsKey(listOfTypes.hashCode())) {
+			System.out.println("Error at: '" + ctx.getText() + "'! Rule already exists for this relationship");
+		} else {
+			actualRelationVarations.put(listOfTypes.hashCode(), listOfTypes);
+			relations.put(ctx.getChild(0).getText(), actualRelationVarations);
 		}
 	}
 
 	@Override
 	public void enterTypeDeclaration(TypeDeclarationContext ctx) {
-		// check if entity exists
-		if (entities.containsKey(ctx.getChild(2).getText())) {
-			// check for name errors with entites, objects and relations
-			if (!contains(ctx.getChild(0).getText()))
-				objects.put(ctx.getChild(0).getText(), ctx.getChild(2).getText());
-			else
-				System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ctx.getChild(0).getText()+" is already used before");
-		} else
+		String object = ctx.getChild(0).getText();
+		String type = ctx.getChild(2).getText();
+		
+		if (!entityIsKnown(type)) {
 			System.out.println("Error at:" + ctx.getText() + "! Entity Type is unkown");
+			return;
+		} else if (isKnown(object)) {
+			System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ctx.getChild(0).getText()+" is already used before");
+			return;
+		}
+		
+		objects.put(ctx.getChild(0).getText(), ctx.getChild(2).getText());
+				
 	}
-
+	
 	@Override
 	public void enterRelation(RelationContext ctx) {
 		// check if relation symbol exists
@@ -154,70 +149,62 @@ public class Listener extends MegalibBaseListener {
 
 	@Override
 	public void enterFunctionDeclaration(FunctionDeclarationContext ctx) {
-		// create first temp and check variables
-		LinkedList<String> temp = new LinkedList<String>();
-		boolean missingEntity = false;
-		// check that function name is not already use elsewhere (check in
-		// functions list missing, see also TypeDeclaration
-		if (contains(ctx.getChild(0).getText())) {
-			missingEntity = true;
+		LinkedList<String> functionTypes = new LinkedList<String>();
+		
+		if (isKnown(ctx.getChild(0).getText())) {
 			System.out.println("Error at: '" + ctx.getText() + "'! Name:"+ctx.getChild(0).getText()+" is already used before");
+			return;
 		}
 
-		// iterate over all entities and check that they are initialized
-		for (int i = 2; i < ctx.getChildCount() && !missingEntity; i = i + 2) {
-			if (!entities.containsKey(ctx.getChild(i).getText())) {
-				System.out.println("Error at:'" + ctx.getText() + "' undefined entities were used");
-				missingEntity = true;
+		for (int i = 2; i < ctx.getChildCount(); i = i + 2) {
+			//TODO: maybe we have to check more at this point (e.g. !functionIsKnown(...))
+			if (!objectIsKnown(ctx.getChild(i).getText())) {
+				System.out.println("Error at:'" + ctx.getText() + "' undefined entity:'" + ctx.getChild(i).getText() + "'");
 			}
-			// add entities to list
-			temp.add(ctx.getChild(i).getText());
+			functionTypes.add(ctx.getChild(i).getText());
 		}
-		// if any entity had not existed stop else add to Map
-		if (!missingEntity) {
-			functions.put(ctx.getChild(0).getText(), temp);
-		}
+		
+		functions.put(ctx.getChild(0).getText(), functionTypes);
 
 	}
 
 	@Override
 	public void enterFunction(FunctionContext ctx) {
 		// create first temp and check variables
-		LinkedList<String> temp = new LinkedList<String>();
-		boolean missingEntity = false;
+		LinkedList<String> functionTypes = new LinkedList<String>();
 		boolean check = true;
 		// check that function name is in function Map
-		if (!functions.containsKey(ctx.getChild(0).getText())) {
-			missingEntity = true;
+		if (!functionIsKnown(ctx.getChild(0).getText())) {
 			System.out.println("Error at: '" + ctxToString(ctx) + "' function name '"+ctx.getChild(0).getText()+"' unknown");
+			return;
 		}
 
-		temp = functions.get(ctx.getChild(0).getText());
-		// iterate over all entities and check that they or their top-types
-		// correspond to them in the function list
-		for (int i = 2; i < ctx.getChildCount() && !missingEntity; i = i + 2) {
-			// get actualy entity type of object
+		functionTypes = functions.get(ctx.getChild(0).getText());
+		
+		for (int i = 2; i < ctx.getChildCount(); i = i + 2) {
+			// get actual entity type of object
 			String entity = objects.get(ctx.getChild(i).getText());
-			check = false;
-			// recursive raise from sub entity to their main entity and check if
-			// one belongs to the one in the list
-			while (entity != "Entity" && entity != null) {
-				// if one found set check to true and stop while loop
-				if (entity.equals(temp.get((i / 2) - 1))) {
-					check = true;
-					break;
-				}
-				entity = entities.get(entity);
-			}
+			String functionType = functionTypes.get(i/2 - 1);
+			check = validateEntity(functionType, entity);
 			// if no one found print error at which object
 			if (!check)
 				System.out.println("Error at " + ctxToString(ctx) + " at the " + ((i / 2)) + "object.)");
 		}
 	}
+
+	private boolean validateEntity(String functionType, String entity) {
+		while (entity != null) {
+			if (entity.equals(functionType)) {
+				return true;
+			}
+			entity = entities.get(entity);
+		}
+		return false;
+	}
 	
 	@Override
 	public void enterDescription(DescriptionContext ctx){
-		if(!contains(ctx.getChild(0).getText()))
+		if(!isKnown(ctx.getChild(0).getText()))
 			System.out.println("Error at " + ctxToString(ctx) + "object is unknown");
 	}
 	
@@ -237,12 +224,6 @@ public class Listener extends MegalibBaseListener {
 		} catch (IOException e) {
 			System.out.println("Can not find import file: "+name);
 		}
-	}
-	
-	public boolean contains(String name){
-		return entities.containsKey(name) || objects.containsKey(name)
-				|| relations.containsKey(name) || functions.containsKey(name);
-		
 	}
 	
 	public String ctxToString(RelationContext ctx){
