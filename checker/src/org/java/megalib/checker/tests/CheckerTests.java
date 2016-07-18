@@ -20,14 +20,14 @@ import org.junit.Test;
  *
  */
 
-public class ChekerTests {
+public class CheckerTests {
 	IChecker sut;
 	String filepath;
 	
 	@Before
 	public void setUp() throws Exception {
 		sut = new Checker();
-		filepath = "./TestFiles/JavaC.megal";
+		filepath = "./TestFiles/Prelude.megal";
 	}
 	
 	@Test
