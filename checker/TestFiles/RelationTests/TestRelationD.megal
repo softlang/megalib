@@ -1,0 +1,6 @@
+Artifact < Entity
+
+relationArtifact < Artifact # Artifact
+FileA: Artifact
+
+FileC relationArtifact FileB

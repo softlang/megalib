@@ -1,0 +1,12 @@
+Artifact < Entity
+System < Entity
+
+relationArtifact < Artifact # Artifact
+
+FileA: Artifact
+SystemA: System
+
+FileA relationArtifact SystemA
+
+
+ 
