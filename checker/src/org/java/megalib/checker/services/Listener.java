@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.RuleContext;
 import org.java.megalib.antlr.MegalibBaseListener;
 import org.java.megalib.antlr.MegalibParser.DescriptionContext;
 import org.java.megalib.antlr.MegalibParser.EntityContext;
@@ -46,27 +47,6 @@ public class Listener extends MegalibBaseListener {
 		}
 		
 		entities.put(derived, type);
-	}
-
-	private boolean entityIsKnown(String name) {
-		return entities.containsKey(name) || name.equals("Entity");
-	}
-	
-	private boolean objectIsKnown(String name) {
-		return objects.containsKey(name);
-	}
-		
-	private boolean relationIsKnown(String name) {
-		return relations.containsKey(name);
-	}
-
-	private boolean functionIsKnown(String name) {
-		return functions.containsKey(name);
-	}
-	
-	private boolean isKnown(String name){
-		return entityIsKnown(name) || objectIsKnown(name)
-				|| relationIsKnown(name) || functionIsKnown(name);
 	}
 
 	@Override
@@ -111,40 +91,34 @@ public class Listener extends MegalibBaseListener {
 	
 	@Override
 	public void enterRelation(RelationContext ctx) {
-		// check if relation symbol exists
-		if (relations.containsKey(ctx.getChild(1).getText())) {
-			// get Map with all possibilites for relation symbol
-			Map<Integer, LinkedList<String>> temp = relations.get(ctx.getChild(1).getText());
-
-			// check that only instantiated objects get used
-			if (objects.containsKey(ctx.getChild(0).getText()) && objects.containsKey(ctx.getChild(2).getText())) {
-				// create List and get Hashcode to compare in Map
-				String left = objects.get(ctx.getChild(0).getText());
-				String right = objects.get(ctx.getChild(2).getText());
-				boolean check = false;
-
-				LinkedList<String> tempList = new LinkedList<String>();
-				// recursive check if a combination of top-types is in Map
-				String tempLeft = left;
-				while ("Entity" != tempLeft && !check) {
-					String tempRight = right;
-					while ("Entity" != tempRight && !check) {
-						tempList = new LinkedList<String>();
-						tempList.add(tempLeft);
-						tempList.add(tempRight);
-						if (temp.containsKey(tempList.hashCode()))
-							check = true;
-						tempRight = entities.get(tempRight);
-					}
-					tempLeft = entities.get(tempLeft);
-				}
-				//TODO change prints, WS problem in message
-				if (!check)
-					System.out.println("Error at: '" + ctxToString(ctx) + "'Types of objects are not allowed in this relation");
-			} else
-				System.out.println("Error at: '" + ctxToString(ctx) + "' undefined object(s) were used");
-		} else
+		if (!relationIsKnown(ctx.getChild(1).getText())) {
 			System.out.println("Error at: '" + ctxToString(ctx) + "' unknown relationsymbol '"+ctx.getChild(1).getText()+"' used");
+			return;
+		}
+		if(!objectIsKnown(ctx.getChild(0).getText()) && !objectIsKnown(ctx.getChild(2).getText())) {
+			System.out.println("Error at: '" + ctxToString(ctx) + "' undefined object(s) were used");
+			return;
+		}
+		
+		Map<Integer, LinkedList<String>> actualRelations = relations.get(ctx.getChild(1).getText());
+		LinkedList<String> listToCheckTypes;
+
+		String leftObject = objects.get(ctx.getChild(0).getText());
+		String rightObject = objects.get(ctx.getChild(2).getText());
+		
+		while ("Entity" != leftObject) {
+			while ("Entity" != rightObject) {
+				listToCheckTypes = new LinkedList<String>();
+				listToCheckTypes.add(leftObject);
+				listToCheckTypes.add(rightObject);
+				if (actualRelations.containsKey(listToCheckTypes.hashCode()))
+					return;
+				rightObject = entities.get(rightObject);
+			}
+			leftObject = entities.get(leftObject);
+		}
+		
+		System.out.println("Error at: '" + ctxToString(ctx) + "'Types of objects are not allowed in this relation");
 	}
 
 	@Override
@@ -226,7 +200,7 @@ public class Listener extends MegalibBaseListener {
 		}
 	}
 	
-	public String ctxToString(RelationContext ctx){
+	public String ctxToString(RuleContext ctx){
 		String text = "";
 		for(int i = 0; i<ctx.getChildCount();i++){
 			if(i<ctx.getChildCount()-1)
@@ -236,29 +210,27 @@ public class Listener extends MegalibBaseListener {
 		}
 		return text;
 	}
-	
-	public String ctxToString(FunctionContext ctx){
-		String text = "";
-		for(int i = 0; i<ctx.getChildCount();i++){
-			if(i<ctx.getChildCount()-1)
-			text = text.concat(ctx.getChild(i).getText()+" ");
-			else
-			text = text.concat(ctx.getChild(i).getText());
-		}
-		return text;
+
+	private boolean entityIsKnown(String name) {
+		return entities.containsKey(name) || name.equals("Entity");
 	}
 	
-	public String ctxToString(DescriptionContext ctx){
-		String text = "";
-		for(int i = 0; i<ctx.getChildCount();i++){
-			if(i<ctx.getChildCount()-1)
-			text = text.concat(ctx.getChild(i).getText()+" ");
-			else
-			text = text.concat(ctx.getChild(i).getText());
-		}
-		return text;
+	private boolean objectIsKnown(String name) {
+		return objects.containsKey(name);
+	}
+		
+	private boolean relationIsKnown(String name) {
+		return relations.containsKey(name);
+	}
+
+	private boolean functionIsKnown(String name) {
+		return functions.containsKey(name);
 	}
 	
+	private boolean isKnown(String name){
+		return entityIsKnown(name) || objectIsKnown(name)
+				|| relationIsKnown(name) || functionIsKnown(name);
+	}
 	public Map<String, String> getEntities() {
 		return entities;
 	}
