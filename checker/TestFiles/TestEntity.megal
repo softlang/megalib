@@ -1,0 +1,10 @@
+System < Entity
+System < Entity
+
+Fragment < Artifact
+
+aFile: File
+
+aFile: Artifact
+aFile: System
+ 

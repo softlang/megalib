@@ -21,7 +21,7 @@ public class Main {
 		checkerService = new Checker();
 		try {
 			//Listener result = checkerService.doCheck(getFilepathOfArguments(args));
-			Listener result = checkerService.doCheck("./TestFiles/JavaC.megal");
+			Listener result = checkerService.doCheck("./TestFiles/TestEntity.megal");
 			printResults(result);
 		}
 //		catch (EmptyFileNameException ex) {

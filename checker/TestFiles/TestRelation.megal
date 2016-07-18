@@ -1,0 +1,19 @@
+relation < System # System
+
+Artifact < Entity
+
+relationArtifact < Artifact # Artifact
+relationArtifact < Artifact # Artifact
+
+
+FileA: Artifact
+FileB: Artifact
+FileA partOf FileB
+
+FileC relationArtifact FileB
+
+System < Entity
+SystemA: System
+
+FileA relationArtifact SystemA
+ 

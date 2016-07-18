@@ -95,7 +95,7 @@ public class Listener extends MegalibBaseListener {
 			System.out.println("Error at: '" + ctxToString(ctx) + "' unknown relationsymbol '"+ctx.getChild(1).getText()+"' used");
 			return;
 		}
-		if(!objectIsKnown(ctx.getChild(0).getText()) && !objectIsKnown(ctx.getChild(2).getText())) {
+		if(!objectIsKnown(ctx.getChild(0).getText()) || !objectIsKnown(ctx.getChild(2).getText())) {
 			System.out.println("Error at: '" + ctxToString(ctx) + "' undefined object(s) were used");
 			return;
 		}
@@ -106,8 +106,8 @@ public class Listener extends MegalibBaseListener {
 		String leftObject = objects.get(ctx.getChild(0).getText());
 		String rightObject = objects.get(ctx.getChild(2).getText());
 		
-		while ("Entity" != leftObject) {
-			while ("Entity" != rightObject) {
+		while ("Entity" != leftObject && leftObject != null) {
+			while ("Entity" != rightObject && rightObject != null) {
 				listToCheckTypes = new LinkedList<String>();
 				listToCheckTypes.add(leftObject);
 				listToCheckTypes.add(rightObject);
