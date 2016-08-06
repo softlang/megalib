@@ -12,6 +12,7 @@ import java.util.Map;
 import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.IChecker;
 import org.java.megalib.checker.services.Listener;
+import org.java.megalib.models.MegaModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,28 +32,8 @@ public class CheckerTests {
 	}
 	
 	@Test
-	public void doCheckReturnsListener() throws FileNotFoundException, IOException {
+	public void doCheckReturnsMegaModel() throws FileNotFoundException, IOException {
 		Object actual = sut.doCheck(filepath);
-		assertThat(actual, instanceOf(Listener.class));
-	}
-	
-	@Test
-	public void doCheckReturnsExpectedEntities() throws FileNotFoundException, IOException {
-		Map<String, String> expected = new HashMap<String, String>();
-	}
-	
-	@Test
-	public void doCheckReturnsExpectedObjects() throws FileNotFoundException, IOException {
-		Map<String, String> expected = new HashMap<String, String>();
-	}
-	
-	@Test
-	public void doCheckReturnsExpectedRelations() throws FileNotFoundException, IOException {
-		Map<String, Map<Integer, LinkedList<String>>> expected = new HashMap<String, Map<Integer, LinkedList<String>>>();
-	}
-	
-	@Test
-	public void doCheckReturnsExpectedFunctions() throws FileNotFoundException, IOException {
-		Map<String, LinkedList<String>> expected = new HashMap<String, LinkedList<String>>();
+		assertThat(actual, instanceOf(MegaModel.class));
 	}
 }

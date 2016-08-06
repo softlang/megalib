@@ -10,6 +10,7 @@ import java.io.IOException;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.java.megalib.antlr.MegalibParser;
 import org.java.megalib.antlr.MegalibParser.DeclarationContext;
+import org.java.megalib.models.MegaModel;
 
 /**
  * @author mmay, aemmerichs
@@ -18,13 +19,13 @@ import org.java.megalib.antlr.MegalibParser.DeclarationContext;
 public class Checker implements IChecker {
 
 	@Override
-	public Listener doCheck(String filepath) throws FileNotFoundException, IOException {
+	public MegaModel doCheck(String filepath) throws FileNotFoundException, IOException {
 		FileInputStream fileStream = new FileLoader().load(filepath);
 		MegalibParser parser = new ParserGenerator().generate(fileStream);
-
 		Listener result = walkOverSyntaxTree(parser.declaration());
+
 		fileStream.close();
-		return result;
+		return result.getModel();
 	}
 	
 	private static Listener walkOverSyntaxTree(DeclarationContext ctx) {
