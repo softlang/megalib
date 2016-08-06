@@ -25,14 +25,14 @@ functionDeclaration: object ':' object ('x' object)* '->' object;
 
 functionInstance: object '(' object ('x' object)* ')' Arrow object;
 
-link: object '=' '"' LINK '"';
+link: object '=' WORD;
 
 //word used in defintions above
 object: WORD;
 
 //definition of word
 WORD: [a-zA-Z]+;
-LINK: 'http' ('s')? '://' [a-zA-z0-9]+ '.' [a-z] ('/' [a-zA-Z0-9]+)*;
+LINK: '\"http' ('s')? '://' [a-zA-z0-9]+ '.' [a-z] ('/' [a-zA-Z0-9]+)* '\"';
 WS: (' '|'\t'|'\f'|'\n'|'\r') -> skip;
 
 Arrow: '|->';

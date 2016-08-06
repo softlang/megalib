@@ -18,6 +18,7 @@ public class MegaModel {
 	public Map<String, Map<Integer, LinkedList<String>>> relationInstances;
 	public Map<String, Map<Integer, Function>> functionDeclarations;
 	public Map<String, Map<Integer, Function>> functionInstances;
+	public Map<String,LinkedList<String>> links;
 	
 	public MegaModel() {
 		entityDeclarations =  new HashMap<String, String>();
@@ -26,5 +27,6 @@ public class MegaModel {
 		relationInstances = new HashMap<String, Map<Integer,LinkedList<String>>>();
 		functionDeclarations = new HashMap<String, Map<Integer,Function>>();
 		functionInstances = new HashMap<String, Map<Integer,Function>>();
+		links = new HashMap<String,LinkedList<String>>();
 	}
 }

@@ -1,172 +1,276 @@
 package org.java.megalib.checker.tests;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintStream;
-
-import org.java.megalib.checker.services.Checker;
-import org.junit.After;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+
+import org.java.megalib.checker.services.Checker;
+import org.java.megalib.checker.services.Listener;
+import org.java.megalib.models.*;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * @author mmay, aemmerichs
  *
  */
 public class ListenerTests {
-	ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	private Listener sut;
+	
+	private Checker checker;
 
 	@Before
-	public void setUp() throws Exception {
-		outContent = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(outContent));
+	public void setUp() {
+		checker = new Checker();
 	}
-
-	@Test
-	public void testEntityNameUsedProblem() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/EntityTests/TestA.megal");
-			assertEquals("Error at: 'System<Entity'! Name:System is already used before",
-					outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on y" + "our harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
-	}
-
-	@Test
-	public void testEntityTypeUnknownSubtypeProblem() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/EntityTests/TestB.megal");
-			assertEquals("Error at:Fragment<Artifact! Entity Type is unkown",
-					outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on y" + "our harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
-	}
-
-	@Test
-	public void testEntityTypeUnkownTypeProblem() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/EntityTests/TestC.megal");
-			assertEquals("Error at:aFile:File! Entity Type is unkown",
-					outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on y" + "our harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
-	}
-
-	@Test
-	public void testEntityNameUsedObjectProblem() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/EntityTests/TestD.megal");
-			assertEquals("Error at: 'aFile:System'! Name:aFile is already used before",
-					outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on y" + "our harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
-	}
-
-	@Test
-	public void testRelationUnkownEntityType() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/RelationTests/TestRelationA.megal");
-			assertEquals("Error at:relation<System#System! Entity Type is unkown",
-					outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on y" + "our harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
+	
+	@Test(expected=NotImplementedException.class)
+	public void enterImportsDoesNothin() {
+		sut = new Listener();
+		sut.enterImports(null);
 	}
 	
 	@Test
-	public void testRelationDuplicateRule() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/RelationTests/TestRelationB.megal");
-			assertEquals("Error at: 'relationArtifact<Artifact#Artifact'! Rule already exists for this relationship",
-					outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on y" + "our harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
+	public void enterEntityDeclarationFillsEntityDeclarations() throws IOException{
+		String input = "DerivedType < Type";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, String> actual = sut.getModel().entityDeclarations;
+		
+		assertTrue(actual.containsKey("DerivedType"));
+		assertEquals(actual.get("DerivedType").toString(),"Type");
 	}
 	
 	@Test
-	public void testRelationUnkownRelation() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/RelationTests/TestRelationC.megal");
-			assertEquals("Error at: 'FileA partOf FileB' unknown relationsymbol 'partOf' used",
-					outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on y" + "our harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
+	public void enterEntityInstanceFillsEntityInstances() throws IOException {
+		String input = "Instance : Type";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, String> actual = sut.getModel().entityInstances;
+		
+		assertTrue(actual.containsKey("Instance"));
+		assertEquals(actual.get("Instance").toString(),"Type");
 	}
 	
 	@Test
-	public void testRelationUndefinedObjects() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/RelationTests/TestRelationD.megal");
-			assertEquals("Error at: 'FileC relationArtifact FileB' undefined object(s) were used",
-					outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on y" + "our harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
-	}
-
-	@Test
-	public void testRelationWrongObject() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/RelationTests/TestRelationE.megal");
-			assertEquals("Error at: 'FileA relationArtifact SystemA'Types of objects are not allowed in this relation",
-					outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on y" + "our harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
+	public void enterRelationDeclarationFillsRelationDeclarationsWithRelationName() throws IOException {
+		String input = "Relation < TypeOne # TypeTwo";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, LinkedList<String>>> actual = sut.getModel().relationDeclarations;
+		
+		assertTrue(actual.containsKey("Relation"));		
 	}
 	
 	@Test
-	public void testEnterDescription_Context() {
-		Checker checker = new Checker();
-		try {
-			checker.doCheck("./TestFiles/DescriptionTests/TestDescriptionA.megal");
-			assertEquals("Error at java = HelloWorldobject is unknown", outContent.toString().substring(0, outContent.toString().length() - 2));
-		} catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on your harddrive!");
-		} catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		}
+	public void enterRelationDeclarationFillsRelationDeclarationsWithTypes() throws IOException {
+		String input = "Relation < TypeOne # TypeTwo";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, LinkedList<String>>> actual = sut.getModel().relationDeclarations;
+		
+		Collection<LinkedList<String>> types = actual.get("Relation").values();
+		LinkedList<String> expected = new LinkedList<>();
+		expected.add("TypeOne");
+		expected.add("TypeTwo");
+		
+		assertTrue(types.contains(expected));
 	}
-
-	@After
-	public void cleanUp() {
-		System.setOut(null);
+	
+	@Test
+	public void enterRelationDeclarationDoesNotOverideExistingDeclarations() throws IOException {
+		String input = "Relation < TypeOne # TypeTwo\nRelation < TypeThree # TypeFour";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, LinkedList<String>>> actual = sut.getModel().relationDeclarations;
+		
+		Collection<LinkedList<String>> types = actual.get("Relation").values();
+		LinkedList<String> expected1 = new LinkedList<>();
+		expected1.add("TypeOne");
+		expected1.add("TypeTwo");
+		LinkedList<String> expected2 = new LinkedList<>();
+		expected2.add("TypeThree");
+		expected2.add("TypeFour");
+		
+		assertTrue(types.contains(expected1));
+		assertTrue(types.contains(expected2));
 	}
-
+	
+	@Test
+	public void enterRelationInstanceFillsRelationInstancesWithRelationName() throws IOException {
+		String input = "ObjectOne Relation ObjectTwo";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, LinkedList<String>>> actual = sut.getModel().relationInstances;
+		
+		assertTrue(actual.containsKey("Relation"));
+	}
+	
+	@Test
+	public void enterRelationInstanceFillsRelationInstancesWithObjects() throws IOException {
+		String input = "ObjectOne Relation ObjectTwo";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, LinkedList<String>>> actual = sut.getModel().relationInstances;
+		
+		Collection<LinkedList<String>> types = actual.get("Relation").values();
+		LinkedList<String> expected = new LinkedList<>();
+		expected.add("ObjectOne");
+		expected.add("ObjectTwo");
+		
+		assertTrue(types.contains(expected));
+	}
+	
+	@Test
+	public void enterRelationInstanceDoesNotOverideExistingInstances() throws IOException {
+		String input = "ObjectOne Relation ObjectTwo\nObjectThree Relation ObjectFour";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, LinkedList<String>>> actual = sut.getModel().relationInstances;
+		
+		Collection<LinkedList<String>> types = actual.get("Relation").values();
+		LinkedList<String> expected1 = new LinkedList<>();
+		expected1.add("ObjectOne");
+		expected1.add("ObjectTwo");
+		LinkedList<String> expected2 = new LinkedList<>();
+		expected2.add("ObjectThree");
+		expected2.add("ObjectFour");
+		
+		assertTrue(types.contains(expected1));
+		assertTrue(types.contains(expected2));
+	}
+	
+	@Test
+	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunctionName() throws IOException {
+		String input = "Function : TypeOne x TypeTwo -> ReturnType";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, Function>> actual = sut.getModel().functionDeclarations;
+		
+		assertTrue(actual.containsKey("Function"));
+	}
+	
+	@Test
+	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunction() throws IOException {
+		String input = "Function : TypeOne x TypeTwo -> ReturnType";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, Function>> actual = sut.getModel().functionDeclarations;
+		
+		Collection<Function> types = actual.get("Function").values();
+		
+		assertEquals(1,types.size());
+	}
+	
+	@Test
+	public void enterFunctionDeclarationDoesNotOverideExistingDeclarations() throws IOException {
+		String input = "Function : TypeOne x TypeTwo -> ReturnTypeOne\nFunction : TypeThree x TypeFour -> ReturnTypeTwo";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, Function>> actual = sut.getModel().functionDeclarations;
+		
+		Collection<Function> types = actual.get("Function").values();
+		
+		assertEquals(2,types.size());
+	}
+	
+	@Test
+	public void enterFunctionInstanceFillsFunctionInstanceWithFunctionName() throws IOException {
+		String input = "Function(ObjectOne x ObjectTwo) |-> Result";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, Function>> actual = sut.getModel().functionInstances;
+		
+		assertTrue(actual.containsKey("Function"));
+	}
+	
+	@Test
+	public void enterFunctionInstanceFillsFunctionInstanceWithFunction() throws IOException {
+		String input = "Function(ObjectOne x ObjectTwo) |-> Result";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, Function>> actual = sut.getModel().functionInstances;
+		
+		Collection<Function> types = actual.get("Function").values();
+		
+		assertEquals(1,types.size());
+	}
+	
+	@Test
+	public void enterFunctionInstanceDoesNotOverideExistingInstances() throws IOException {
+		String input = "Function(ObjectOne x ObjectTwo) |-> Result\nFunction(ObjectThree x ObjectFour) |-> ResultTwo";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, Map<Integer, Function>> actual = sut.getModel().functionInstances;
+		
+		Collection<Function> types = actual.get("Function").values();
+		
+		assertEquals(2,types.size());
+	}
+	
+	@Test
+	public void enterLinkFillsLinksWithName() throws IOException {
+		String input = "Name = test";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, LinkedList<String>> actual = sut.getModel().links;
+		
+		assertTrue(actual.containsKey("Name"));
+	}
+	
+	@Test
+	public void enterLinkFillsLinksWithLinkString() throws IOException {
+		String input = "Name = test";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, LinkedList<String>> actual = sut.getModel().links;
+		
+		String link = actual.get("Name").getFirst();
+		assertEquals("test", link);
+	}
+	
+	@Test
+	public void enterLinkFillsLinksDoesNotOverride() throws IOException {
+		String input = "Name = test\nName = testTwo";
+		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
+		
+		sut = checker.getListener(stream);
+		Map<String, LinkedList<String>> actual = sut.getModel().links;
+		
+		String link = actual.get("Name").getFirst();
+		String link2 = actual.get("Name").getLast();
+		
+		assertEquals("test", link);
+		assertEquals("testTwo", link2);
+	}
+	
+	@Test
+	public void getModelReturnsMegaModel() {
+		sut = new Listener();
+		Object actual = sut.getModel();
+		assertThat(actual, instanceOf(MegaModel.class));
+	}
 }
