@@ -3,8 +3,8 @@
  */
 package org.java.megalib.checker.services;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.java.megalib.antlr.MegalibParser;
 
@@ -13,5 +13,5 @@ import org.java.megalib.antlr.MegalibParser;
  *
  */
 public interface IParserGenerator {
-	public MegalibParser generate(FileInputStream stream) throws IOException;
+	public MegalibParser generate(InputStream stream) throws IOException;
 }

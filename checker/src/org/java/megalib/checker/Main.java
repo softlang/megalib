@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.IChecker;
 import org.java.megalib.checker.services.Listener;
+import org.java.megalib.models.MegaModel;
 
 /**
  * @author mmay@uni-koblenz.de, aemmerichs@uni-koblenz.de
@@ -20,13 +21,11 @@ public class Main {
 	public static void main(String[] args) {
 		checkerService = new Checker();
 		try {
-			//Listener result = checkerService.doCheck(getFilepathOfArguments(args));
-			Listener result = checkerService.doCheck("./TestFiles/JavaC.megal");
-			printResults(result);
+			MegaModel result = checkerService.doCheck(getFilepathOfArguments(args));
 		}
-//		catch (EmptyFileNameException ex) {
-//			System.out.println("No filepath specified!");
-//		}
+		catch (EmptyFileNameException ex) {
+			System.out.println("No filepath specified!");
+		}
 		catch (FileNotFoundException ex) {
 			System.out.println("The File wasn't found on your harddrive!");
 		} 
@@ -44,14 +43,5 @@ public class Main {
 
 	private static boolean argumentsExists(String[] arguments) {
 		return arguments.length>0 && arguments[0].contains("-f") && !arguments[2].isEmpty();
-	}
-
-	private static void printResults(Listener listener) {
-		System.out.println("");
-		System.out.println(listener.getEntities());
-		System.out.println(listener.getRelations());
-		System.out.println(listener.getObjects());
-		System.out.println(listener.getFunctions());
-	}
-	
+	}	
 }
