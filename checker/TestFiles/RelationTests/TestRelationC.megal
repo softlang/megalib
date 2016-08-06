@@ -1,7 +1,0 @@
-Artifact < Entity
-
-FileA: Artifact
-FileB: Artifact
-FileA partOf FileB
-
- 

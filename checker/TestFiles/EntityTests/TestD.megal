@@ -1,6 +1,0 @@
-System < Entity
-Artifact < Entity
-
-aFile: Artifact
-aFile: System
- 

@@ -1,4 +1,0 @@
-Artifact < Entity
-
-relationArtifact < Artifact # Artifact
-relationArtifact < Artifact # Artifact
