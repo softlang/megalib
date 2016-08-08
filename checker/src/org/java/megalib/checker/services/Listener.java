@@ -1,14 +1,23 @@
 package org.java.megalib.checker.services;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
 import org.java.megalib.antlr.MegalibBaseListener;
-import org.java.megalib.antlr.MegalibParser.*;
+import org.java.megalib.antlr.MegalibParser.EntityDeclarationContext;
+import org.java.megalib.antlr.MegalibParser.EntityInstanceContext;
+import org.java.megalib.antlr.MegalibParser.FunctionDeclarationContext;
+import org.java.megalib.antlr.MegalibParser.FunctionInstanceContext;
+import org.java.megalib.antlr.MegalibParser.ImportsContext;
+import org.java.megalib.antlr.MegalibParser.LinkContext;
+import org.java.megalib.antlr.MegalibParser.RelationDeclarationContext;
+import org.java.megalib.antlr.MegalibParser.RelationInstanceContext;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Listener extends MegalibBaseListener {
 	private MegaModel model;
@@ -19,7 +28,23 @@ public class Listener extends MegalibBaseListener {
 	
 	@Override
 	public void enterImports(ImportsContext context) {
-		throw new NotImplementedException();
+		//throw new NotImplementedException();
+		//Added for tests
+		String name = context.getChild(1).getText();
+		Checker checker = new Checker();
+		try {
+			String workingDir = Paths.get("").toAbsolutePath().normalize().toString();
+			String filepath = workingDir.concat(File.separator + "TestFiles" + File.separator + name + ".megal");
+			
+			MegaModel importModel = checker.doCheck(filepath);
+			model.entityDeclarations.putAll(importModel.entityDeclarations);
+			model.entityInstances.putAll(importModel.entityInstances);
+			model.relationInstances.putAll(importModel.relationInstances);
+			model.relationDeclarations.putAll(importModel.relationDeclarations);
+		} catch (IOException e) {
+			System.out.println("Can not find import file: "+name);
+		}
+		
 	}
 	
 	@Override

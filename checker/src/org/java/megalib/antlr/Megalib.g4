@@ -21,9 +21,9 @@ relationDeclaration: object '<' object '#' object;
 
 relationInstance: object  object  object;
 
-functionDeclaration: object ':' object ('x' object)* '->' object;
+functionDeclaration: object ':' object ('#' object)* '->' object;
 
-functionInstance: object '(' object ('x' object)* ')' Arrow object;
+functionInstance: object '(' object (',' object)* ')' '|->' object;
 
 link: object '=' WORD;
 

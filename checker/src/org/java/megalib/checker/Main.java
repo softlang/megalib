@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.IChecker;
-import org.java.megalib.checker.services.Listener;
+import org.java.megalib.checker.services.ResultChecker;
 import org.java.megalib.models.MegaModel;
 
 /**
@@ -21,10 +21,14 @@ public class Main {
 	public static void main(String[] args) {
 		checkerService = new Checker();
 		try {
-			MegaModel result = checkerService.doCheck(getFilepathOfArguments(args));
-		}
-		catch (EmptyFileNameException ex) {
-			System.out.println("No filepath specified!");
+			MegaModel result = checkerService.doCheck("./TestFiles/JavaC.megal");
+			ResultChecker resultChecker = new ResultChecker(result);
+			resultChecker.checkEntityDeclaration();
+			resultChecker.checkEntityInstances();
+			resultChecker.checkRelationDeclaration();
+			resultChecker.checkRelationInstances();
+			resultChecker.checkFunctionDeclarations();
+			resultChecker.checkFunctionInstances();
 		}
 		catch (FileNotFoundException ex) {
 			System.out.println("The File wasn't found on your harddrive!");
