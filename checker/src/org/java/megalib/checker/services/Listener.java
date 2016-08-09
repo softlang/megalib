@@ -123,45 +123,68 @@ public class Listener extends MegalibBaseListener {
 	@Override
 	public void enterFunctionDeclaration(FunctionDeclarationContext context) {
 		String functionName = context.getChild(0).getText();
-		String returnType = context.getChild(context.getChildCount()-1).getText();
 		LinkedList<String> parameterTypes = new LinkedList<String>();
+		LinkedList<String> returnTypes = new LinkedList<String>();
 		
-		for (int childIndex = 2; childIndex < context.getChildCount() - 2; childIndex = childIndex + 2) {
+		boolean parameter = true;
+		for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
+			if(!context.getChild(childIndex).getText().equals("#") && parameter == false 
+					&& !context.getChild(childIndex).getText().equals("->"))
+			returnTypes.add(context.getChild(childIndex).getText());
+			
+			if(!context.getChild(childIndex).getText().equals("#") && parameter == true 
+					&& !context.getChild(childIndex).getText().equals("->"))
 			parameterTypes.add(context.getChild(childIndex).getText());
+			
+			if(context.getChild(childIndex).getText().equals("->"))
+				parameter = false;
+			
 		}
 		
 		Map<Integer, Function> functionObjects;
 		
 		Function function = new Function();
 		function.parameterTypes = parameterTypes;
-		function.returnType = returnType;
+		function.returnType = returnTypes;
 		
 		if(model.functionDeclarations.containsKey(functionName)){
 			functionObjects = model.functionDeclarations.get(functionName);
 			functionObjects.put(function.hashCode(), function);
 		} else {	
 			functionObjects = createMap(function);
-		}
-				
+		}	
 		model.functionDeclarations.put(functionName, functionObjects);
 	}
 	
 	@Override
 	public void enterFunctionInstance(FunctionInstanceContext context) {
 		String functionName = context.getChild(0).getText();
-		String returnObject = context.getChild(context.getChildCount()-1).getText();
+		LinkedList<String> returnObject = new LinkedList<String>();
 		LinkedList<String> parameters = new LinkedList<String>();
 		
-		for (int childIndex = 2; childIndex < context.getChildCount() - 2; childIndex = childIndex + 2) {
-			parameters.add(context.getChild(childIndex).getText());
+		boolean parameter = true;
+		for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
+			if(!context.getChild(childIndex).getText().equals(",") && parameter == false 
+					&& !context.getChild(childIndex).getText().equals("|->")
+					&& !context.getChild(childIndex).getText().equals("(")
+					&& !context.getChild(childIndex).getText().equals(")") )
+				returnObject.add(context.getChild(childIndex).getText());
+			
+			if(!context.getChild(childIndex).getText().equals(",") && parameter == true 
+					&& !context.getChild(childIndex).getText().equals("|->") 
+					&& !context.getChild(childIndex).getText().equals("(")
+					&& !context.getChild(childIndex).getText().equals(")") )
+				parameters.add(context.getChild(childIndex).getText());
+			
+			if(context.getChild(childIndex).getText().equals("|->"))
+				parameter = false;
 		}
-		
 		Map<Integer, Function> functionObjects;
 		
 		Function function = new Function();
 		function.parameterTypes = parameters;
 		function.returnType = returnObject;
-		
+	
 		if(model.functionInstances.containsKey(functionName)){
 			functionObjects = model.functionInstances.get(functionName);
 			functionObjects.put(function.hashCode(), function);

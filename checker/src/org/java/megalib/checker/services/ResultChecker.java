@@ -121,26 +121,32 @@ public class ResultChecker {
 			Map<Integer, Function> functions = entry.getValue();
 			for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
 
-				String returnType = model.entityInstances.get(newEntry.getValue().returnType);
-				while (returnType != null && !returnType.equals("Language")) {
-					returnType = model.entityDeclarations.get(returnType);
+				LinkedList<String> returnTypes = newEntry.getValue().returnType;
+				for (String returnType : returnTypes) {
+					String returnShow = returnType; // used in print later
+					returnType = model.entityInstances.get(returnType);
+					while (model.entityDeclarations.get(returnType) != null
+							&& model.entityDeclarations.get(returnType).equals("Language")) {
+						returnType = model.entityDeclarations.get(returnType);
+					}
+					if (returnType == null || !returnType.equals("Language")) {
+						String warning = ("Error at function Declaration of '" + funtionName + "' The return Type '"
+								+ returnShow + "' is incorrect");
+						warnings.add(warning);
+						System.out.println(warning);
+					}
 				}
-				if (returnType == null || !returnType.equals("Language")) {
-					String warning = ("Error at function Declaration of '" + funtionName + "'! The return Type '"
-							+ newEntry.getValue().returnType + "' is incorrect");
-					warnings.add(warning);
-					System.out.println(warning);
-				}
-
+				
+				
 				LinkedList<String> paramaterTypes = newEntry.getValue().parameterTypes;
 				for (String parameter : paramaterTypes) {
 					String parameterShow = parameter; // used in print later
 					parameter = model.entityInstances.get(parameter);
 					while (model.entityDeclarations.get(parameter) != null
 							&& model.entityDeclarations.get(parameter).equals("Language")) {
-						parameter = model.entityDeclarations.get(returnType);
+						parameter = model.entityDeclarations.get(parameter);
 					}
-					if (parameter == null | !parameter.equals("Language")) {
+					if (parameter == null || !parameter.equals("Language")) {
 						String warning = ("Error at function Declaration of '" + funtionName + "' The parameter '"
 								+ parameterShow + "' is incorrect");
 						warnings.add(warning);
@@ -161,26 +167,31 @@ public class ResultChecker {
 				Map<Integer, LinkedList<String>> relation = model.relationInstances.get("elementOf");
 
 				// Check returnType
-				String returnType = newEntry.getValue().returnType;
-				LinkedList<String> testReturnType = new LinkedList<String>();
-				testReturnType.add(returnType);
-				boolean checkReturnType = false;
-				for (Map.Entry<Integer, Function> fktEntryA : declaration.entrySet()) {
-					String fktParameterTypesA = fktEntryA.getValue().returnType;
-					testReturnType.add(fktParameterTypesA);
-					if (relation.containsKey(testReturnType.hashCode())) {
-						checkReturnType = true;
-						break;
+				LinkedList<String> returnTypes = newEntry.getValue().returnType;
+				for (String e : returnTypes) {
+					boolean checkReturnTypes = false;
+					LinkedList<String> testReturnTypes = new LinkedList<String>();
+					testReturnTypes.add(e);
+					for (Map.Entry<Integer, Function> fktEntry : declaration.entrySet()) {
+						LinkedList<String> fktParameterTypes = fktEntry.getValue().returnType;
+						for (String f : fktParameterTypes) {
+							testReturnTypes.add(f);
+							if (relation.containsKey(testReturnTypes.hashCode())) {
+								checkReturnTypes = true;
+								break;
+							} else
+								testReturnTypes.removeLast();
+						}
 					}
-					if (!checkReturnType) {
+					if (!checkReturnTypes) {
 						String warning = ("Error at Function '" + name + "'! The return-type '"
-								+ newEntry.getValue().returnType + "' is incorrect");
+								+ e + "' is incorrect");
 						warnings.add(warning);
 						System.out.println(warning);
 					}
 				}
 
-				// Check parameter
+				// Check parameter	
 				LinkedList<String> parameterTypes = newEntry.getValue().parameterTypes;
 				for (String e : parameterTypes) {
 					boolean checkParameterTypes = false;

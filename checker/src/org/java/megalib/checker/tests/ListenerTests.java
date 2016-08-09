@@ -157,7 +157,7 @@ public class ListenerTests {
 	
 	@Test
 	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunctionName() throws IOException {
-		String input = "Function : TypeOne x TypeTwo -> ReturnType";
+		String input = "Function : TypeOne # TypeTwo -> ReturnType";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
@@ -168,7 +168,7 @@ public class ListenerTests {
 	
 	@Test
 	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunction() throws IOException {
-		String input = "Function : TypeOne x TypeTwo -> ReturnType";
+		String input = "Function : TypeOne # TypeTwo -> ReturnType";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
@@ -181,7 +181,7 @@ public class ListenerTests {
 	
 	@Test
 	public void enterFunctionDeclarationDoesNotOverideExistingDeclarations() throws IOException {
-		String input = "Function : TypeOne x TypeTwo -> ReturnTypeOne\nFunction : TypeThree x TypeFour -> ReturnTypeTwo";
+		String input = "Function : TypeOne # TypeTwo -> ReturnTypeOne\nFunction : TypeThree # TypeFour -> ReturnTypeTwo";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
@@ -194,7 +194,7 @@ public class ListenerTests {
 	
 	@Test
 	public void enterFunctionInstanceFillsFunctionInstanceWithFunctionName() throws IOException {
-		String input = "Function(ObjectOne x ObjectTwo) |-> Result";
+		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
@@ -205,7 +205,7 @@ public class ListenerTests {
 	
 	@Test
 	public void enterFunctionInstanceFillsFunctionInstanceWithFunction() throws IOException {
-		String input = "Function(ObjectOne x ObjectTwo) |-> Result";
+		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
@@ -218,7 +218,7 @@ public class ListenerTests {
 	
 	@Test
 	public void enterFunctionInstanceDoesNotOverideExistingInstances() throws IOException {
-		String input = "Function(ObjectOne x ObjectTwo) |-> Result\nFunction(ObjectThree x ObjectFour) |-> ResultTwo";
+		String input = "Function(ObjectOne , ObjectTwo) |-> Result\nFunction(ObjectThree , ObjectFour) |-> ResultTwo";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);

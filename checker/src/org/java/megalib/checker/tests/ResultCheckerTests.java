@@ -95,8 +95,8 @@ public class ResultCheckerTests {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.checkFunctionDeclarations();
-		assertTrue(resultChecker.warnings.contains("Error at function Declaration of 'merge'! The return Type 'C' is incorrect"));
-		assertTrue(!resultChecker.warnings.contains("Error at function Declaration of 'merge'! The return Type 'Prolog' is incorrect"));
+		assertTrue(resultChecker.warnings.contains("Error at function Declaration of 'merge' The return Type 'C' is incorrect"));
+		assertTrue(!resultChecker.warnings.contains("Error at function Declaration of 'merge' The return Type 'Prolog' is incorrect"));
 		assertTrue(resultChecker.warnings.contains("Error at function Declaration of 'merge' The parameter 'C' is incorrect"));
 	}
 	
@@ -117,12 +117,16 @@ public class ResultCheckerTests {
 				+ "RightHaskellFile elementOf Haskell "				
 				+ "merge: Java -> Haskell "
 				+ "merge(JavaFile) |-> RightHaskellFile "
-				+ "merge(JavaFile) |-> WrongHaskellFile ");
+				+ "merge(JavaFile) |-> WrongHaskellFile "
+				+ "insert: Java#Java -> Java#Java "
+				+ "insert(JavaFile,JavaFile) |-> (JavaFile,JavaFile) "
+				+ "insert(JavaFile,JavaFile) |-> (JavaFile,HaskellFile)");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.checkFunctionInstances();
 		assertTrue(resultChecker.warnings.contains("Error at Function 'merge'! The return-type 'WrongHaskellFile' is incorrect"));
 		assertTrue(!resultChecker.warnings.contains("Error at Function 'merge'! The return-type 'RightHaskellFile' is incorrect"));
+		assertTrue(resultChecker.warnings.contains("Error at Function 'insert'! The return-type 'HaskellFile' is incorrect"));
 		
 	}
 }
