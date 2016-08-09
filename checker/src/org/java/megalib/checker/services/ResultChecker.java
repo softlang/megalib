@@ -9,6 +9,7 @@ import org.java.megalib.models.MegaModel;
 public class ResultChecker {
 
 	private MegaModel model;
+	public LinkedList<String> warnings = new LinkedList<String>();
 
 	public ResultChecker(MegaModel model) {
 		this.model = model;
@@ -19,8 +20,11 @@ public class ResultChecker {
 		for (Map.Entry<String, String> entry : entityDeclartations.entrySet()) {
 			String derived = entry.getKey();
 			String type = entry.getValue();
-			if (!(entityDeclartations.containsKey(type) || type.equals("Entity")))
-				System.out.println("Error at:" + derived + " < " + type + "! Entity Type is unkown");
+			if (!(entityDeclartations.containsKey(type) || type.equals("Entity"))) {
+				String warning = ("Error at: " + derived + " < " + type + "! Entity Type is unkown");
+				warnings.add(warning);
+				System.out.println(warning);
+			}
 		}
 	}
 
@@ -29,8 +33,11 @@ public class ResultChecker {
 		for (Map.Entry<String, String> entry : entityInstances.entrySet()) {
 			String derived = entry.getKey();
 			String type = entry.getValue();
-			if (!(model.entityDeclarations.containsKey(type) || type.equals("Entity")))
-				System.out.println("Error at:" + derived + " : " + type + " Entity Type is unkown");
+			if (!(model.entityDeclarations.containsKey(type) || type.equals("Entity"))) {
+				String warning = ("Error at: " + derived + " : " + type + "! Entity Type is unkown");
+				warnings.add(warning);
+				System.out.println(warning);
+			}
 		}
 	}
 
@@ -41,9 +48,12 @@ public class ResultChecker {
 			for (Map.Entry<Integer, LinkedList<String>> newEntry : type.entrySet()) {
 				LinkedList<String> list = newEntry.getValue();
 				for (String item : list) {
-					if (!(model.entityDeclarations.containsKey(item) || item.equals("Entity")))
-						System.out.println("Error at: '" + entry.getKey() + " < " + list.get(0) + "#" + list.get(1)
+					if (!(model.entityDeclarations.containsKey(item) || item.equals("Entity"))) {
+						String warning = ("Error at: '" + entry.getKey() + " < " + list.get(0) + " # " + list.get(1)
 								+ "'! Type of '" + item + "' is unkown");
+						warnings.add(warning);
+						System.out.println(warning);
+					}
 				}
 			}
 		}
@@ -53,9 +63,11 @@ public class ResultChecker {
 		Map<String, Map<Integer, LinkedList<String>>> relationInstances = model.relationInstances;
 		for (Map.Entry<String, Map<Integer, LinkedList<String>>> entry : relationInstances.entrySet()) {
 			String name = entry.getKey();
-			if (!model.relationDeclarations.containsKey(name))
-				System.out.println("Error at Relationtype '" + entry.getKey() + "' has not been initialized");
-			else {
+			if (!model.relationDeclarations.containsKey(name)) {
+				String warning = ("Error at Relationtype '" + entry.getKey() + "' has not been initialized");
+				warnings.add(warning);
+				System.out.println(warning);
+			} else {
 				Map<Integer, LinkedList<String>> actualRelations = model.relationDeclarations.get(name);
 
 				Map<Integer, LinkedList<String>> type = entry.getValue();
@@ -77,10 +89,13 @@ public class ResultChecker {
 						}
 						leftObject = model.entityDeclarations.get(leftObject);
 					}
-					if (!succesfull)
-						System.out.println("Error at: '" + newEntry.getValue().get(0) + " " + entry.getKey() + " "
+					if (!succesfull) {
+						String warning = ("Error at: '" + newEntry.getValue().get(0) + " " + entry.getKey() + " "
 								+ newEntry.getValue().get(1) + "'! Wrong Entity used");
+						warnings.add(warning);
+						System.out.println(warning);
 
+					}
 				}
 			}
 		}
@@ -91,8 +106,11 @@ public class ResultChecker {
 		for (Map.Entry<String, LinkedList<String>> entry : links.entrySet()) {
 			String name = entry.getKey();
 			if (!(model.entityDeclarations.containsKey(name) || model.entityInstances.containsKey(name)
-					|| model.relationDeclarations.containsKey(name) || model.relationInstances.containsKey(name)))
-				System.out.println("Error at Link of '" + entry.getKey() + "' the instance does not exist");
+					|| model.relationDeclarations.containsKey(name) || model.relationInstances.containsKey(name))) {
+				String warning = ("Error at Link of '" + entry.getKey() + "' the instance does not exist");
+				warnings.add(warning);
+				System.out.println(warning);
+			}
 		}
 	}
 
@@ -104,23 +122,30 @@ public class ResultChecker {
 			for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
 
 				String returnType = model.entityInstances.get(newEntry.getValue().returnType);
-				while (returnType != null & !returnType.equals("Language")) {
+				while (returnType != null && !returnType.equals("Language")) {
 					returnType = model.entityDeclarations.get(returnType);
 				}
-				if (returnType == null || !returnType.equals("Language"))
-					System.out.println("Error at function Declaration of '" + funtionName + "'! The return Type '"
+				if (returnType == null || !returnType.equals("Language")) {
+					String warning = ("Error at function Declaration of '" + funtionName + "'! The return Type '"
 							+ newEntry.getValue().returnType + "' is incorrect");
+					warnings.add(warning);
+					System.out.println(warning);
+				}
+
 				LinkedList<String> paramaterTypes = newEntry.getValue().parameterTypes;
 				for (String parameter : paramaterTypes) {
-					parameter = model.entityInstances.get(parameter);
 					String parameterShow = parameter; // used in print later
+					parameter = model.entityInstances.get(parameter);
 					while (model.entityDeclarations.get(parameter) != null
-							& model.entityDeclarations.get(parameter).equals("Language")) {
+							&& model.entityDeclarations.get(parameter).equals("Language")) {
 						parameter = model.entityDeclarations.get(returnType);
 					}
-					if (parameter == null | !parameter.equals("Language"))
-						System.out.println("Error at function Declaration of '" + funtionName + "' The parameter '"
+					if (parameter == null | !parameter.equals("Language")) {
+						String warning = ("Error at function Declaration of '" + funtionName + "' The parameter '"
 								+ parameterShow + "' is incorrect");
+						warnings.add(warning);
+						System.out.println(warning);
+					}
 				}
 			}
 		}
@@ -147,9 +172,12 @@ public class ResultChecker {
 						checkReturnType = true;
 						break;
 					}
-					if (!checkReturnType)
-						System.out.println("Error at Function '" + name + "'! The return-type '"
-								+ newEntry.getValue().returnType + "' is unknown");
+					if (!checkReturnType) {
+						String warning = ("Error at Function '" + name + "'! The return-type '"
+								+ newEntry.getValue().returnType + "' is incorrect");
+						warnings.add(warning);
+						System.out.println(warning);
+					}
 				}
 
 				// Check parameter
@@ -169,9 +197,12 @@ public class ResultChecker {
 								testParameterTypes.removeLast();
 						}
 					}
-					if (!checkParameterTypes)
-						System.out
-								.println("Error at Function '" + name + "'. The parameter Type '" + e + "' is unknown");
+					if (!checkParameterTypes) {
+						String warning = ("Error at Function '" + name + "'. The parameter Type '" + e
+								+ "' is unknown");
+						warnings.add(warning);
+						System.out.println(warning);
+					}
 				}
 			}
 
