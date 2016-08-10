@@ -36,7 +36,7 @@ public class Listener extends MegalibBaseListener {
 			String workingDir = Paths.get("").toAbsolutePath().normalize().toString();
 			String filepath = workingDir.concat(File.separator + "TestFiles" + File.separator + name + ".megal");
 			
-			MegaModel importModel = checker.doCheck(filepath);
+			MegaModel importModel = checker.checkFile(filepath);
 			model.entityDeclarations.putAll(importModel.entityDeclarations);
 			model.entityInstances.putAll(importModel.entityInstances);
 			model.relationInstances.putAll(importModel.relationInstances);

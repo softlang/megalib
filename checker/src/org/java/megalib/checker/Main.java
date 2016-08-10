@@ -21,8 +21,7 @@ public class Main {
 	public static void main(String[] args) {
 		checkerService = new Checker();
 		try {
-			MegaModel result = checkerService.doCheck("./TestFiles/JavaC.megal");
-			ResultChecker resultChecker = new ResultChecker(result);
+			checkerService.checkFile("./TestFiles/JavaC.megal");
 		}
 		catch (FileNotFoundException ex) {
 			System.out.println("The File wasn't found on your harddrive!");

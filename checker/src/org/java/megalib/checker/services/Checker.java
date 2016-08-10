@@ -18,15 +18,20 @@ import org.java.megalib.models.MegaModel;
  *
  */
 public class Checker implements IChecker {
+	
+	ResultChecker checker;
 
 	@Override
-	public MegaModel doCheck(String filepath) throws FileNotFoundException, IOException {
+	public MegaModel checkFile(String filepath) throws FileNotFoundException, IOException {
 		FileInputStream fileStream = new FileLoader().load(filepath);
 		
-		Listener result = getListener(fileStream);
+		MegaModel result = getListener(fileStream).getModel();
 
 		fileStream.close();
-		return result.getModel();
+		checker = new ResultChecker(result);
+		checker.doChecks();
+		
+		return result;
 	}
 	
 	public Listener getListener(InputStream stream) throws IOException{

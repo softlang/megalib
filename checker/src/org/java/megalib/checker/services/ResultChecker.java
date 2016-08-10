@@ -10,9 +10,12 @@ public class ResultChecker {
 
 	private MegaModel model;
 	public LinkedList<String> warnings = new LinkedList<String>();
-
+	
 	public ResultChecker(MegaModel model) {
 		this.model = model;
+	}
+	
+	public void doChecks() {
 		this.checkDescription();
 		this.checkEntityDeclaration();
 		this.checkEntityInstances();

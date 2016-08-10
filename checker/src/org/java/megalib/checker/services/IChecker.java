@@ -14,6 +14,6 @@ import org.java.megalib.models.MegaModel;
  *
  */
 public interface IChecker {
-	public MegaModel doCheck(String filepath) throws FileNotFoundException, IOException;
+	public MegaModel checkFile(String filepath) throws FileNotFoundException, IOException;
 	public Listener getListener(InputStream stream) throws IOException;
 }

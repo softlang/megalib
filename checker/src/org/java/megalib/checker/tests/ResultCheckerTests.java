@@ -25,6 +25,7 @@ public class ResultCheckerTests {
 		String data = "SubSubEntity < SubEntity";
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
+		resultChecker.doChecks();
 		assertTrue(resultChecker.warnings.contains("Error at: SubSubEntity < SubEntity! Entity Type is unkown"));
 	}
 	
@@ -35,6 +36,7 @@ public class ResultCheckerTests {
 				+ "Java : Lang");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
+		resultChecker.doChecks();
 		assertTrue(resultChecker.warnings.contains("Error at: Java : Lang! Entity Type is unkown"));
 		assertTrue(!resultChecker.warnings.contains("Error at: Haskell : Language! Entity Type is unkown"));
 		assertTrue(resultChecker.warnings.size() == 1);
@@ -49,6 +51,7 @@ public class ResultCheckerTests {
 				+ "partOf < System # Language");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
+		resultChecker.doChecks();
 		assertTrue(resultChecker.warnings.contains("Error at: 'partOf < System # Language'! Type of 'System' is unkown"));
 		assertTrue(resultChecker.warnings.size() == 1);
 	}
@@ -67,6 +70,7 @@ public class ResultCheckerTests {
 				+ "File partOf Windows ");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
+		resultChecker.doChecks();
 		assertTrue(resultChecker.warnings.contains("Error at: 'File partOf Haskell'! Wrong Entity used"));
 		System.out.println(resultChecker.warnings);
 		assertTrue(resultChecker.warnings.size() == 1);
@@ -89,6 +93,7 @@ public class ResultCheckerTests {
 				+ "merge: C # C -> Haskell");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
+		resultChecker.doChecks();
 		assertTrue(resultChecker.warnings.contains("Error at function Declaration of 'merge' The return Type 'C' is incorrect"));
 		assertTrue(!resultChecker.warnings.contains("Error at function Declaration of 'merge' The return Type 'Prolog' is incorrect"));
 		assertTrue(resultChecker.warnings.contains("Error at function Declaration of 'merge' The parameter 'C' is incorrect"));
@@ -122,6 +127,7 @@ public class ResultCheckerTests {
 				+ "insert(JavaFile,JavaFile) |-> (JavaFile,HaskellFile)");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
+		resultChecker.doChecks();
 		assertTrue(resultChecker.warnings.contains("Error at Function 'merge'! The return-type 'WrongHaskellFile' is incorrect"));
 		assertTrue(!resultChecker.warnings.contains("Error at Function 'merge'! The return-type 'RightHaskellFile' is incorrect"));
 		assertTrue(resultChecker.warnings.contains("Error at Function 'insert'! The return-type 'HaskellFile' is incorrect"));

@@ -31,12 +31,6 @@ public class ListenerTests {
 		checker = new Checker();
 	}
 	
-	@Test(expected=NotImplementedException.class)
-	public void enterImportsDoesNothin() {
-		sut = new Listener();
-		sut.enterImports(null);
-	}
-	
 	@Test
 	public void enterEntityDeclarationFillsEntityDeclarations() throws IOException{
 		String input = "DerivedType < Type";
