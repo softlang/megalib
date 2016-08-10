@@ -25,7 +25,6 @@ public class ResultCheckerTests {
 		String data = "SubSubEntity < SubEntity";
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
-		resultChecker.checkEntityDeclaration();
 		assertTrue(resultChecker.warnings.contains("Error at: SubSubEntity < SubEntity! Entity Type is unkown"));
 	}
 	
@@ -36,9 +35,9 @@ public class ResultCheckerTests {
 				+ "Java : Lang");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
-		resultChecker.checkEntityInstances();
 		assertTrue(resultChecker.warnings.contains("Error at: Java : Lang! Entity Type is unkown"));
 		assertTrue(!resultChecker.warnings.contains("Error at: Haskell : Language! Entity Type is unkown"));
+		assertTrue(resultChecker.warnings.size() == 1);
 	}
 	
 	@Test
@@ -50,8 +49,8 @@ public class ResultCheckerTests {
 				+ "partOf < System # Language");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
-		resultChecker.checkRelationDeclaration();
 		assertTrue(resultChecker.warnings.contains("Error at: 'partOf < System # Language'! Type of 'System' is unkown"));
+		assertTrue(resultChecker.warnings.size() == 1);
 	}
 	
 	@Test
@@ -61,20 +60,16 @@ public class ResultCheckerTests {
 				+ "SubArtifact < Artifact "
 				+ "System < Entity "
 				+ "partOf < Artifact # System "
-				+ "File: Artifact "
+				+ "File: SubArtifact "
 				+ "Haskell: Language "
 				+ "Windows: System "
 				+ "File partOf Haskell "
 				+ "File partOf Windows ");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
-		resultChecker.checkDescription();
-		resultChecker.checkEntityDeclaration();
-		resultChecker.checkEntityInstances();
-		resultChecker.checkRelationDeclaration();
-		assertTrue(resultChecker.warnings.isEmpty());
-		resultChecker.checkRelationInstances();
 		assertTrue(resultChecker.warnings.contains("Error at: 'File partOf Haskell'! Wrong Entity used"));
+		System.out.println(resultChecker.warnings);
+		assertTrue(resultChecker.warnings.size() == 1);
 	}
 	
 	@Test
@@ -94,10 +89,10 @@ public class ResultCheckerTests {
 				+ "merge: C # C -> Haskell");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
-		resultChecker.checkFunctionDeclarations();
 		assertTrue(resultChecker.warnings.contains("Error at function Declaration of 'merge' The return Type 'C' is incorrect"));
 		assertTrue(!resultChecker.warnings.contains("Error at function Declaration of 'merge' The return Type 'Prolog' is incorrect"));
 		assertTrue(resultChecker.warnings.contains("Error at function Declaration of 'merge' The parameter 'C' is incorrect"));
+		assertTrue(resultChecker.warnings.size() == 3);
 	}
 	
 	@Test
@@ -107,12 +102,16 @@ public class ResultCheckerTests {
 				+ "SubArtifact < Artifact "
 				+ "System < Entity "
 				+ "partOf < Artifact # System "
+				+ "elementOf < Artifact # Language "
+				+ "elementOf < Language # Language "
+				+ "elementOf < Artifact # Artifact "
 				+ "File: Artifact "
 				+ "Haskell: Language "
 				+ "Java: Language "
 				+ "JavaFile: Artifact "
 				+ "JavaFile elementOf Java "
-				+ "HaskellFile: Artifact "
+				+ "WrongHaskellFile: Artifact "
+				+ "RightHaskellFile: Artifact "
 				+ "WrongHaskellFile elementOf File "
 				+ "RightHaskellFile elementOf Haskell "				
 				+ "merge: Java -> Haskell "
@@ -123,10 +122,9 @@ public class ResultCheckerTests {
 				+ "insert(JavaFile,JavaFile) |-> (JavaFile,HaskellFile)");
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
-		resultChecker.checkFunctionInstances();
 		assertTrue(resultChecker.warnings.contains("Error at Function 'merge'! The return-type 'WrongHaskellFile' is incorrect"));
 		assertTrue(!resultChecker.warnings.contains("Error at Function 'merge'! The return-type 'RightHaskellFile' is incorrect"));
 		assertTrue(resultChecker.warnings.contains("Error at Function 'insert'! The return-type 'HaskellFile' is incorrect"));
-		
+		assertTrue(resultChecker.warnings.size() == 2);
 	}
 }

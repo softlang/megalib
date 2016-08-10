@@ -23,12 +23,6 @@ public class Main {
 		try {
 			MegaModel result = checkerService.doCheck("./TestFiles/JavaC.megal");
 			ResultChecker resultChecker = new ResultChecker(result);
-			resultChecker.checkEntityDeclaration();
-			resultChecker.checkEntityInstances();
-			resultChecker.checkRelationDeclaration();
-			resultChecker.checkRelationInstances();
-			resultChecker.checkFunctionDeclarations();
-			resultChecker.checkFunctionInstances();
 		}
 		catch (FileNotFoundException ex) {
 			System.out.println("The File wasn't found on your harddrive!");
