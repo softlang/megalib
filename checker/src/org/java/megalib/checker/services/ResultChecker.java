@@ -76,12 +76,12 @@ public class ResultChecker {
 		Map<String, Map<Integer, Function>> functionInstances = model.functionInstances;
 		for (Map.Entry<String, Map<Integer, Function>> entry : functionInstances.entrySet()) {
 			String name = entry.getKey();
-			checkFunctionInstancesInitialisedObjects(name, entry.getValue());
 			if (checkFunctionInstancesFunctionName(name, entry)) {
 				Map<Integer, Function> declaration = model.functionDeclarations.get(name);
 				Map<Integer, Function> functions = entry.getValue();
 				checkFunctionInstancesReturnType(name, declaration, functions);
 				checkFunctionInstancesParameterType(name, declaration, functions);
+				checkFunctionInstancesInitialisedObjects(name, entry.getValue());
 			}
 		}
 
@@ -89,7 +89,7 @@ public class ResultChecker {
 
 	private boolean checkFunctionInstancesFunctionName(String name, Map.Entry<String, Map<Integer, Function>> entry) {
 		if (!model.functionDeclarations.containsKey(name)) {
-			String warning = ("Error at Relationtype '" + entry.getKey() + "' has not been initialized");
+			String warning = ("Error at function '" + entry.getKey() + "'! It has not been initialized");
 			warnings.add(warning);
 			System.out.println(warning);
 			return false;

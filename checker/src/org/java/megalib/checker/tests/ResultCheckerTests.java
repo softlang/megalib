@@ -72,7 +72,6 @@ public class ResultCheckerTests {
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
 		assertTrue(resultChecker.warnings.contains("Error at: 'File partOf Haskell'! Wrong Entity used"));
-		System.out.println(resultChecker.warnings);
 		assertTrue(resultChecker.warnings.size() == 1);
 	}
 	
@@ -101,7 +100,7 @@ public class ResultCheckerTests {
 	}
 	
 	@Test
-	public void testFunctionInstances() throws IOException{
+	public void testFunctionInstances1() throws IOException{
 		String data = ("Language < Entity "
 				+ "Artifact < Entity "
 				+ "SubArtifact < Artifact "
@@ -132,5 +131,27 @@ public class ResultCheckerTests {
 		assertTrue(!resultChecker.warnings.contains("Error at Function 'merge'! The return-type 'RightHaskellFile' is incorrect"));
 		assertTrue(resultChecker.warnings.contains("Error at Function 'insert'! The return-type 'HaskellFile' is incorrect"));
 		assertTrue(resultChecker.warnings.size() == 2);
+	}
+	
+	
+	@Test
+	public void testFunctionInstances2() throws IOException{
+		String data = ("Language < Entity "
+				+ "Artifact < Entity "
+				+ "elementOf < Artifact # Language "
+				+ "Java: Language "
+				+ "Haskell: Language "
+				+ "JavaFile: Artifact "
+				+ "JavaFile elementOf Java "
+				+ "HaskellFile: Artifact "
+				+ "HaskellFile elementOf Haskell "			
+				+ "merge: Java -> Haskell "
+				+ "insert(JavaFile) |-> HaskellFile ");
+		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
+		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
+		resultChecker.doChecks();
+		assertTrue(resultChecker.warnings.contains("Error at function 'insert'! It has not been initialized"));
+		System.out.println(resultChecker.warnings);
+		assertTrue(resultChecker.warnings.size() == 1);
 	}
 }
