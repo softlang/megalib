@@ -1,9 +1,9 @@
 package test.java.megalib.checker;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -13,9 +13,10 @@ import java.util.Map;
 
 import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.Listener;
-import org.java.megalib.models.*;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.java.megalib.models.Function;
+import org.java.megalib.models.MegaModel;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author mmay, aemmerichs

@@ -8,8 +8,6 @@ import java.io.IOException;
 
 import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.IChecker;
-import org.java.megalib.checker.services.ResultChecker;
-import org.java.megalib.models.MegaModel;
 
 /**
  * @author mmay@uni-koblenz.de, aemmerichs@uni-koblenz.de
