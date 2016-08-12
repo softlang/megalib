@@ -1,4 +1,4 @@
-package org.java.megalib.checker.tests;
+package test.java.megalib.checker;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
@@ -21,7 +21,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * @author mmay, aemmerichs
  *
  */
-public class ListenerTests {
+public class ListenerTest {
 	private Listener sut;
 	
 	private Checker checker;

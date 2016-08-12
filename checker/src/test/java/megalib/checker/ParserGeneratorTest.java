@@ -1,18 +1,15 @@
 /**
  * 
  */
-package org.java.megalib.checker.tests;
+package test.java.megalib.checker;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.antlr.runtime.ANTLRInputStream;
-import org.java.megalib.antlr.MegalibParser;
 import org.java.megalib.checker.services.FileLoader;
 import org.java.megalib.checker.services.IFileLoader;
 import org.java.megalib.checker.services.IParserGenerator;
@@ -20,11 +17,13 @@ import org.java.megalib.checker.services.ParserGenerator;
 import org.junit.Before;
 import org.junit.Test;
 
+import main.antlr.techdocgrammar.MegalibParser;
+
 /**
  * @author mmay, aemmerichs
  *
  */
-public class ParserGeneratorTests {
+public class ParserGeneratorTest {
 	private IParserGenerator sut;
 	private String filepath;
 	private IFileLoader fileLoaderService;

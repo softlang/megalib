@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.java.megalib.antlr.MegalibParser;
-import org.java.megalib.antlr.MegalibParser.DeclarationContext;
 import org.java.megalib.models.MegaModel;
+
+import main.antlr.techdocgrammar.MegalibParser;
+import main.antlr.techdocgrammar.MegalibParser.DeclarationContext;
 
 /**
  * @author mmay, aemmerichs

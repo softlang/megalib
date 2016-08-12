@@ -1,4 +1,4 @@
-package org.java.megalib.checker.tests;
+package test.java.megalib.checker;
 
 import static org.junit.Assert.*;
 
@@ -15,7 +15,7 @@ import org.junit.Test;
  * @author mmay, aemmerichs
  *
  */
-public class FileLoaderTests {
+public class FileLoaderTest {
 	private IFileLoader sut;
 	private String filepath;
 	

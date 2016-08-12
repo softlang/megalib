@@ -8,8 +8,9 @@ import java.io.InputStream;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.java.megalib.antlr.MegalibLexer;
-import org.java.megalib.antlr.MegalibParser;
+
+import main.antlr.techdocgrammar.MegalibLexer;
+import main.antlr.techdocgrammar.MegalibParser;
 
 /**
  * @author mmay, aemmerichs

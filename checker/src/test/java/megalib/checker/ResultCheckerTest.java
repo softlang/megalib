@@ -1,4 +1,4 @@
-package org.java.megalib.checker.tests;
+package test.java.megalib.checker;
 
 import static org.junit.Assert.assertTrue;
 
@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class ResultCheckerTests {
+public class ResultCheckerTest {
 
 	public Checker checker;
 	

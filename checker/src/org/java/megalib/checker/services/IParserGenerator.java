@@ -6,7 +6,7 @@ package org.java.megalib.checker.services;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.java.megalib.antlr.MegalibParser;
+import main.antlr.techdocgrammar.MegalibParser;
 
 /**
  * @author mmay, aemmerichs

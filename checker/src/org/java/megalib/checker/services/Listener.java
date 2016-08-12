@@ -7,17 +7,18 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import org.java.megalib.antlr.MegalibBaseListener;
-import org.java.megalib.antlr.MegalibParser.EntityDeclarationContext;
-import org.java.megalib.antlr.MegalibParser.EntityInstanceContext;
-import org.java.megalib.antlr.MegalibParser.FunctionDeclarationContext;
-import org.java.megalib.antlr.MegalibParser.FunctionInstanceContext;
-import org.java.megalib.antlr.MegalibParser.ImportsContext;
-import org.java.megalib.antlr.MegalibParser.LinkContext;
-import org.java.megalib.antlr.MegalibParser.RelationDeclarationContext;
-import org.java.megalib.antlr.MegalibParser.RelationInstanceContext;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
+
+import main.antlr.techdocgrammar.MegalibBaseListener;
+import main.antlr.techdocgrammar.MegalibParser.EntityDeclarationContext;
+import main.antlr.techdocgrammar.MegalibParser.EntityInstanceContext;
+import main.antlr.techdocgrammar.MegalibParser.FunctionDeclarationContext;
+import main.antlr.techdocgrammar.MegalibParser.FunctionInstanceContext;
+import main.antlr.techdocgrammar.MegalibParser.ImportsContext;
+import main.antlr.techdocgrammar.MegalibParser.LinkContext;
+import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
+import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
 
 public class Listener extends MegalibBaseListener {
 	private MegaModel model;
