@@ -132,7 +132,7 @@ public class ResultChecker {
 			LinkedList<String> parameterTypes = newEntry.getValue().parameterTypes;
 			for (String e : parameterTypes) {
 				if(!model.entityInstances.containsKey(e)){
-				String warning = ("Error at Function '" + name + "'! The object-type '" + e + "' has not been initilialized before");
+				String warning = ("Error at Function '" + name + "'! The object-type '" + e + "' has not been initialized before");
 				warnings.add(warning);
 				System.out.println(warning);
 			}
@@ -214,7 +214,7 @@ public class ResultChecker {
 	public boolean checkRelationInstancesRelationName(String name,
 			Map.Entry<String, Map<Integer, LinkedList<String>>> entry) {
 		if (!model.relationDeclarations.containsKey(name)) {
-			String warning = ("Error at Relationtype '" + entry.getKey() + "' has not been initialized");
+			String warning = ("Error at Relationtype '" + entry.getKey() + "' It has not been initialized");
 			warnings.add(warning);
 			System.out.println(warning);
 			return false;
@@ -247,7 +247,7 @@ public class ResultChecker {
 			}
 			if (!succesfull) {
 				String warning = ("Error at: '" + newEntry.getValue().get(0) + " " + entry.getKey() + " "
-						+ newEntry.getValue().get(1) + "'! Wrong Entity used");
+						+ newEntry.getValue().get(1) + "'! Wrong Entity(s) used");
 				warnings.add(warning);
 				System.out.println(warning);
 
@@ -274,7 +274,7 @@ public class ResultChecker {
 		String derived = entry.getKey();
 		String type = entry.getValue();
 		if (!(entityDeclartations.containsKey(type) || type.equals("Entity"))) {
-			String warning = ("Error at: " + derived + " < " + type + "! Entity Type is unkown");
+			String warning = ("Error at: " + derived + " < " + type + "! Entity Type '"+type+"' is unkown");
 			warnings.add(warning);
 			System.out.println(warning);
 		}
@@ -284,7 +284,7 @@ public class ResultChecker {
 		String derived = entry.getKey();
 		String type = entry.getValue();
 		if (!(model.entityDeclarations.containsKey(type) || type.equals("Entity"))) {
-			String warning = ("Error at: " + derived + " : " + type + "! Entity Type is unkown");
+			String warning = ("Error at: " + derived + " : " + type + "! Entity Type '"+type+"' is unkown");
 			warnings.add(warning);
 			System.out.println(warning);
 		}

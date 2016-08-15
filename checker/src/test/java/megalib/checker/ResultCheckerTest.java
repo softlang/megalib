@@ -26,7 +26,7 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at: SubSubEntity < SubEntity! Entity Type is unkown"));
+		assertTrue(resultChecker.warnings.contains("Error at: SubSubEntity < SubEntity! Entity Type 'SubEntity' is unkown"));
 	}
 	
 	@Test
@@ -37,7 +37,7 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at: Java : Lang! Entity Type is unkown"));
+		assertTrue(resultChecker.warnings.contains("Error at: Java : Lang! Entity Type 'Lang' is unkown"));
 		assertTrue(!resultChecker.warnings.contains("Error at: Haskell : Language! Entity Type is unkown"));
 		assertTrue(resultChecker.warnings.size() == 1);
 	}
@@ -71,7 +71,7 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at: 'File partOf Haskell'! Wrong Entity used"));
+		assertTrue(resultChecker.warnings.contains("Error at: 'File partOf Haskell'! Wrong Entity(s) used"));
 		assertTrue(resultChecker.warnings.size() == 1);
 	}
 	
