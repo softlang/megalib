@@ -19,7 +19,7 @@ public class Main {
 	public static void main(String[] args) {
 		checkerService = new Checker();
 		try {
-			checkerService.checkFile("./TestFiles/JavaC.megal");
+			checkerService.checkFile(getFilepathOfArguments(args));
 		}
 		catch (FileNotFoundException ex) {
 			System.out.println("The File wasn't found on your harddrive!");
