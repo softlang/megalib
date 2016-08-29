@@ -1,0 +1,21 @@
+module Jackson import Prelude
+JSON : Language
+Java : Language
+Model : Artifact
+Model elementOf Java
+aModel : Transient
+JavaObject : Language
+aModel elementOf JavaObject
+aModel conformsTo Model
+aJSONString : Artifact
+aJSONString elementOf JSON
+aJSONString conformsTo Model
+Jackson : Technology
+ObjectMapper : Technology
+ObjectMapper partOf Jackson
+Serialization : Concept
+ObjectMapper facilitates Serialization
+readValue : JSON -> JavaObject
+readValue(aJSONString) |-> aModel
+ObjectMapper implements readValue 
+aJSONString correspondsTo aModel

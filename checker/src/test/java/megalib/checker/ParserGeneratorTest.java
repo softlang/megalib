@@ -40,7 +40,7 @@ public class ParserGeneratorTest {
 		
 		String input = "test";
 		inputStream = new ByteArrayInputStream(input.getBytes());
-		}
+	}
 
 	@Test
 	public void ItReturnsMegalibParser() throws IOException{

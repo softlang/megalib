@@ -1,7 +1,9 @@
 package org.java.megalib.checker.services;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
@@ -9,12 +11,17 @@ import org.java.megalib.models.MegaModel;
 public class ResultChecker {
 
 	private MegaModel model;
-	public LinkedList<String> warnings = new LinkedList<String>();
+	private LinkedList<String> warnings;
 	
 	public ResultChecker(MegaModel model) {
 		this.model = model;
+		warnings = new LinkedList<String>();
 	}
 	
+	public LinkedList<String> getWarnings() {
+		return warnings;
+	}
+
 	public void doChecks() {
 		this.checkDescription();
 		this.checkEntityDeclaration();
@@ -26,29 +33,29 @@ public class ResultChecker {
 	}
 
 	public void checkEntityDeclaration() {
-		Map<String, String> entityDeclartations = model.entityDeclarations;
+		Map<String, String> entityDeclartations = model.getSubtypesMap();
 		for (Map.Entry<String, String> entry : entityDeclartations.entrySet()) {
 			checkEntityDeclarationTypes(entityDeclartations, entry);
 		}
 	}
 
 	public void checkEntityInstances() {
-		Map<String, String> entityInstances = model.entityInstances;
+		Map<String, String> entityInstances = model.getInstanceOfMap();
 		for (Map.Entry<String, String> entry : entityInstances.entrySet()) {
 			checkEntityInstancesTypes(entry);
 		}
 	}
 
 	public void checkRelationDeclaration() {
-		Map<String, Map<Integer, LinkedList<String>>> relationDeclarations = model.relationDeclarations;
-		for (Map.Entry<String, Map<Integer, LinkedList<String>>> entry : relationDeclarations.entrySet()) {
+		Map<String, Map<Integer, List<String>>> relationDeclarations = model.getRelationDeclarationMap();
+		for (Entry<String, Map<Integer, List<String>>> entry : relationDeclarations.entrySet()) {
 			checkRelationDeclarationTypes(entry);
 		}
 	}
 
 	public void checkRelationInstances() {
-		Map<String, Map<Integer, LinkedList<String>>> relationInstances = model.relationInstances;
-		for (Map.Entry<String, Map<Integer, LinkedList<String>>> entry : relationInstances.entrySet()) {
+		Map<String, Map<Integer, List<String>>> relationInstances = model.getRelationInstanceMap();
+		for (Entry<String, Map<Integer, List<String>>> entry : relationInstances.entrySet()) {
 			String name = entry.getKey();
 			if (checkRelationInstancesRelationName(name, entry))
 				checkRelationInstancesTypes(entry, name);
@@ -56,14 +63,14 @@ public class ResultChecker {
 	}
 
 	public void checkDescription() {
-		Map<String, LinkedList<String>> links = model.links;
-		for (Map.Entry<String, LinkedList<String>> entry : links.entrySet()) {
+		Map<String, List<String>> links = model.getLinkMap();
+		for (Entry<String, List<String>> entry : links.entrySet()) {
 			checkDescriptionName(entry);
 		}
 	}
 
 	public void checkFunctionDeclarations() {
-		Map<String, Map<Integer, Function>> functionDeclarations = model.functionDeclarations;
+		Map<String, Map<Integer, Function>> functionDeclarations = model.getFunctionDeclarations();
 		for (Map.Entry<String, Map<Integer, Function>> entry : functionDeclarations.entrySet()) {
 			String funtionName = entry.getKey();
 			Map<Integer, Function> functions = entry.getValue();
@@ -73,11 +80,11 @@ public class ResultChecker {
 	}
 
 	public void checkFunctionInstances() {
-		Map<String, Map<Integer, Function>> functionInstances = model.functionInstances;
+		Map<String, Map<Integer, Function>> functionInstances = model.getFunctionInstances();
 		for (Map.Entry<String, Map<Integer, Function>> entry : functionInstances.entrySet()) {
 			String name = entry.getKey();
 			if (checkFunctionInstancesFunctionName(name, entry)) {
-				Map<Integer, Function> declaration = model.functionDeclarations.get(name);
+				Map<Integer, Function> declaration = model.getFunctionDeclarations().get(name);
 				Map<Integer, Function> functions = entry.getValue();
 				checkFunctionInstancesReturnType(name, declaration, functions);
 				checkFunctionInstancesParameterType(name, declaration, functions);
@@ -88,7 +95,7 @@ public class ResultChecker {
 	}
 
 	private boolean checkFunctionInstancesFunctionName(String name, Map.Entry<String, Map<Integer, Function>> entry) {
-		if (!model.functionDeclarations.containsKey(name)) {
+		if (!model.getFunctionDeclarations().containsKey(name)) {
 			String warning = ("Error at function '" + entry.getKey() + "'! It has not been initialized");
 			warnings.add(warning);
 			System.out.println(warning);
@@ -100,15 +107,15 @@ public class ResultChecker {
 	private void checkFunctionInstancesReturnType(String name, Map<Integer, Function> declaration,
 			Map<Integer, Function> functions) {
 		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
-			Map<Integer, LinkedList<String>> relation = model.relationInstances.get("elementOf");
+			Map<Integer, List<String>> relation = model.getRelationInstanceMap().get("elementOf");
 
-			LinkedList<String> returnTypes = newEntry.getValue().returnType;
+			List<String> returnTypes = newEntry.getValue().getReturnTypes();
 			for (String e : returnTypes) {
 				boolean checkReturnTypes = false;
-				LinkedList<String> testReturnTypes = new LinkedList<String>();
+				LinkedList<String> testReturnTypes = new LinkedList<>();
 				testReturnTypes.add(e);
 				for (Map.Entry<Integer, Function> fktEntry : declaration.entrySet()) {
-					LinkedList<String> fktParameterTypes = fktEntry.getValue().returnType;
+					List<String> fktParameterTypes = fktEntry.getValue().getReturnTypes();
 					for (String f : fktParameterTypes) {
 						testReturnTypes.add(f);
 						if (relation.containsKey(testReturnTypes.hashCode())) {
@@ -129,9 +136,9 @@ public class ResultChecker {
 	
 	private void checkFunctionInstancesInitialisedObjects(String name, Map<Integer, Function> functions) {
 		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
-			LinkedList<String> parameterTypes = newEntry.getValue().parameterTypes;
+			List<String> parameterTypes = newEntry.getValue().getParameterTypes();
 			for (String e : parameterTypes) {
-				if(!model.entityInstances.containsKey(e)){
+				if(!model.getInstanceOfMap().containsKey(e)){
 				String warning = ("Error at Function '" + name + "'! The object-type '" + e + "' has not been initialized before");
 				warnings.add(warning);
 				System.out.println(warning);
@@ -144,14 +151,14 @@ public class ResultChecker {
 	private void checkFunctionInstancesParameterType(String name, Map<Integer, Function> declaration,
 			Map<Integer, Function> functions) {
 		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
-			Map<Integer, LinkedList<String>> relation = model.relationInstances.get("elementOf");
-			LinkedList<String> parameterTypes = newEntry.getValue().parameterTypes;
+			Map<Integer, List<String>> relation = model.getRelationInstanceMap().get("elementOf");
+			List<String> parameterTypes = newEntry.getValue().getParameterTypes();
 			for (String e : parameterTypes) {
 				boolean checkParameterTypes = false;
 				LinkedList<String> testParameterTypes = new LinkedList<String>();
 				testParameterTypes.add(e);
 				for (Map.Entry<Integer, Function> fktEntry : declaration.entrySet()) {
-					LinkedList<String> fktParameterTypes = fktEntry.getValue().parameterTypes;
+					List<String> fktParameterTypes = fktEntry.getValue().getParameterTypes();
 					for (String f : fktParameterTypes) {
 						testParameterTypes.add(f);
 						if (relation.containsKey(testParameterTypes.hashCode())) {
@@ -173,13 +180,13 @@ public class ResultChecker {
 	private void checkFunctionDeclarationReturnTypes(String funtionName, Map<Integer, Function> functions) {
 		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
 
-			LinkedList<String> returnTypes = newEntry.getValue().returnType;
+			List<String> returnTypes = newEntry.getValue().getReturnTypes();
 			for (String returnType : returnTypes) {
 				String returnShow = returnType; // used in print later
-				returnType = model.entityInstances.get(returnType);
-				while (model.entityDeclarations.get(returnType) != null
-						&& model.entityDeclarations.get(returnType).equals("Language")) {
-					returnType = model.entityDeclarations.get(returnType);
+				returnType = model.getInstanceOfMap().get(returnType);
+				while (model.getSubtypesMap().get(returnType) != null
+						&& model.getSubtypesMap().get(returnType).equals("Language")) {
+					returnType = model.getSubtypesMap().get(returnType);
 				}
 				if (returnType == null || !returnType.equals("Language")) {
 					String warning = ("Error at function Declaration of '" + funtionName + "' The return Type '"
@@ -193,13 +200,13 @@ public class ResultChecker {
 
 	private void checkFunctionDeclarationParameter(String funtionName, Map<Integer, Function> functions) {
 		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
-			LinkedList<String> paramaterTypes = newEntry.getValue().parameterTypes;
+			List<String> paramaterTypes = newEntry.getValue().getParameterTypes();
 			for (String parameter : paramaterTypes) {
 				String parameterShow = parameter; // used in print later
-				parameter = model.entityInstances.get(parameter);
-				while (model.entityDeclarations.get(parameter) != null
-						&& model.entityDeclarations.get(parameter).equals("Language")) {
-					parameter = model.entityDeclarations.get(parameter);
+				parameter = model.getInstanceOfMap().get(parameter);
+				while (model.getSubtypesMap().get(parameter) != null
+						&& model.getSubtypesMap().get(parameter).equals("Language")) {
+					parameter = model.getSubtypesMap().get(parameter);
 				}
 				if (parameter == null || !parameter.equals("Language")) {
 					String warning = ("Error at function Declaration of '" + funtionName + "' The parameter '"
@@ -212,8 +219,8 @@ public class ResultChecker {
 	}
 
 	public boolean checkRelationInstancesRelationName(String name,
-			Map.Entry<String, Map<Integer, LinkedList<String>>> entry) {
-		if (!model.relationDeclarations.containsKey(name)) {
+			Entry<String, Map<Integer, List<String>>> entry) {
+		if (!model.getRelationDeclarationMap().containsKey(name)) {
 			String warning = ("Error at Relationtype '" + entry.getKey() + "' It has not been initialized");
 			warnings.add(warning);
 			System.out.println(warning);
@@ -222,15 +229,15 @@ public class ResultChecker {
 			return true;
 	}
 
-	private void checkRelationInstancesTypes(Map.Entry<String, Map<Integer, LinkedList<String>>> entry, String name) {
-		Map<Integer, LinkedList<String>> actualRelations = model.relationDeclarations.get(name);
+	private void checkRelationInstancesTypes(Entry<String, Map<Integer, List<String>>> entry, String name) {
+		Map<Integer, List<String>> actualRelations = model.getRelationDeclarationMap().get(name);
 
-		Map<Integer, LinkedList<String>> type = entry.getValue();
-		for (Map.Entry<Integer, LinkedList<String>> newEntry : type.entrySet()) {
+		Map<Integer, List<String>> type = entry.getValue();
+		for (Entry<Integer, List<String>> newEntry : type.entrySet()) {
 			boolean succesfull = false;
-			LinkedList<String> objects = newEntry.getValue();
-			String leftObject = model.entityInstances.get(objects.get(0));
-			String tempRightObject = model.entityInstances.get(objects.get(1));
+			List<String> objects = newEntry.getValue();
+			String leftObject = model.getInstanceOfMap().get(objects.get(0));
+			String tempRightObject = model.getInstanceOfMap().get(objects.get(1));
 			LinkedList<String> listToCheckTypes = new LinkedList<String>();
 
 			while ("Entity" != leftObject && leftObject != null) {
@@ -241,9 +248,9 @@ public class ResultChecker {
 					listToCheckTypes.add(rightObject);
 					if (actualRelations.containsKey(listToCheckTypes.hashCode()))
 						succesfull = true;
-					rightObject = model.entityDeclarations.get(rightObject);
+					rightObject = model.getSubtypesMap().get(rightObject);
 				}
-				leftObject = model.entityDeclarations.get(leftObject);
+				leftObject = model.getSubtypesMap().get(leftObject);
 			}
 			if (!succesfull) {
 				String warning = ("Error at: '" + newEntry.getValue().get(0) + " " + entry.getKey() + " "
@@ -255,12 +262,12 @@ public class ResultChecker {
 		}
 	}
 
-	private void checkRelationDeclarationTypes(Map.Entry<String, Map<Integer, LinkedList<String>>> entry) {
-		Map<Integer, LinkedList<String>> type = entry.getValue();
-		for (Map.Entry<Integer, LinkedList<String>> newEntry : type.entrySet()) {
-			LinkedList<String> list = newEntry.getValue();
+	private void checkRelationDeclarationTypes(Entry<String, Map<Integer, List<String>>> entry) {
+		Map<Integer, List<String>> type = entry.getValue();
+		for (Entry<Integer, List<String>> newEntry : type.entrySet()) {
+			List<String> list = newEntry.getValue();
 			for (String item : list) {
-				if (!(model.entityDeclarations.containsKey(item) || item.equals("Entity"))) {
+				if (!(model.getSubtypesMap().containsKey(item) || item.equals("Entity"))) {
 					String warning = ("Error at: '" + entry.getKey() + " < " + list.get(0) + " # " + list.get(1)
 							+ "'! Type of '" + item + "' is unkown");
 					warnings.add(warning);
@@ -283,17 +290,17 @@ public class ResultChecker {
 	private void checkEntityInstancesTypes(Map.Entry<String, String> entry) {
 		String derived = entry.getKey();
 		String type = entry.getValue();
-		if (!(model.entityDeclarations.containsKey(type) || type.equals("Entity"))) {
+		if (!(model.getSubtypesMap().containsKey(type) || type.equals("Entity"))) {
 			String warning = ("Error at: " + derived + " : " + type + "! Entity Type '"+type+"' is unkown");
 			warnings.add(warning);
 			System.out.println(warning);
 		}
 	}
 
-	private void checkDescriptionName(Map.Entry<String, LinkedList<String>> entry) {
+	private void checkDescriptionName(Entry<String, List<String>> entry) {
 		String name = entry.getKey();
-		if (!(model.entityDeclarations.containsKey(name) || model.entityInstances.containsKey(name)
-				|| model.relationDeclarations.containsKey(name) || model.relationInstances.containsKey(name))) {
+		if (!(model.getSubtypesMap().containsKey(name) || model.getInstanceOfMap().containsKey(name)
+				|| model.getRelationDeclarationMap().containsKey(name) || model.getRelationInstanceMap().containsKey(name))) {
 			String warning = ("Error at Link of '" + entry.getKey() + "' the instance does not exist");
 			warnings.add(warning);
 			System.out.println(warning);

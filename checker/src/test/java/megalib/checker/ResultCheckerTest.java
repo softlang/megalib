@@ -1,9 +1,10 @@
 package test.java.megalib.checker;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.ResultChecker;
@@ -26,7 +27,7 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at: SubSubEntity < SubEntity! Entity Type 'SubEntity' is unkown"));
+		assertTrue(resultChecker.getWarnings().contains("Error at: SubSubEntity < SubEntity! Entity Type 'SubEntity' is unkown"));
 	}
 	
 	@Test
@@ -37,9 +38,8 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at: Java : Lang! Entity Type 'Lang' is unkown"));
-		assertTrue(!resultChecker.warnings.contains("Error at: Haskell : Language! Entity Type is unkown"));
-		assertTrue(resultChecker.warnings.size() == 1);
+		assertTrue(resultChecker.getWarnings().size() == 1);
+		assertTrue(resultChecker.getWarnings().contains("Error at: Java : Lang! Entity Type 'Lang' is unkown"));
 	}
 	
 	@Test
@@ -52,8 +52,8 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at: 'partOf < System # Language'! Type of 'System' is unkown"));
-		assertTrue(resultChecker.warnings.size() == 1);
+		assertTrue(resultChecker.getWarnings().size() == 1);
+		assertTrue(resultChecker.getWarnings().contains("Error at: 'partOf < System # Language'! Type of 'System' is unkown"));
 	}
 	
 	@Test
@@ -71,8 +71,8 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at: 'File partOf Haskell'! Wrong Entity(s) used"));
-		assertTrue(resultChecker.warnings.size() == 1);
+		assertTrue(resultChecker.getWarnings().size() == 1);
+		assertTrue(resultChecker.getWarnings().contains("Error at: 'File partOf Haskell'! Wrong Entity(s) used"));
 	}
 	
 	@Test
@@ -93,10 +93,10 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at function Declaration of 'merge' The return Type 'C' is incorrect"));
-		assertTrue(!resultChecker.warnings.contains("Error at function Declaration of 'merge' The return Type 'Prolog' is incorrect"));
-		assertTrue(resultChecker.warnings.contains("Error at function Declaration of 'merge' The parameter 'C' is incorrect"));
-		assertTrue(resultChecker.warnings.size() == 3);
+		assertTrue(resultChecker.getWarnings().size() == 3);
+		assertTrue(resultChecker.getWarnings().contains("Error at function Declaration of 'merge' The return Type 'C' is incorrect"));
+		assertTrue(!resultChecker.getWarnings().contains("Error at function Declaration of 'merge' The return Type 'Prolog' is incorrect"));
+		assertTrue(resultChecker.getWarnings().contains("Error at function Declaration of 'merge' The parameter 'C' is incorrect"));
 	}
 	
 	@Test
@@ -127,10 +127,9 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at Function 'merge'! The return-type 'WrongHaskellFile' is incorrect"));
-		assertTrue(!resultChecker.warnings.contains("Error at Function 'merge'! The return-type 'RightHaskellFile' is incorrect"));
-		assertTrue(resultChecker.warnings.contains("Error at Function 'insert'! The return-type 'HaskellFile' is incorrect"));
-		assertTrue(resultChecker.warnings.size() == 2);
+		assertTrue(resultChecker.getWarnings().size() == 2);
+		assertTrue(resultChecker.getWarnings().contains("Error at Function 'merge'! The return-type 'WrongHaskellFile' is incorrect"));
+		assertTrue(resultChecker.getWarnings().contains("Error at Function 'insert'! The return-type 'HaskellFile' is incorrect"));
 	}
 	
 	
@@ -150,8 +149,23 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.warnings.contains("Error at function 'insert'! It has not been initialized"));
-		System.out.println(resultChecker.warnings);
-		assertTrue(resultChecker.warnings.size() == 1);
+		assertTrue(resultChecker.getWarnings().size() == 1);
+		assertTrue(resultChecker.getWarnings().contains("Error at function 'insert'! It has not been initialized"));
+	}
+	
+	@Test
+	public void testFunctionInstance3() throws IOException {
+		String data = ("Language < Entity "
+				+ "Java : Language "
+				+ "f : Java -> Java "
+				+ "Technology < Entity "
+				+ "MyTech : Technology "
+				+ "Function < Entity "
+				+ "implements < Technology # Function "
+				+ "MyTech implements f");
+		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
+		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
 	}
 }

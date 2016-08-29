@@ -4,3 +4,4 @@ checker/megalib.checker/checker.jar
 *.prefs
 .metadata/
 checker/target/
+.recommenders/

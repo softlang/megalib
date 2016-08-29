@@ -26,6 +26,8 @@ public class Main {
 		} 
 		catch (IOException ex) {
 			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
+		} catch (EmptyFileNameException e) {
+			e.printStackTrace();
 		}
 	}
 	
