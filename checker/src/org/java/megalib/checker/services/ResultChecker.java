@@ -11,14 +11,14 @@ import org.java.megalib.models.MegaModel;
 public class ResultChecker {
 
 	private MegaModel model;
-	private LinkedList<String> warnings;
+	private List<String> warnings;
 	
 	public ResultChecker(MegaModel model) {
 		this.model = model;
 		warnings = new LinkedList<String>();
 	}
 	
-	public LinkedList<String> getWarnings() {
+	public List<String> getWarnings() {
 		return warnings;
 	}
 

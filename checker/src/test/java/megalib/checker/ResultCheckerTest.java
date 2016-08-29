@@ -1,10 +1,10 @@
 package test.java.megalib.checker;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.LinkedList;
 
 import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.ResultChecker;

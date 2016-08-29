@@ -30,8 +30,6 @@ public class Listener extends MegalibBaseListener {
 	
 	@Override
 	public void enterImports(ImportsContext context) {
-		//throw new NotImplementedException();
-		//Added for tests
 		String name = context.getChild(1).getText();
 		Checker checker = new Checker();
 		try {
@@ -39,10 +37,10 @@ public class Listener extends MegalibBaseListener {
 			String filepath = workingDir.concat(File.separator + "TestFiles" + File.separator + name + ".megal");
 			
 			MegaModel importModel = checker.checkFile(filepath);
-			model.getSubtypesMap().putAll(importModel.getSubtypesMap());
-			model.getInstanceOfMap().putAll(importModel.getInstanceOfMap());
-			model.getRelationInstanceMap().putAll(importModel.getRelationInstanceMap());
-			model.getRelationDeclarationMap().putAll(importModel.getRelationDeclarationMap());
+			importModel.getSubtypesMap().forEach((k,v)-> model.addSubtypeOf(k, v));
+			importModel.getInstanceOfMap().forEach((k,v)->model.addInstanceOf(k, v));
+			importModel.getRelationInstanceMap().forEach((k,v)->model.addRelationInstances(k, v));
+			importModel.getRelationDeclarationMap().forEach((k,v)->model.addRelationDeclaration(k, v));
 		} catch (IOException e) {
 			System.out.println("Can not find import file: "+name);
 		}

@@ -86,14 +86,4 @@ public class MegaModel {
 	public void addLinks(String object, List<String> links) {
 		linkMap.put(object, links);
 	}
-
-
-
-
-
-	
-
-	
-
-	
 }
