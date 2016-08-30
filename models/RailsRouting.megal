@@ -1,0 +1,31 @@
+module RailsRouting import Prelude
+WebApplicationFramework < Technology
+RubyOnRails : WebApplicationFramework
+RubyOnRails = "http://api.rubyonrails.org/"
+Ruby : Language
+Ruby = "https://www.ruby-lang.org/de/"
+Routing : Concept
+RubyOnRails.Redirecting : Technology
+RubyOnRails.Redirecting partOf RubyOnRails
+RubyOnRails.Redirecting = "http://api.rubyonrails.org/classes/ActionController/Redirecting.html"
+RubyOnRails.Redirecting facilitates Routing
+
+URI : Language
+URI = "https://de.wikipedia.org/wiki/Uniform_Resource_Identifier"
+URL : Language
+URL = "https://de.wikipedia.org/wiki/Uniform_Resource_Locator"
+URL subsetOf URI
+HTTPResponse : Language
+HTTPResponse = https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html
+HTML : Language
+redirect_to : URI -> HTTPResponse
+RubyOnRails.orgLink : Fragment
+RubyOnRails.orgResponse : Transient
+RubyOnRails.orgResponse elementOf HTTPResponse
+redirect_to(RubyOnRails.orgLink) |-> RubyOnRails.orgResponse
+RubyOnRails.Redirecting implements redirect_to
+
+RubyOnRailsWebsite : WebResource
+RubyOnRailsWebsite = "http://www.rubyonrails.org"
+RubyOnRailsWebsite elementOf HTML
+RubyOnRailsWebsite partOf RubyOnRails.orgResponse

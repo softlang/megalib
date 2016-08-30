@@ -229,11 +229,15 @@ public class ResultChecker {
 			return true;
 	}
 
+	/**
+	 * Checks all relationship instances for one single kind of relationship such as 'implements'
+	 * @param entry : Maps a hashcode to the list of instances in the relationship.
+	 * @param name : The relationship's name
+	 */
 	private void checkRelationInstancesTypes(Entry<String, Map<Integer, List<String>>> entry, String name) {
 		Map<Integer, List<String>> actualRelations = model.getRelationDeclarationMap().get(name);
 
-		Map<Integer, List<String>> type = entry.getValue();
-		for (Entry<Integer, List<String>> newEntry : type.entrySet()) {
+		for (Entry<Integer, List<String>> newEntry : entry.getValue().entrySet()) {
 			boolean succesfull = false;
 			List<String> objects = newEntry.getValue();
 			String leftObject = model.getInstanceOfMap().get(objects.get(0));
