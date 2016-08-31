@@ -3,11 +3,8 @@ package org.java.megalib.checker.services;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 
@@ -39,8 +36,12 @@ public class Listener extends MegalibBaseListener {
 			MegaModel importModel = checker.checkFile(filepath);
 			importModel.getSubtypesMap().forEach((k,v)-> model.addSubtypeOf(k, v));
 			importModel.getInstanceOfMap().forEach((k,v)->model.addInstanceOf(k, v));
-			importModel.getRelationInstanceMap().forEach((k,v)->model.addRelationInstances(k, v));
-			importModel.getRelationDeclarationMap().forEach((k,v)->model.addRelationDeclaration(k, v));
+			importModel.getRelationshipInstanceMap()
+				.forEach((n,set)->set
+						.forEach(entry->model.addRelationInstances(n, entry)));
+			importModel.getRelationDeclarationMap()
+				.forEach((n,set)->set
+						.forEach(entry -> model.addRelationDeclaration(n, entry)));
 		} catch (IOException e) {
 			System.out.println("Can not find import file: "+name);
 		}
@@ -51,7 +52,6 @@ public class Listener extends MegalibBaseListener {
 	public void enterEntityDeclaration(EntityDeclarationContext context) {
 		String derivedType = context.getChild(0).getText();
 		String superType = context.getChild(2).getText();
-		
 		model.addSubtypeOf(derivedType, superType);
 	}
 	
@@ -59,7 +59,6 @@ public class Listener extends MegalibBaseListener {
 	public void enterEntityInstance(EntityInstanceContext context) {
 		String instance = context.getChild(0).getText();
 		String type = context.getChild(2).getText();
-		
 		model.addInstanceOf(instance, type);
 	}
 	
@@ -68,56 +67,25 @@ public class Listener extends MegalibBaseListener {
 		String relation = context.getChild(0).getText();
 		String type1 = context.getChild(2).getText();
 		String type2 =  context.getChild(4).getText();
-		Map<Integer, List<String>> relationTypes;
 		
-		LinkedList<String> typeList = createList(type1, type2);
-		
-		if(model.getRelationDeclarationMap().containsKey(relation)){
-			relationTypes = model.getRelationDeclarationMap().get(relation);
-			relationTypes.put(typeList.hashCode(), typeList);
-		} else {	
-			relationTypes = createMap(typeList);
-		}
-				
-		model.addRelationDeclaration(relation, relationTypes);
-	}
-
-	private Map<Integer, List<String>> createMap(LinkedList<String> typeList) {
-		Map<Integer, List<String>> listMap = new HashMap<>();
-		listMap.put(typeList.hashCode(), typeList);
-		return listMap;
-	}
-
-	private Map<Integer, Function> createMap(Function function) {
-		Map<Integer,Function> map = new HashMap<Integer,Function>();
-		map.put(function.hashCode(), function);
-		return map;
-	}
-	
-	private LinkedList<String> createList(String type1, String type2) {
-		LinkedList<String> typeList = new LinkedList<String>();
+		List<String> typeList = new LinkedList<String>();
 		typeList.add(type1);
 		typeList.add(type2);
-		return typeList;
+		
+		model.addRelationDeclaration(relation, typeList);
 	}
 	
 	@Override
 	public void enterRelationInstance(RelationInstanceContext context) {
 		String relation = context.getChild(1).getText();
-		String object1 = context.getChild(0).getText();
-		String object2 =  context.getChild(2).getText();
-		Map<Integer, List<String>> relationObjects;
+		String instance1 = context.getChild(0).getText();
+		String instance2 =  context.getChild(2).getText();
 		
-		LinkedList<String> objectList = createList(object1, object2);
-		
-		if(model.getRelationInstanceMap().containsKey(relation)){
-			relationObjects = model.getRelationInstanceMap().get(relation);
-			relationObjects.put(objectList.hashCode(), objectList);
-		} else {	
-			relationObjects = createMap(objectList);
-		}
+		List<String> instances = new LinkedList<String>();
+		instances.add(instance1);
+		instances.add(instance2);
 				
-		model.addRelationInstances(relation, relationObjects);
+		model.addRelationInstances(relation, instances);
 	}
 	
 	@Override
@@ -141,19 +109,13 @@ public class Listener extends MegalibBaseListener {
 			
 		}
 		
-		Map<Integer, Function> functionObjects;
-		
 		Function function = new Function();
-		function.setParameterTypes(parameterTypes);
-		function.setReturnTypes(returnTypes);
 		
-		if(model.getFunctionDeclarations().containsKey(functionName)){
-			functionObjects = model.getFunctionDeclarations().get(functionName);
-			functionObjects.put(function.hashCode(), function);
-		} else {	
-			functionObjects = createMap(function);
-		}	
-		model.addFunctionDeclarations(functionName, functionObjects);
+		function.setParameterList(parameterTypes);
+		function.setReturnList(returnTypes);
+		
+		model.addFunctionDeclaration(functionName, function);
+		model.addInstanceOf(functionName, "Function");
 	}
 	
 	@Override
@@ -179,35 +141,27 @@ public class Listener extends MegalibBaseListener {
 			if(context.getChild(childIndex).getText().equals("|->"))
 				parameter = false;
 		}
-		Map<Integer, Function> functionObjects;
-		
 		Function function = new Function();
-		function.setParameterTypes(parameters);
-		function.setReturnTypes(returnObject);
+		function.setParameterList(parameters);
+		function.setReturnList(returnObject);
 	
-		if(model.getFunctionInstances().containsKey(functionName)){
-			functionObjects = model.getFunctionInstances().get(functionName);
-			functionObjects.put(function.hashCode(), function);
-		} else {	
-			functionObjects = createMap(function);
-		}
-				
-		model.addFunctionInstance(functionName, functionObjects);
+		model.addFunctionInstance(functionName, function);
 	}
 	
 	@Override
 	public void enterLink(LinkContext context) {
-		String object = context.getChild(0).getText();
+		String entityname = context.getChild(0).getText();
 		String link = context.getChild(2).getText();
+		link = link.substring(1, link.length()-1);
 		List<String> links;
 		
-		if(model.getLinkMap().containsKey(object)){
-			links = model.getLinkMap().get(object);
+		if(model.getLinkMap().containsKey(entityname)){
+			links = model.getLinkMap().get(entityname);
 		} else {	
 			links = new LinkedList<String>();
 		}
 		links.add(link);
-		model.addLinks(object, links);		
+		model.addLinks(entityname, links);		
 	}
 	
 	public MegaModel getModel() {

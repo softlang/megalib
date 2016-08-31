@@ -7,10 +7,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.Listener;
@@ -63,7 +64,7 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, List<String>>> actual = sut.getModel().getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = sut.getModel().getRelationDeclarationMap();
 		
 		assertTrue(actual.containsKey("Relation"));		
 	}
@@ -74,14 +75,12 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, List<String>>> actual = sut.getModel().getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = sut.getModel().getRelationDeclarationMap();
 		
-		Collection<List<String>> types = actual.get("Relation").values();
-		LinkedList<String> expected = new LinkedList<>();
-		expected.add("TypeOne");
-		expected.add("TypeTwo");
+		Set<List<String>> types = actual.get("Relation");
+		String[] expected = {"TypeOne","TypeTwo"};
 		
-		assertTrue(types.contains(expected));
+		assertTrue(types.contains(Arrays.asList(expected)));
 	}
 	
 	@Test
@@ -90,18 +89,14 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, List<String>>> actual = sut.getModel().getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = sut.getModel().getRelationDeclarationMap();
 		
-		Collection<List<String>> types = actual.get("Relation").values();
-		LinkedList<String> expected1 = new LinkedList<>();
-		expected1.add("TypeOne");
-		expected1.add("TypeTwo");
-		LinkedList<String> expected2 = new LinkedList<>();
-		expected2.add("TypeThree");
-		expected2.add("TypeFour");
+		Set<List<String>> types = actual.get("Relation");
+		String[] expected1 = {"TypeOne","TypeTwo"};
+		String[] expected2 = {"TypeThree","TypeFour"};
 		
-		assertTrue(types.contains(expected1));
-		assertTrue(types.contains(expected2));
+		assertTrue(types.contains(Arrays.asList(expected1)));
+		assertTrue(types.contains(Arrays.asList(expected2)));
 	}
 	
 	@Test
@@ -110,7 +105,7 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, List<String>>> actual = sut.getModel().getRelationInstanceMap();
+		Map<String, Set<List<String>>> actual = sut.getModel().getRelationshipInstanceMap();
 		
 		assertTrue(actual.containsKey("Relation"));
 	}
@@ -121,14 +116,12 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, List<String>>> actual = sut.getModel().getRelationInstanceMap();
+		Map<String, Set<List<String>>> actual = sut.getModel().getRelationshipInstanceMap();
 		
-		Collection<List<String>> types = actual.get("Relation").values();
-		LinkedList<String> expected = new LinkedList<>();
-		expected.add("ObjectOne");
-		expected.add("ObjectTwo");
+		Set<List<String>> types = actual.get("Relation");
+		String[] expected = {"ObjectOne","ObjectTwo"};
 		
-		assertTrue(types.contains(expected));
+		assertTrue(types.contains(Arrays.asList(expected)));
 	}
 	
 	@Test
@@ -137,18 +130,14 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, List<String>>> actual = sut.getModel().getRelationInstanceMap();
+		Map<String, Set<List<String>>> actual = sut.getModel().getRelationshipInstanceMap();
 		
-		Collection<List<String>> types = actual.get("Relation").values();
-		LinkedList<String> expected1 = new LinkedList<>();
-		expected1.add("ObjectOne");
-		expected1.add("ObjectTwo");
-		LinkedList<String> expected2 = new LinkedList<>();
-		expected2.add("ObjectThree");
-		expected2.add("ObjectFour");
+		Set<List<String>> types = actual.get("Relation");
+		String[] expected1 = {"ObjectOne","ObjectTwo"};
+		String[] expected2 = {"ObjectThree","ObjectFour"};
 		
-		assertTrue(types.contains(expected1));
-		assertTrue(types.contains(expected2));
+		assertTrue(types.contains(Arrays.asList(expected1)));
+		assertTrue(types.contains(Arrays.asList(expected2)));
 	}
 	
 	@Test
@@ -157,7 +146,7 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, Function>> actual = sut.getModel().getFunctionDeclarations();
+		Map<String, Set<Function>> actual = sut.getModel().getFunctionDeclarations();
 		
 		assertTrue(actual.containsKey("Function"));
 	}
@@ -168,9 +157,9 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, Function>> actual = sut.getModel().getFunctionDeclarations();
+		Map<String, Set<Function>> actual = sut.getModel().getFunctionDeclarations();
 		
-		Collection<Function> types = actual.get("Function").values();
+		Set<Function> types = actual.get("Function");
 		
 		assertEquals(1,types.size());
 	}
@@ -181,9 +170,9 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, Function>> actual = sut.getModel().getFunctionDeclarations();
+		Map<String, Set<Function>> actual = sut.getModel().getFunctionDeclarations();
 		
-		Collection<Function> types = actual.get("Function").values();
+		Set<Function> types = actual.get("Function");
 		
 		assertEquals(2,types.size());
 	}
@@ -194,7 +183,7 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, Function>> actual = sut.getModel().getFunctionInstances();
+		Map<String, Set<Function>> actual = sut.getModel().getFunctionInstances();
 		
 		assertTrue(actual.containsKey("Function"));
 	}
@@ -205,11 +194,11 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, Function>> actual = sut.getModel().getFunctionInstances();
+		Map<String, Set<Function>> actual = sut.getModel().getFunctionInstances();
 		
-		Collection<Function> types = actual.get("Function").values();
+		Set<Function> functions = actual.get("Function");
 		
-		assertEquals(1,types.size());
+		assertEquals(1,functions.size());
 	}
 	
 	@Test
@@ -218,16 +207,16 @@ public class ListenerTest {
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
-		Map<String, Map<Integer, Function>> actual = sut.getModel().getFunctionInstances();
+		Map<String, Set<Function>> actual = sut.getModel().getFunctionInstances();
 		
-		Collection<Function> types = actual.get("Function").values();
+		Collection<Function> types = actual.get("Function");
 		
 		assertEquals(2,types.size());
 	}
 	
 	@Test
 	public void enterLinkFillsLinksWithName() throws IOException {
-		String input = "Name = test";
+		String input = "Name = \"test\"";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
@@ -238,7 +227,7 @@ public class ListenerTest {
 	
 	@Test
 	public void enterLinkFillsLinksWithLinkString() throws IOException {
-		String input = "Name = test";
+		String input = "Name = \"test\"";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);
@@ -250,7 +239,7 @@ public class ListenerTest {
 	
 	@Test
 	public void enterLinkFillsLinksDoesNotOverride() throws IOException {
-		String input = "Name = test\nName = testTwo";
+		String input = "Name = \"test\"\nName = \"testTwo\"";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
 		sut = checker.getListener(stream);

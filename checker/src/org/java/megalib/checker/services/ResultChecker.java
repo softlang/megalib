@@ -1,9 +1,12 @@
 package org.java.megalib.checker.services;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
@@ -23,291 +26,253 @@ public class ResultChecker {
 	}
 
 	public void doChecks() {
-		this.checkDescription();
-		this.checkEntityDeclaration();
-		this.checkEntityInstances();
-		this.checkFunctionDeclarations();
-		this.checkFunctionInstances();
-		this.checkRelationDeclaration();
-		this.checkRelationInstances();
+		this.checkLinks();
+		this.checkSubtypeDeclaration();
+		this.checkInstanceDeclarations();
+		this.checkRelationshipTypes();
+		this.checkRelationshipInstances();
+		this.checkFunctionDomainRange();
+		this.checkFunctionApplications();
 	}
-
-	public void checkEntityDeclaration() {
-		Map<String, String> entityDeclartations = model.getSubtypesMap();
-		for (Map.Entry<String, String> entry : entityDeclartations.entrySet()) {
-			checkEntityDeclarationTypes(entityDeclartations, entry);
-		}
-	}
-
-	public void checkEntityInstances() {
-		Map<String, String> entityInstances = model.getInstanceOfMap();
-		for (Map.Entry<String, String> entry : entityInstances.entrySet()) {
-			checkEntityInstancesTypes(entry);
-		}
-	}
-
-	public void checkRelationDeclaration() {
-		Map<String, Map<Integer, List<String>>> relationDeclarations = model.getRelationDeclarationMap();
-		for (Entry<String, Map<Integer, List<String>>> entry : relationDeclarations.entrySet()) {
-			checkRelationDeclarationTypes(entry);
-		}
-	}
-
-	public void checkRelationInstances() {
-		Map<String, Map<Integer, List<String>>> relationInstances = model.getRelationInstanceMap();
-		for (Entry<String, Map<Integer, List<String>>> entry : relationInstances.entrySet()) {
-			String name = entry.getKey();
-			if (checkRelationInstancesRelationName(name, entry))
-				checkRelationInstancesTypes(entry, name);
-		}
-	}
-
-	public void checkDescription() {
+	
+	public void checkLinks() {
 		Map<String, List<String>> links = model.getLinkMap();
 		for (Entry<String, List<String>> entry : links.entrySet()) {
-			checkDescriptionName(entry);
+			checkLinkName(entry);
 		}
 	}
-
-	public void checkFunctionDeclarations() {
-		Map<String, Map<Integer, Function>> functionDeclarations = model.getFunctionDeclarations();
-		for (Map.Entry<String, Map<Integer, Function>> entry : functionDeclarations.entrySet()) {
-			String funtionName = entry.getKey();
-			Map<Integer, Function> functions = entry.getValue();
-			checkFunctionDeclarationReturnTypes(funtionName, functions);
-			checkFunctionDeclarationParameter(funtionName, functions);
+	
+	private void checkLinkName(Entry<String, List<String>> entry) {
+		String name = entry.getKey();
+		if (!(model.getSubtypesMap().containsKey(name) || model.getInstanceOfMap().containsKey(name)
+				|| model.getRelationDeclarationMap().containsKey(name) || model.getRelationshipInstanceMap().containsKey(name))) {
+			warnings.add("Error at Link of '" + entry.getKey() + "' the instance does not exist");
 		}
 	}
-
-	public void checkFunctionInstances() {
-		Map<String, Map<Integer, Function>> functionInstances = model.getFunctionInstances();
-		for (Map.Entry<String, Map<Integer, Function>> entry : functionInstances.entrySet()) {
-			String name = entry.getKey();
-			if (checkFunctionInstancesFunctionName(name, entry)) {
-				Map<Integer, Function> declaration = model.getFunctionDeclarations().get(name);
-				Map<Integer, Function> functions = entry.getValue();
-				checkFunctionInstancesReturnType(name, declaration, functions);
-				checkFunctionInstancesParameterType(name, declaration, functions);
-				checkFunctionInstancesInitialisedObjects(name, entry.getValue());
+	
+	public void checkSubtypeDeclaration() {
+		for(String subtype : model.getSubtypesMap().keySet()){
+			String type = model.getSubtypesMap().get(subtype);
+			if(!(type.equals("Entity")||model.getSubtypesMap().containsKey(type))){
+				warnings.add("Error at subtype declaration of '"+subtype+"'. The supertype '"
+						+ type + "' is not declared.");
 			}
 		}
-
 	}
 
-	private boolean checkFunctionInstancesFunctionName(String name, Map.Entry<String, Map<Integer, Function>> entry) {
-		if (!model.getFunctionDeclarations().containsKey(name)) {
-			String warning = ("Error at function '" + entry.getKey() + "'! It has not been initialized");
-			warnings.add(warning);
-			System.out.println(warning);
-			return false;
-		} else
-			return true;
+	public void checkInstanceDeclarations() {
+		for(String instance : model.getInstanceOfMap().keySet()){
+			String type = model.getInstanceOfMap().get(instance);
+			if(!(type.equals("Entity")||model.getSubtypesMap().containsKey(type))){
+				warnings.add("Error at instance declaration of '"+instance+"'. The type '"
+						+ type + "' is not declared.");
+			}
+		}
 	}
-
-	private void checkFunctionInstancesReturnType(String name, Map<Integer, Function> declaration,
-			Map<Integer, Function> functions) {
-		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
-			Map<Integer, List<String>> relation = model.getRelationInstanceMap().get("elementOf");
-
-			List<String> returnTypes = newEntry.getValue().getReturnTypes();
-			for (String e : returnTypes) {
-				boolean checkReturnTypes = false;
-				LinkedList<String> testReturnTypes = new LinkedList<>();
-				testReturnTypes.add(e);
-				for (Map.Entry<Integer, Function> fktEntry : declaration.entrySet()) {
-					List<String> fktParameterTypes = fktEntry.getValue().getReturnTypes();
-					for (String f : fktParameterTypes) {
-						testReturnTypes.add(f);
-						if (relation.containsKey(testReturnTypes.hashCode())) {
-							checkReturnTypes = true;
-							break;
-						} else
-							testReturnTypes.removeLast();
-					}
-				}
-				if (!checkReturnTypes) {
-					String warning = ("Error at Function '" + name + "'! The return-type '" + e + "' is incorrect");
-					warnings.add(warning);
-					System.out.println(warning);
+	
+	public void checkRelationshipTypes() {
+		model.getRelationDeclarationMap().forEach((name,declarations)->checkRelationDeclarationTypes(name,declarations));
+	}
+	
+	private void checkRelationDeclarationTypes(String name, Set<List<String>> declarations) {
+		for(List<String> declaration : declarations){
+			for(String type : declaration){
+				if(!(model.getSubtypesMap().containsKey(type)||type.equals("Entity"))){
+					warnings.add("Error at relationship declaration of '"+name+"'. The type '"+type+"'"
+							+ "is not declared!");
 				}
 			}
 		}
 	}
 	
-	private void checkFunctionInstancesInitialisedObjects(String name, Map<Integer, Function> functions) {
-		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
-			List<String> parameterTypes = newEntry.getValue().getParameterTypes();
-			for (String e : parameterTypes) {
-				if(!model.getInstanceOfMap().containsKey(e)){
-				String warning = ("Error at Function '" + name + "'! The object-type '" + e + "' has not been initialized before");
-				warnings.add(warning);
-				System.out.println(warning);
+	public void checkRelationshipInstances() {
+		Map<String, Set<List<String>>> relationshipInstances = model.getRelationshipInstanceMap();
+		for (String name : relationshipInstances.keySet()) {
+			if (checkRelationInstancesRelationName(name)){
+				relationshipInstances.get(name).forEach(i -> 
+					checkRelationshipInstanceFitsDeclarations(name,i,model.getRelationDeclarationMap().get(name)));
 			}
-			}
-		}}
+		}
+	}
 	
-	
-
-	private void checkFunctionInstancesParameterType(String name, Map<Integer, Function> declaration,
-			Map<Integer, Function> functions) {
-		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
-			Map<Integer, List<String>> relation = model.getRelationInstanceMap().get("elementOf");
-			List<String> parameterTypes = newEntry.getValue().getParameterTypes();
-			for (String e : parameterTypes) {
-				boolean checkParameterTypes = false;
-				LinkedList<String> testParameterTypes = new LinkedList<String>();
-				testParameterTypes.add(e);
-				for (Map.Entry<Integer, Function> fktEntry : declaration.entrySet()) {
-					List<String> fktParameterTypes = fktEntry.getValue().getParameterTypes();
-					for (String f : fktParameterTypes) {
-						testParameterTypes.add(f);
-						if (relation.containsKey(testParameterTypes.hashCode())) {
-							checkParameterTypes = true;
-							break;
-						} else
-							testParameterTypes.removeLast();
-					}
-				}
-				if (!checkParameterTypes) {
-					String warning = ("Error at Function '" + name + "'. The parameter Type '" + e + "' is unknown");
-					warnings.add(warning);
-					System.out.println(warning);
-				}
-			}
-		}
-	}
-
-	private void checkFunctionDeclarationReturnTypes(String funtionName, Map<Integer, Function> functions) {
-		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
-
-			List<String> returnTypes = newEntry.getValue().getReturnTypes();
-			for (String returnType : returnTypes) {
-				String returnShow = returnType; // used in print later
-				returnType = model.getInstanceOfMap().get(returnType);
-				while (model.getSubtypesMap().get(returnType) != null
-						&& model.getSubtypesMap().get(returnType).equals("Language")) {
-					returnType = model.getSubtypesMap().get(returnType);
-				}
-				if (returnType == null || !returnType.equals("Language")) {
-					String warning = ("Error at function Declaration of '" + funtionName + "' The return Type '"
-							+ returnShow + "' is incorrect");
-					warnings.add(warning);
-					System.out.println(warning);
-				}
-			}
-		}
-	}
-
-	private void checkFunctionDeclarationParameter(String funtionName, Map<Integer, Function> functions) {
-		for (Map.Entry<Integer, Function> newEntry : functions.entrySet()) {
-			List<String> paramaterTypes = newEntry.getValue().getParameterTypes();
-			for (String parameter : paramaterTypes) {
-				String parameterShow = parameter; // used in print later
-				parameter = model.getInstanceOfMap().get(parameter);
-				while (model.getSubtypesMap().get(parameter) != null
-						&& model.getSubtypesMap().get(parameter).equals("Language")) {
-					parameter = model.getSubtypesMap().get(parameter);
-				}
-				if (parameter == null || !parameter.equals("Language")) {
-					String warning = ("Error at function Declaration of '" + funtionName + "' The parameter '"
-							+ parameterShow + "' is incorrect");
-					warnings.add(warning);
-					System.out.println(warning);
-				}
-			}
-		}
-	}
-
-	public boolean checkRelationInstancesRelationName(String name,
-			Entry<String, Map<Integer, List<String>>> entry) {
+	/**
+	 * If the relation is not declared, issue a warning
+	 * @param name
+	 * @return
+	 */
+	public boolean checkRelationInstancesRelationName(String name) {
 		if (!model.getRelationDeclarationMap().containsKey(name)) {
-			String warning = ("Error at Relationtype '" + entry.getKey() + "' It has not been initialized");
-			warnings.add(warning);
-			System.out.println(warning);
+			warnings.add("Error at relation '" + name + "'. It has not been declared!");
 			return false;
-		} else
-			return true;
+		}
+		return true;
 	}
 
 	/**
-	 * Checks all relationship instances for one single kind of relationship such as 'implements'
-	 * @param entry : Maps a hashcode to the list of instances in the relationship.
-	 * @param name : The relationship's name
+	 * Checks if the entities involved in the relationship have fitting types concerning the relationship's declaration.
+	 * @param name
+	 * @param instance
+	 * @param declarations
 	 */
-	private void checkRelationInstancesTypes(Entry<String, Map<Integer, List<String>>> entry, String name) {
-		Map<Integer, List<String>> actualRelations = model.getRelationDeclarationMap().get(name);
-
-		for (Entry<Integer, List<String>> newEntry : entry.getValue().entrySet()) {
-			boolean succesfull = false;
-			List<String> objects = newEntry.getValue();
-			String leftObject = model.getInstanceOfMap().get(objects.get(0));
-			String tempRightObject = model.getInstanceOfMap().get(objects.get(1));
-			LinkedList<String> listToCheckTypes = new LinkedList<String>();
-
-			while ("Entity" != leftObject && leftObject != null) {
-				String rightObject = tempRightObject;
-				while ("Entity" != rightObject && rightObject != null) {
-					listToCheckTypes = new LinkedList<String>();
-					listToCheckTypes.add(leftObject);
-					listToCheckTypes.add(rightObject);
-					if (actualRelations.containsKey(listToCheckTypes.hashCode()))
-						succesfull = true;
-					rightObject = model.getSubtypesMap().get(rightObject);
-				}
-				leftObject = model.getSubtypesMap().get(leftObject);
-			}
-			if (!succesfull) {
-				String warning = ("Error at: '" + newEntry.getValue().get(0) + " " + entry.getKey() + " "
-						+ newEntry.getValue().get(1) + "'! Wrong Entity(s) used");
-				warnings.add(warning);
-				System.out.println(warning);
-
-			}
-		}
+	private void checkRelationshipInstanceFitsDeclarations(String name, List<String> instance, Set<List<String>> declarations) {
+		if(declarations.parallelStream()
+				.filter(decl -> relationshipInstanceFitsDeclaration(instance,decl))
+				.collect(Collectors.toList())
+				.isEmpty())
+			warnings.add("Error at relationship instance '"+instance.get(0)+" "+name+" "+instance.get(1)+"! The instance"
+					+ "does not fit any declaration.");
 	}
 
-	private void checkRelationDeclarationTypes(Entry<String, Map<Integer, List<String>>> entry) {
-		Map<Integer, List<String>> type = entry.getValue();
-		for (Entry<Integer, List<String>> newEntry : type.entrySet()) {
-			List<String> list = newEntry.getValue();
-			for (String item : list) {
-				if (!(model.getSubtypesMap().containsKey(item) || item.equals("Entity"))) {
-					String warning = ("Error at: '" + entry.getKey() + " < " + list.get(0) + " # " + list.get(1)
-							+ "'! Type of '" + item + "' is unkown");
-					warnings.add(warning);
-					System.out.println(warning);
+
+	/**
+	 * Determines all (upper) types of an instance and performs a containment test.
+	 * @param instances
+	 * @param decl
+	 * @return
+	 */
+	private boolean relationshipInstanceFitsDeclaration(List<String> instances, List<String> decl) {
+		if(instances.size()!=decl.size()){
+			return false;
+		}
+		for(int i = 0; i < instances.size();i++){
+			if(!isInstanceOf(instances.get(i), decl.get(i)))
+				return false;
+		}
+		return true;
+	}
+	
+	private boolean isInstanceOf(String entity, String type){
+		Set<String> types = new HashSet<>();
+		types.add(model.getInstanceOfMap().get(entity));
+		while(true){
+			int size = types.size();
+			for(String t : types){
+				if(model.getSubtypesMap().containsKey(t)){
+					types.add(model.getSubtypesMap().get(t));
 				}
 			}
+			if(types.size()==size)
+				break;
+		}
+		if(!types.contains(type))
+			return false;
+		return true;
+	}
+
+	public void checkFunctionDomainRange() {
+		Map<String, Set<Function>> functionDeclarations = model.getFunctionDeclarations();
+		for (String functionName : functionDeclarations.keySet()) {
+			Set<Function> functiondeclarations = functionDeclarations.get(functionName);
+			for(Function fd : functiondeclarations){
+				fd.getParameterList().forEach(type -> checkIsLanguage(type));
+				fd.getReturnList().forEach(type -> checkIsLanguage(type));
+			}
+		}
+	}
+	
+	private void checkIsLanguage(String language) {
+		String type = model.getInstanceOfMap().get(language);
+		while(!type.equals("Entity")){
+			if(type.equals("Language"))
+				return;
+			type = model.getSubtypesMap().get(type);
+		}
+		warnings.add("'"+language+"' is not an instance of Language");
+	}
+	
+	public void checkFunctionApplications() {
+		Map<String, Set<Function>> map = model.getFunctionInstances();
+		for (String name : map.keySet()) {
+			if (checkFunctionDeclarationExists(name)) {
+				Set<Function> declarations = model.getFunctionDeclarations().get(name);
+				Set<Function> instances = map.get(name);
+				checkFunctionApplicationInitialisedArtifacts(name,instances);
+				instances.forEach(i->checkFunctionInstanceFitsDeclaration(name,i,declarations));
+			}
+		}
+	}
+	
+	private boolean checkFunctionDeclarationExists(String name) {
+		if (!model.getFunctionDeclarations().containsKey(name)) {
+			warnings.add("Error at function '" + name + "'! It has not been declared");
+			return false;
+		} else
+			return true;
+	}
+	
+	private void checkFunctionApplicationInitialisedArtifacts(String name, Set<Function> instances) {
+		for (Function instance : instances) {
+			List<String> parameters = instance.getParameterList();
+			for (String p : parameters) {
+				if(!model.getInstanceOfMap().containsKey(p)){
+					warnings.add("Error at Function '" + name + "'! The parameter '" + p + "' has not been declared!");
+				}
+			}
+			List<String> outputs = instance.getReturnList();
+			for(String o : outputs){
+				if(!model.getInstanceOfMap().containsKey(o)){
+					warnings.add("Error at Function '" + name + "'! The output '" + o + "' has not been declared!");
+				}
+			}
 		}
 	}
 
-	private void checkEntityDeclarationTypes(Map<String, String> entityDeclartations, Map.Entry<String, String> entry) {
-		String derived = entry.getKey();
-		String type = entry.getValue();
-		if (!(entityDeclartations.containsKey(type) || type.equals("Entity"))) {
-			String warning = ("Error at: " + derived + " < " + type + "! Entity Type '"+type+"' is unkown");
-			warnings.add(warning);
-			System.out.println(warning);
+	/**
+	 * Checks whether the function instance fits to any declaration
+	 * @param name
+	 * @param instance
+	 * @param declarations
+	 */
+	private void checkFunctionInstanceFitsDeclaration(String name, Function instance, Set<Function> declarations) {
+		if(declarations.parallelStream()
+				.filter(d->checkInstanceElementOfDeclaration(instance,d))
+				.collect(Collectors.toList())
+				.isEmpty()){
+			warnings.add("Error at function application of '"+name+"' with parameters "+instance.getParameterList().toString()+" "
+					+ "The instances do not fit any function declaration!");
 		}
 	}
-
-	private void checkEntityInstancesTypes(Map.Entry<String, String> entry) {
-		String derived = entry.getKey();
-		String type = entry.getValue();
-		if (!(model.getSubtypesMap().containsKey(type) || type.equals("Entity"))) {
-			String warning = ("Error at: " + derived + " : " + type + "! Entity Type '"+type+"' is unkown");
-			warnings.add(warning);
-			System.out.println(warning);
+	
+	private boolean checkInstanceElementOfDeclaration(Function instance, Function declaration) {
+		List<String> parameter = instance.getParameterList();
+		List<String> parameterTypes = declaration.getParameterList();
+		if(parameter.size()!=parameterTypes.size())
+			return false;
+		for(int i = 0; i < parameter.size();i++){
+			if(!isElementOf(parameter.get(i), parameterTypes.get(i)))
+				return false;
 		}
+		List<String> returnValues = instance.getReturnList();
+		List<String> returnTypes = declaration.getReturnList();
+		if(returnValues.size()!=returnTypes.size())
+			return false;
+		for(int i = 0; i < returnValues.size(); i++ ){
+			if(!isElementOf(returnValues.get(i),returnTypes.get(i)))
+				return false;
+		}
+		return true;
 	}
-
-	private void checkDescriptionName(Entry<String, List<String>> entry) {
-		String name = entry.getKey();
-		if (!(model.getSubtypesMap().containsKey(name) || model.getInstanceOfMap().containsKey(name)
-				|| model.getRelationDeclarationMap().containsKey(name) || model.getRelationInstanceMap().containsKey(name))) {
-			String warning = ("Error at Link of '" + entry.getKey() + "' the instance does not exist");
-			warnings.add(warning);
-			System.out.println(warning);
+	
+	private boolean isElementOf(String artifact, String language){
+		//determine the artifact's languages
+		Set<String> langs = new HashSet<>();
+		for(List<String> elemOf : model.getRelationshipInstanceMap().get("elementOf")){
+			if(elemOf.get(0).equals(artifact)){
+				langs.add(elemOf.get(1));
+			}
 		}
+		while(true){
+			int size = langs.size();
+			if(!model.getRelationshipInstanceMap().containsKey("subsetOf"))
+				break;
+			for(List<String> subsetOf : model.getRelationshipInstanceMap().get("subsetOf")){
+				if(langs.contains(subsetOf.get(0))){
+					langs.add(subsetOf.get(1));
+				}
+			}
+			if(size==langs.size())
+				break;
+		}
+		return langs.contains(language);
 	}
 }

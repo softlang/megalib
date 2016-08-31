@@ -127,7 +127,7 @@ public class ResultCheckerTest {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		ResultChecker resultChecker = new ResultChecker(checker.getListener(input).getModel());
 		resultChecker.doChecks();
-		assertTrue(resultChecker.getWarnings().size() == 2);
+		assertEquals(2,resultChecker.getWarnings().size());
 		assertTrue(resultChecker.getWarnings().contains("Error at Function 'merge'! The return-type 'WrongHaskellFile' is incorrect"));
 		assertTrue(resultChecker.getWarnings().contains("Error at Function 'insert'! The return-type 'HaskellFile' is incorrect"));
 	}

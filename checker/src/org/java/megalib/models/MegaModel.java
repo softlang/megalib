@@ -5,8 +5,10 @@ package org.java.megalib.models;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Merlin May
@@ -15,10 +17,10 @@ import java.util.Map;
 public class MegaModel {
 	private Map<String, String> subtypesMap;
 	private Map<String, String> instanceOfMap;
-	private Map<String, Map<Integer, List<String>>> relationDeclarationMap;
-	private Map<String, Map<Integer, List<String>>> relationInstanceMap;
-	private Map<String, Map<Integer, Function>> functionDeclarations;
-	private Map<String, Map<Integer, Function>> functionInstances;
+	private Map<String, Set<List<String>>> relationDeclarationMap;
+	private Map<String, Set<List<String>>> relationInstanceMap;
+	private Map<String, Set<Function>> functionDeclarations;
+	private Map<String, Set<Function>> functionInstances;
 	private Map<String,List<String>> linkMap;
 	
 	public MegaModel() {
@@ -47,36 +49,62 @@ public class MegaModel {
 		instanceOfMap.put(instance, type);
 	}
 
-	public Map<String, Map<Integer, List<String>>> getRelationDeclarationMap() {
+	public Map<String, Set<List<String>>> getRelationDeclarationMap() {
 		return Collections.unmodifiableMap(relationDeclarationMap);
 	}
 	
-	public void addRelationDeclaration(String relation, Map<Integer, List<String>> relationTypes) {
-		relationDeclarationMap.put(relation, relationTypes);
+	/**
+	 * Adds a declaration for the relationname with given types to the
+	 * relationDeclarationMap
+	 * @param relationname
+	 * @param relationTypes
+	 */
+	public void addRelationDeclaration(String relationname, List<String> relationTypes) {
+		Set<List<String>> set = new HashSet<>();
+		if(relationDeclarationMap.containsKey(relationname)){
+			set = relationDeclarationMap.get(relationname);
+		}
+		set.add(relationTypes);
+		relationDeclarationMap.put(relationname, set);
 	}
 
-	public Map<String, Map<Integer, List<String>>> getRelationInstanceMap() {
+	public Map<String, Set<List<String>>> getRelationshipInstanceMap() {
 		return Collections.unmodifiableMap(relationInstanceMap);
 	}
 	
-	public void addRelationInstances(String relation, Map<Integer, List<String>> relationObjects) {
-		relationInstanceMap.put(relation, relationObjects);
+	public void addRelationInstances(String relationname, List<String> instances) {
+		Set<List<String>> set = new HashSet<>();
+		if(relationInstanceMap.containsKey(relationname)){
+			set = relationInstanceMap.get(relationname);
+		}
+		set.add(instances);
+		relationInstanceMap.put(relationname, set);
 	}
 
-	public Map<String, Map<Integer, Function>> getFunctionDeclarations() {
+	public Map<String, Set<Function>> getFunctionDeclarations() {
 		return Collections.unmodifiableMap(functionDeclarations);
 	}
 	
-	public void addFunctionDeclarations(String functionName, Map<Integer, Function> functionObjects) {
-		functionDeclarations.put(functionName, functionObjects);
+	public void addFunctionDeclaration(String functionName, Function function) {
+		Set<Function> set = new HashSet<>();
+		if(functionDeclarations.containsKey(functionName)){
+			set = functionDeclarations.get(functionName);
+		}
+		set.add(function);
+		functionDeclarations.put(functionName, set);
 	}
 
-	public Map<String, Map<Integer, Function>> getFunctionInstances() {
+	public Map<String, Set<Function>> getFunctionInstances() {
 		return Collections.unmodifiableMap(functionInstances);
 	}
 	
-	public void addFunctionInstance(String functionName, Map<Integer, Function> functionInstance) {
-		functionInstances.put(functionName, functionInstance);
+	public void addFunctionInstance(String functionName, Function functionInstance) {
+		Set<Function> set = new HashSet<>();
+		if(functionInstances.containsKey(functionName)){
+			set = functionInstances.get(functionName);
+		}
+		set.add(functionInstance);
+		functionInstances.put(functionName, set);
 	}
 
 	public Map<String, List<String>> getLinkMap() {

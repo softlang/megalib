@@ -5,28 +5,28 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Function {
-	private List<String> returnTypes;
-	private List<String> parameterTypes;
+	private List<String> returnList;
+	private List<String> parameterList;
 	
 	public Function() {
-		returnTypes = new LinkedList<>();
-		parameterTypes = new LinkedList<>();
+		returnList = new LinkedList<>();
+		parameterList = new LinkedList<>();
 	}
 
-	public List<String> getReturnTypes() {
-		return Collections.unmodifiableList(returnTypes);
+	public List<String> getReturnList() {
+		return Collections.unmodifiableList(returnList);
 	}
 	
-	public void setReturnTypes(LinkedList<String> returnTypes) {
-		this.returnTypes = returnTypes;
+	public void setReturnList(LinkedList<String> returnList) {
+		this.returnList = returnList;
 	}
 
-	public List<String> getParameterTypes() {
-		return Collections.unmodifiableList(parameterTypes);
+	public List<String> getParameterList() {
+		return Collections.unmodifiableList(parameterList);
 	}
 	
-	public void setParameterTypes(LinkedList<String> parameterTypes) {
-		this.parameterTypes = parameterTypes;
+	public void setParameterList(LinkedList<String> parameterlist) {
+		this.parameterList = parameterlist;
 	}
 	
 	
