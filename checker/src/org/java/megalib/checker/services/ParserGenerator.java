@@ -16,9 +16,8 @@ import main.antlr.techdocgrammar.MegalibParser;
  * @author mmay, aemmerichs
  *
  */
-public class ParserGenerator implements IParserGenerator {
+public class ParserGenerator {
 
-	@Override
 	public MegalibParser generate(InputStream stream) throws IOException {
 		ANTLRInputStream antlrStream = new ANTLRInputStream(stream);
 		MegalibLexer lexer = new MegalibLexer(antlrStream);

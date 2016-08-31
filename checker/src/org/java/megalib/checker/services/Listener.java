@@ -28,12 +28,11 @@ public class Listener extends MegalibBaseListener {
 	@Override
 	public void enterImports(ImportsContext context) {
 		String name = context.getChild(1).getText();
-		Checker checker = new Checker();
 		try {
 			String workingDir = Paths.get("").toAbsolutePath().normalize().toString();
 			String filepath = workingDir.concat(File.separator + "TestFiles" + File.separator + name + ".megal");
 			
-			MegaModel importModel = checker.checkFile(filepath);
+			MegaModel importModel = MegaModelLoader.createFromFile(filepath);
 			importModel.getSubtypesMap().forEach((k,v)-> model.addSubtypeOf(k, v));
 			importModel.getInstanceOfMap().forEach((k,v)->model.addInstanceOf(k, v));
 			importModel.getRelationshipInstanceMap()

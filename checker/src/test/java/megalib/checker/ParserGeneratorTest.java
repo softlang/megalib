@@ -7,12 +7,11 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.java.megalib.checker.services.FileLoader;
-import org.java.megalib.checker.services.IFileLoader;
-import org.java.megalib.checker.services.IParserGenerator;
+import org.apache.commons.io.FileUtils;
 import org.java.megalib.checker.services.ParserGenerator;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,27 +23,24 @@ import main.antlr.techdocgrammar.MegalibParser;
  *
  */
 public class ParserGeneratorTest {
-	private IParserGenerator sut;
-	private String filepath;
-	private IFileLoader fileLoaderService;
-	private FileInputStream fileStream;
-	private ByteArrayInputStream inputStream;
+	private ParserGenerator sut;
+	private ByteArrayInputStream inputStream1;
+	private ByteArrayInputStream inputStream2;
 	
 	@Before
 	public void setUp() throws Exception {
 		sut = new ParserGenerator();
-		
-		filepath = "./TestFiles/prelude.megal";
-		fileLoaderService = new FileLoader();
-		fileStream = fileLoaderService.load(filepath);
+		String filepath = "./TestFiles/prelude.megal";
+		String data = FileUtils.readFileToString(new File(filepath));
+		inputStream1 = new ByteArrayInputStream(data.getBytes());
 		
 		String input = "test";
-		inputStream = new ByteArrayInputStream(input.getBytes());
+		inputStream2 = new ByteArrayInputStream(input.getBytes());
 	}
 
 	@Test
 	public void ItReturnsMegalibParser() throws IOException{
-		Object actual = sut.generate(fileStream);
+		Object actual = sut.generate(inputStream1);
 		assertThat(actual, instanceOf(MegalibParser.class));
 	}	
 	
@@ -55,7 +51,7 @@ public class ParserGeneratorTest {
 	
 	@Test
 	public void ItReturnsMegalibParserForByteArrayInputStream() throws IOException{
-		Object actual = sut.generate(inputStream);
+		Object actual = sut.generate(inputStream2);
 		assertThat(actual, instanceOf(MegalibParser.class));
 	}	
 }

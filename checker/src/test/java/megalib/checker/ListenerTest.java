@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.Listener;
+import org.java.megalib.checker.services.MegaModelLoader;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -25,21 +24,13 @@ import org.junit.Test;
  *
  */
 public class ListenerTest {
-	private Listener sut;
-	
-	private Checker checker;
-
-	@Before
-	public void setUp() {
-		checker = new Checker();
-	}
 	
 	@Test
 	public void enterEntityDeclarationFillsEntityDeclarations() throws IOException{
 		String input = "DerivedType < Type";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, String> actual = sut.getModel().getSubtypesMap();
 		
 		assertTrue(actual.containsKey("DerivedType"));
@@ -51,7 +42,7 @@ public class ListenerTest {
 		String input = "Instance : Type";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, String> actual = sut.getModel().getInstanceOfMap();
 		
 		assertTrue(actual.containsKey("Instance"));
@@ -63,7 +54,7 @@ public class ListenerTest {
 		String input = "Relation < TypeOne # TypeTwo";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<List<String>>> actual = sut.getModel().getRelationDeclarationMap();
 		
 		assertTrue(actual.containsKey("Relation"));		
@@ -74,7 +65,7 @@ public class ListenerTest {
 		String input = "Relation < TypeOne # TypeTwo";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<List<String>>> actual = sut.getModel().getRelationDeclarationMap();
 		
 		Set<List<String>> types = actual.get("Relation");
@@ -88,7 +79,7 @@ public class ListenerTest {
 		String input = "Relation < TypeOne # TypeTwo\nRelation < TypeThree # TypeFour";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<List<String>>> actual = sut.getModel().getRelationDeclarationMap();
 		
 		Set<List<String>> types = actual.get("Relation");
@@ -104,7 +95,7 @@ public class ListenerTest {
 		String input = "ObjectOne Relation ObjectTwo";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<List<String>>> actual = sut.getModel().getRelationshipInstanceMap();
 		
 		assertTrue(actual.containsKey("Relation"));
@@ -115,7 +106,7 @@ public class ListenerTest {
 		String input = "ObjectOne Relation ObjectTwo";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<List<String>>> actual = sut.getModel().getRelationshipInstanceMap();
 		
 		Set<List<String>> types = actual.get("Relation");
@@ -129,7 +120,7 @@ public class ListenerTest {
 		String input = "ObjectOne Relation ObjectTwo\nObjectThree Relation ObjectFour";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<List<String>>> actual = sut.getModel().getRelationshipInstanceMap();
 		
 		Set<List<String>> types = actual.get("Relation");
@@ -145,7 +136,7 @@ public class ListenerTest {
 		String input = "Function : TypeOne # TypeTwo -> ReturnType";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<Function>> actual = sut.getModel().getFunctionDeclarations();
 		
 		assertTrue(actual.containsKey("Function"));
@@ -156,7 +147,7 @@ public class ListenerTest {
 		String input = "Function : TypeOne # TypeTwo -> ReturnType";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<Function>> actual = sut.getModel().getFunctionDeclarations();
 		
 		Set<Function> types = actual.get("Function");
@@ -169,7 +160,7 @@ public class ListenerTest {
 		String input = "Function : TypeOne # TypeTwo -> ReturnTypeOne\nFunction : TypeThree # TypeFour -> ReturnTypeTwo";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<Function>> actual = sut.getModel().getFunctionDeclarations();
 		
 		Set<Function> types = actual.get("Function");
@@ -182,7 +173,7 @@ public class ListenerTest {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<Function>> actual = sut.getModel().getFunctionInstances();
 		
 		assertTrue(actual.containsKey("Function"));
@@ -193,7 +184,7 @@ public class ListenerTest {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<Function>> actual = sut.getModel().getFunctionInstances();
 		
 		Set<Function> functions = actual.get("Function");
@@ -206,7 +197,7 @@ public class ListenerTest {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result\nFunction(ObjectThree , ObjectFour) |-> ResultTwo";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, Set<Function>> actual = sut.getModel().getFunctionInstances();
 		
 		Collection<Function> types = actual.get("Function");
@@ -219,7 +210,7 @@ public class ListenerTest {
 		String input = "Name = \"test\"";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, List<String>> actual = sut.getModel().getLinkMap();
 		
 		assertTrue(actual.containsKey("Name"));
@@ -230,7 +221,7 @@ public class ListenerTest {
 		String input = "Name = \"test\"";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, List<String>> actual = sut.getModel().getLinkMap();
 		
 		String link = actual.get("Name").get(0);
@@ -242,7 +233,7 @@ public class ListenerTest {
 		String input = "Name = \"test\"\nName = \"testTwo\"";
 		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
 		
-		sut = checker.getListener(stream);
+		Listener sut = MegaModelLoader.getListener(stream);
 		Map<String, List<String>> actual = sut.getModel().getLinkMap();
 		
 		assertEquals(2,actual.get("Name").size());
@@ -255,7 +246,7 @@ public class ListenerTest {
 	
 	@Test
 	public void getModelReturnsMegaModel() {
-		sut = new Listener();
+		Listener sut = new Listener();
 		Object actual = sut.getModel();
 		assertThat(actual, instanceOf(MegaModel.class));
 	}

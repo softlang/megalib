@@ -6,20 +6,17 @@ package org.java.megalib.checker;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.java.megalib.checker.services.Checker;
-import org.java.megalib.checker.services.IChecker;
+import org.java.megalib.checker.services.MegaModelLoader;
 
 /**
  * @author mmay@uni-koblenz.de, aemmerichs@uni-koblenz.de
  *
  */
 public class Main {
-	private static IChecker checkerService;
 	
 	public static void main(String[] args) {
-		checkerService = new Checker();
 		try {
-			checkerService.checkFile(getFilepathOfArguments(args));
+			MegaModelLoader.createFromFile(getFilepathOfArguments(args));
 		}
 		catch (FileNotFoundException ex) {
 			System.out.println("The File wasn't found on your harddrive!");

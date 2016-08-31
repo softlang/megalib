@@ -3,24 +3,49 @@ package test.java.megalib.checker;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.java.megalib.checker.services.Checker;
-import org.java.megalib.checker.services.ResultChecker;
-import org.junit.Before;
+import org.java.megalib.checker.services.MegaModelLoader;
 import org.junit.Test;
 
 
 public class ResultCheckerTest {
-
-	public Checker checker;
 	
-	@Before
-	public void setUp(){
-		checker = new Checker();
+	@Test
+	public void testLinkEntityNotExists() throws IOException{
+		String data = "entity = \"http://softlang.org/\"";
+		Checker resultChecker = new Checker(MegaModelLoader.createFromString(data));
+		resultChecker.doChecks();
+		List<String> warnings = resultChecker.getWarnings();
+		assertEquals(1,warnings.size());
+		assertTrue(warnings.contains("Error at Link of 'entity' the instance does not exist"));
 	}
 	
+	@Test
+	public void testLinkMalformed() throws IOException{
+		String data = "import Prelude\nentity : Artifact \nentity = \"nowebsitehere\"";
+		Checker resultChecker = new Checker(MegaModelLoader.createFromString(data));
+		resultChecker.doChecks();
+		List<String> warnings = resultChecker.getWarnings();
+		warnings.forEach(w->System.out.println(w));
+		assertEquals(1,warnings.size());
+		assertTrue(warnings.contains("Error at Link to 'nowebsitehere' : The URL is malformed!"));
+	}
+	
+	@Test
+	public void testLinkDead() throws IOException{
+		String data = "import Prelude\nentity : Artifact \nentity = \"nowebsitehere\"";
+		Checker resultChecker = new Checker(MegaModelLoader.createFromString(data));
+		resultChecker.doChecks();
+		List<String> warnings = resultChecker.getWarnings();
+		warnings.forEach(w->System.out.println(w));
+		assertEquals(1,warnings.size());
+		assertTrue(warnings.contains("Error at Link to 'nowebsitehere' : The URL is malformed!"));
+	}
+	
+	/**
 	@Test
 	public void testEntityDeclaration() throws IOException{
 		String data = "SubSubEntity < SubEntity";
@@ -168,4 +193,5 @@ public class ResultCheckerTest {
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
 	}
+	**/
 }
