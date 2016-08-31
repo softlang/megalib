@@ -9,30 +9,30 @@ declaration: module? (imports)* ( entityDeclaration
 								| functionInstance
 								| link )+ EOF;
 
-module: 'module' object;
+module: 'module' name;
 
-imports: 'import' object;
+imports: 'import' name;
 
-entityDeclaration: object '<' object;
+entityDeclaration: name '<' name;
 
-entityInstance: object ':' object;
+entityInstance: name ':' name;
 
-relationDeclaration: object '<' object '#' object;
+relationDeclaration: name '<' name '#' name;
 
-relationInstance: object  object  object;
+relationInstance: name  name  name;
 
-functionDeclaration: object ':' object ('#' object)* '->' object ('#' object)* ;
+functionDeclaration: name ':' name ('#' name)* '->' name ('#' name)* ;
 
-functionInstance: object '(' object (',' object)* ')' '|->' (object | ('(' object (',' object)* ')'));
+functionInstance: name '(' name (',' name)* ')' '|->' (name | ('(' name (',' name)* ')'));
 
-link: object '=' WORD;
+link: name '=' LINK;
 
 //word used in defintions above
-object: WORD;
+name: WORD;
 
 //definition of word
 WORD: [a-zA-Z]+;
-LINK: '\"http' ('s')? '://' [a-zA-z0-9]+ '.' [a-z] ('/' [a-zA-Z0-9]+)* '\"';
+LINK: '"' (~(' '|'\t'|'\f'|'\n'|'\r'))* '"' ;
 WS: (' '|'\t'|'\f'|'\n'|'\r') -> skip;
 
 Arrow: '|->';
