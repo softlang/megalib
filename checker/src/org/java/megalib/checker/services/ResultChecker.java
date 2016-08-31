@@ -1,10 +1,14 @@
 package org.java.megalib.checker.services;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +31,7 @@ public class ResultChecker {
 
 	public void doChecks() {
 		this.checkLinks();
-		this.checkSubtypeDeclaration();
+		this.checkSubtypeDeclarations();
 		this.checkInstanceDeclarations();
 		this.checkRelationshipTypes();
 		this.checkRelationshipInstances();
@@ -37,20 +41,52 @@ public class ResultChecker {
 	
 	public void checkLinks() {
 		Map<String, List<String>> links = model.getLinkMap();
-		for (Entry<String, List<String>> entry : links.entrySet()) {
-			checkLinkName(entry);
+		for (String name : links.keySet()) {
+			checkLinkName(name);
+			links.get(name).forEach(l->checkLinkWorking(l));
 		}
 	}
 	
-	private void checkLinkName(Entry<String, List<String>> entry) {
-		String name = entry.getKey();
+	private void checkLinkName(String name) {
 		if (!(model.getSubtypesMap().containsKey(name) || model.getInstanceOfMap().containsKey(name)
 				|| model.getRelationDeclarationMap().containsKey(name) || model.getRelationshipInstanceMap().containsKey(name))) {
-			warnings.add("Error at Link of '" + entry.getKey() + "' the instance does not exist");
+			warnings.add("Error at Link of '" + name + "' the instance does not exist");
 		}
 	}
 	
-	public void checkSubtypeDeclaration() {
+	private void checkLinkWorking(String l) {
+		URL u ;
+		try {
+			u = new URL(l);
+		} catch (MalformedURLException e) {
+			warnings.add("Error at Link to '"+l+"' : The URL is malformed!");
+			return;
+		}
+		HttpURLConnection huc;
+		try {
+			HttpURLConnection.setFollowRedirects(false);
+			huc = (HttpURLConnection) u.openConnection();
+		} catch (IOException e) {
+			warnings.add("Error at Link to '"+l+"' : The URL connection failed!");
+			return;
+		}
+		try {
+			huc.setRequestMethod("HEAD");
+		} catch (ProtocolException e) {
+			warnings.add("Error at Link to '"+l+"' : ProtocolException!");
+			return;
+		}
+		try {
+			if(!(huc.getResponseCode()==HttpURLConnection.HTTP_OK)){
+				warnings.add("Error at Link to '"+l+"' : Link not working");
+			}
+		} catch (IOException e) {
+			warnings.add("Error at Link to '"+l+"' : getResponseCode() failed!");
+		}
+		
+	}
+	
+	public void checkSubtypeDeclarations() {
 		for(String subtype : model.getSubtypesMap().keySet()){
 			String type = model.getSubtypesMap().get(subtype);
 			if(!(type.equals("Entity")||model.getSubtypesMap().containsKey(type))){
@@ -59,7 +95,7 @@ public class ResultChecker {
 			}
 		}
 	}
-
+	
 	public void checkInstanceDeclarations() {
 		for(String instance : model.getInstanceOfMap().keySet()){
 			String type = model.getInstanceOfMap().get(instance);
