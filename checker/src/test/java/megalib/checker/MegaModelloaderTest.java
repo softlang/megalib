@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,15 +22,12 @@ import org.junit.Test;
  * @author mmay, aemmerichs
  *
  */
-public class ListenerTest {
+public class MegaModelloaderTest {
 	
 	@Test
 	public void enterEntityDeclarationFillsEntityDeclarations() throws IOException{
 		String input = "DerivedType < Type";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, String> actual = sut.getModel().getSubtypesMap();
+		Map<String, String> actual = MegaModelLoader.createFromString(input).getSubtypesMap();
 		
 		assertTrue(actual.containsKey("DerivedType"));
 		assertEquals(actual.get("DerivedType").toString(),"Type");
@@ -40,10 +36,7 @@ public class ListenerTest {
 	@Test
 	public void enterEntityInstanceFillsEntityInstances() throws IOException {
 		String input = "Instance : Type";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, String> actual = sut.getModel().getInstanceOfMap();
+		Map<String, String> actual = MegaModelLoader.createFromString(input).getInstanceOfMap();
 		
 		assertTrue(actual.containsKey("Instance"));
 		assertEquals(actual.get("Instance").toString(),"Type");
@@ -52,10 +45,7 @@ public class ListenerTest {
 	@Test
 	public void enterRelationDeclarationFillsRelationDeclarationsWithRelationName() throws IOException {
 		String input = "Relation < TypeOne # TypeTwo";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<List<String>>> actual = sut.getModel().getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationDeclarationMap();
 		
 		assertTrue(actual.containsKey("Relation"));		
 	}
@@ -63,10 +53,7 @@ public class ListenerTest {
 	@Test
 	public void enterRelationDeclarationFillsRelationDeclarationsWithTypes() throws IOException {
 		String input = "Relation < TypeOne # TypeTwo";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<List<String>>> actual = sut.getModel().getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationDeclarationMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected = {"TypeOne","TypeTwo"};
@@ -77,10 +64,7 @@ public class ListenerTest {
 	@Test
 	public void enterRelationDeclarationDoesNotOverideExistingDeclarations() throws IOException {
 		String input = "Relation < TypeOne # TypeTwo\nRelation < TypeThree # TypeFour";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<List<String>>> actual = sut.getModel().getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationDeclarationMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected1 = {"TypeOne","TypeTwo"};
@@ -93,10 +77,7 @@ public class ListenerTest {
 	@Test
 	public void enterRelationInstanceFillsRelationInstancesWithRelationName() throws IOException {
 		String input = "ObjectOne Relation ObjectTwo";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<List<String>>> actual = sut.getModel().getRelationshipInstanceMap();
+		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationshipInstanceMap();
 		
 		assertTrue(actual.containsKey("Relation"));
 	}
@@ -104,10 +85,7 @@ public class ListenerTest {
 	@Test
 	public void enterRelationInstanceFillsRelationInstancesWithObjects() throws IOException {
 		String input = "ObjectOne Relation ObjectTwo";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<List<String>>> actual = sut.getModel().getRelationshipInstanceMap();
+		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationshipInstanceMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected = {"ObjectOne","ObjectTwo"};
@@ -118,10 +96,7 @@ public class ListenerTest {
 	@Test
 	public void enterRelationInstanceDoesNotOverideExistingInstances() throws IOException {
 		String input = "ObjectOne Relation ObjectTwo\nObjectThree Relation ObjectFour";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<List<String>>> actual = sut.getModel().getRelationshipInstanceMap();
+		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationshipInstanceMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected1 = {"ObjectOne","ObjectTwo"};
@@ -134,10 +109,7 @@ public class ListenerTest {
 	@Test
 	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunctionName() throws IOException {
 		String input = "Function : TypeOne # TypeTwo -> ReturnType";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<Function>> actual = sut.getModel().getFunctionDeclarations();
+		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionDeclarations();
 		
 		assertTrue(actual.containsKey("Function"));
 	}
@@ -145,10 +117,7 @@ public class ListenerTest {
 	@Test
 	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunction() throws IOException {
 		String input = "Function : TypeOne # TypeTwo -> ReturnType";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<Function>> actual = sut.getModel().getFunctionDeclarations();
+		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionDeclarations();
 		
 		Set<Function> types = actual.get("Function");
 		
@@ -158,10 +127,7 @@ public class ListenerTest {
 	@Test
 	public void enterFunctionDeclarationDoesNotOverideExistingDeclarations() throws IOException {
 		String input = "Function : TypeOne # TypeTwo -> ReturnTypeOne\nFunction : TypeThree # TypeFour -> ReturnTypeTwo";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<Function>> actual = sut.getModel().getFunctionDeclarations();
+		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionDeclarations();
 		
 		Set<Function> types = actual.get("Function");
 		
@@ -171,10 +137,7 @@ public class ListenerTest {
 	@Test
 	public void enterFunctionInstanceFillsFunctionInstanceWithFunctionName() throws IOException {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<Function>> actual = sut.getModel().getFunctionInstances();
+		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionInstances();
 		
 		assertTrue(actual.containsKey("Function"));
 	}
@@ -182,10 +145,7 @@ public class ListenerTest {
 	@Test
 	public void enterFunctionInstanceFillsFunctionInstanceWithFunction() throws IOException {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<Function>> actual = sut.getModel().getFunctionInstances();
+		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionInstances();
 		
 		Set<Function> functions = actual.get("Function");
 		
@@ -195,10 +155,7 @@ public class ListenerTest {
 	@Test
 	public void enterFunctionInstanceDoesNotOverideExistingInstances() throws IOException {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result\nFunction(ObjectThree , ObjectFour) |-> ResultTwo";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, Set<Function>> actual = sut.getModel().getFunctionInstances();
+		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionInstances();
 		
 		Collection<Function> types = actual.get("Function");
 		
@@ -208,10 +165,7 @@ public class ListenerTest {
 	@Test
 	public void enterLinkFillsLinksWithName() throws IOException {
 		String input = "Name = \"test\"";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, List<String>> actual = sut.getModel().getLinkMap();
+		Map<String, List<String>> actual = MegaModelLoader.createFromString(input).getLinkMap();
 		
 		assertTrue(actual.containsKey("Name"));
 	}
@@ -219,10 +173,7 @@ public class ListenerTest {
 	@Test
 	public void enterLinkFillsLinksWithLinkString() throws IOException {
 		String input = "Name = \"test\"";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, List<String>> actual = sut.getModel().getLinkMap();
+		Map<String, List<String>> actual = MegaModelLoader.createFromString(input).getLinkMap();
 		
 		String link = actual.get("Name").get(0);
 		assertEquals("test", link);
@@ -231,10 +182,7 @@ public class ListenerTest {
 	@Test
 	public void enterLinkFillsLinksDoesNotOverride() throws IOException {
 		String input = "Name = \"test\"\nName = \"testTwo\"";
-		ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes());
-		
-		Listener sut = MegaModelLoader.getListener(stream);
-		Map<String, List<String>> actual = sut.getModel().getLinkMap();
+		Map<String, List<String>> actual = MegaModelLoader.createFromString(input).getLinkMap();
 		
 		assertEquals(2,actual.get("Name").size());
 		String link = actual.get("Name").get(0);
