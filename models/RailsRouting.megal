@@ -1,38 +1,48 @@
-module RailsRouting import Prelude
+module RailsRouting
 WebApplicationFramework < Technology
 RubyOnRails : WebApplicationFramework
 Ruby : Language
 RubyOnRails uses Ruby
 
+
 Routing : Concept
-RubyOnRails.Redirecting : Technology
-RubyOnRails.Redirecting partOf RubyOnRails
-RubyOnRails.Redirecting facilitates Routing
+RubyOnRails.Routing : Technology
+RubyOnRails.Routing partOf RubyOnRails
+RubyOnRails.Routing facilitates Routing
+
+
+WebApplication < System
+MyApp : WebApplication
+MyApp uses RubyOnRails
+routes.rb : Artifact
+routes.rb elementOf Ruby
+routes.rb realizes Routing
+
 
 URI : Language
 URL : Language
 URL subsetOf URI
 HTTPResponse : Language
 HTML : Language
+showPage : URL -> HTTPResponse
+MyApp implements showPage
 
 RubyOnRails.orgLink : Transient
 RubyOnRails.orgLink elementOf URL
 RubyOnRails.orgResponse : Transient
 RubyOnRails.orgResponse elementOf HTTPResponse
-redirectTo : URL -> HTTPResponse
-redirectTo(RubyOnRails.orgLink) |-> RubyOnRails.orgResponse
-RubyOnRails.Redirecting implements redirectTo
-
+showPage(RubyOnRails.orgLink) |-> RubyOnRails.orgResponse
 WebResource < Resource
 RubyOnRailsWebsite : WebResource
 RubyOnRailsWebsite elementOf HTML
 RubyOnRailsWebsite partOf RubyOnRails.orgResponse
 
+APIPageController : Artifact
+APIPageController elementOf Ruby
 
 
 RubyOnRails = "http://api.rubyonrails.org/"
 Ruby = "https://www.ruby-lang.org/de/"
-RubyOnRails.Redirecting = "http://api.rubyonrails.org/classes/ActionController/Redirecting.html"
 URI = "https://de.wikipedia.org/wiki/Uniform_Resource_Identifier"
 URL = "https://de.wikipedia.org/wiki/Uniform_Resource_Locator"
 HTTPResponse = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html"

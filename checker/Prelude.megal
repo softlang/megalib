@@ -35,3 +35,4 @@ uses < Artifact # Concept
 uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
+realizes < Artifact # Concept
