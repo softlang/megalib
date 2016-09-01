@@ -251,13 +251,13 @@ public class Checker {
 			List<String> parameters = entity.getParameterList();
 			for (String p : parameters) {
 				if(!model.getInstanceOfMap().containsKey(p)){
-					warnings.add("Error at Function '" + name + "'! The parameter '" + p + "' has not been declared!");
+					warnings.add("Error at function application of '" + name + "'! The input '" + p + "' has not been declared!");
 				}
 			}
 			List<String> outputs = entity.getReturnList();
 			for(String o : outputs){
 				if(!model.getInstanceOfMap().containsKey(o)){
-					warnings.add("Error at Function '" + name + "'! The output '" + o + "' has not been declared!");
+					warnings.add("Error at function application of '" + name + "'! The output '" + o + "' has not been declared!");
 				}
 			}
 		}
@@ -274,8 +274,9 @@ public class Checker {
 				.filter(d->checkInstanceElementOfDeclaration(funapplication,d))
 				.collect(Collectors.toList())
 				.isEmpty()){
-			warnings.add("Error at function application of '"+name+"' with parameters "+funapplication.getParameterList().toString()+" "
-					+ "The entities do not match any function declaration!");
+			warnings.add("Error at function application of '"+name+"' with input "+funapplication.getParameterList().toString()
+					+ " and output "+funapplication.getReturnList().toString()+"!"
+					+ " The input/output does not match any function declaration!");
 		}
 	}
 	
@@ -299,8 +300,14 @@ public class Checker {
 		return true;
 	}
 	
+	/**
+	 * Determines the artifact's language and its supersets and then checks, whether
+	 * the language equals one of them.
+	 * @param artifact
+	 * @param language
+	 * @return
+	 */
 	private boolean isElementOf(String artifact, String language){
-		//determine the artifact's languages
 		Set<String> langs = new HashSet<>();
 		for(List<String> elemOf : model.getRelationshipInstanceMap().get("elementOf")){
 			if(elemOf.get(0).equals(artifact)){

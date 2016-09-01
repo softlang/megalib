@@ -292,6 +292,232 @@ public class CheckerTest {
 		assertTrue(resultChecker.getWarnings().contains("Error at function declaration of 'merge' : 'a' is not an instance of Language"));
 	}
 	
+	@Test
+	public void testFunctionDeclarationSingleDomainRange(){
+		String data = ("Haskell : Language "
+				+ "merge : Haskell -> Haskell ");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
 	
+	@Test
+	public void testFunctionDeclarationMultiDomainRange(){
+		String data = ("Haskell : Language "
+				+ "Java : Language "
+				+ "merge : Haskell # Java -> Haskell # Java ");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
+	
+	@Test
+	public void testFunctionApplicationNotInitialzedInputSingle(){
+		String data = ("Haskell : Language "
+				+ "merge : Haskell -> Haskell "
+				+ "b : Artifact "
+				+ "b elementOf Haskell "
+				+ "merge(a) |-> b");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(2,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at function application of 'merge'! The input 'a' has not been declared!"));
+		assertTrue(resultChecker.getWarnings().contains("Error at function application of 'merge' with input [a] and output [b]! The input/output does not match any function declaration!"));
+	}
+	
+	@Test
+	public void testFunctionApplicationNotInitialzedOutputSingle(){
+		String data = ("Haskell : Language "
+				+ "merge : Haskell -> Haskell "
+				+ "a : Artifact "
+				+ "a elementOf Haskell "
+				+ "merge(a) |-> b");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(2,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at function application of 'merge'! The output 'b' has not been declared!"));
+		assertTrue(resultChecker.getWarnings().contains("Error at function application of 'merge' with input [a] and output [b]! The input/output does not match any function declaration!"));
+	}
+	
+	@Test
+	public void testFunctionApplicationNotInitialzedInputMulti(){
+		String data = ("Haskell : Language "
+				+ "merge : Haskell # Haskell -> Haskell # Haskell "
+				+ "a : Artifact "
+				+ "a elementOf Haskell "
+				+ "c : Artifact "
+				+ "c elementOf Haskell "
+				+ "d : Artifact "
+				+ "d elementOf Haskell "
+				+ "merge(a,b) |-> (c,d)");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(2,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at function application of 'merge'! The input 'b' has not been declared!"));
+		assertTrue(resultChecker.getWarnings().contains("Error at function application of 'merge' with input [a, b] and output [c, d]! The input/output does not match any function declaration!"));
+	}
+	
+	@Test
+	public void testFunctionApplicationNotInitialzedOutputMulti(){
+		String data = ("Haskell : Language "
+				+ "merge : Haskell # Haskell -> Haskell # Haskell "
+				+ "a : Artifact "
+				+ "a elementOf Haskell "
+				+ "b : Artifact "
+				+ "b elementOf Haskell "
+				+ "c : Artifact "
+				+ "c elementOf Haskell "
+				+ "merge(a,b) |-> (c,d)");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(2,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at function application of 'merge'! The output 'd' has not been declared!"));
+		assertTrue(resultChecker.getWarnings().contains("Error at function application of 'merge' with input [a, b] and output [c, d]! The input/output does not match any function declaration!"));
+	}
+	
+	@Test
+	public void testFunctionApplicationWrongDomain(){
+		String data = "A : Language "
+				+ "B : Language "
+				+ "a : Artifact "
+				+ "b : Artifact "
+				+ "a elementOf B "
+				+ "b elementOf A "
+				+ "id : A -> A "
+				+ "id(a) |-> b ";
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
+	}
+	
+	@Test
+	public void testFunctionApplicationWrongRange(){
+		String data = "A : Language "
+				+ "B : Language "
+				+ "a : Artifact "
+				+ "b : Artifact "
+				+ "b elementOf B "
+				+ "a elementOf A "
+				+ "id : A -> A "
+				+ "id(a) |-> b ";
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
+	}
+	
+	@Test
+	public void testFunctionApplicationSubsetWorking(){
+		String data = "A : Language "
+				+ "B : Language "
+				+ "C : Language "
+				+ "C subsetOf B "
+				+ "B subsetOf A "
+				+ "a : Artifact "
+				+ "a elementOf C "
+				+ "id : A -> A "
+				+ "id(a) |-> a";
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
+	
+	@Test
+	public void testFunctionApplicationWorkingSingle(){
+		String data = ("Haskell : Language "
+				+ "merge : Haskell -> Haskell "
+				+ "a : Artifact "
+				+ "a elementOf Haskell "
+				+ "b : Artifact "
+				+ "b elementOf Haskell "
+				+ "merge(a) |-> b");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
+	
+	@Test
+	public void testFunctionApplicationWorkingMulti(){
+		String data = ("Haskell : Language "
+				+ "merge : Haskell # Haskell -> Haskell # Haskell "
+				+ "a : Artifact "
+				+ "a elementOf Haskell "
+				+ "b : Artifact "
+				+ "b elementOf Haskell "
+				+ "c : Artifact "
+				+ "c elementOf Haskell "
+				+ "d : Artifact "
+				+ "d elementOf Haskell "
+				+ "merge(a,b) |-> (c,d)");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
+	
+	@Test
+	public void testFunctionApplicationFailOverloaded(){
+		String data = "A : Language "
+				+ "B : Language "
+				+ "a : Artifact "
+				+ "a elementOf A "
+				+ "b : Artifact "
+				+ "b elementOf B "
+				+ "id : A -> A "
+				+ "id : B -> B "
+				+ "id(a) |-> b";
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at function application of 'id' with input [a] and output [b]! The input/output does not match any function declaration!"));
+	}
+	
+	@Test
+	public void testFunctionApplicationWorkingOverloaded(){
+		String data = "A : Language "
+				+ "B : Language "
+				+ "a : Artifact "
+				+ "a elementOf A "
+				+ "b : Artifact "
+				+ "b elementOf B "
+				+ "id : A -> A "
+				+ "id : B -> B "
+				+ "id(b) |-> b";
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
+	
+	@Test
+	public void testFunctionApplicationWorkingOverloadedMultiSubsets(){
+		String data = "A : Language "
+				+ "B : Language "
+				+ "C : Language "
+				+ "C subsetOf A "
+				+ "a : Artifact "
+				+ "a elementOf A "
+				+ "b : Artifact "
+				+ "b elementOf B "
+				+ "c : Artifact "
+				+ "c elementOf C "
+				+ "id : A # B # A -> B # A "
+				+ "id : B # A -> A # B # A "
+				+ "id(b,c) |-> (a,b,c)";
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
+	
+	@Test
+	public void testFunctionRelationAtOnce(){
+		String data = "A : Language "
+				+ "id : A -> A "
+				+ "a : Artifact "
+				+ "a elementOf A "
+				+ "id(a) |-> a "
+				+ "id < Language # Language "
+				+ "A id A ";
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
 	
 }
