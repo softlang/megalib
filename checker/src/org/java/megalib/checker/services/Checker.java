@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,18 +17,18 @@ import org.java.megalib.models.MegaModel;
 public class Checker {
 
 	private MegaModel model;
-	private List<String> warnings;
+	private Set<String> warnings;
 	
 	public Checker(MegaModel model) {
 		this.model = model;
 	}
 	
-	public List<String> getWarnings() {
+	public Set<String> getWarnings() {
 		return warnings;
 	}
 
 	public void doChecks() {
-		warnings = new LinkedList<String>();
+		warnings = new HashSet<String>();
 		this.checkLinks();
 		this.checkSubtypeDeclarations();
 		this.checkInstanceDeclarations();
@@ -80,7 +79,7 @@ public class Checker {
 				warnings.add("Error at Link to '"+l+"' : Link not working "+huc.getResponseCode());
 			}
 		} catch (IOException e) {
-			warnings.add("Error at Link to '"+l+"' : getResponseCode() failed!");
+			warnings.add("Error at Link to '"+l+"' : Connection failed!");
 		}
 		
 	}
@@ -98,7 +97,11 @@ public class Checker {
 	public void checkInstanceDeclarations() {
 		for(String instance : model.getInstanceOfMap().keySet()){
 			String type = model.getInstanceOfMap().get(instance);
-			if(!(type.equals("Entity")||model.getSubtypesMap().containsKey(type))){
+			if(type.equals("Entity")){
+				warnings.add("Error at instance declaration of '"+instance+"'. The type is underspecified.");
+				continue;
+			}
+			if(!model.getSubtypesMap().containsKey(type)){
 				warnings.add("Error at instance declaration of '"+instance+"'. The type '"
 						+ type + "' is not declared.");
 			}
@@ -154,8 +157,8 @@ public class Checker {
 				.filter(decl -> relationshipInstanceFitsDeclaration(instance,decl))
 				.collect(Collectors.toList())
 				.isEmpty())
-			warnings.add("Error at relationship instance '"+instance.get(0)+" "+name+" "+instance.get(1)+"! The instance"
-					+ "does not fit any declaration.");
+			warnings.add("Error at relationship instance '"+instance.get(0)+" "+name+" "+instance.get(1)+"'! The instance"
+					+ " does not fit any declaration.");
 	}
 
 
@@ -178,6 +181,10 @@ public class Checker {
 	
 	private boolean isInstanceOf(String entity, String type){
 		Set<String> types = new HashSet<>();
+		if(!model.getInstanceOfMap().containsKey(entity)){
+			warnings.add("The entity '"+entity+"' is unknown!");
+			return false;
+		}
 		types.add(model.getInstanceOfMap().get(entity));
 		while(true){
 			int size = types.size();
@@ -199,20 +206,20 @@ public class Checker {
 		for (String functionName : functionDeclarations.keySet()) {
 			Set<Function> functiondeclarations = functionDeclarations.get(functionName);
 			for(Function fd : functiondeclarations){
-				fd.getParameterList().forEach(type -> checkIsLanguage(type));
-				fd.getReturnList().forEach(type -> checkIsLanguage(type));
+				fd.getParameterList().forEach(type -> checkIsLanguage(functionName,type));
+				fd.getReturnList().forEach(type -> checkIsLanguage(functionName,type));
 			}
 		}
 	}
 	
-	private void checkIsLanguage(String language) {
+	private void checkIsLanguage(String fname,String language) {
 		String type = model.getInstanceOfMap().get(language);
 		while(!type.equals("Entity")){
 			if(type.equals("Language"))
 				return;
 			type = model.getSubtypesMap().get(type);
 		}
-		warnings.add("'"+language+"' is not an instance of Language");
+		warnings.add("Error at function declaration of '"+fname+"' : '"+language+"' is not an instance of Language");
 	}
 	
 	public void checkFunctionApplications() {

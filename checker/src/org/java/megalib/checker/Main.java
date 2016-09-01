@@ -3,9 +3,6 @@
  */
 package org.java.megalib.checker;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.java.megalib.checker.services.MegaModelLoader;
 
 /**
@@ -16,14 +13,9 @@ public class Main {
 	
 	public static void main(String[] args) {
 		try {
-			MegaModelLoader.createFromFile(getFilepathOfArguments(args));
+			new MegaModelLoader().createFromFile(getFilepathOfArguments(args));
 		}
-		catch (FileNotFoundException ex) {
-			System.out.println("The File wasn't found on your harddrive!");
-		} 
-		catch (IOException ex) {
-			System.out.println("Something went wrong with your file. Is it possibly emtpy?");
-		} catch (EmptyFileNameException e) {
+		catch (EmptyFileNameException e) {
 			e.printStackTrace();
 		}
 	}

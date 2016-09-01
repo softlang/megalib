@@ -1,10 +1,10 @@
 package org.java.megalib.checker.services;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 
@@ -28,22 +28,9 @@ public class Listener extends MegalibBaseListener {
 	@Override
 	public void enterImports(ImportsContext context) {
 		String name = context.getChild(1).getText();
-		try {
-			String workingDir = Paths.get("").toAbsolutePath().normalize().toString();
-			String filepath = workingDir.concat(File.separator + "TestFiles" + File.separator + name + ".megal");
-			
-			MegaModel importModel = MegaModelLoader.createFromFile(filepath);
-			importModel.getSubtypesMap().forEach((k,v)-> model.addSubtypeOf(k, v));
-			importModel.getInstanceOfMap().forEach((k,v)->model.addInstanceOf(k, v));
-			importModel.getRelationshipInstanceMap()
-				.forEach((n,set)->set
-						.forEach(entry->model.addRelationInstances(n, entry)));
-			importModel.getRelationDeclarationMap()
-				.forEach((n,set)->set
-						.forEach(entry -> model.addRelationDeclaration(n, entry)));
-		} catch (IOException e) {
-			System.out.println("Can not find import file: "+name);
-		}
+		String workingDir = Paths.get("").toAbsolutePath().normalize().toString();
+		String filepath = workingDir.concat(File.separator + name + ".megal");
+		model.addImport(filepath);
 		
 	}
 	

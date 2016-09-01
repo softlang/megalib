@@ -22,6 +22,7 @@ public class MegaModel {
 	private Map<String, Set<Function>> functionDeclarations;
 	private Map<String, Set<Function>> functionInstances;
 	private Map<String,List<String>> linkMap;
+	private Set<String> toImport;
 	
 	public MegaModel() {
 		subtypesMap = new HashMap<>();
@@ -31,6 +32,7 @@ public class MegaModel {
 		functionDeclarations = new HashMap<>();
 		functionInstances = new HashMap<>();
 		linkMap = new HashMap<>();
+		toImport = new HashSet<>();
 	}
 
 	public Map<String, String> getSubtypesMap() {
@@ -113,5 +115,13 @@ public class MegaModel {
 
 	public void addLinks(String object, List<String> links) {
 		linkMap.put(object, links);
+	}
+
+	public Set<String> getImports() {
+		return Collections.unmodifiableSet(toImport);
+	}
+
+	public void addImport(String filepath) {
+		toImport.add(filepath);
 	}
 }

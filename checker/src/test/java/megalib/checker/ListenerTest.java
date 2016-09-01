@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -22,38 +21,38 @@ import org.junit.Test;
  * @author mmay, aemmerichs
  *
  */
-public class MegaModelloaderTest {
+public class ListenerTest {
 	
 	@Test
-	public void enterEntityDeclarationFillsEntityDeclarations() throws IOException{
+	public void enterEntityDeclarationFillsEntityDeclarations() {
 		String input = "DerivedType < Type";
-		Map<String, String> actual = MegaModelLoader.createFromString(input).getSubtypesMap();
+		Map<String, String> actual = new MegaModelLoader().createFromString(input).getSubtypesMap();
 		
 		assertTrue(actual.containsKey("DerivedType"));
 		assertEquals(actual.get("DerivedType").toString(),"Type");
 	}
 	
 	@Test
-	public void enterEntityInstanceFillsEntityInstances() throws IOException {
+	public void enterEntityInstanceFillsEntityInstances(){
 		String input = "Instance : Type";
-		Map<String, String> actual = MegaModelLoader.createFromString(input).getInstanceOfMap();
+		Map<String, String> actual = new MegaModelLoader().createFromString(input).getInstanceOfMap();
 		
 		assertTrue(actual.containsKey("Instance"));
 		assertEquals(actual.get("Instance").toString(),"Type");
 	}
 	
 	@Test
-	public void enterRelationDeclarationFillsRelationDeclarationsWithRelationName() throws IOException {
+	public void enterRelationDeclarationFillsRelationDeclarationsWithRelationName()  {
 		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationDeclarationMap();
 		
 		assertTrue(actual.containsKey("Relation"));		
 	}
 	
 	@Test
-	public void enterRelationDeclarationFillsRelationDeclarationsWithTypes() throws IOException {
+	public void enterRelationDeclarationFillsRelationDeclarationsWithTypes()  {
 		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationDeclarationMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected = {"TypeOne","TypeTwo"};
@@ -62,9 +61,9 @@ public class MegaModelloaderTest {
 	}
 	
 	@Test
-	public void enterRelationDeclarationDoesNotOverideExistingDeclarations() throws IOException {
+	public void enterRelationDeclarationDoesNotOverideExistingDeclarations()  {
 		String input = "Relation < TypeOne # TypeTwo\nRelation < TypeThree # TypeFour";
-		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationDeclarationMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected1 = {"TypeOne","TypeTwo"};
@@ -75,17 +74,17 @@ public class MegaModelloaderTest {
 	}
 	
 	@Test
-	public void enterRelationInstanceFillsRelationInstancesWithRelationName() throws IOException {
+	public void enterRelationInstanceFillsRelationInstancesWithRelationName()  {
 		String input = "ObjectOne Relation ObjectTwo";
-		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationshipInstanceMap();
+		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
 		
 		assertTrue(actual.containsKey("Relation"));
 	}
 	
 	@Test
-	public void enterRelationInstanceFillsRelationInstancesWithObjects() throws IOException {
+	public void enterRelationInstanceFillsRelationInstancesWithObjects()  {
 		String input = "ObjectOne Relation ObjectTwo";
-		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationshipInstanceMap();
+		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected = {"ObjectOne","ObjectTwo"};
@@ -94,9 +93,9 @@ public class MegaModelloaderTest {
 	}
 	
 	@Test
-	public void enterRelationInstanceDoesNotOverideExistingInstances() throws IOException {
+	public void enterRelationInstanceDoesNotOverideExistingInstances()  {
 		String input = "ObjectOne Relation ObjectTwo\nObjectThree Relation ObjectFour";
-		Map<String, Set<List<String>>> actual = MegaModelLoader.createFromString(input).getRelationshipInstanceMap();
+		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected1 = {"ObjectOne","ObjectTwo"};
@@ -107,17 +106,17 @@ public class MegaModelloaderTest {
 	}
 	
 	@Test
-	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunctionName() throws IOException {
+	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunctionName()  {
 		String input = "Function : TypeOne # TypeTwo -> ReturnType";
-		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionDeclarations();
+		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionDeclarations();
 		
 		assertTrue(actual.containsKey("Function"));
 	}
 	
 	@Test
-	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunction() throws IOException {
+	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunction()  {
 		String input = "Function : TypeOne # TypeTwo -> ReturnType";
-		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionDeclarations();
+		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionDeclarations();
 		
 		Set<Function> types = actual.get("Function");
 		
@@ -125,9 +124,9 @@ public class MegaModelloaderTest {
 	}
 	
 	@Test
-	public void enterFunctionDeclarationDoesNotOverideExistingDeclarations() throws IOException {
+	public void enterFunctionDeclarationDoesNotOverideExistingDeclarations()  {
 		String input = "Function : TypeOne # TypeTwo -> ReturnTypeOne\nFunction : TypeThree # TypeFour -> ReturnTypeTwo";
-		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionDeclarations();
+		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionDeclarations();
 		
 		Set<Function> types = actual.get("Function");
 		
@@ -135,17 +134,17 @@ public class MegaModelloaderTest {
 	}
 	
 	@Test
-	public void enterFunctionInstanceFillsFunctionInstanceWithFunctionName() throws IOException {
+	public void enterFunctionInstanceFillsFunctionInstanceWithFunctionName()  {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionInstances();
+		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionInstances();
 		
 		assertTrue(actual.containsKey("Function"));
 	}
 	
 	@Test
-	public void enterFunctionInstanceFillsFunctionInstanceWithFunction() throws IOException {
+	public void enterFunctionInstanceFillsFunctionInstanceWithFunction()  {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionInstances();
+		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionInstances();
 		
 		Set<Function> functions = actual.get("Function");
 		
@@ -153,9 +152,9 @@ public class MegaModelloaderTest {
 	}
 	
 	@Test
-	public void enterFunctionInstanceDoesNotOverideExistingInstances() throws IOException {
+	public void enterFunctionInstanceDoesNotOverideExistingInstances()  {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result\nFunction(ObjectThree , ObjectFour) |-> ResultTwo";
-		Map<String, Set<Function>> actual = MegaModelLoader.createFromString(input).getFunctionInstances();
+		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionInstances();
 		
 		Collection<Function> types = actual.get("Function");
 		
@@ -163,26 +162,26 @@ public class MegaModelloaderTest {
 	}
 	
 	@Test
-	public void enterLinkFillsLinksWithName() throws IOException {
+	public void enterLinkFillsLinksWithName()  {
 		String input = "Name = \"test\"";
-		Map<String, List<String>> actual = MegaModelLoader.createFromString(input).getLinkMap();
+		Map<String, List<String>> actual = new MegaModelLoader().createFromString(input).getLinkMap();
 		
 		assertTrue(actual.containsKey("Name"));
 	}
 	
 	@Test
-	public void enterLinkFillsLinksWithLinkString() throws IOException {
+	public void enterLinkFillsLinksWithLinkString()  {
 		String input = "Name = \"test\"";
-		Map<String, List<String>> actual = MegaModelLoader.createFromString(input).getLinkMap();
+		Map<String, List<String>> actual = new MegaModelLoader().createFromString(input).getLinkMap();
 		
 		String link = actual.get("Name").get(0);
 		assertEquals("test", link);
 	}
 	
 	@Test
-	public void enterLinkFillsLinksDoesNotOverride() throws IOException {
+	public void enterLinkFillsLinksDoesNotOverride()  {
 		String input = "Name = \"test\"\nName = \"testTwo\"";
-		Map<String, List<String>> actual = MegaModelLoader.createFromString(input).getLinkMap();
+		Map<String, List<String>> actual = new MegaModelLoader().createFromString(input).getLinkMap();
 		
 		assertEquals(2,actual.get("Name").size());
 		String link = actual.get("Name").get(0);
