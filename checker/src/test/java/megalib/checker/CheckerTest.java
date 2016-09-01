@@ -9,6 +9,15 @@ import org.java.megalib.models.MegaModel;
 import org.junit.Test;
 
 
+/**
+ * 
+ * @author heinz
+ *
+ * This is a suite of test cases reassuring working checks. 
+ * 
+ * At every test case the Prelude model is part of the tested model.
+ * 
+ */
 public class CheckerTest {
 	
 	@Test
@@ -236,13 +245,21 @@ public class CheckerTest {
 	
 	@Test
 	public void testRelationshipInstanceMultiDeclarationSecondFit(){
-		String data = ("Artifact < Entity "
-				+ "\nLanguage < Entity "
-				+ "\npartOf < Language # Language"
-				+ "\npartOf < Artifact # Artifact "
-				+ "\na : Artifact "
-				+ "\nb : Artifact "
-				+ "\na partOf b");
+		String data = ("a : Artifact "
+				+ "b : Artifact "
+				+ "a partOf b");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
+	
+	@Test
+	public void testRelationshipInstanceTransitivityWorking(){
+		String data = "XArtifact < Artifact "
+				+ "ExArtifact < XArtifact "
+				+ "a : ExArtifact "
+				+ "id < Artifact # Artifact "
+				+ "a id a";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(0,resultChecker.getWarnings().size());

@@ -192,11 +192,13 @@ public class Checker {
 		types.add(model.getInstanceOfMap().get(entity));
 		while(true){
 			int size = types.size();
+			Set<String> newtypes = new HashSet<>();
 			for(String t : types){
 				if(model.getSubtypesMap().containsKey(t)){
-					types.add(model.getSubtypesMap().get(t));
+					newtypes.add(model.getSubtypesMap().get(t));
 				}
 			}
+			types.addAll(newtypes);
 			if(types.size()==size)
 				break;
 		}
