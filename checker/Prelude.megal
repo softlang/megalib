@@ -30,6 +30,8 @@ uses < System # Technology
 uses < System # Concept
 uses < Technology # Technology
 uses < Technology # Concept
+uses < Technology # Language
 uses < Artifact # Concept
 uses < Artifact # System
 uses < Artifact # Technology
+uses < Artifact # Language

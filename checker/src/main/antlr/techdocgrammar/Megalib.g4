@@ -31,8 +31,8 @@ link: name '=' LINK;
 name: WORD;
 
 //definition of word
-WORD: [a-zA-Z]+;
-LINK: '"' (~(' '|'\t'|'\f'|'\n'|'\r'))* '"' ;
+WORD: ([a-zA-Z] | '.')+;
+LINK: '"' (~(' '|'\t'|'\f'|'\n'|'\r'))+ '"' ;
 WS: (' '|'\t'|'\f'|'\n'|'\r') -> skip;
 
 Arrow: '|->';
