@@ -49,7 +49,7 @@ public class Checker {
 	private void checkLinkedEntityDeclared(String name) {
 		if (!(model.getSubtypesMap().containsKey(name) || model.getInstanceOfMap().containsKey(name)
 				|| model.getRelationDeclarationMap().containsKey(name) || model.getRelationshipInstanceMap().containsKey(name))) {
-			warnings.add("Error at Link of '" + name + "' the instance does not exist");
+			warnings.add("Error at Link of '" + name + "' the entity does not exist");
 		}
 	}
 	
@@ -95,14 +95,18 @@ public class Checker {
 	}
 	
 	public void checkInstanceDeclarations() {
-		for(String instance : model.getInstanceOfMap().keySet()){
-			String type = model.getInstanceOfMap().get(instance);
+		for(String entity : model.getInstanceOfMap().keySet()){
+			if(model.getSubtypesMap().containsKey(entity) || entity.equals("Entity")){
+				warnings.add("Error at entity declaration '"+entity+"'. It is defined as a type and instance at the same time.");
+				continue;
+			}
+			String type = model.getInstanceOfMap().get(entity);
 			if(type.equals("Entity")){
-				warnings.add("Error at instance declaration of '"+instance+"'. The type is underspecified.");
+				warnings.add("Error at entity declaration of '"+entity+"'. The type is underspecified.");
 				continue;
 			}
 			if(!model.getSubtypesMap().containsKey(type)){
-				warnings.add("Error at instance declaration of '"+instance+"'. The type '"
+				warnings.add("Error at entity declaration of '"+entity+"'. The type '"
 						+ type + "' is not declared.");
 			}
 		}
@@ -149,31 +153,31 @@ public class Checker {
 	/**
 	 * Checks if the entities involved in the relationship have fitting types concerning the relationship's declaration.
 	 * @param name
-	 * @param instance
+	 * @param entity
 	 * @param declarations
 	 */
-	private void checkRelationshipInstanceFitsDeclarations(String name, List<String> instance, Set<List<String>> declarations) {
+	private void checkRelationshipInstanceFitsDeclarations(String name, List<String> entity, Set<List<String>> declarations) {
 		if(declarations.parallelStream()
-				.filter(decl -> relationshipInstanceFitsDeclaration(instance,decl))
+				.filter(decl -> relationshipInstanceFitsDeclaration(entity,decl))
 				.collect(Collectors.toList())
 				.isEmpty())
-			warnings.add("Error at relationship instance '"+instance.get(0)+" "+name+" "+instance.get(1)+"'! The instance"
+			warnings.add("Error at relationship instance '"+entity.get(0)+" "+name+" "+entity.get(1)+"'! The instance"
 					+ " does not fit any declaration.");
 	}
 
 
 	/**
-	 * Determines all (upper) types of an instance and performs a containment test.
-	 * @param instances
+	 * Determines all (upper) types of an entity and performs a containment test.
+	 * @param entitys
 	 * @param decl
 	 * @return
 	 */
-	private boolean relationshipInstanceFitsDeclaration(List<String> instances, List<String> decl) {
-		if(instances.size()!=decl.size()){
+	private boolean relationshipInstanceFitsDeclaration(List<String> entitys, List<String> decl) {
+		if(entitys.size()!=decl.size()){
 			return false;
 		}
-		for(int i = 0; i < instances.size();i++){
-			if(!isInstanceOf(instances.get(i), decl.get(i)))
+		for(int i = 0; i < entitys.size();i++){
+			if(!isInstanceOf(entitys.get(i), decl.get(i)))
 				return false;
 		}
 		return true;
@@ -227,9 +231,9 @@ public class Checker {
 		for (String name : map.keySet()) {
 			if (checkFunctionDeclarationExists(name)) {
 				Set<Function> declarations = model.getFunctionDeclarations().get(name);
-				Set<Function> instances = map.get(name);
-				checkFunctionApplicationInitialisedArtifacts(name,instances);
-				instances.forEach(i->checkFunctionInstanceFitsDeclaration(name,i,declarations));
+				Set<Function> entitys = map.get(name);
+				checkFunctionApplicationInitialisedArtifacts(name,entitys);
+				entitys.forEach(i->checkFunctionInstanceFitsDeclaration(name,i,declarations));
 			}
 		}
 	}
@@ -242,15 +246,15 @@ public class Checker {
 			return true;
 	}
 	
-	private void checkFunctionApplicationInitialisedArtifacts(String name, Set<Function> instances) {
-		for (Function instance : instances) {
-			List<String> parameters = instance.getParameterList();
+	private void checkFunctionApplicationInitialisedArtifacts(String name, Set<Function> entitys) {
+		for (Function entity : entitys) {
+			List<String> parameters = entity.getParameterList();
 			for (String p : parameters) {
 				if(!model.getInstanceOfMap().containsKey(p)){
 					warnings.add("Error at Function '" + name + "'! The parameter '" + p + "' has not been declared!");
 				}
 			}
-			List<String> outputs = instance.getReturnList();
+			List<String> outputs = entity.getReturnList();
 			for(String o : outputs){
 				if(!model.getInstanceOfMap().containsKey(o)){
 					warnings.add("Error at Function '" + name + "'! The output '" + o + "' has not been declared!");
@@ -260,23 +264,23 @@ public class Checker {
 	}
 
 	/**
-	 * Checks whether the function instance fits to any declaration
+	 * Checks whether the function entity fits to any declaration
 	 * @param name
-	 * @param instance
+	 * @param funapplication
 	 * @param declarations
 	 */
-	private void checkFunctionInstanceFitsDeclaration(String name, Function instance, Set<Function> declarations) {
+	private void checkFunctionInstanceFitsDeclaration(String name, Function funapplication, Set<Function> declarations) {
 		if(declarations.parallelStream()
-				.filter(d->checkInstanceElementOfDeclaration(instance,d))
+				.filter(d->checkInstanceElementOfDeclaration(funapplication,d))
 				.collect(Collectors.toList())
 				.isEmpty()){
-			warnings.add("Error at function application of '"+name+"' with parameters "+instance.getParameterList().toString()+" "
-					+ "The instances do not fit any function declaration!");
+			warnings.add("Error at function application of '"+name+"' with parameters "+funapplication.getParameterList().toString()+" "
+					+ "The entities do not match any function declaration!");
 		}
 	}
 	
-	private boolean checkInstanceElementOfDeclaration(Function instance, Function declaration) {
-		List<String> parameter = instance.getParameterList();
+	private boolean checkInstanceElementOfDeclaration(Function funapplication, Function declaration) {
+		List<String> parameter = funapplication.getParameterList();
 		List<String> parameterTypes = declaration.getParameterList();
 		if(parameter.size()!=parameterTypes.size())
 			return false;
@@ -284,7 +288,7 @@ public class Checker {
 			if(!isElementOf(parameter.get(i), parameterTypes.get(i)))
 				return false;
 		}
-		List<String> returnValues = instance.getReturnList();
+		List<String> returnValues = funapplication.getReturnList();
 		List<String> returnTypes = declaration.getReturnList();
 		if(returnValues.size()!=returnTypes.size())
 			return false;

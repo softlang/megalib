@@ -17,7 +17,7 @@ public class CheckerTest {
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
-		assertTrue(resultChecker.getWarnings().contains("Error at Link of 'entity' the instance does not exist"));
+		assertTrue(resultChecker.getWarnings().contains("Error at Link of 'entity' the entity does not exist"));
 	}
 	
 	@Test
@@ -82,7 +82,7 @@ public class CheckerTest {
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
-		assertTrue(resultChecker.getWarnings().contains("Error at instance declaration of 'Java'. The type 'Lang' is not declared."));
+		assertTrue(resultChecker.getWarnings().contains("Error at entity declaration of 'Java'. The type 'Lang' is not declared."));
 	}
 	
 	@Test
@@ -99,7 +99,16 @@ public class CheckerTest {
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
-		assertTrue(resultChecker.getWarnings().contains("Error at instance declaration of 'Haskell'. The type is underspecified."));
+		assertTrue(resultChecker.getWarnings().contains("Error at entity declaration of 'Haskell'. The type is underspecified."));
+	}
+	
+	@Test
+	public void testInstanceIsAType(){
+		String data = ("File : Artifact");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at entity declaration 'File'. It is defined as a type and instance at the same time."));
 	}
 	
 	
@@ -162,9 +171,7 @@ public class CheckerTest {
 				+ "\na partOf b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
-		resultChecker.getWarnings().forEach(w->System.out.println(w));
 		assertEquals(2,resultChecker.getWarnings().size());
-		resultChecker.getWarnings().forEach(w->System.out.println(w));
 		assertTrue(resultChecker.getWarnings().contains("Error at relationship instance 'a partOf b'! The instance"
 				+ " does not fit any declaration."));
 		assertTrue(resultChecker.getWarnings().contains("The entity 'b' is unknown!"));
@@ -242,14 +249,49 @@ public class CheckerTest {
 	}
 	
 	@Test
-	public void testFunctionDeclarationFirstParameterNotALanguage() {
+	public void testFunctionDeclarationSingleDomainNotALanguage() {
 		String data = ("Haskell : Language "
-				+ "File : Artifact "
-				+ "merge : File -> Haskell ");
+				+ "a : Artifact "
+				+ "merge : a -> Haskell ");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
-		assertTrue(resultChecker.getWarnings().contains("Error at function declaration of 'merge' : 'File' is not an instance of Language"));
+		assertTrue(resultChecker.getWarnings().contains("Error at function declaration of 'merge' : 'a' is not an instance of Language"));
 	}
+	
+	@Test
+	public void testFunctionDeclarationSingleRangeNotALanguage() {
+		String data = ("Haskell : Language "
+				+ "a : Artifact "
+				+ "merge : Haskell -> a ");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at function declaration of 'merge' : 'a' is not an instance of Language"));
+	}
+	
+	@Test
+	public void testFunctionDeclarationMultiDomainNotALanguage(){
+		String data = ("Haskell : Language "
+				+ "a : Artifact "
+				+ "merge : Haskell # a -> Haskell ");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at function declaration of 'merge' : 'a' is not an instance of Language"));
+	}
+	
+	@Test
+	public void testFunctionDeclarationMultiRangeNotALanguage(){
+		String data = ("Haskell : Language "
+				+ "a : Artifact "
+				+ "merge : Haskell # Haskell -> Haskell # a ");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at function declaration of 'merge' : 'a' is not an instance of Language"));
+	}
+	
+	
 	
 }
