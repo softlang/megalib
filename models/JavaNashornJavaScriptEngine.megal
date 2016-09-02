@@ -1,0 +1,28 @@
+module NashornJavaScriptEngine
+
+
+Java : Language
+JavaObject : Language
+JavaScript : Language
+Nashorn : Technology
+Interpreter : Concept
+Nashorn realizes Interpreter
+
+MyJavaApp : System
+ScriptJob : Artifact
+ScriptJob partOf MyJavaApp
+ScriptJob uses Nashorn
+
+DemoScript : Transient
+DemoScript elementOf JavaScript
+returnValue : Transient
+returnValue elementOf JavaObject
+
+eval : JavaScript -> JavaObject
+eval(DemoScript) |-> returnValue
+Nashorn implements eval
+
+
+Nashorn = "http://www.oracle.com/technetwork/articles/java/jf14-nashorn-2126515.html"
+Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
+Interpreter = "https://en.wikipedia.org/wiki/Interpreter_(computing)"
