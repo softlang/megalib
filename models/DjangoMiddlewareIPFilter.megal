@@ -1,0 +1,48 @@
+module DjangoMiddlewareIPFilter
+
+
+WebApplicationFramework < Technology
+Django : WebApplicationFramework
+Python : Language
+PythonObject : Language
+Django uses Python
+
+
+Middleware : Concept
+Django.Middleware : Technology
+Django.Middleware partOf Django
+Django.Middleware facilitates Middleware
+WebApplication < System
+MyWebApp : WebApplication
+IPFilter : Artifact
+IPFilter partOf MyWebApp
+IPFilter elementOf Python
+IPFilter partOf MyWebApp
+IPFilter realizes Middleware
+
+HTTPRequest : Language
+PythonException : Language
+PythonException subsetOf PythonObject
+processRequest : HTTPRequest -> PythonException
+IPFilter implements processRequest
+
+
+RequestWithBlockedIP : Transient
+RequestWithBlockedIP elementOf HTTPRequest
+RequestWithNotBlockedIP : Transient
+RequestWithNotBlockedIP elementOf HTTPRequest
+PermissionDenied : Transient
+PermissionDenied elementOf PythonException
+None : Transient
+None elementOf PythonException
+processRequest(RequestWithBlockedIP) |-> PermissionDenied
+processRequest(RequestWithNotBlockedIP) |-> None
+
+
+IPFilter = "http://stackoverflow.com/documentation/django/1721/middleware#t=201608290816363596378"
+Django = "https://www.djangoproject.com/"
+Python = "https://docs.python.org/2/reference/"
+Middleware = "https://en.wikipedia.org/wiki/Middleware"
+Django.Middleware = "https://docs.djangoproject.com/es/1.10/topics/http/middleware/"
+PythonException = "https://docs.python.org/3/tutorial/errors.html"
+HTTPRequest = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5"
