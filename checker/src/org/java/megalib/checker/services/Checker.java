@@ -5,11 +5,17 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
@@ -61,6 +67,28 @@ public class Checker {
 			warnings.add("Error at Link to '"+l+"' : The URL is malformed!");
 			return;
 		}
+		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+		     public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+		         java.security.cert.X509Certificate[] chck = null;
+		         return chck;
+		     }
+		     public void checkClientTrusted(
+		             java.security.cert.X509Certificate[] arg0, String arg1)
+		                     throws java.security.cert.CertificateException {}
+		     public void checkServerTrusted(
+		             java.security.cert.X509Certificate[] arg0, String arg1)
+		                     throws java.security.cert.CertificateException {}
+		 } };
+
+		 // Install the all-trusting trust manager
+		 try {
+		     SSLContext sc = SSLContext.getInstance("TLS");
+		     sc.init(null, trustAllCerts, new SecureRandom());
+		     HttpsURLConnection
+		     .setDefaultSSLSocketFactory(sc.getSocketFactory());
+		 } catch (Exception e) {
+		     ;
+		 }
 		HttpURLConnection huc;
 		try {
 			huc = (HttpURLConnection) u.openConnection();
@@ -79,8 +107,10 @@ public class Checker {
 				warnings.add("Error at Link to '"+l+"' : Link not working "+huc.getResponseCode());
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
 			warnings.add("Error at Link to '"+l+"' : Connection failed!");
 		}
+		huc.disconnect();
 		
 	}
 	
