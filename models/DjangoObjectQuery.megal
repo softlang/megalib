@@ -1,0 +1,46 @@
+module DjangoObjectQuery
+
+
+WebApplicationFramework < Technology
+Django : WebApplicationFramework
+Python : Language
+PythonObject : Language
+Django uses Python
+
+
+MVC : Concept
+Model : Concept
+Model partOf MVC
+ORM  : Concept
+Database : Concept
+
+
+Django facilitates MVC
+Django.Models : Technology
+Django.Models partOf Django
+Django.Models facilitates ORM 
+
+
+WebApplication < System
+BookSystem : WebApplication
+BookClass : Artifact
+BookClass partOf BookSystem
+BookSystem uses Django
+BookClass elementOf Python
+BookClass realizes Model
+
+
+books : Transient
+books elementOf PythonObject
+books conformsTo BookClass
+filteredBooks : Transient
+filteredBooks elementOf PythonObject
+filteredBooks conformsTo BookClass
+filteredBooks partOf books
+
+
+DjangoQuery : Language
+NameEqualsNothing : Transient
+NameEqualsNothing elementOf DjangoQuery
+filter : DjangoQuery # PythonObject -> PythonObject
+filter(NameEqualsNothing,books) |-> filteredBooks
