@@ -44,7 +44,7 @@ ContributionsController : Artifact
 ContributionsController elementOf Ruby
 
 
-RubyOnRails = "http://api.rubyonrails.org/"
+RubyOnRails = "http://rubyonrails.org/"
 Ruby = "https://www.ruby-lang.org/de/"
 URI = "https://de.wikipedia.org/wiki/Uniform_Resource_Identifier"
 URL = "https://de.wikipedia.org/wiki/Uniform_Resource_Locator"

@@ -1,0 +1,68 @@
+module EMF
+
+
+Java : Language
+JavaObject : Language
+EMF : Technology
+EMF uses Java
+EMFCore : Technology
+EMFCore partOf EMF
+
+
+org.eclipse.emf.ecore : Technology
+org.eclipse.emf.ecore partOf EMFCore
+org.eclipse.emf.ecore uses Java
+ECore : Language
+org.eclipse.emf.ecore implements ECore
+
+
+
+EMFPersistence : Technology
+EMFPersistence partOf EMFCore
+Serialization : Concept
+EMFPersistence realizes Serialization
+XML : Language
+XMI : Language
+XMI subsetOf XML
+Specification : Concept
+XMISpec : Artifact
+XMISpec realizes Specification
+XMISpec defines XMI
+ECore.XMI : Language
+EMF implements ECore.XMI
+ECore.XMI subsetOf XMI
+
+
+MyModels.XMI : Language
+MyModels.XMI subsetOf ECore.XMI
+MyMeta.ecore : Artifact
+MyMeta.ecore defines MyModels.XMI
+MyMeta.ecore elementOf ECore.XMI
+
+
+Model : Concept
+MyModel : Artifact
+MyModel realizes Model
+MyModel elementOf JavaObject
+MyModel conformsTo MyMeta.ecore
+MyModel.xmi : Artifact
+MyModel.xmi elementOf MyModels.XMI
+MyModel.xmi conformsTo MyMeta.ecore
+MyModel correspondsTo MyModel.xmi
+MyMeta.genmodel : Artifact
+
+
+saveModel : JavaObject -> MyModels.XMI
+EMFPersistence implements saveModel
+saveModel(MyModel) |-> MyModel.xmi
+loadModel : MyModels.XMI -> JavaObject
+EMFPersistence implements loadModel
+loadModel(MyModel.xmi) |-> MyModel
+
+
+Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
+EMF = "https://eclipse.org/modeling/emf/"
+EMFCore = "http://download.eclipse.org/modeling/emf/emf/javadoc/xsd/2.9.0/"
+org.eclipse.emf.ecore = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/org/eclipse/emf/ecore/package-summary.html#details"
+XML = "http://www.w3schools.com/xml/"
+XMI = "http://www.omg.org/spec/XMI/"
