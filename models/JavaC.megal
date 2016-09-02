@@ -1,12 +1,23 @@
-module JavaC import Prelude
+module JavaC 
+
 Java : Language
 JavaByteCode : Language
+
 Compiler < Technology
+JDK : Technology
 javac : Compiler
+javac partOf JDK
+
 aJavaProgram : Artifact
-aJavaByteCodeProgram : Artifact
 aJavaProgram elementOf Java
+aJavaByteCodeProgram : Artifact
 aJavaByteCodeProgram elementOf JavaByteCode
-compilation : Java -> JavaByteCode
-javac implements compilation
-compilation(aJavaProgram) |-> aJavaByteCodeProgram
+
+compile : Java -> JavaByteCode
+javac implements compile
+compile(aJavaProgram) |-> aJavaByteCodeProgram
+
+Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
+JavaByteCode = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html"
+javac = "https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-3.html"
+JDK = "http://www.oracle.com/technetwork/java/javase/documentation/jdk8-doc-downloads-2133158.html"

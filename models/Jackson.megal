@@ -1,21 +1,32 @@
-module Jackson import Prelude
+module Jackson
+
 JSON : Language
 Java : Language
-Model : Artifact
-Model elementOf Java
-aModel : Transient
 JavaObject : Language
+ModelClass : Artifact
+ModelClass elementOf Java
+
+aModel : Transient
 aModel elementOf JavaObject
-aModel conformsTo Model
-aJSONString : Artifact
+aModel conformsTo ModelClass
+aJSONString : Fragment
 aJSONString elementOf JSON
-aJSONString conformsTo Model
+aJSONString conformsTo ModelClass
+aJSONString correspondsTo aModel
+
 Jackson : Technology
 ObjectMapper : Technology
 ObjectMapper partOf Jackson
 Serialization : Concept
-ObjectMapper facilitates Serialization
+ObjectMapper realizes Serialization
+
 readValue : JSON -> JavaObject
 readValue(aJSONString) |-> aModel
+readValue realizes Serialization
 ObjectMapper implements readValue 
-aJSONString correspondsTo aModel
+
+Jackson = "https://github.com/FasterXML"
+Serialization = "https://en.wikipedia.org/wiki/Serialization"
+ObjectMapper = "https://github.com/FasterXML/jackson-databind/blob/master/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java"
+Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
+JSON = "http://www.json.org/"

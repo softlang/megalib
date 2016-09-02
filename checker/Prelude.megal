@@ -13,6 +13,7 @@ Fragment < Artifact
 partOf < Artifact # Artifact
 partOf < Artifact # System
 partOf < Technology # Technology
+partOf < Concept # Concept
 elementOf < Artifact # Language
 defines < Artifact # Entity
 implements < Artifact # Function
@@ -35,4 +36,7 @@ uses < Artifact # Concept
 uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
+uses < Function # Function
 realizes < Artifact # Concept
+realizes < Technology # Concept
+realizes < Function # Concept

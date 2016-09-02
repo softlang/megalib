@@ -1,0 +1,36 @@
+WebApplicationFramework < Technology
+
+
+RubyOnRails : WebApplicationFramework
+Ruby : Language
+RubyOnRails uses Ruby
+
+
+Querying : Concept
+Rails.ActiveRecord : Technology
+Rails.ActiveRecord partOf RubyOnRails
+Rails.ActiveRecord facilitates Querying
+
+
+ActiveRecordQuery : Language
+RubyObject : Language
+where : ActiveRecordQuery -> RubyObject
+Rails.ActiveRecord implements where
+
+
+MVC : Concept
+RubyOnRails facilitates MVC
+Model : Concept
+Model partOf MVC
+Page : Artifact
+Page realizes Model
+Page uses Rails.ActiveRecord
+Page elementOf Ruby
+UnverifiedPage : Transient
+UnverifiedPage elementOf RubyObject
+UnverifiedPage conformsTo Page
+
+
+verifiedIsfalse : Transient
+verifiedIsfalse elementOf ActiveRecordQuery
+where(verifiedIsfalse) |-> UnverifiedPage

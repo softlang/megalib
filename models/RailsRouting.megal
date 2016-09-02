@@ -1,10 +1,10 @@
 module RailsRouting
+
+
 WebApplicationFramework < Technology
 RubyOnRails : WebApplicationFramework
 Ruby : Language
 RubyOnRails uses Ruby
-
-
 Routing : Concept
 RubyOnRails.Routing : Technology
 RubyOnRails.Routing partOf RubyOnRails
@@ -12,9 +12,10 @@ RubyOnRails.Routing facilitates Routing
 
 
 WebApplication < System
-MyApp : WebApplication
-MyApp uses RubyOnRails
+101Rails : WebApplication
+101Rails uses RubyOnRails
 routes.rb : Artifact
+routes.rb partOf 101Rails
 routes.rb elementOf Ruby
 routes.rb realizes Routing
 
@@ -25,20 +26,22 @@ URL subsetOf URI
 HTTPResponse : Language
 HTML : Language
 showPage : URL -> HTTPResponse
-MyApp implements showPage
+101Rails implements showPage
 
-RubyOnRails.orgLink : Transient
-RubyOnRails.orgLink elementOf URL
-RubyOnRails.orgResponse : Transient
-RubyOnRails.orgResponse elementOf HTTPResponse
-showPage(RubyOnRails.orgLink) |-> RubyOnRails.orgResponse
+
+Contribute.new.URL : Transient
+Contribute.new.URL elementOf URL
+Contribute.new.Response : Transient
+Contribute.new.Response elementOf HTTPResponse
+showPage(Contribute.new.URL) |-> Contribute.new.Response
 WebResource < Resource
-RubyOnRailsWebsite : WebResource
-RubyOnRailsWebsite elementOf HTML
-RubyOnRailsWebsite partOf RubyOnRails.orgResponse
+Contribute.new.Page : WebResource
+Contribute.new.Page elementOf HTML
+Contribute.new.Page partOf Contribute.new.Response
 
-APIPageController : Artifact
-APIPageController elementOf Ruby
+
+ContributionsController : Artifact
+ContributionsController elementOf Ruby
 
 
 RubyOnRails = "http://api.rubyonrails.org/"
@@ -46,4 +49,5 @@ Ruby = "https://www.ruby-lang.org/de/"
 URI = "https://de.wikipedia.org/wiki/Uniform_Resource_Identifier"
 URL = "https://de.wikipedia.org/wiki/Uniform_Resource_Locator"
 HTTPResponse = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html"
-RubyOnRailsWebsite = "http://www.rubyonrails.org"
+ContributionsController = "https://github.com/101companies/101rails/blob/326a894e38b164c1f1508a73b1954ff807e27cf3/app/controllers/contributions_controller.rb"
+Contribute.new.Page = "http://101companies.org/contribute/new"
