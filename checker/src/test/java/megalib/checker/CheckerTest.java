@@ -266,6 +266,16 @@ public class CheckerTest {
 	}
 	
 	@Test
+	public void testFunctionDeclarationDomainUnknown(){
+		String data = ("Haskell : Language "
+				+ "merge : A -> Haskell");
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at function declaration of 'merge' : 'A' is unknown."));
+	}
+	
+	@Test
 	public void testFunctionDeclarationSingleDomainNotALanguage() {
 		String data = ("Haskell : Language "
 				+ "a : Artifact "

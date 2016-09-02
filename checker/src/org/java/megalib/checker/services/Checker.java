@@ -107,7 +107,6 @@ public class Checker {
 				warnings.add("Error at Link to '"+l+"' : Link not working "+huc.getResponseCode());
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 			warnings.add("Error at Link to '"+l+"' : Connection failed!");
 		}
 		huc.disconnect();
@@ -250,6 +249,10 @@ public class Checker {
 	
 	private void checkIsLanguage(String fname,String language) {
 		String type = model.getInstanceOfMap().get(language);
+		if(type==null){
+			warnings.add("Error at function declaration of '"+fname+"' : '"+language+"' is unknown.");
+			return;
+		}
 		while(!type.equals("Entity")){
 			if(type.equals("Language"))
 				return;
