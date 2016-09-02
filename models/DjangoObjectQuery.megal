@@ -12,7 +12,6 @@ MVC : Concept
 Model : Concept
 Model partOf MVC
 ORM  : Concept
-Database : Concept
 
 
 Django facilitates MVC
@@ -44,3 +43,12 @@ NameEqualsNothing : Transient
 NameEqualsNothing elementOf DjangoQuery
 filter : DjangoQuery # PythonObject -> PythonObject
 filter(NameEqualsNothing,books) |-> filteredBooks
+
+
+BookSystem = "http://stackoverflow.com/documentation/django/888/models#t=201608290816341017644"
+Django = "https://www.djangoproject.com/"
+Django.Models = "https://docs.djangoproject.com/en/1.10/topics/db/models/"
+Python = "https://docs.python.org/2/reference/"
+MVC = "https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller"
+ORM = "https://en.wikipedia.org/wiki/Object-relational_mapping"
+DjangoQuery = "https://docs.djangoproject.com/es/1.10/topics/db/queries/"
