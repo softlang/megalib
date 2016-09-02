@@ -30,7 +30,7 @@ public class ParserGeneratorTest {
 	@Before
 	public void setUp() throws Exception {
 		sut = new ParserGenerator();
-		String filepath = "./TestFiles/prelude.megal";
+		String filepath = "Prelude.megal";
 		String data = FileUtils.readFileToString(new File(filepath));
 		inputStream1 = new ByteArrayInputStream(data.getBytes());
 		
