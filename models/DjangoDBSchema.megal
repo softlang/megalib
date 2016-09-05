@@ -1,0 +1,68 @@
+module DjangoDBSchema
+
+WebApplicationFramework : Concept
+Django : Technology
+Django realizes WebApplication
+Python : Language
+PythonInterpreter : Technology
+Interpreter : Concept
+PythonInterpreter realizes Interpreter
+PythonInterpreter implements Python
+PythonObject : Language
+Django uses Python
+
+
+Database : Concept
+DatabaseManagement : Concept
+MVC : Concept
+Django facilitates MVC
+WebApplication : Concept
+MyWebApp : System
+MyWebApp realizes WebApplication
+MyWebApp realizes MVC
+
+
+HTML : Language
+DjangoCLI : Language
+DjangoCLI subsetOf Python
+Django implements DjangoCLI
+SQL : Language
+DDL : Language
+DDL subsetOf SQL
+SQLITE3IMAGE : Language
+
+
+dbsqlite3 : Artifact
+dbsqlite3 realizes Database
+dbsqlite3 partOf MyWebApp
+dbsqlite3 elementOf SQLITE3IMAGE
+models.py : Artifact
+models.py elementOf Python
+BusinessModel : Concept
+BusinessModel partOf MVC
+models.py realizes BusinessModel
+models.py partOf MyWebApp
+pythonObject conformsTo models.py
+models.py correspondsTo dbsqlite3
+
+
+manage.py : Artifact
+manage.py realizes DatabaseManagement
+manage.py partOf MyWebApp
+manage.py implements schemaRequest
+
+
+dbSchema : Artifact
+dbSchema elementOf DDL
+pythonObject : Artifact
+schemaRequest : SQLITE3IMAGE -> DDL
+schemaRequest(dbsqlite3) |-> dbSchema
+
+
+schemaRequCmd : Artifact
+schemaRequCmd elementOf DjangoCLI
+String : Language
+DDL subsetOf String
+evalCLI : DjangoCLI -> String
+Django implements evalCLI
+evalCLI(schemaRequCmd) |-> dbSchema

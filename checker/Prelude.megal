@@ -40,3 +40,4 @@ uses < Function # Function
 realizes < Artifact # Concept
 realizes < Technology # Concept
 realizes < Function # Concept
+realizes < System # Concept
