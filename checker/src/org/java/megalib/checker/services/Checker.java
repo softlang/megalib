@@ -5,6 +5,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.List;
@@ -81,14 +83,18 @@ public class Checker {
 		 } };
 
 		 // Install the all-trusting trust manager
-		 try {
-		     SSLContext sc = SSLContext.getInstance("TLS");
-		     sc.init(null, trustAllCerts, new SecureRandom());
+		 
+		     SSLContext sc = null;
+			try {
+				sc = SSLContext.getInstance("TLS");
+				sc.init(null, trustAllCerts, new SecureRandom());
+			} catch (NoSuchAlgorithmException | KeyManagementException e1) {
+				e1.printStackTrace();
+			}
+		     
 		     HttpsURLConnection
 		     .setDefaultSSLSocketFactory(sc.getSocketFactory());
-		 } catch (Exception e) {
-		     ;
-		 }
+		 
 		HttpURLConnection huc;
 		try {
 			huc = (HttpURLConnection) u.openConnection();
@@ -102,13 +108,19 @@ public class Checker {
 			warnings.add("Error at Link to '"+l+"' : ProtocolException!");
 			return;
 		}
-		try {
-			if(!(huc.getResponseCode()==HttpURLConnection.HTTP_OK)){
-				warnings.add("Error at Link to '"+l+"' : Link not working "+huc.getResponseCode());
+		int tries = 5;
+		while(tries>0){
+			try {
+				if(!(huc.getResponseCode()==HttpURLConnection.HTTP_OK)){
+					warnings.add("Error at Link to '"+l+"' : Link not working "+huc.getResponseCode());
+				}
+				break;
+			} catch (IOException e) {
+				tries--;
 			}
-		} catch (IOException e) {
-			warnings.add("Error at Link to '"+l+"' : Connection failed!");
 		}
+		if(tries==0)
+			warnings.add("Error at Link to '"+l+"' : Connection failed!");
 		huc.disconnect();
 		
 	}
