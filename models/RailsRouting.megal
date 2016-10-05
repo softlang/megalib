@@ -5,7 +5,7 @@ WebApplicationFramework < Technology
 RubyOnRails : WebApplicationFramework
 Ruby : Language
 RubyOnRails uses Ruby
-Routing : Concept
+Routing : Paradigm
 RubyOnRails.Routing : Technology
 RubyOnRails.Routing partOf RubyOnRails
 RubyOnRails.Routing facilitates Routing
@@ -14,10 +14,9 @@ RubyOnRails.Routing facilitates Routing
 WebApplication < System
 101Rails : WebApplication
 101Rails uses RubyOnRails
-routes.rb : Artifact
+routes.rb : Artifact<Ruby>
 routes.rb partOf 101Rails
-routes.rb elementOf Ruby
-routes.rb realizes Routing
+routes.rb uses Routing
 
 
 URI : Language
@@ -29,18 +28,15 @@ showPage : URL -> HTTPResponse
 101Rails implements showPage
 
 
-Contribute.new.URL : Transient
-Contribute.new.URL elementOf URL
-Contribute.new.Response : Transient
-Contribute.new.Response elementOf HTTPResponse
+Contribute.new.URL : Transient<URL>
+Contribute.new.Response : Transient<HTTPResponse>
 showPage(Contribute.new.URL) |-> Contribute.new.Response
-WebResource < Resource
-Contribute.new.Page : WebResource
-Contribute.new.Page elementOf HTML
+WebResource < Artifact
+Contribute.new.Page : WebResource<HTML>
 Contribute.new.Page partOf Contribute.new.Response
 
 
-ContributionsController : Artifact
+ContributionsController : Artifact<Ruby>
 ContributionsController elementOf Ruby
 
 

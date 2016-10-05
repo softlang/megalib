@@ -3,26 +3,21 @@ module Jackson
 JSON : Language
 Java : Language
 JavaObject : Language
-ModelClass : Artifact
-ModelClass elementOf Java
+ModelClass : Artifact<Java>
 
-aModel : Transient
-aModel elementOf JavaObject
+aModel : Transient<JavaObject>
 aModel conformsTo ModelClass
-aJSONString : Fragment
-aJSONString elementOf JSON
+aJSONString : Transient<JSON>
 aJSONString conformsTo ModelClass
 aJSONString correspondsTo aModel
 
+Serialization < Technology
 Jackson : Technology
-ObjectMapper : Technology
+ObjectMapper : Serialization
 ObjectMapper partOf Jackson
-Serialization : Concept
-ObjectMapper realizes Serialization
 
 readValue : JSON -> JavaObject
 readValue(aJSONString) |-> aModel
-readValue realizes Serialization
 ObjectMapper implements readValue 
 
 Jackson = "https://github.com/FasterXML"

@@ -1,8 +1,8 @@
 grammar Megalib;
 
 //Head of the construct, containing entity or function
-declaration: module? (imports)* ( entityDeclaration
-								| entityInstance
+declaration: module? (imports)* ( subtypeDeclaration
+								| instanceDeclaration
 								| relationDeclaration
 								| relationInstance
 								| functionDeclaration
@@ -13,9 +13,10 @@ module: 'module' name;
 
 imports: 'import' name;
 
-entityDeclaration: name '<' name;
+subtypeDeclaration: name '<' name;
 
-entityInstance: name ':' name;
+//1.) instance, 2.) type, 3.) optional language
+instanceDeclaration : name ':' name ( '<' name '>' )?;
 
 relationDeclaration: name '<' name '#' name;
 

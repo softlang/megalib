@@ -26,12 +26,15 @@ public class MegaModelLoader {
 	 * A set containing the qualified names of all loaded models
 	 */
 	private Set<String> loadedModules;
-	private MegaModel model;
+	/**
+	 * A growing megamodel that starts with the prelude statements
+	 */
+	private MegaModel initialModel;
 	
 	public MegaModelLoader(){
 		loadedModules = new HashSet<String>();
-		model = new MegaModel();
-		model = createFromFile("Prelude.megal");
+		initialModel = new MegaModel();
+		initialModel = createFromFile("Prelude.megal");
 	}
 	
 	public MegaModel createFromFile(String filepath) {
@@ -49,13 +52,13 @@ public class MegaModelLoader {
 			folder = f.getParent();
 		MegaModel newModel = createFromString(data,folder);
 		fuseModels(newModel);
-		return model;
+		return initialModel;
 	}
 	
 	public MegaModel createFromString(String data){
 		MegaModel newModel = createFromString(data,"");
 		fuseModels(newModel);
-		return model;
+		return initialModel;
 	}
 	
 	private MegaModel createFromString(String data, String folder){
@@ -67,10 +70,10 @@ public class MegaModelLoader {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		Set<String> importPaths = model.getImports();
+		Set<String> importPaths = initialModel.getImports();
 		for(String p : importPaths)
 			importModel(folder+p);
-		return model;
+		return initialModel;
 	}
 
 	public Listener getListener(InputStream stream) throws IOException{
@@ -91,21 +94,21 @@ public class MegaModelLoader {
 	}
 	
 	private void fuseModels(MegaModel importModel){
-		importModel.getLinkMap().forEach((k,v)-> model.addLinks(k, v));
-		importModel.getSubtypesMap().forEach((k,v)-> model.addSubtypeOf(k, v));
-		importModel.getInstanceOfMap().forEach((k,v)->model.addInstanceOf(k, v));
+		importModel.getLinkMap().forEach((k,v)-> initialModel.addLinks(k, v));
+		importModel.getSubtypesMap().forEach((k,v)-> initialModel.addSubtypeOf(k, v));
+		importModel.getInstanceOfMap().forEach((k,v)->initialModel.addInstanceOf(k, v));
 		importModel.getRelationshipInstanceMap()
 			.forEach((n,set)->set
-					.forEach(entry->model.addRelationInstances(n, entry)));
+					.forEach(entry->initialModel.addRelationInstances(n, entry)));
 		importModel.getRelationDeclarationMap()
 			.forEach((n,set)->set
-					.forEach(entry -> model.addRelationDeclaration(n, entry)));
+					.forEach(entry -> initialModel.addRelationDeclaration(n, entry)));
 		importModel.getFunctionDeclarations()
 			.forEach((n,set)->set
-					.forEach(entry -> model.addFunctionDeclaration(n, entry)));
+					.forEach(entry -> initialModel.addFunctionDeclaration(n, entry)));
 		importModel.getFunctionInstances()
 			.forEach((n,set)->set
-					.forEach(entry -> model.addFunctionInstance(n, entry)));
+					.forEach(entry -> initialModel.addFunctionInstance(n, entry)));
 	}
 	
 }

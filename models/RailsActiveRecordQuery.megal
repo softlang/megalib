@@ -6,7 +6,7 @@ Ruby : Language
 RubyOnRails uses Ruby
 
 
-Querying : Concept
+Querying : Paradigm
 Rails.ActiveRecord : Technology
 Rails.ActiveRecord partOf RubyOnRails
 Rails.ActiveRecord facilitates Querying
@@ -18,16 +18,12 @@ where : ActiveRecordQuery -> RubyObject
 Rails.ActiveRecord implements where
 
 
-MVC : Concept
+MVC : Paradigm
 RubyOnRails facilitates MVC
-Model : Concept
-Model partOf MVC
-Page : Artifact
-Page realizes Model
+ModelClass < Artifact
+Page : ModelClass<Ruby>
 Page uses Rails.ActiveRecord
-Page elementOf Ruby
-UnverifiedPage : Transient
-UnverifiedPage elementOf RubyObject
+UnverifiedPage : Transient<RubyObject>
 UnverifiedPage conformsTo Page
 
 

@@ -1,19 +1,15 @@
 Language < Entity
 Technology < Entity
 Artifact < Entity
+Transient < Artifact
 System < Entity
 Function < Entity
 Relation < Entity
-Concept < Entity
-File < Artifact
-Folder < Artifact
-Resource < Artifact
-Transient < Artifact
-Fragment < Artifact
+Paradigm < Entity
 partOf < Artifact # Artifact
 partOf < Artifact # System
 partOf < Technology # Technology
-partOf < Concept # Concept
+partOf < Paradigm # Paradigm
 elementOf < Artifact # Language
 defines < Artifact # Entity
 implements < Artifact # Function
@@ -25,19 +21,16 @@ conformsTo < Artifact # Artifact
 conformsTo < System # Artifact
 conformsTo < Technology # Artifact
 correspondsTo < Artifact # Artifact
-facilitates < Technology # Concept
+facilitates < Technology # Paradigm
+facilitates < Language # Paradigm
 uses < System # System
 uses < System # Technology
-uses < System # Concept
+uses < System # Paradigm
 uses < Technology # Technology
-uses < Technology # Concept
+uses < Technology # Paradigm
 uses < Technology # Language
-uses < Artifact # Concept
+uses < Artifact # Paradigm
 uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
 uses < Function # Function
-realizes < Artifact # Concept
-realizes < Technology # Concept
-realizes < Function # Concept
-realizes < System # Concept

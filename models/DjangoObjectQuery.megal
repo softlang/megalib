@@ -8,10 +8,10 @@ PythonObject : Language
 Django uses Python
 
 
-MVC : Concept
-Model : Concept
-Model partOf MVC
-ORM  : Concept
+MVC : Paradigm
+BusinessLogic : Paradigm
+BusinessLogic partOf MVC
+ORM  : Paradigm
 
 
 Django facilitates MVC
@@ -22,15 +22,14 @@ Django.Models facilitates ORM
 
 WebApplication < System
 BookSystem : WebApplication
-BookClass : Artifact
+BookClass : Artifact<Python>
 BookClass partOf BookSystem
 BookSystem uses Django
 BookClass elementOf Python
-BookClass realizes Model
+BookClass uses BusinessLogic
 
 
-books : Transient
-books elementOf PythonObject
+books : Artifact<PythonObject>
 books conformsTo BookClass
 filteredBooks : Transient
 filteredBooks elementOf PythonObject

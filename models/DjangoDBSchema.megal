@@ -1,25 +1,22 @@
 module DjangoDBSchema
 
-WebApplicationFramework : Concept
-Django : Technology
-Django realizes WebApplicationFramework
+WebApplicationFramework < Technology
+Django : WebApplicationFramework
 Python : Language
-PythonInterpreter : Technology
-Interpreter : Concept
-PythonInterpreter realizes Interpreter
+Interpreter < Technology
+PythonInterpreter : Interpreter
 PythonInterpreter implements Python
 PythonObject : Language
 Django uses Python
 
 
-Database : Concept
-DatabaseManagement : Concept
-MVC : Concept
+Database < Artifact  
+DesignPattern < Paradigm
+MVC : DesignPattern
 Django facilitates MVC
-WebApplication : Concept
-MyWebApp : System
-MyWebApp realizes WebApplication
-MyWebApp realizes MVC
+WebApplication < System
+MyWebApp : WebApplication
+MyWebApp uses MVC
 
 
 HTML : Language
@@ -32,29 +29,26 @@ DDL subsetOf SQL
 SQLITE3IMAGE : Language
 
 
-dbsqlite3 : Artifact
-dbsqlite3 realizes Database
+dbsqlite3 : Database<SQLITE3IMAGE>
 dbsqlite3 partOf MyWebApp
-dbsqlite3 elementOf SQLITE3IMAGE
-models.py : Artifact
-models.py elementOf Python
-BusinessLogic : Concept
-BusinessLogic partOf MVC
-models.py realizes BusinessLogic
+BusinessLogic < Artifact
+models.py : BusinessLogic<Python>
 models.py partOf MyWebApp
+pythonObject : Artifact<PythonObject>
 pythonObject conformsTo models.py
 models.py correspondsTo dbsqlite3
 
 
-manage.py : Artifact
-manage.py realizes DatabaseManagement
+DatabaseManagementScript < Artifact
+manage.py : DatabaseManagementScript<Python>
 manage.py partOf MyWebApp
 manage.py implements schemaRequest
 
 
-dbSchema : Artifact
+Schema < Artifact
+dbSchema : Schema
 dbSchema elementOf DDL
-pythonObject : Artifact
+
 schemaRequest : SQLITE3IMAGE -> DDL
 schemaRequest(dbsqlite3) |-> dbSchema
 
@@ -74,7 +68,6 @@ Python = "https://www.python.org/"
 PythonInterpreter = "https://www.python.org/"
 Interpreter = "https://en.wikipedia.org/wiki/Interpreter_(computing)"
 Database = "https://en.wikipedia.org/wiki/Database"
-DatabaseManagement = "https://en.wikipedia.org/wiki/Database#General-purpose_and_special-purpose_DBMSs"
 MVC = "https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller"
 WebApplication = "https://en.wikipedia.org/wiki/Web_application"
 HTML = "http://www.w3schools.com/html/"

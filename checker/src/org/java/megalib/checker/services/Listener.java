@@ -2,6 +2,7 @@ package org.java.megalib.checker.services;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,14 +10,14 @@ import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 
 import main.antlr.techdocgrammar.MegalibBaseListener;
-import main.antlr.techdocgrammar.MegalibParser.EntityDeclarationContext;
-import main.antlr.techdocgrammar.MegalibParser.EntityInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.FunctionDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.FunctionInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.ImportsContext;
+import main.antlr.techdocgrammar.MegalibParser.InstanceDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.LinkContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
+import main.antlr.techdocgrammar.MegalibParser.SubtypeDeclarationContext;
 
 public class Listener extends MegalibBaseListener {
 	private MegaModel model;
@@ -35,17 +36,25 @@ public class Listener extends MegalibBaseListener {
 	}
 	
 	@Override
-	public void enterEntityDeclaration(EntityDeclarationContext context) {
+	public void enterSubtypeDeclaration(SubtypeDeclarationContext context) {
 		String derivedType = context.getChild(0).getText();
 		String superType = context.getChild(2).getText();
 		model.addSubtypeOf(derivedType, superType);
 	}
 	
 	@Override
-	public void enterEntityInstance(EntityInstanceContext context) {
+	public void enterInstanceDeclaration(InstanceDeclarationContext context) {
 		String instance = context.getChild(0).getText();
 		String type = context.getChild(2).getText();
 		model.addInstanceOf(instance, type);
+		if(context.getChildCount() == 6){
+			String language = context.getChild(4).getText();
+			List<String> list = new ArrayList<>();
+			list.add(instance);
+			list.add(language);
+			model.addRelationInstances("elementOf", list);
+			
+		}
 	}
 	
 	@Override

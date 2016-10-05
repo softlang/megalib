@@ -8,17 +8,17 @@ PythonObject : Language
 Django uses Python
 
 
-Middleware : Concept
-Django.Middleware : Technology
+Middleware < Technology
+Django.Middleware : Middleware
 Django.Middleware partOf Django
-Django.Middleware facilitates Middleware
 WebApplication < System
 MyWebApp : WebApplication
 IPFilter : Artifact
 IPFilter partOf MyWebApp
 IPFilter elementOf Python
 IPFilter partOf MyWebApp
-IPFilter realizes Middleware
+IPFilter uses Django.Middleware
+
 
 HTTPRequest : Language
 PythonException : Language

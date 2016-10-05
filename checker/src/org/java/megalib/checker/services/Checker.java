@@ -146,9 +146,34 @@ public class Checker {
 				warnings.add("Error at entity declaration of '"+entity+"'. The type is underspecified.");
 				continue;
 			}
-			if(!model.getSubtypesMap().containsKey(type)){
+			if(!model.getSubtypesMap().containsKey(type)||type==null){
 				warnings.add("Error at entity declaration of '"+entity+"'. The type '"
 						+ type + "' is not declared.");
+				continue;
+			}
+			//if the entity is an artifact check for a specified language
+			String temptype = type;
+			boolean isArtifact = false;
+			while(true){
+				if(temptype==null)
+					break;
+				if(temptype.equals("Artifact")){
+					isArtifact = true;
+					break;
+				}
+				if(temptype.equals("Entity")){
+					break;
+				}
+				temptype = model.getSubtypesMap().get(temptype);
+			}
+			if(isArtifact){
+				if(model.getRelationshipInstanceMap().get("elementOf")==null
+						||model.getRelationshipInstanceMap().get("elementOf")
+							.stream()
+							.filter(list -> list.get(0).equals(entity))
+							.collect(Collectors.toSet())
+							.isEmpty())
+					warnings.add("Error at artifact '"+entity+": It is not element of any language.");
 			}
 		}
 	}

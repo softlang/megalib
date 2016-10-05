@@ -35,10 +35,28 @@ public class ListenerTest {
 	@Test
 	public void enterEntityInstanceFillsEntityInstances(){
 		String input = "Instance : Type";
-		Map<String, String> actual = new MegaModelLoader().createFromString(input).getInstanceOfMap();
+		MegaModel model = new MegaModelLoader().createFromString(input);
+		Map<String, String> imap = model.getInstanceOfMap();
 		
-		assertTrue(actual.containsKey("Instance"));
-		assertEquals(actual.get("Instance").toString(),"Type");
+		assertTrue(imap.containsKey("Instance"));
+		assertEquals(imap.get("Instance").toString(),"Type");
+		Map<String, Set<List<String>>> emap = model.getRelationshipInstanceMap();
+		assertTrue(emap.isEmpty());
+	}
+	
+	@Test
+	public void enterEntityInstanceWithLanguage(){
+		String input = "a : Artifact<Python>";
+		MegaModel model = new MegaModelLoader().createFromString(input);
+		Map<String, String> imap = model.getInstanceOfMap();
+		assertEquals(1,imap.size());
+		assertTrue(imap.containsKey("a"));
+		assertEquals(imap.get("a").toString(),"Artifact");
+		Set<List<String>> elementOfSet = model.getRelationshipInstanceMap().get("elementOf");
+		assertEquals(1,elementOfSet.size());
+		List<String> elementOf = elementOfSet.iterator().next();
+		assertEquals("a",elementOf.get(0));
+		assertEquals("Python",elementOf.get(1));
 	}
 	
 	@Test

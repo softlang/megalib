@@ -31,7 +31,7 @@ public class CheckerTest {
 	
 	@Test
 	public void testLinkMalformed() {
-		String data = "entity : Artifact \nentity = \"nowebsitehere\"";
+		String data = "l : Language \nentity : Artifact<l> \nentity = \"nowebsitehere\"";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
@@ -40,10 +40,11 @@ public class CheckerTest {
 	
 	@Test
 	public void testLinkDead() {
-		String data = "entity : Artifact "
+		String data = "l : Language "
+				+ "entity : Artifact<l> "
 				+ "entity = \"http://www.nowebsitehere.de/\"";
 		MegaModel model = new MegaModelLoader().createFromString(data);
-		assertEquals(1,model.getInstanceOfMap().size());
+		assertEquals(2,model.getInstanceOfMap().size());
 		assertEquals(1,model.getLinkMap().size());
 		Checker resultChecker = new Checker(model);
 		resultChecker.doChecks();
@@ -53,7 +54,9 @@ public class CheckerTest {
 	
 	@Test
 	public void testLinkWorking() {
-		String data = "entity : Artifact \nentity = \"http://softlang.org/\"";
+		String data = "l : Language"
+				+ "\nentity : Artifact<l> "
+				+ "\nentity = \"http://softlang.org/\"";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(0,resultChecker.getWarnings().size());
@@ -113,13 +116,22 @@ public class CheckerTest {
 	
 	@Test
 	public void testInstanceIsAType(){
-		String data = ("File : Artifact");
+		String data = ("Language : Artifact");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
-		assertTrue(resultChecker.getWarnings().contains("Error at entity declaration 'File'. It is defined as a type and instance at the same time."));
+		assertTrue(resultChecker.getWarnings().contains("Error at entity declaration 'Language'. It is defined as a type and instance at the same time."));
 	}
 	
+	@Test
+	public void testInstanceIsEntity(){
+		String data = "Entity : Artifact";
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		assertEquals(1,resultChecker.getWarnings().size());
+		assertTrue(resultChecker.getWarnings().contains("Error at entity declaration 'Entity'. It is defined as a type and instance at the same time."));
+		
+	}
 	
 	@Test
 	public void testRelationDeclarationFailLeft() {
@@ -167,7 +179,10 @@ public class CheckerTest {
 	
 	@Test
 	public void testRelationshipInstanceNotDeclared(){
-		String data = "Artifact < Entity\na : Artifact\nb : Artifact\na Relation b";
+		String data = "l : Language"
+				+ "\na : Artifact<l>"
+				+ "\nb : Artifact<l>"
+				+ "\na Relation b";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
@@ -176,7 +191,8 @@ public class CheckerTest {
 	
 	@Test
 	public void testRelationshipInstanceEntitiesNotDeclared(){
-		String data = ("a : Artifact "
+		String data = ("l : Language"
+				+ "\na : Artifact<l> "
 				+ "\na partOf b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -188,16 +204,14 @@ public class CheckerTest {
 	
 	@Test
 	public void testRelationshipInstanceSingleDeclarationUnfit(){
-		String data = ("Artifact < Entity "
-				+ "\nLanguage < Entity "
-				+ "\npartOf < Artifact # Artifact "
-				+ "\na : Artifact "
+		String data = ("rel < Artifact # Artifact "
+				+ "\na : Artifact<b> "
 				+ "\nb : Language "
-				+ "\na partOf b");
+				+ "\na rel b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
-		assertTrue(resultChecker.getWarnings().contains("Error at relationship instance 'a partOf b'! The instance"
+		assertTrue(resultChecker.getWarnings().contains("Error at relationship instance 'a rel b'! The instance"
 				+ " does not fit any declaration."));
 	}
 	
@@ -207,7 +221,7 @@ public class CheckerTest {
 				+ "\nLanguage < Entity "
 				+ "\npartOf < Language # Language "
 				+ "\npartOf < Artifact # Artifact "
-				+ "\na : Artifact "
+				+ "\na : Artifact<b> "
 				+ "\nb : Language "
 				+ "\na partOf b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
@@ -219,11 +233,11 @@ public class CheckerTest {
 	
 	@Test
 	public void testRelationshipInstanceSingleDeclarationFit(){
-		String data = ("Artifact < Entity "
-				+ "\npartOf < Artifact # Artifact "
-				+ "\na : Artifact "
-				+ "\nb : Artifact "
-				+ "\na partOf b");
+		String data = ("l : Language "
+				+ "\nrel < Artifact # Artifact "
+				+ "\na : Artifact<l> "
+				+ "\nb : Artifact<l> "
+				+ "\na rel b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(0,resultChecker.getWarnings().size());
@@ -231,12 +245,11 @@ public class CheckerTest {
 	
 	@Test
 	public void testRelationshipInstanceMultiDeclarationFirstFit(){
-		String data = ("Artifact < Entity "
-				+ "\nLanguage < Entity "
-				+ "\npartOf < Artifact # Artifact "
-				+ "\npartOf < Language # Language"
-				+ "\na : Artifact "
-				+ "\nb : Artifact "
+		String data = ("l : Language"
+				+ "\nrel < Artifact # Artifact "
+				+ "\nrel < Language # Language"
+				+ "\na : Artifact<l> "
+				+ "\nb : Artifact<l> "
 				+ "\na partOf b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -245,8 +258,9 @@ public class CheckerTest {
 	
 	@Test
 	public void testRelationshipInstanceMultiDeclarationSecondFit(){
-		String data = ("a : Artifact "
-				+ "b : Artifact "
+		String data = ("l : Language "
+				+ "a : Artifact<l> "
+				+ "b : Artifact<l> "
 				+ "a partOf b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -255,9 +269,10 @@ public class CheckerTest {
 	
 	@Test
 	public void testRelationshipInstanceTransitivityWorking(){
-		String data = "XArtifact < Artifact "
+		String data = "l : Language "
+				+ "XArtifact < Artifact "
 				+ "ExArtifact < XArtifact "
-				+ "a : ExArtifact "
+				+ "a : ExArtifact<l> "
 				+ "id < Artifact # Artifact "
 				+ "a id a";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
@@ -278,7 +293,7 @@ public class CheckerTest {
 	@Test
 	public void testFunctionDeclarationSingleDomainNotALanguage() {
 		String data = ("Haskell : Language "
-				+ "a : Artifact "
+				+ "a : Artifact<Haskell> "
 				+ "merge : a -> Haskell ");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -289,7 +304,7 @@ public class CheckerTest {
 	@Test
 	public void testFunctionDeclarationSingleRangeNotALanguage() {
 		String data = ("Haskell : Language "
-				+ "a : Artifact "
+				+ "a : Artifact<Haskell> "
 				+ "merge : Haskell -> a ");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -300,7 +315,7 @@ public class CheckerTest {
 	@Test
 	public void testFunctionDeclarationMultiDomainNotALanguage(){
 		String data = ("Haskell : Language "
-				+ "a : Artifact "
+				+ "a : Artifact<Haskell> "
 				+ "merge : Haskell # a -> Haskell ");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -311,7 +326,7 @@ public class CheckerTest {
 	@Test
 	public void testFunctionDeclarationMultiRangeNotALanguage(){
 		String data = ("Haskell : Language "
-				+ "a : Artifact "
+				+ "a : Artifact<Haskell> "
 				+ "merge : Haskell # Haskell -> Haskell # a ");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();

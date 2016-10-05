@@ -17,16 +17,16 @@ org.eclipse.emf.ecore implements ECore
 
 
 
-EMFPersistence : Technology
+Serialization < Technology
+EMFPersistence : Serialization
 EMFPersistence partOf EMFCore
-Serialization : Concept
-EMFPersistence realizes Serialization
 XML : Language
 XMI : Language
 XMI subsetOf XML
-Specification : Concept
-XMISpec : Artifact
-XMISpec realizes Specification
+Specification < Artifact
+
+English : Language
+XMISpec : Specification<English>
 XMISpec defines XMI
 ECore.XMI : Language
 EMF implements ECore.XMI
@@ -40,16 +40,12 @@ MyMeta.ecore defines MyModels.XMI
 MyMeta.ecore elementOf ECore.XMI
 
 
-Model : Concept
-MyModel : Artifact
-MyModel realizes Model
-MyModel elementOf JavaObject
+Model < Artifact
+MyModel : Model<JavaObject>
 MyModel conformsTo MyMeta.ecore
-MyModel.xmi : Artifact
-MyModel.xmi elementOf MyModels.XMI
+MyModel.xmi : Model<MyModels.XMI>
 MyModel.xmi conformsTo MyMeta.ecore
 MyModel correspondsTo MyModel.xmi
-MyMeta.genmodel : Artifact
 
 
 saveModel : JavaObject -> MyModels.XMI
