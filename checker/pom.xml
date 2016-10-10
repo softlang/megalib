@@ -50,7 +50,7 @@
             </goals>
           </execution>
         </executions>
-</plugin>
+	  </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>

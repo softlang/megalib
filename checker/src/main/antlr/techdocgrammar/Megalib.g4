@@ -28,12 +28,10 @@ functionInstance: name '(' name (',' name)* ')' '|->' (name | ('(' name (',' nam
 
 link: name '=' LINK;
 
-//word used in defintions above
+//word used in definitions above
 name: WORD;
 
 //definition of word
-WORD: ([a-zA-Z0-9] | '.')+;
+WORD: '?'? ([a-zA-Z0-9] | '.')+ '+'?;
 LINK: '"' (~(' '|'\t'|'\f'|'\n'|'\r'))+ '"' ;
 WS: (' '|'\t'|'\f'|'\n'|'\r') -> skip;
-
-Arrow: '|->';

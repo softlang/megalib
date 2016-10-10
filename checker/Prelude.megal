@@ -1,36 +1,64 @@
-Language < Entity
-Technology < Entity
 Artifact < Entity
-Transient < Artifact
-System < Entity
+SourceCode < Artifact
+Specification < Artifact
+defines < Artifact # Entity
+conformsTo < Artifact # Artifact
+correspondsTo < Artifact # Artifact
+
+Manifestation < Entity
+File : Manifestation
+File = "https://en.wikipedia.org/wiki/Computer_file"
+File+ : Manifestation
+File+ = "https://en.wikipedia.org/wiki/Computer_file"
+Folder : Manifestation
+Folder = "https://en.wikipedia.org/wiki/Directory_(computing)"
+WebResource : Manifestation
+WebResource = "https://en.wikipedia.org/wiki/Web_resource"
+Transient : Manifestation
+Transient = "https://en.wikipedia.org/wiki/Transient_(computer_programming)"
+manifestsAs < Artifact # Manifestation
+
+Language < Entity
+ProgrammingLanguage < Language
+DataRepresentationLanguage < Language
+TransformationLanguage < Language
+elementOf < Artifact # Language
+subsetOf < Language # Language
+
 Function < Entity
-Relation < Entity
-Paradigm < Entity
+Transformation < Function
+implements < Artifact # Function
+
+Technology < Entity
+System < Entity
+DesktopApplication < System
+WebApplication < System
 partOf < Artifact # Artifact
 partOf < Artifact # System
+partOf < Artifact # Technology
 partOf < Technology # Technology
-partOf < Paradigm # Paradigm
-elementOf < Artifact # Language
-defines < Artifact # Entity
-implements < Artifact # Function
-implements < System # Function
+partOf < System # System
 implements < Technology # Function
 implements < Technology # Language
-subsetOf < Language # Language
-conformsTo < Artifact # Artifact
-conformsTo < System # Artifact
-conformsTo < Technology # Artifact
-correspondsTo < Artifact # Artifact
-facilitates < Technology # Paradigm
-facilitates < Language # Paradigm
+implements < System # Function
+
+Concept < Entity
+Paradigm < Concept
+ProgrammingDomain < Concept
+TechnologySpace < Concept
+partOf < Concept # Concept
+
+facilitates < Technology # Concept
+facilitates < Language # Concept
 uses < System # System
 uses < System # Technology
-uses < System # Paradigm
+uses < System # Concept
 uses < Technology # Technology
-uses < Technology # Paradigm
+uses < Technology # Concept
 uses < Technology # Language
-uses < Artifact # Paradigm
+uses < Artifact # Concept
 uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
 uses < Function # Function
+

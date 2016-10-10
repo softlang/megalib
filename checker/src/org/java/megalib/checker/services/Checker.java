@@ -175,6 +175,13 @@ public class Checker {
 							.isEmpty())
 					warnings.add("Error at artifact '"+entity+": It is not element of any language.");
 			}
+			
+			if(!(entity.startsWith("?")||model.getFunctionDeclarations().containsKey(entity)
+					||model.getFunctionInstances().containsKey(entity))){
+				if(!model.getLinkMap().containsKey(entity)){
+					warnings.add("Error at artifact '"+entity+": It has to be linked.");
+				}
+			}
 		}
 	}
 	

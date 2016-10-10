@@ -17,8 +17,8 @@ org.eclipse.emf.ecore implements ECore
 
 
 
-Serialization < Technology
-EMFPersistence : Serialization
+EMFSerializer < Technology
+EMFPersistence : EMFSerializer
 EMFPersistence partOf EMFCore
 XML : Language
 XMI : Language
@@ -33,11 +33,12 @@ EMF implements ECore.XMI
 ECore.XMI subsetOf XMI
 
 
-MyModels.XMI : Language
-MyModels.XMI subsetOf ECore.XMI
-MyMeta.ecore : Artifact
-MyMeta.ecore defines MyModels.XMI
-MyMeta.ecore elementOf ECore.XMI
+?MyModels.XMI : Language
+?MyModels.XMI subsetOf ECore.XMI
+MetaModel < Artifact
+?MyMeta.ecore : MetaModel
+?MyMeta.ecore defines MyModels.XMI
+?MyMeta.ecore elementOf ECore.XMI
 
 
 Model < Artifact
@@ -57,8 +58,13 @@ loadModel(MyModel.xmi) |-> MyModel
 
 
 Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
+JavaObject = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
 EMF = "https://eclipse.org/modeling/emf/"
 EMFCore = "http://download.eclipse.org/modeling/emf/emf/javadoc/xsd/2.9.0/"
 org.eclipse.emf.ecore = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/org/eclipse/emf/ecore/package-summary.html#details"
+ECore = ""
 XML = "http://www.w3schools.com/xml/"
 XMI = "http://www.omg.org/spec/XMI/"
+XMISpec = "http://www.omg.org/spec/XMI/"
+EMFPersistence = ""
+ECore.XMI = ""

@@ -8,14 +8,14 @@ JDK : Technology
 javac : Compiler
 javac partOf JDK
 
-aJavaProgram : Artifact
-aJavaProgram elementOf Java
-aJavaByteCodeProgram : Artifact
-aJavaByteCodeProgram elementOf JavaByteCode
+?aJavaProgram : Artifact
+?aJavaProgram elementOf Java
+?aJavaByteCodeProgram : Artifact
+?aJavaByteCodeProgram elementOf JavaByteCode
 
 compile : Java -> JavaByteCode
 javac implements compile
-compile(aJavaProgram) |-> aJavaByteCodeProgram
+compile(?aJavaProgram) |-> ?aJavaByteCodeProgram
 
 Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
 JavaByteCode = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html"

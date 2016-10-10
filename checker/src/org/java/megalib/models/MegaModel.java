@@ -113,8 +113,8 @@ public class MegaModel {
 		return Collections.unmodifiableMap(linkMap);
 	}
 
-	public void addLinks(String object, List<String> links) {
-		linkMap.put(object, links);
+	public void addLinks(String entity, List<String> links) {
+		linkMap.put(entity, links);
 	}
 
 	public Set<String> getImports() {

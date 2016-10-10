@@ -8,7 +8,7 @@ import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.MegaModelLoader;
 import org.junit.Test;
 
-public class ModelsTest {
+public class ModelsCheck {
 	
 	@Test
 	public void testAll() {
