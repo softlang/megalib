@@ -3,6 +3,7 @@
  */
 package org.java.megalib.checker;
 
+import org.java.megalib.checker.services.Checker;
 import org.java.megalib.checker.services.MegaModelLoader;
 
 /**
@@ -13,7 +14,9 @@ public class Main {
 	
 	public static void main(String[] args) {
 		try {
-			new MegaModelLoader().createFromFile(getFilepathOfArguments(args));
+			Checker resultChecker = new Checker(new MegaModelLoader().createFromFile(getFilepathOfArguments(args)));
+			resultChecker.doChecks();
+			resultChecker.getWarnings().forEach(w -> System.out.println(w));
 		}
 		catch (EmptyFileNameException e) {
 			e.printStackTrace();
