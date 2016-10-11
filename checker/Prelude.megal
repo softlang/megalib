@@ -46,8 +46,13 @@ Concept < Entity
 Paradigm < Concept
 ProgrammingDomain < Concept
 TechnologySpace < Concept
+DesignPattern < Concept
+ArchitecturalStyle < Concept
 partOf < Concept # Concept
 
+belongsTo < Technology # TechnologySpace
+realizes < Technology # ProgrammingDomain
+realizes < Artifact # ProgrammingDomain
 facilitates < Technology # Concept
 facilitates < Language # Concept
 uses < System # System
