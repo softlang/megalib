@@ -49,7 +49,7 @@ public class ListenerTest {
 		String input = "a : Artifact<Python>";
 		MegaModel model = new MegaModelLoader().createFromString(input);
 		Map<String, String> imap = model.getInstanceOfMap();
-		assertEquals(1,imap.size());
+		assertEquals(6,imap.size());
 		assertTrue(imap.containsKey("a"));
 		assertEquals(imap.get("a").toString(),"Artifact");
 		Set<List<String>> elementOfSet = model.getRelationshipInstanceMap().get("elementOf");

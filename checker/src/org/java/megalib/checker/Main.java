@@ -22,12 +22,12 @@ public class Main {
 	
 	private static String getFilepathOfArguments(String[] arguments) throws EmptyFileNameException{
 		if (argumentsExists(arguments)) {
-			return arguments[2];
+			return arguments[1];
 		}
 		throw new EmptyFileNameException();
 	}
 
 	private static boolean argumentsExists(String[] arguments) {
-		return arguments.length>0 && arguments[0].contains("-f") && !arguments[2].isEmpty();
+		return arguments.length>0 && arguments[0].contains("-f") && !arguments[1].isEmpty();
 	}	
 }
