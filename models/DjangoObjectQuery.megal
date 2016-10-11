@@ -7,47 +7,44 @@ Python : Language
 PythonObject : Language
 Django uses Python
 
-
-MVC : Paradigm
-BusinessLogic : Paradigm
-BusinessLogic partOf MVC
-ORM  : Paradigm
-
-
-Django facilitates MVC
+ModelViewController : DesignPattern
+ObjectRelationalMapping  : ProgrammingDomain
+Django facilitates ModelViewController
 Django.Models : Technology
 Django.Models partOf Django
-Django.Models facilitates ORM 
+Django.Models facilitates ObjectRelationalMapping 
 
 
 WebApplication < System
-BookSystem : WebApplication
-BookClass : Artifact<Python>
-BookClass partOf BookSystem
-BookSystem uses Django
-BookClass elementOf Python
-BookClass uses BusinessLogic
+?BookSystem : WebApplication
+Model < Artifact
+?BookClass : Model<Python>
+?BookClass partOf ?BookSystem
+?BookSystem uses Django
+?BookClass elementOf Python
 
 
-books : Artifact<PythonObject>
-books conformsTo BookClass
-filteredBooks : Transient
-filteredBooks elementOf PythonObject
-filteredBooks conformsTo BookClass
-filteredBooks partOf books
+?books : Artifact<PythonObject>
+?books manifestsAs Transient
+?books conformsTo ?BookClass
+?filteredBooks : Artifact<PythonObject>
+?filteredBooks manifestsAs Transient
+?filteredBooks conformsTo ?BookClass
+?filteredBooks partOf ?books
 
 
 DjangoQuery : Language
-NameEqualsNothing : Transient
-NameEqualsNothing elementOf DjangoQuery
+?NameEqualsNothing : Artifact<DjangoQuery>
+?NameEqualsNothing manifestsAs Transient
 filter : DjangoQuery # PythonObject -> PythonObject
-filter(NameEqualsNothing,books) |-> filteredBooks
+filter(?NameEqualsNothing,?books) |-> ?filteredBooks
+Django implements filter
 
 
-BookSystem = "http://stackoverflow.com/documentation/django/888/models#t=201608290816341017644"
 Django = "https://www.djangoproject.com/"
 Django.Models = "https://docs.djangoproject.com/en/1.10/topics/db/models/"
 Python = "https://docs.python.org/2/reference/"
-MVC = "https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller"
-ORM = "https://en.wikipedia.org/wiki/Object-relational_mapping"
+PythonObject = "https://docs.python.org/2/reference/"
+ModelViewController = "http://dbpedia.org/page/Model%E2%80%93view%E2%80%93controller"
+ObjectRelationalMapping  = "https://en.wikipedia.org/wiki/Object-relational_mapping"
 DjangoQuery = "https://docs.djangoproject.com/es/1.10/topics/db/queries/"

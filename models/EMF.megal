@@ -37,34 +37,35 @@ ECore.XMI subsetOf XMI
 ?MyModels.XMI subsetOf ECore.XMI
 MetaModel < Artifact
 ?MyMeta.ecore : MetaModel
-?MyMeta.ecore defines MyModels.XMI
+?MyMeta.ecore defines ?MyModels.XMI
 ?MyMeta.ecore elementOf ECore.XMI
 
 
 Model < Artifact
-MyModel : Model<JavaObject>
-MyModel conformsTo MyMeta.ecore
-MyModel.xmi : Model<MyModels.XMI>
-MyModel.xmi conformsTo MyMeta.ecore
-MyModel correspondsTo MyModel.xmi
+?MyModel : Model<JavaObject>
+?MyModel conformsTo ?MyMeta.ecore
+?MyModel.xmi : Model<?MyModels.XMI>
+?MyModel.xmi conformsTo ?MyMeta.ecore
+?MyModel correspondsTo ?MyModel.xmi
 
 
-saveModel : JavaObject -> MyModels.XMI
+saveModel : JavaObject -> ?MyModels.XMI
 EMFPersistence implements saveModel
-saveModel(MyModel) |-> MyModel.xmi
-loadModel : MyModels.XMI -> JavaObject
+saveModel(?MyModel) |-> ?MyModel.xmi
+loadModel : ?MyModels.XMI -> JavaObject
 EMFPersistence implements loadModel
-loadModel(MyModel.xmi) |-> MyModel
+loadModel(?MyModel.xmi) |-> ?MyModel
 
 
+English = "https://en.wikipedia.org/wiki/English_language"
 Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
 JavaObject = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
 EMF = "https://eclipse.org/modeling/emf/"
 EMFCore = "http://download.eclipse.org/modeling/emf/emf/javadoc/xsd/2.9.0/"
 org.eclipse.emf.ecore = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/org/eclipse/emf/ecore/package-summary.html#details"
-ECore = ""
+ECore = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/org/eclipse/emf/ecore/package-summary.html#details"
 XML = "http://www.w3schools.com/xml/"
 XMI = "http://www.omg.org/spec/XMI/"
 XMISpec = "http://www.omg.org/spec/XMI/"
-EMFPersistence = ""
-ECore.XMI = ""
+EMFPersistence = "https://eclipse.org/modeling/emf/"
+ECore.XMI = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html"

@@ -12,36 +12,37 @@ Middleware < Technology
 Django.Middleware : Middleware
 Django.Middleware partOf Django
 WebApplication < System
-MyWebApp : WebApplication
+?MyWebApp : WebApplication
 IPFilter : Artifact
-IPFilter partOf MyWebApp
+IPFilter partOf ?MyWebApp
 IPFilter elementOf Python
-IPFilter partOf MyWebApp
+IPFilter partOf ?MyWebApp
 IPFilter uses Django.Middleware
 
 
 HTTPRequest : Language
 PythonException : Language
 PythonException subsetOf PythonObject
-processRequest : HTTPRequest -> PythonException
-IPFilter implements processRequest
+checkRequest : HTTPRequest -> PythonException
+IPFilter implements checkRequest
 
 
-RequestWithBlockedIP : Transient
-RequestWithBlockedIP elementOf HTTPRequest
-RequestWithNotBlockedIP : Transient
-RequestWithNotBlockedIP elementOf HTTPRequest
-PermissionDenied : Transient
-PermissionDenied elementOf PythonException
-None : Transient
-None elementOf PythonException
-processRequest(RequestWithBlockedIP) |-> PermissionDenied
-processRequest(RequestWithNotBlockedIP) |-> None
+?RequestWithBlockedIP : Artifact<HTTPRequest>
+?RequestWithBlockedIP manifestsAs Transient
+?RequestWithNotBlockedIP : Artifact<HTTPRequest>
+?RequestWithNotBlockedIP manifestsAs Transient
+?PermissionDenied : Artifact<PythonException>
+?PermissionDenied manifestsAs Transient
+?None : Artifact<PythonException>
+?None manifestsAs Transient
+checkRequest(?RequestWithBlockedIP) |-> ?PermissionDenied
+checkRequest(?RequestWithNotBlockedIP) |-> ?None
 
 
 IPFilter = "http://stackoverflow.com/documentation/django/1721/middleware#t=201608290816363596378"
 Django = "https://www.djangoproject.com/"
 Python = "https://docs.python.org/2/reference/"
+PythonObject = "https://docs.python.org/2/reference/"
 Middleware = "https://en.wikipedia.org/wiki/Middleware"
 Django.Middleware = "https://docs.djangoproject.com/es/1.10/topics/http/middleware/"
 PythonException = "https://docs.python.org/3/tutorial/errors.html"
