@@ -1,5 +1,6 @@
 Artifact < Entity
 SourceCode < Artifact
+Grammar < Artifact
 Specification < Artifact
 defines < Artifact # Entity
 conformsTo < Artifact # Artifact
@@ -16,6 +17,8 @@ WebResource : Manifestation
 WebResource = "https://en.wikipedia.org/wiki/Web_resource"
 Transient : Manifestation
 Transient = "https://en.wikipedia.org/wiki/Transient_(computer_programming)"
+Fragment : Manifestation
+Fragment = "https://en.wikipedia.org/wiki/Snippet_(programming)"
 manifestsAs < Artifact # Manifestation
 
 Language < Entity
@@ -31,7 +34,7 @@ implements < Artifact # Function
 
 Technology < Entity
 System < Entity
-DesktopApplication < System
+Application < System
 WebApplication < System
 partOf < Artifact # Artifact
 partOf < Artifact # System
@@ -58,6 +61,7 @@ facilitates < Language # Concept
 uses < System # System
 uses < System # Technology
 uses < System # Concept
+uses < System # Language
 uses < Technology # Technology
 uses < Technology # Concept
 uses < Technology # Language

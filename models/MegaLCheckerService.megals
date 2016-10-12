@@ -1,0 +1,16 @@
+module MegaLANTLR
+
+import ANTLR where {
+    MegaLParser substitutes ?aParser
+} 
+
+MegaLibChecker : System
+MegaLibChecker uses Java
+?aParser partOf MegaLibChecker
+?aParser uses ANTLR
+
+MegaLibChecker implements checkModel
+String : Language
+checkModel : MegaLObject -> String
+warningLog : Artifact<String>
+checkModel(EMFTechmodelObject) |-> warningLog

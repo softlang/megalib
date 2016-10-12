@@ -7,18 +7,24 @@ JavaScript : Language
 Interpreter < Technology
 Nashorn : Interpreter
 
-MyJavaApp : System
-ScriptJob : Artifact<Java>
-ScriptJob partOf MyJavaApp
-ScriptJob uses Nashorn
+?MyJavaApp : Application
+?ScriptJob : SourceCode<Java>
+?ScriptJob manifestsAs File
+?ScriptJob uses JavaScript
+?ScriptJob partOf ?MyJavaApp
+?ScriptJob uses Nashorn
 
-DemoScript : Transient<JavaScript>
-returnValue : Transient<JavaObject>
+?DemoScript : SourceCode<JavaScript>
+?DemoScript manifestsAs Transient
+?returnValue : Artifact<JavaObject>
+?returnValue manifestsAs Transient
 eval : JavaScript -> JavaObject
-eval(DemoScript) |-> returnValue
+eval(?DemoScript) |-> ?returnValue
 Nashorn implements eval
 
 
 Nashorn = "http://www.oracle.com/technetwork/articles/java/jf14-nashorn-2126515.html"
 Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
+JavaObject = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
+JavaScript = "http://www.w3schools.com/js/"
 Interpreter = "https://en.wikipedia.org/wiki/Interpreter_(computing)"

@@ -1,32 +1,41 @@
 WebApplicationFramework < Technology
-
-
 RubyOnRails : WebApplicationFramework
 Ruby : Language
 RubyOnRails uses Ruby
 
 
-Querying : Paradigm
+Querying : ProgrammingDomain
 Rails.ActiveRecord : Technology
 Rails.ActiveRecord partOf RubyOnRails
-Rails.ActiveRecord facilitates Querying
+Rails.ActiveRecord realizes Querying
 
 
-ActiveRecordQuery : Language
+QueryLanguage < Language
+ActiveRecordQuery : QueryLanguage
 RubyObject : Language
 where : ActiveRecordQuery -> RubyObject
 Rails.ActiveRecord implements where
 
 
-MVC : Paradigm
-RubyOnRails facilitates MVC
-ModelClass < Artifact
-Page : ModelClass<Ruby>
-Page uses Rails.ActiveRecord
-UnverifiedPage : Transient<RubyObject>
-UnverifiedPage conformsTo Page
+ModelViewController : DesignPattern
+RubyOnRails facilitates ModelViewController
+?aClass : SourceCode<Ruby>
+?aClass uses Rails.ActiveRecord
+?anObject : Artifact<RubyObject>
+?anObject manifestsAs Transient
+?anObject conformsTo ?aClass
+
+Query < Artifact
+?aQuery : Query<ActiveRecordQuery>
+?aQuery manifestsAs Transient
+where(?aQuery) |-> ?anObject
 
 
-verifiedIsfalse : Transient
-verifiedIsfalse elementOf ActiveRecordQuery
-where(verifiedIsfalse) |-> UnverifiedPage
+
+RubyOnRails = "http://rubyonrails.org/"
+Rails.ActiveRecord = "http://guides.rubyonrails.org/active_record_basics.html"
+ActiveRecordQuery = "http://guides.rubyonrails.org/active_record_querying.html"
+Ruby = "https://www.ruby-lang.org/en/documentation/"
+RubyObject = "https://www.ruby-lang.org/en/documentation/"
+Querying = "https://en.wikipedia.org/wiki/Query_language"
+ModelViewController = "http://dbpedia.org/page/Model%E2%80%93view%E2%80%93controller"

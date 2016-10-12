@@ -5,45 +5,50 @@ WebApplicationFramework < Technology
 RubyOnRails : WebApplicationFramework
 Ruby : Language
 RubyOnRails uses Ruby
-Routing : Paradigm
-RubyOnRails.Routing : Technology
+WebApplicationDevelopment : ProgrammingDomain
+Routing : ProgrammingDomain
+Routing partOf WebApplicationDevelopment
+Router < Technology
+RubyOnRails.Routing : Router
 RubyOnRails.Routing partOf RubyOnRails
 RubyOnRails.Routing facilitates Routing
 
 
 WebApplication < System
-101Rails : WebApplication
-101Rails uses RubyOnRails
-routes.rb : Artifact<Ruby>
-routes.rb partOf 101Rails
-routes.rb uses Routing
+?aWebApp : WebApplication
+?aWebApp uses RubyOnRails
+?routes : SourceCode<Ruby>
+?routes partOf ?aWebApp
+?routes uses RubyOnRails.Routing
+?routes manifestsAs File
 
 
-URI : Language
 URL : Language
-URL subsetOf URI
 HTTPResponse : Language
 HTML : Language
 showPage : URL -> HTTPResponse
-101Rails implements showPage
+?aWebApp implements showPage
 
-
-Contribute.new.URL : Transient<URL>
-Contribute.new.Response : Transient<HTTPResponse>
-showPage(Contribute.new.URL) |-> Contribute.new.Response
+Reference < Artifact
+?aURL : Reference<URL>
+?aURL manifestsAs Transient
+Message < Artifact
+?aResponse : Message<HTTPResponse>
+?aResponse manifestsAs Transient
+showPage(?aURL) |-> ?aResponse
 WebResource < Artifact
-Contribute.new.Page : WebResource<HTML>
-Contribute.new.Page partOf Contribute.new.Response
+?aPage : WebResource<HTML>
+?aPage partOf ?aResponse
 
 
-ContributionsController : Artifact<Ruby>
-ContributionsController elementOf Ruby
+?aController : SourceCode<Ruby>
 
 
 RubyOnRails = "http://rubyonrails.org/"
+RubyOnRails.Routing = "http://guides.rubyonrails.org/routing.html"
 Ruby = "https://www.ruby-lang.org/de/"
-URI = "https://de.wikipedia.org/wiki/Uniform_Resource_Identifier"
 URL = "https://de.wikipedia.org/wiki/Uniform_Resource_Locator"
 HTTPResponse = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html"
-ContributionsController = "https://github.com/101companies/101rails/blob/326a894e38b164c1f1508a73b1954ff807e27cf3/app/controllers/contributions_controller.rb"
-Contribute.new.Page = "http://101companies.org/contribute/new"
+WebApplicationDevelopment = "https://en.wikipedia.org/wiki/Web_application_development"
+Routing = "https://en.wikipedia.org/wiki/Routing"
+HTML = "http://dbpedia.org/page/HTML"
