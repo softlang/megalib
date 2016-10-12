@@ -1,0 +1,39 @@
+module Scopevisio
+
+CloudService < Technology
+Scopevisio : CloudService
+
+
+SoftwareAsAService : TechnologySpace
+Scopevisio belongsTo SoftwareAsAService
+
+Scopevisio supports Marketing
+Scopevisio supports Distribution
+Scopevisio supports ProjectManagement
+Scopevisio supports InvoiceManagement
+Scopevisio supports Bookkeeping
+Scopevisio supports FinanceManagement
+Scopevisio supports DocumentManagement
+
+?Unknown : Language
+Java : Language
+?scopevisio.exe : Executable<?Unknown>
+?scopevisio.exe uses Java
+
+?selectedServices : Artifact<?Unknown>
+
+?aHTTPSRequest : Message<SOAP>
+?aProductName partOf ?aHTTPSRequest
+?aHTTPSResponse : Message<SOAP>
+communicate : HTTPSRequest -> HTTPSResponse
+communicate(?aHTTPSRequest) |-> HTTPSResponse
+?scopevisio.exe implements communicate
+
+JavaRuntimeEnvironment : Technology
+?scopevisio.exe uses JavaRuntimeEnvironment
+?scopevisio.exe uses HTTPS 
+?scopevisio.exe uses SOAP
+?scopevisio.exe uses Authentification
+
+Scopevisio = "https://www.scopevisio.com/"
+SOAP = "https://www.w3.org/TR/soap/"
