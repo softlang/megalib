@@ -2,6 +2,9 @@ Artifact < Entity
 SourceCode < Artifact
 Grammar < Artifact
 Specification < Artifact
+Value < Artifact
+Configuration < Artifact
+Webpage < Artifact
 defines < Artifact # Entity
 conformsTo < Artifact # Artifact
 correspondsTo < Artifact # Artifact
@@ -25,14 +28,24 @@ Language < Entity
 ProgrammingLanguage < Language
 DataRepresentationLanguage < Language
 TransformationLanguage < Language
+QueryLanguage < Language
+NaturalLanguage < Language
 elementOf < Artifact # Language
 subsetOf < Language # Language
+
+English : NaturalLanguage
+String : DataRepresentationLanguage
+Number : DataRepresentationLanguage
+Boolean : DataRepresentationLanguage
 
 Function < Entity
 Transformation < Function
 implements < Artifact # Function
 
 Technology < Entity
+API < Technology
+Library < Technology
+Framework < Technology
 System < Entity
 Application < System
 WebApplication < System
@@ -41,6 +54,7 @@ partOf < Artifact # System
 partOf < Artifact # Technology
 partOf < Technology # Technology
 partOf < System # System
+implements < Artifact # Function
 implements < Technology # Function
 implements < Technology # Language
 implements < System # Function
@@ -53,7 +67,7 @@ DesignPattern < Concept
 ArchitecturalStyle < Concept
 partOf < Concept # Concept
 
-belongsTo < Technology # TechnologySpace
+partOf < Technology # TechnologySpace
 realizes < Technology # ProgrammingDomain
 realizes < Artifact # ProgrammingDomain
 facilitates < Technology # Concept

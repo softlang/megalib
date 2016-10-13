@@ -35,6 +35,11 @@ public class Checker {
 		return warnings;
 	}
 
+	//TODO : Prevent Ambiguity for relationship instances and function applications
+	//TODO : Prevent Cycles for subsetOf, partOf, conformsTo
+	//TODO : Prevent Doubles
+	//TODO : Every non-abstract Technology uses a Language
+	//TODO : Every Function is implemented
 	public void doChecks() {
 		warnings = new HashSet<String>();
 		this.checkLinks();

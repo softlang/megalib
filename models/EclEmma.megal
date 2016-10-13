@@ -1,0 +1,35 @@
+module EclEmma
+
+ReverseEngineering : ProgrammingDomain
+Metric-Ware : TechnologySpace
+IDE < Technology
+Eclipse : IDE
+Plugin < Technology
+EclEmma : Plugin
+EclEmma partOf Eclipse
+EclEmma partOf Metric-Ware
+TestCoverageComputation : Concept
+EclEmma realizes TestCoverageComputation
+
+Java : ProgrammingLanguage
+?aJavaFile : SourceCode<Java>
+?aJavaFile manifestsAs File+
+TestCode < SourceCode
+?aTestFile : TestCode<Java>
+?aTestFile manifestsAs File+
+?aCoverageInPercent : Value<Number>
+?aCoverageInPercent manifestsAs Transient
+
+computeCoverage : Java # Java -> Number
+computeCoverage(?aJavaFile,?aTestFile) |-> ?aCoverageInPercent
+EclEmma implements computeCoverage
+
+
+
+EclEmma = "http://www.eclemma.org/"
+ReverseEngineering = "https://en.wikipedia.org/wiki/Reverse_engineering"
+Metric-Ware = "https://en.wikipedia.org/wiki/Software_metric"
+Eclipse = "https://eclipse.org/"
+Plugin = "https://en.wikipedia.org/wiki/Plug-in_(computing)"
+TestCoverageComputation = "https://en.wikipedia.org/wiki/Code_coverage"
+Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"

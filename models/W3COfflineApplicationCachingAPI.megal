@@ -1,0 +1,74 @@
+module OfflineApplicationCachingAPI
+
+WebApplicationDevelopment : ProgrammingDomain
+OfflineWebApplicationDevelopment : ProgrammingDomain
+OfflineWebApplicationDevelopment partOf WebApplicationDevelopment
+
+HTML5 : WebLanguage
+HTML5Interpreter : Interpreter
+HTML5Interpreter implements HTML5
+HTML5Interpreter facilitates WebApplicationDevelopment
+HTML5Interpreter facilitates OfflineWebApplicationDevelopment
+W3CHTML5 : Specification<English>
+W3CHTML5 defines HTML5
+
+Feature < Concept
+OfflineApplicationCaching : Feature
+OnlineOfflineEvents : Feature
+localStorage : Feature
+SQL : QueryLanguage
+
+SQLBasedDatabaseAPI : API
+SQLBasedDatabaseAPI uses SQL
+SQLBasedDatabaseAPI uses HTML5
+SQLBasedDatabaseAPI realizes localStorage
+?SQLImage : DataRepresentationLanguage
+?aSQLDatabase : Database<?SQLImage>
+?aSQLDatabase manifestsAs File
+?aLocalFileSystem : System
+?aSQLDatabase partOf ?aLocalFileSystem
+
+openDatabase : String # String # String # Number -> HTML5Data
+?aDatabasename : Value<String>
+?aDatabasename manifestsAs Transient
+?aDatabaseVersion : Value<String>
+?aDatabaseVersion manifestsAs Transient
+?aDisplayName : Value<String>
+?aDisplayName manifestsAs Transient
+?anEstimatedSize : Value<Number>
+?anEstimatedSize manifestsAs Transient
+?aDatabaseObject : Database<HTML5Data>
+?aDatabaseObject manifestsAs Transient
+openDatabase(?aDatabasename,?aDatabaseVersion,?aDisplayName,?anEstimatedSize) |-> ?aDatabaseObject
+SQLBasedDatabaseAPI implements openDatabase
+
+OfflineApplicationCachingAPI : API
+OfflineApplicationCachingAPI uses HTML5
+OfflineApplicationCachingAPI realizes OfflineApplicationCaching
+
+Cache-Manifest : DataRepresentationLanguage
+?manifestFile : Configuration<Cache-Manifest>
+?manifestFile manifestsAs File
+
+?aCachableFile : Artifact<?aLanguage>
+?aCachableFile manifestsAs File
+?aWebApplication : WebApplication
+?aCachableFile partOf ?aWebApplication
+
+?backupFile : Artifact<?aLanguage>
+?aCachableFile equals ?backupFile
+?aURL refersTo ?aCachableFile
+?offlineRequest : Message<HTTPRequest>
+?offlineResponse : Message<HTTPResponse>
+offlineAccess : HTTPRequest # URL -> HTTPResponse
+offlineAccess(?offlineRequest,?aURL) |-> ?offlineResponse
+?backupFile partOf ?offlineResponse
+?backupFile partOf ?aLocalFileSystem
+
+?aHTML5File : Webpage<HTML5>
+?aHTML5File refersTo ?manifestFile
+?aHTML5File implements offlineAccess
+
+SQLBasedDatabaseAPI = "https://www.w3.org/TR/offline-webapps/"
+OfflineApplicationCachingAPI = "https://www.w3.org/TR/offline-webapps/"
+Cache-Manifest = "https://www.w3.org/TR/offline-webapps/"
