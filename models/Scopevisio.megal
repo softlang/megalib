@@ -8,32 +8,38 @@ SoftwareAsAService : TechnologySpace
 Scopevisio belongsTo SoftwareAsAService
 
 Scopevisio supports Marketing
-Scopevisio supports Distribution
+Scopevisio supports Sales
 Scopevisio supports ProjectManagement
 Scopevisio supports InvoiceManagement
 Scopevisio supports Bookkeeping
 Scopevisio supports FinanceManagement
 Scopevisio supports DocumentManagement
 
-?Unknown : Language
-Java : Language
-?scopevisio.exe : Executable<?Unknown>
-?scopevisio.exe uses Java
-
+?aScopeVisioSystem : System
+?aScopeVisioSystem uses Java
 ?selectedServices : Artifact<?Unknown>
 
 ?aHTTPSRequest : Message<SOAP>
-?aProductName partOf ?aHTTPSRequest
+Reference < Artifact
+ReferencePart < Artifact
+?aServiceAddress : Reference<URI>
+?aProductName : ReferencePart<URI>
+?aProductName manifestsAs Fragment
+?aProductName partOf ?aServiceAddress
+?aServiceName : ReferencePart<URI>
+?aServiceName manifestsAs Fragment
+?aServiceName : partOf ?aServiceAddress
 ?aHTTPSResponse : Message<SOAP>
-communicate : HTTPSRequest -> HTTPSResponse
-communicate(?aHTTPSRequest) |-> HTTPSResponse
-?scopevisio.exe implements communicate
+communicate : HTTPSRequest # URI -> HTTPSResponse
+communicate(?aHTTPSRequest, ?aServiceAddress) |-> ?aHTTPSResponse
+?aScopeVisioSystem implements communicate
 
 JavaRuntimeEnvironment : Technology
-?scopevisio.exe uses JavaRuntimeEnvironment
-?scopevisio.exe uses HTTPS 
-?scopevisio.exe uses SOAP
-?scopevisio.exe uses Authentification
+?aScopeVisioSystem uses JavaRuntimeEnvironment
+?aScopeVisioSystem uses Java
+?aScopeVisioSystem uses HTTPS 
+?aScopeVisioSystem uses SOAP
+?aScopeVisioSystem uses Authentification
 
 Scopevisio = "https://www.scopevisio.com/"
 SOAP = "https://www.w3.org/TR/soap/"
