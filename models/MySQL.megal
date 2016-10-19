@@ -1,0 +1,45 @@
+module MySQL
+
+DataDefinitionLanguage < SchemaLanguage
+DataManipulationLanguage < Language
+SQL : Language
+SQLDDL : DataDefinitionLanguage
+SQLDML : DataManipulationLanguage
+
+SQLDDL subsetOf SQL
+SQLDML subsetOf SQL
+
+DatabaseProgramming : ProgrammingDomain
+Database : Role
+Database participantOf DatabaseProgramming
+
+MySQLImage : DataRepresentationLanguage
+RelationalModeling : Paradigm
+MySQLImage facilitates RelationalModeling
+
+DatabaseManagement < Technology
+MySQL : DatabaseManagement
+MySQL facilitates DatabaseProgramming
+SQL-Ware : TechnologySpace
+MySQL belongsTo SQL-Ware
+
+?database : Artifact<MySQLImage>
+?database hasRole Database
+
+IDE < Technology
+MySQLWorkBench : IDE
+
+?createStmt : Artifact<SQLDDL>
+Schema : Role
+?createStmt hasRole Schema
+?insertStmt : Artifact<SQLDML>
+TransformationRule : Role
+?insertStmt : TransformationRule
+?db1 : Artifact<MySQLImage>
+?db2 : Artifact<MySQLImage>
+?db3 : Artifact<MySQLImage>
+execution : SQL # MySQLImage -> MySQLImage
+
+MySQLWorkBench implements execution
+execution(?createStmt,?db1) |-> ?db2
+execution(?insertStmt,?db2) |-> ?db3

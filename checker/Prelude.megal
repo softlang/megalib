@@ -1,10 +1,8 @@
 Artifact < Entity
-SourceCode < Artifact
-Grammar < Artifact
+SyntaxDefinition < Artifact
 Specification < Artifact
 Value < Artifact
 Configuration < Artifact
-Webpage < Artifact
 defines < Artifact # Entity
 conformsTo < Artifact # Artifact
 correspondsTo < Artifact # Artifact
@@ -65,7 +63,13 @@ ProgrammingDomain < Concept
 TechnologySpace < Concept
 DesignPattern < Concept
 ArchitecturalStyle < Concept
-partOf < Concept # Concept
+aspectOf < Concept # Concept
+
+Role < Entity
+Grammar : Role
+participantOf < Role # DesignPattern
+participantOf < Role # ArchitecturalStyle
+roleOf < Role # Artifact
 
 partOf < Technology # TechnologySpace
 realizes < Technology # ProgrammingDomain
@@ -84,4 +88,3 @@ uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
 uses < Function # Function
-
