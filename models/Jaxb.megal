@@ -1,0 +1,79 @@
+module JAXB
+
+Platform < Technology
+JavaPlatform : Platform
+Java : ProgrammingLanguage
+JavaPlatform implements Java
+
+CodeGenerator < Technology
+Library < Technology
+DataBindingTechnology < Technology
+XMLDataBinding : ProgrammingDomain
+XML-Ware : TechnologySpace
+
+JAXB : DataBindingTechnology
+JAXB belongsTo XML-Ware
+JAXB realizes XMLDataBinding
+
+JAXB partOf JavaPlatform
+bindingCompiler : CodeGenerator
+bindingFramework : Library
+bindingCompiler partOf JAXB
+bindingFramework partOf JAXB
+
+XML : DataRepresentationLanguage
+XSD : SchemaLanguage
+XSD subsetOf XML
+
+JAXB.Java : ProgrammingLanguage
+JAXB.Java subsetOf Java
+
+generation : XSD -> JAXB.Java
+bindingCompiler implements generation
+
+?xmlTypes : Artifact<XSD>
+?xmlTypes manifestsAs File+
+Schema : Role
+?xmlTypes hasRole Schema
+?javaClasses : Artifact<JAXB.Java>
+?javaClasses manifestsAs File+
+Model : Role
+?javaClasses hasRole Model
+generation(?xmlTypes) |-> ?javaClasses
+?javaClasses correspondsTo ?xmlTypes
+
+
+Annotation : Concept
+bindingFramework facilitates Annotation
+?javaClasses uses Annotation
+
+ConceptualProcess < Concept
+Serialization : ConceptualProcess
+bindingFramework facilitates Serialization
+CodeGeneration : ConceptualProcess
+bindingCompiler facilitates CodeGeneration
+bindingCompiler uses CodeGeneration
+
+Validation : Concept
+JAXB facilitates Validation
+
+JVM.ObjectGraphs : ObjectLanguage
+?anObjectGraph : Value<JVM.ObjectGraphs>
+?anObjectGraph manifestsAs Transient
+?anObjectGraph conformsTo ?javaClasses
+?anXMLDoc : Data<XML>
+?anXMLDoc manifestsAs File
+?anXMLDoc conformsTo ?xmlTypes
+unmarshalling : XML -> JVM.ObjectGraphs
+unmarshalling(?anXMLDoc) |-> ?anObjectGraph
+?anXMLDoc correspondsTo ?anObjectGraph
+
+?application : Application
+?application uses Java
+?aMethodCall : SourceCode<Java>
+?aMethodCall manifestsAs Fragment
+?aMethodCall uses bindingFramework
+?aMethodCall uses unmarshalling
+
+JAXB = "https://jaxb.java.net/2.2.4/docs/xjc.html"
+bindingFramework = "https://docs.oracle.com/javaee/5/api/javax/xml/bind/package-summary.html"

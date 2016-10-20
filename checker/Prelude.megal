@@ -74,6 +74,7 @@ roleOf < Role # Artifact
 partOf < Technology # TechnologySpace
 realizes < Technology # ProgrammingDomain
 realizes < Artifact # ProgrammingDomain
+realizes < Function # Concept
 facilitates < Technology # Concept
 facilitates < Language # Concept
 uses < System # System
@@ -87,4 +88,5 @@ uses < Artifact # Concept
 uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
+uses < Artifact # Function
 uses < Function # Function
