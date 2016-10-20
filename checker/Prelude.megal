@@ -57,6 +57,9 @@ implements < Technology # Function
 implements < Technology # Language
 implements < System # Function
 
+Role < Entity
+Grammar : Role
+
 Concept < Entity
 Paradigm < Concept
 ProgrammingDomain < Concept
@@ -65,11 +68,10 @@ DesignPattern < Concept
 ArchitecturalStyle < Concept
 aspectOf < Concept # Concept
 
-Role < Entity
-Grammar : Role
+
 participantOf < Role # DesignPattern
 participantOf < Role # ArchitecturalStyle
-roleOf < Role # Artifact
+hasRole < Artifact # Role
 
 partOf < Technology # TechnologySpace
 realizes < Technology # ProgrammingDomain

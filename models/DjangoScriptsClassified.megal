@@ -1,0 +1,67 @@
+module DjangoScriptsClassified
+
+Django : WebApplicationFramework
+Python : ProgrammingLanguage
+?awebapp : WebApplication
+?awebapp uses Python
+?awebapp uses Django
+Configuration : Role
+Initialization : Role
+Administration : Role
+ModelViewController : DesignPattern
+View : Role
+Model : Role
+Controller : Role
+Model participantOf ModelViewController
+View participantOf ModelViewController
+Controller participantOf ModelViewController
+TestSuite : Role
+Testing : ProgrammingDomain
+TestSuite participantOf Testing
+Router : Role
+
+?init.py partOf ?awebapp
+?init.py : Artifact<Python>
+?init.py manifestsAs File
+?init.py hasRole Configuration
+
+?manage.py partOf ?awebapp
+?manage.py : Artifact<Python>
+?manage.py manifestsAs File
+?manage.py hasRole Administration
+
+?apackage partOf ?awebapp
+?apackage : Artifact<?>
+?apackage manifestsAs Folder
+?apackage hasRole Package
+
+?apackage.init.py partOf ?apackage
+?apackage.init.py : Artifact<Python>
+?apackage.init.py manifestsAs File
+?apackage.init.py hasRole Initialization
+
+?admin.py partOf ?apackage
+?admin.py : Artifact<Python>
+?admin.py manifestsAs File
+?admin.py hasRole Configuration
+
+?models.py partOf ?apackage
+?models.py : Artifact<Python>
+?models.py manifestsAs File
+?models.py hasRole Model
+
+?tests.py partOf ?apackage
+?tests.py : Artifact<Python>
+?tests.py manifestsAs File
+?tests.py hasRole TestSuite
+
+?views.py partOf ?apackage
+?views.py : Artifact<Python>
+?views.py manifestsAs File
+?views.py hasRole Controller
+
+?settings.py partOf ?awebapp
+?settings.py : Artifact<Python>
+?settings.py manifestsAs File
+?settings.py hasRole Configuration
+
