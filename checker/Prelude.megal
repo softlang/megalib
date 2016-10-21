@@ -59,6 +59,10 @@ implements < System # Function
 
 Role < Entity
 Grammar : Role
+Database : Role
+Schema : Role
+Query : Role
+Model : Role
 
 Concept < Entity
 Paradigm < Concept
