@@ -1,0 +1,33 @@
+module MicrosoftOfficeCompatibility
+
+XML : DataRepresentationLanguage
+BinaryFormat < Language
+BinaryFileFormat : BinaryFormat
+DocumentFileFormat < Language
+MicrosoftOfficeOpenXML : DocumentFileFormat
+MicrosoftOfficeOpenXML subsetOf XML
+MicrosoftOfficeBinaryFileFormat : DocumentFileFormat
+MicrosoftOfficeBinaryFileFormat subsetOf BinaryFileFormat
+
+
+OfficeSuite < Technology
+MicrosoftOffice2003 : OfficeSuite
+MicrosoftOffice2003 implements MicrosoftOfficeBinaryFileFormat
+Converter < Technology
+MicrosoftOfficeCompatibility : Converter
+MicrosoftOfficeCompatibility implements convert
+convert : MicrosoftOfficeOpenXML -> MicrosoftOfficeBinaryFileFormat
+MicrosoftOffice2003 uses MicrosoftOfficeCompatibility
+
+XSD : SchemaLanguage
+MicrosoftOfficeOpenXMLSchema : Artifact<XSD,Schema,File+>
+MicrosoftOfficeOpenXMLSchema defines MicrosoftOfficeOpenXML
+
+
+Document : Role
+?aNewOfficeFile : Artifact<MicrosoftOfficeOpenXML,Document,File>
+?aNewOfficeFile conformsTo MicrosoftOfficeOpenXMLSchema
+?anOldOfficeFile : Artifact<BinaryFileFormat,Document,File>
+convert(?aNewOfficeFile) |-> ?anOldOfficeFile
+
+
