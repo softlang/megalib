@@ -51,7 +51,7 @@ public class MegaModel {
 		instanceOfMap.put(instance, type);
 	}
 
-	public Map<String, Set<List<String>>> getRelationDeclarationMap() {
+	public Map<String, Set<List<String>>> getRelationshipDeclarationMap() {
 		return Collections.unmodifiableMap(relationDeclarationMap);
 	}
 	

@@ -61,7 +61,7 @@ public class Checker {
 	
 	private void checkLinkedEntityDeclared(String name) {
 		if (!(model.getSubtypesMap().containsKey(name) || model.getInstanceOfMap().containsKey(name)
-				|| model.getRelationDeclarationMap().containsKey(name) || model.getRelationshipInstanceMap().containsKey(name))) {
+				|| model.getRelationshipDeclarationMap().containsKey(name) || model.getRelationshipInstanceMap().containsKey(name))) {
 			warnings.add("Error at Link of '" + name + "' the entity does not exist");
 		}
 	}
@@ -191,7 +191,7 @@ public class Checker {
 	}
 	
 	public void checkRelationshipTypes() {
-		model.getRelationDeclarationMap().forEach((name,declarations)->checkRelationDeclarationTypes(name,declarations));
+		model.getRelationshipDeclarationMap().forEach((name,declarations)->checkRelationDeclarationTypes(name,declarations));
 	}
 	
 	private void checkRelationDeclarationTypes(String name, Set<List<String>> declarations) {
@@ -210,7 +210,7 @@ public class Checker {
 		for (String name : relationshipInstances.keySet()) {
 			if (checkRelationInstancesRelationName(name)){
 				relationshipInstances.get(name).forEach(i -> 
-					checkRelationshipInstanceFitsDeclarations(name,i,model.getRelationDeclarationMap().get(name)));
+					checkRelationshipInstanceFitsDeclarations(name,i,model.getRelationshipDeclarationMap().get(name)));
 			}
 		}
 	}
@@ -221,7 +221,7 @@ public class Checker {
 	 * @return
 	 */
 	public boolean checkRelationInstancesRelationName(String name) {
-		if (!model.getRelationDeclarationMap().containsKey(name)) {
+		if (!model.getRelationshipDeclarationMap().containsKey(name)) {
 			warnings.add("Error at relation '" + name + "'. It has not been declared!");
 			return false;
 		}

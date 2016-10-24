@@ -19,10 +19,10 @@ import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.SubtypeDeclarationContext;
 
-public class Listener extends MegalibBaseListener {
+public class MegalibListener extends MegalibBaseListener {
 	private MegaModel model;
 	
-	public Listener(){
+	public MegalibListener(){
 		model = new MegaModel();
 	}
 	
@@ -47,13 +47,22 @@ public class Listener extends MegalibBaseListener {
 		String instance = context.getChild(0).getText();
 		String type = context.getChild(2).getText();
 		model.addInstanceOf(instance, type);
-		if(context.getChildCount() == 6){
-			String language = context.getChild(4).getText();
+		if(context.getChildCount() == 10){
+			String o = context.getChild(4).getText();
 			List<String> list = new ArrayList<>();
 			list.add(instance);
-			list.add(language);
+			list.add(o);
 			model.addRelationInstances("elementOf", list);
-			
+			o = context.getChild(6).getText();
+			list = new ArrayList<>();
+			list.add(instance);
+			list.add(o);
+			model.addRelationInstances("hasRole", list);
+			o = context.getChild(8).getText();
+			list = new ArrayList<>();
+			list.add(instance);
+			list.add(o);
+			model.addRelationInstances("manifestsAs", list);
 		}
 	}
 	

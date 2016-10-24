@@ -15,8 +15,8 @@ imports: 'import' name;
 
 subtypeDeclaration: name '<' name;
 
-//1.) instance, 2.) type, 3.) optional language
-instanceDeclaration : name ':' name ( '<' name '>' )?;
+// instance : type (possible for artifacts <language,role,manifestation>)
+instanceDeclaration : name ':' name ( '<' name ',' name ',' name  '>' )?;
 
 relationDeclaration: name '<' name '#' name;
 

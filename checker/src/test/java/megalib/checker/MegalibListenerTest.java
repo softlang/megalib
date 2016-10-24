@@ -1,17 +1,17 @@
 package test.java.megalib.checker;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.java.megalib.checker.services.Listener;
 import org.java.megalib.checker.services.MegaModelLoader;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author mmay, aemmerichs
  *
  */
-public class ListenerTest {
+public class MegalibListenerTest {
 	
 	@Test
 	public void enterEntityDeclarationFillsEntityDeclarations() {
@@ -46,10 +46,10 @@ public class ListenerTest {
 	
 	@Test
 	public void enterEntityInstanceWithLanguage(){
-		String input = "a : Artifact<Python>";
+		String input = "a : Artifact<Python,?r,?m>";
 		MegaModel model = new MegaModelLoader().createFromString(input);
 		Map<String, String> imap = model.getInstanceOfMap();
-		assertEquals(6,imap.size());
+		assertEquals(16,imap.size());
 		assertTrue(imap.containsKey("a"));
 		assertEquals(imap.get("a").toString(),"Artifact");
 		Set<List<String>> elementOfSet = model.getRelationshipInstanceMap().get("elementOf");
@@ -62,7 +62,7 @@ public class ListenerTest {
 	@Test
 	public void enterRelationDeclarationFillsRelationDeclarationsWithRelationName()  {
 		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
 		
 		assertTrue(actual.containsKey("Relation"));		
 	}
@@ -70,7 +70,7 @@ public class ListenerTest {
 	@Test
 	public void enterRelationDeclarationFillsRelationDeclarationsWithTypes()  {
 		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected = {"TypeOne","TypeTwo"};
@@ -81,7 +81,7 @@ public class ListenerTest {
 	@Test
 	public void enterRelationDeclarationDoesNotOverideExistingDeclarations()  {
 		String input = "Relation < TypeOne # TypeTwo\nRelation < TypeThree # TypeFour";
-		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationDeclarationMap();
+		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
 		
 		Set<List<String>> types = actual.get("Relation");
 		String[] expected1 = {"TypeOne","TypeTwo"};
@@ -210,9 +210,20 @@ public class ListenerTest {
 	}
 	
 	@Test
-	public void getModelReturnsMegaModel() {
-		Listener sut = new Listener();
-		Object actual = sut.getModel();
-		assertThat(actual, instanceOf(MegaModel.class));
+	public void fileNotFoundReturnsNull() throws IOException{
+		assertNull(new MegaModelLoader().createFromFile(""));
+	}
+	
+	@Test
+	public void testSyntacticallyInvalidString(){
+		String input = "xy test";
+		assertNull(new MegaModelLoader().createFromString(input));
+	}	
+	
+	@Test
+	public void testComment() throws IOException{
+		String input = "// test hello world!";
+		MegaModel actual = new MegaModelLoader().createFromString(input);
+		assertNotNull(actual);
 	}
 }
