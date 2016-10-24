@@ -1,0 +1,33 @@
+module Owncloud
+
+CloudService < Technology
+Owncloud : CloudService
+
+FileSynchronization : Concept
+FileSharing : Concept
+Owncloud facilitates FileSynchronization
+Owncloud facilitates FileSharing
+
+CloudServer < System
+CloudClient < System
+?anOwncloudClient : CloudClient
+?anOwncloudClient uses Owncloud
+?anOwncloudServer : CloudServer
+?anOwncloudServer uses Owncloud
+
+FileSystem < System
+?aFileSystem1 : FileSystem
+?aFileSystem2 : FileSystem
+
+?aFile1 : Artifact<?,?,File>
+?aFile1 partOf ?aFileSystem1
+?aFile2 : Artifact<?,?,File>
+?aFile1 equals ?aFile2
+share : URL # ? -> ?
+?aserverurl : Artifact<URL,Reference,Fragment>
+share(?aserverurl,?aFile1) |-> ?aFile2
+?aFile2 partOf ?aFileSystem2
+
+?sharingPolicy : Artifact<?,Configuration,?>
+?sharingPolicy partOf ?owncloudServer
+?sharingPolicy defines share
