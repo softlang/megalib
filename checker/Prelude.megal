@@ -81,7 +81,6 @@ belongsTo < Technology # ProgrammingDomain
 belongsTo < Technology # TechnologySpace
 realizes < Artifact # AbstractProcess
 realizes < Technology # AbstractProcess
-facilitates < Technology # ProgrammingDomain
 facilitates < Technology # DesignPattern
 facilitates < Technology # ArchitecturalStyle
 facilitates < Technology # AbstractProcess
