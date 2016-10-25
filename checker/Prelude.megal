@@ -47,6 +47,7 @@ Framework < Technology
 System < Entity
 Application < System
 WebApplication < System
+belongsTo < Technology # TechnologySpace
 partOf < Artifact # Artifact
 partOf < Artifact # System
 partOf < Artifact # Technology
@@ -72,15 +73,12 @@ DesignPattern < Concept
 ArchitecturalStyle < Concept
 aspectOf < Concept # Concept
 
-
 participantOf < Role # DesignPattern
 participantOf < Role # ArchitecturalStyle
 hasRole < Artifact # Role
 
-partOf < Technology # TechnologySpace
 realizes < Technology # ProgrammingDomain
-realizes < Artifact # ProgrammingDomain
-realizes < Function # Concept
+realizes < Artifact # Concept
 facilitates < Technology # Concept
 facilitates < Language # Concept
 uses < System # System
@@ -94,5 +92,3 @@ uses < Artifact # Concept
 uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
-uses < Artifact # Function
-uses < Function # Function
