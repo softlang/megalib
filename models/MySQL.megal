@@ -1,6 +1,6 @@
 module MySQL
 
-DataDefinitionLanguage < SchemaLanguage
+DataDefinitionLanguage < SchemaLanguage // SchemaLanguage not defined
 DataManipulationLanguage < Language
 SQL : Language
 SQLDDL : DataDefinitionLanguage
@@ -11,13 +11,14 @@ SQLDML subsetOf SQL
 
 DatabaseProgramming : ProgrammingDomain
 Database : Role
-Database participantOf DatabaseProgramming
+Database participantOf DatabaseProgramming // Strange participation
 
 MySQLImage : DataRepresentationLanguage
-RelationalModeling : Paradigm
-MySQLImage facilitates RelationalModeling
 
-DatabaseManagement < Technology
+RelationalModeling : Paradigm
+SQLDDL facilitates RelationalModeling
+
+DatabaseManagement < Technology // Should this be "DBMS"?
 MySQL : DatabaseManagement
 MySQL facilitates DatabaseProgramming
 SQL-Ware : TechnologySpace

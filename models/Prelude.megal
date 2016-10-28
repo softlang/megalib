@@ -1,12 +1,33 @@
+Language < Entity
+ProgrammingLanguage < Language
+DataRepresentationLanguage < Language // Any binding?
+MarkupLanguage < Language
+TransformationLanguage < Language
+QueryLanguage < Language 
+NaturalLanguage < Language // Aren't we talking about just software languages?
+elementOf < Artifact # Language
+subsetOf < Language # Language
+
+English : NaturalLanguage
+String : DataRepresentationLanguage
+Number : DataRepresentationLanguage
+Boolean : DataRepresentationLanguage
+
 Artifact < Entity
+// Purpose-based classification of artifacts
 SyntaxDefinition < Artifact
+Grammar < ???
+Metamodel < ???
+Model < ???
 Specification < Artifact
 Value < Artifact
 Configuration < Artifact
-defines < Artifact # Entity
+
+defines < Artifact # Entity // Too general?
 conformsTo < Artifact # Artifact
 correspondsTo < Artifact # Artifact
 
+// Manifestations of artifacts
 Manifestation < Entity
 File : Manifestation
 File = "https://en.wikipedia.org/wiki/Computer_file"
@@ -22,24 +43,27 @@ Fragment : Manifestation
 Fragment = "https://en.wikipedia.org/wiki/Snippet_(programming)"
 manifestsAs < Artifact # Manifestation
 
-Language < Entity
-ProgrammingLanguage < Language
-DataRepresentationLanguage < Language
-TransformationLanguage < Language
-QueryLanguage < Language
-NaturalLanguage < Language
-elementOf < Artifact # Language
-subsetOf < Language # Language
-
-English : NaturalLanguage
-String : DataRepresentationLanguage
-Number : DataRepresentationLanguage
-Boolean : DataRepresentationLanguage
+// Roles of artifacts
+Role < Entity
+Grammar : Role
+Database : Role
+Schema : Role
+Query : Role
+Model : Role // in the sense of MDE
+Metamodel : Role // in the sense of MDE
+MvcModel : Role
+MvcView : Role
+MvcController : Role
+hasRole < Artifact # Role
+participantOf < Role # DesignPattern
+participantOf < Role # ArchitecturalStyle
+participantOf??? < Role # ProgrammingDomain // Better name needed
 
 Function < Entity
 Transformation < Function
 implements < Artifact # Function
 
+// Classification of technologies
 Technology < Entity
 API < Technology
 Library < Technology
@@ -47,45 +71,35 @@ Framework < Technology
 System < Entity
 Application < System
 WebApplication < System
+
+// Part-of relationships
 partOf < Artifact # Artifact
 partOf < Artifact # System
 partOf < Artifact # Technology
 partOf < Technology # Technology
 partOf < System # System
+
+// Implementation relationships
 implements < Artifact # Function
 implements < Technology # Function
 implements < Technology # Language
 implements < System # Function
 
-Role < Entity
-Grammar : Role
-Database : Role
-Schema : Role
-Query : Role
-Model : Role
-
+// We should eventually replace Concept by more specific categories.
 Concept < Entity
-Paradigm < Concept
+Paradigm < Concept // Maybe we should derive from Entity directly
 ProgrammingDomain < Concept
 TechnologySpace < Concept
 DesignPattern < Concept
 ArchitecturalStyle < Concept
-AbstractProcess < Concept
-aspectOf < Concept # Concept
+AbstractProcess < Concept // Name?
+XMLSerialization : AbstractProcess
 
-participantOf < Role # DesignPattern
-participantOf < Role # ArchitecturalStyle
-hasRole < Artifact # Role
-
-belongsTo < Technology # ProgrammingDomain
-belongsTo < Technology # TechnologySpace
+belongsTo < Technology # ProgrammingDomain // should that be "supports"
 realizes < Artifact # AbstractProcess
 realizes < Technology # AbstractProcess
-facilitates < Technology # DesignPattern
-facilitates < Technology # ArchitecturalStyle
-facilitates < Technology # AbstractProcess
-facilitates < Language # Paradigm
-facilitates < Language # ProgrammingDomain
+
+// Usage
 uses < System # System
 uses < System # Technology
 uses < System # DesignPattern
@@ -101,3 +115,11 @@ uses < Artifact # ArchitecturalStyle
 uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
+
+// Facilitation ("deferred" usage)
+facilitates < Technology # DesignPattern
+facilitates < Technology # ArchitecturalStyle
+facilitates < Technology # ProgrammingDomain // Should we add this one?
+facilitates < Technology # AbstractProcess
+facilitates < Language # Paradigm
+facilitates < Language # ProgrammingDomain

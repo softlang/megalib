@@ -2,13 +2,12 @@ module MicrosoftOfficeCompatibility
 
 XML : DataRepresentationLanguage
 BinaryFormat < Language
-BinaryFileFormat : BinaryFormat
+BinaryFileFormat : BinaryFormat // Confusing naming scheme
 DocumentFileFormat < Language
-MicrosoftOfficeOpenXML : DocumentFileFormat
+MicrosoftOfficeOpenXML : DocumentFileFormat // Why not use MarkupLanguage?
 MicrosoftOfficeOpenXML subsetOf XML
 MicrosoftOfficeBinaryFileFormat : DocumentFileFormat
 MicrosoftOfficeBinaryFileFormat subsetOf BinaryFileFormat
-
 
 OfficeSuite < Technology
 MicrosoftOffice2003 : OfficeSuite
@@ -23,11 +22,8 @@ XSD : SchemaLanguage
 MicrosoftOfficeOpenXMLSchema : Artifact<XSD,Schema,File+>
 MicrosoftOfficeOpenXMLSchema defines MicrosoftOfficeOpenXML
 
-
 Document : Role
 ?aNewOfficeFile : Artifact<MicrosoftOfficeOpenXML,Document,File>
 ?aNewOfficeFile conformsTo MicrosoftOfficeOpenXMLSchema
 ?anOldOfficeFile : Artifact<BinaryFileFormat,Document,File>
 convert(?aNewOfficeFile) |-> ?anOldOfficeFile
-
-
