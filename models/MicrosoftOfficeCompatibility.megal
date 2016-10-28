@@ -1,10 +1,8 @@
 module MicrosoftOfficeCompatibility
 
 XML : DataRepresentationLanguage
-BinaryFormat < Language
-BinaryFileFormat : BinaryFormat // Confusing naming scheme
-DocumentFileFormat < Language
-MicrosoftOfficeOpenXML : DocumentFileFormat // Why not use MarkupLanguage?
+BinaryFormat : DataRepresentationLanguage 
+MicrosoftOfficeOpenXML : StylesheetLanguage 
 MicrosoftOfficeOpenXML subsetOf XML
 MicrosoftOfficeBinaryFileFormat : DocumentFileFormat
 MicrosoftOfficeBinaryFileFormat subsetOf BinaryFileFormat
