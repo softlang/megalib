@@ -1,0 +1,37 @@
+Any statement should not appear twice
+subytypeOf's right side is a declared type or Entity
+Every relationship declaration refers to types that are (transitive) subtype of Entity 
+
+instanceOf's left side is not a type
+instanceOf's right side is at the left side of a subtypeOf statement
+instanceOf's right side is not Entity
+instanceOf's right side is not Technology // we don't emphasize underspecification here
+instanceOf's right side is not Language // we don't emphasize underspecification here
+For every instanceOf's left side there exists a hasLink relationship if it doesn't start with `?'.
+
+Every relationship instance fits to a declaration
+Relationship instances do not match multiple declarations // prevent ambiguity
+Every relationship instance's left side is a declared entity
+Every relationship instance's right side is a declared entity except for hasLink
+
+subsetOf is not cyclic
+partOf is not cyclic
+conformsTo is not cyclic
+hasLink's right side is a well formed URI
+hasLink's right side provides a link, where a conncection to the web resource is possible.
+For any entity a hasLink relationship can exist only once
+
+Every Technology uses at least one Language
+
+Every Function is implemented
+Every Function has only one declaration // we don't want to allow overloading for functions
+Every function declaration's domains are declared entities
+Every function declaration's domains are languages
+Every function declaration's ranges are declared entities
+Every function declaration's ranges are languages
+Every function application has a declaration
+Every function application fits to a declaration
+
+Every Artifact is element of a language
+Every Artifact has a manifestation if it does not start with a ?
+Every Artifact has a role
