@@ -1,14 +1,11 @@
 module MicrosoftOfficeCompatibility
 
 XML : DataRepresentationLanguage
-BinaryFormat < Language
-BinaryFileFormat : BinaryFormat
-DocumentFileFormat < Language
-MicrosoftOfficeOpenXML : DocumentFileFormat
+BinaryFormat : DataRepresentationLanguage 
+MicrosoftOfficeOpenXML : StylesheetLanguage 
 MicrosoftOfficeOpenXML subsetOf XML
 MicrosoftOfficeBinaryFileFormat : DocumentFileFormat
 MicrosoftOfficeBinaryFileFormat subsetOf BinaryFileFormat
-
 
 OfficeSuite < Technology
 MicrosoftOffice2003 : OfficeSuite
@@ -23,11 +20,8 @@ XSD : SchemaLanguage
 MicrosoftOfficeOpenXMLSchema : Artifact<XSD,Schema,File+>
 MicrosoftOfficeOpenXMLSchema defines MicrosoftOfficeOpenXML
 
-
 Document : Role
 ?aNewOfficeFile : Artifact<MicrosoftOfficeOpenXML,Document,File>
 ?aNewOfficeFile conformsTo MicrosoftOfficeOpenXMLSchema
 ?anOldOfficeFile : Artifact<BinaryFileFormat,Document,File>
 convert(?aNewOfficeFile) |-> ?anOldOfficeFile
-
-
