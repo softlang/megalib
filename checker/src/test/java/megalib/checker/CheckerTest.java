@@ -21,6 +21,15 @@ import org.junit.Test;
 public class CheckerTest {
 	
 	@Test
+	public void testPrelude(){
+		String data = "?L : Language";
+		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
+		resultChecker.doChecks();
+		resultChecker.getWarnings().forEach(w -> System.out.println(w));
+		assertEquals(0,resultChecker.getWarnings().size());
+	}
+	
+	@Test
 	public void testLinkEntityNotExists() {
 		String data = "entity = \"http://softlang.org/\"";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
@@ -31,7 +40,7 @@ public class CheckerTest {
 	
 	@Test
 	public void testLinkMalformed() {
-		String data = "?l : Language \nentity : Artifact<?l> \nentity = \"nowebsitehere\"";
+		String data = "?l : Language \nentity : Artifact<?l,Grammar,File> \nentity = \"nowebsitehere\"";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
@@ -41,11 +50,11 @@ public class CheckerTest {
 	@Test
 	public void testLinkDead() {
 		String data = "?l : Language "
-				+ "entity : Artifact<?l> "
+				+ "entity : Artifact<?l,Grammar,File> "
 				+ "entity = \"http://www.nowebsitehere.de/\"";
 		MegaModel model = new MegaModelLoader().createFromString(data);
-		assertEquals(7,model.getInstanceOfMap().size());
-		assertEquals(6,model.getLinkMap().size());
+		assertEquals(21,model.getInstanceOfMap().size());
+		assertEquals(20,model.getLinkMap().size());
 		Checker resultChecker = new Checker(model);
 		resultChecker.doChecks();
 		assertEquals(1,resultChecker.getWarnings().size());
@@ -55,7 +64,7 @@ public class CheckerTest {
 	@Test
 	public void testLinkWorking() {
 		String data = "?l : Language"
-				+ "\nentity : Artifact<?l> "
+				+ "\nentity : Artifact<?l,Grammar,File> "
 				+ "\nentity = \"http://softlang.org/\"";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -180,8 +189,8 @@ public class CheckerTest {
 	@Test
 	public void testRelationshipInstanceNotDeclared(){
 		String data = "?l : Language"
-				+ "\n?a : Artifact<?l>"
-				+ "\n?b : Artifact<?l>"
+				+ "\n?a : Artifact<?l,Grammar,File>"
+				+ "\n?b : Artifact<?l,Grammar,File>"
 				+ "\n?a Relation ?b";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -192,7 +201,7 @@ public class CheckerTest {
 	@Test
 	public void testRelationshipInstanceEntitiesNotDeclared(){
 		String data = ("?l : Language"
-				+ "\n?a : Artifact<?l> "
+				+ "\n?a : Artifact<?l,MvcModel,File> "
 				+ "\n?a partOf ?b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -205,7 +214,7 @@ public class CheckerTest {
 	@Test
 	public void testRelationshipInstanceSingleDeclarationUnfit(){
 		String data = ("rel < Artifact # Artifact "
-				+ "\n?a : Artifact<?b> "
+				+ "\n?a : Artifact<?b,Grammar,File> "
 				+ "\n?b : Language "
 				+ "\n?a rel ?b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
@@ -221,7 +230,7 @@ public class CheckerTest {
 				+ "\nLanguage < Entity "
 				+ "\npartOf < Language # Language "
 				+ "\npartOf < Artifact # Artifact "
-				+ "\n?a : Artifact<?b> "
+				+ "\n?a : Artifact<?b,Grammar,File> "
 				+ "\n?b : Language "
 				+ "\n?a partOf ?b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
@@ -235,8 +244,8 @@ public class CheckerTest {
 	public void testRelationshipInstanceSingleDeclarationFit(){
 		String data = ("?l : Language "
 				+ "\nrel < Artifact # Artifact "
-				+ "\n?a : Artifact<?l> "
-				+ "\n?b : Artifact<?l> "
+				+ "\n?a : Artifact<?l,MdeMetamodel,File> "
+				+ "\n?b : Artifact<?l,MdeModel,File> "
 				+ "\n?a rel ?b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -248,8 +257,8 @@ public class CheckerTest {
 		String data = ("?l : Language"
 				+ "\nrel < Artifact # Artifact "
 				+ "\nrel < Language # Language"
-				+ "\n?a : Artifact<?l> "
-				+ "\n?b : Artifact<?l> "
+				+ "\n?a : Artifact<?l,MdeModel,File> "
+				+ "\n?b : Artifact<?l,MdeModel,File> "
 				+ "\n?a partOf ?b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -259,8 +268,8 @@ public class CheckerTest {
 	@Test
 	public void testRelationshipInstanceMultiDeclarationSecondFit(){
 		String data = ("?l : Language "
-				+ "?a : Artifact<?l> "
-				+ "?b : Artifact<?l> "
+				+ "?a : Artifact<?l,MdeModel,File> "
+				+ "?b : Artifact<?l,MdeModel,File> "
 				+ "?a partOf ?b");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -272,7 +281,7 @@ public class CheckerTest {
 		String data = "?l : Language "
 				+ "XArtifact < Artifact "
 				+ "ExArtifact < XArtifact "
-				+ "?a : ExArtifact<?l> "
+				+ "?a : ExArtifact<?l,MdeModel,File> "
 				+ "id < Artifact # Artifact "
 				+ "?a id ?a";
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
@@ -293,7 +302,8 @@ public class CheckerTest {
 	@Test
 	public void testFunctionDeclarationSingleDomainNotALanguage() {
 		String data = ("?Haskell : Language "
-				+ "?a : Artifact<?Haskell> "
+				+ "?Script : Role "
+				+ "?a : Artifact<?Haskell,?Script,File> "
 				+ "merge : ?a -> ?Haskell ");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -304,7 +314,8 @@ public class CheckerTest {
 	@Test
 	public void testFunctionDeclarationSingleRangeNotALanguage() {
 		String data = ("?Haskell : Language "
-				+ "?a : Artifact<?Haskell> "
+				+ "?Script : Role "
+				+ "?a : Artifact<?Haskell,?Script,File> "
 				+ "merge : ?Haskell -> ?a ");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -315,7 +326,8 @@ public class CheckerTest {
 	@Test
 	public void testFunctionDeclarationMultiDomainNotALanguage(){
 		String data = ("?Haskell : Language "
-				+ "?a : Artifact<?Haskell> "
+				+ "?Script : Role "
+				+ "?a : Artifact<?Haskell,?Script,File> "
 				+ "merge : ?Haskell # ?a -> ?Haskell ");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();
@@ -326,7 +338,8 @@ public class CheckerTest {
 	@Test
 	public void testFunctionDeclarationMultiRangeNotALanguage(){
 		String data = ("?Haskell : Language "
-				+ "?a : Artifact<?Haskell> "
+				+ "?Script : Role "
+				+ "?a : Artifact<?Haskell,?Script,File> "
 				+ "merge : ?Haskell # ?Haskell -> ?Haskell # ?a ");
 		Checker resultChecker = new Checker(new MegaModelLoader().createFromString(data));
 		resultChecker.doChecks();

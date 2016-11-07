@@ -24,6 +24,16 @@ import org.junit.Test;
 public class MegalibListenerTest {
 	
 	@Test
+	public void preludeIsParsed(){
+		MegaModelLoader ml = new MegaModelLoader();
+		String input = "Subtype < Type";
+		MegaModel model = ml.createFromString(input);
+		
+		assertEquals(20,model.getInstanceOfMap().size());
+		assertEquals(31,model.getSubtypesMap().size());
+	}
+	
+	@Test
 	public void enterEntityDeclarationFillsEntityDeclarations() {
 		String input = "DerivedType < Type";
 		Map<String, String> actual = new MegaModelLoader().createFromString(input).getSubtypesMap();
@@ -45,11 +55,11 @@ public class MegalibListenerTest {
 	}
 	
 	@Test
-	public void enterEntityInstanceWithLanguage(){
+	public void enterArtifactInstance(){
 		String input = "a : Artifact<Python,?r,?m>";
 		MegaModel model = new MegaModelLoader().createFromString(input);
 		Map<String, String> imap = model.getInstanceOfMap();
-		assertEquals(16,imap.size());
+		assertEquals(21,imap.size());
 		assertTrue(imap.containsKey("a"));
 		assertEquals(imap.get("a").toString(),"Artifact");
 		Set<List<String>> elementOfSet = model.getRelationshipInstanceMap().get("elementOf");
@@ -222,7 +232,7 @@ public class MegalibListenerTest {
 	
 	@Test
 	public void testComment() throws IOException{
-		String input = "// test hello world!";
+		String input = "// test hello world";
 		MegaModel actual = new MegaModelLoader().createFromString(input);
 		assertNotNull(actual);
 	}

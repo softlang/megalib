@@ -5,3 +5,4 @@ checker/megalib.checker/checker.jar
 .metadata/
 checker/target/
 .recommenders/
+checker/Prelude.megal

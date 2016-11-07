@@ -4,21 +4,19 @@ DataRepresentationLanguage < Language // Any binding?
 MarkupLanguage < Language
 TransformationLanguage < Language
 QueryLanguage < Language 
-NaturalLanguage < Language // Aren't we talking about just software languages?
 elementOf < Artifact # Language
 subsetOf < Language # Language
 
-English : NaturalLanguage
 String : DataRepresentationLanguage
+String = "https://en.wikipedia.org/wiki/String_(computer_science)"
 Number : DataRepresentationLanguage
+Number = "https://en.wikipedia.org/wiki/Number"
 Boolean : DataRepresentationLanguage
+Boolean = "https://en.wikipedia.org/wiki/Boolean_data_type"
 
 Artifact < Entity
 // Purpose-based classification of artifacts
 SyntaxDefinition < Artifact
-Grammar < ???
-Metamodel < ???
-Model < ???
 Specification < Artifact
 Value < Artifact
 Configuration < Artifact
@@ -46,18 +44,27 @@ manifestsAs < Artifact # Manifestation
 // Roles of artifacts
 Role < Entity
 Grammar : Role
+Grammar = "https://en.wikipedia.org/wiki/Context-free_grammar"
 Database : Role
+Database = "https://en.wikipedia.org/wiki/Database"
 Schema : Role
+Schema = "https://en.wikipedia.org/wiki/Database_schema"
 Query : Role
-Model : Role // in the sense of MDE
-Metamodel : Role // in the sense of MDE
+Query = "https://en.wikipedia.org/wiki/Query_language"
+MdeModel : Role // in the sense of MDE
+MdeModel = "https://en.wikipedia.org/wiki/Model-driven_engineering"
+MdeMetamodel : Role // in the sense of MDE
+MdeMetamodel = "https://en.wikipedia.org/wiki/Metamodeling"
 MvcModel : Role
+MvcModel = "https://en.wikipedia.org/wiki/Model-view-controller"
 MvcView : Role
+MvcView = "https://en.wikipedia.org/wiki/Model-view-controller"
 MvcController : Role
+MvcController = "https://en.wikipedia.org/wiki/Model-view-controller"
 hasRole < Artifact # Role
 participantOf < Role # DesignPattern
 participantOf < Role # ArchitecturalStyle
-participantOf??? < Role # ProgrammingDomain // Better name needed
+// aspectOf??? < Role # ProgrammingDomain . Better name needed
 
 Function < Entity
 Transformation < Function
@@ -93,9 +100,10 @@ TechnologySpace < Concept
 DesignPattern < Concept
 ArchitecturalStyle < Concept
 AbstractProcess < Concept // Name?
-XMLSerialization : AbstractProcess
+Serialization : AbstractProcess
+Serialization = "https://en.wikipedia.org/wiki/Serialization"
 
-belongsTo < Technology # ProgrammingDomain // should that be "supports"
+belongsTo < Technology # ProgrammingDomain // should that be supports
 realizes < Artifact # AbstractProcess
 realizes < Technology # AbstractProcess
 
@@ -116,7 +124,7 @@ uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
 
-// Facilitation ("deferred" usage)
+// Facilitation (deferred usage)
 facilitates < Technology # DesignPattern
 facilitates < Technology # ArchitecturalStyle
 facilitates < Technology # ProgrammingDomain // Should we add this one?

@@ -1,13 +1,17 @@
 grammar Megalib;
 
 //Head of the construct, containing entity or function
-declaration: module? (imports)* ( subtypeDeclaration
-								| instanceDeclaration
-								| relationDeclaration
-								| relationInstance
-								| functionDeclaration
-								| functionInstance
-								| link )+ EOF;
+declaration: module? (imports)* statements EOF;
+
+
+statements:	( subtypeDeclaration
+			   | instanceDeclaration
+			   | relationDeclaration
+			   | relationInstance
+			   | functionDeclaration
+			   | functionInstance
+			   | link
+			   | COMMENT)+ ;
 
 module: 'module' name;
 
@@ -28,8 +32,9 @@ functionInstance: name '(' name (',' name)* ')' '|->' (name | ('(' name (',' nam
 
 link: name '=' LINK;
 
-name : '?'? WORD '+'?;
+name: '?'? WORD ('.' WORD)* '+'?;
 
-WORD: ([a-zA-Z0-9] | '.')+;
+COMMENT: '//' (WORD|'?'|'.'|'<'|'#'|':'|'>'|','|';'|'\"'|'('|')'|' ')+;
+WORD: ([a-zA-Z0-9] | '\'' | '-')+;
 LINK: '"' (~(' '|'\t'|'\f'|'\n'|'\r'))+ '"' ;
 WS: (' '|'\t'|'\f'|'\n'|'\r') -> skip;
