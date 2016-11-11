@@ -1,37 +1,55 @@
-Any statement should not appear twice
-subytypeOf's right side is a declared type or Entity
-Every relationship declaration refers to types that are (transitive) subtype of Entity 
+Creation time :
 
-instanceOf's left side is not a type
-instanceOf's right side is at the left side of a subtypeOf statement
-instanceOf's right side is not Entity
+subytypeOf's right side is a declared type or Entity
+We do not allow multiple inheritance
+
+instanceOf's left side is neither subtype nor Entity
+instanceOf's right side is at the left side of a subtypeOf statement 
+We do not allow multiple instanceOf
+
+Every relationship declaration refers to types that are subtypes
+Every relationship declaration does not appear twice with the same domain and range
+(Every relationship declaration does not have a more specific version, whose domain or range is concerned with subtypes of those that are stated.)
+
+Any relation instance should not appear twice
+Every relationship instance fits to a declaration
+Relationship instances do not match multiple declarations // prevent ambiguity
+Every relationship instance's left side is an instance
+Every relationship instance's right side is an instance
+
+Every Function has only one declaration // we don't want to allow overloading for functions
+Every Function declaration's domains are declared entities
+Every function declaration's domains are languages
+Every function declaration's ranges are declared entities
+Every function declaration's ranges are languages
+
+Every function application has a declaration
+Every function application fits to a declaration
+Every function application exists once
+-------------------------------
+Wellformedness Checks : 
+
 instanceOf's right side is not Technology // we don't emphasize underspecification here
 instanceOf's right side is not Language // we don't emphasize underspecification here
 For every instanceOf's left side there exists a hasLink relationship if it doesn't start with `?'.
-
-Every relationship instance fits to a declaration
-Relationship instances do not match multiple declarations // prevent ambiguity
-Every relationship instance's left side is a declared entity
-Every relationship instance's right side is a declared entity except for hasLink
+Every Technology uses at least one Language
+Every Function is implemented
+Every Artifact is element of a language
+Every Artifact has a manifestation 
+Every Artifact has a role
 
 subsetOf is not cyclic
 partOf is not cyclic
 conformsTo is not cyclic
 hasLink's right side is a well formed URI
 hasLink's right side provides a link, where a conncection to the web resource is possible.
-For any entity a hasLink relationship can exist only once
 
-Every Technology uses at least one Language
 
-Every Function is implemented
-Every Function has only one declaration // we don't want to allow overloading for functions
-Every function declaration's domains are declared entities
-Every function declaration's domains are languages
-Every function declaration's ranges are declared entities
-Every function declaration's ranges are languages
-Every function application has a declaration
-Every function application fits to a declaration
-
-Every Artifact is element of a language
-Every Artifact has a manifestation if it does not start with a ?
-Every Artifact has a role
+-----------------------------
+Existing Creation order : 
+A type is declared before it is used in another subtype or a relation declaration
+Instances are declared before they are used in relationships
+A relationship is declared before it is used
+A language instance is declared before it is used in a function declaration
+A function is declared before it is applied
+Instances are declared before they are used in function applications

@@ -15,12 +15,9 @@ import java.util.Set;
 import org.java.megalib.checker.services.MegaModelLoader;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
+import org.java.megalib.models.Relation;
 import org.junit.Test;
 
-/**
- * @author mmay, aemmerichs
- *
- */
 public class MegalibListenerTest {
 	
 	@Test
@@ -50,7 +47,7 @@ public class MegalibListenerTest {
 		
 		assertTrue(imap.containsKey("Instance"));
 		assertEquals(imap.get("Instance").toString(),"Type");
-		Map<String, Set<List<String>>> emap = model.getRelationshipInstanceMap();
+		Map<String, Set<Relation>> emap = model.getRelationshipInstanceMap();
 		assertTrue(emap.isEmpty());
 	}
 	
@@ -62,17 +59,17 @@ public class MegalibListenerTest {
 		assertEquals(21,imap.size());
 		assertTrue(imap.containsKey("a"));
 		assertEquals(imap.get("a").toString(),"Artifact");
-		Set<List<String>> elementOfSet = model.getRelationshipInstanceMap().get("elementOf");
+		Set<Relation> elementOfSet = model.getRelationshipInstanceMap().get("elementOf");
 		assertEquals(1,elementOfSet.size());
-		List<String> elementOf = elementOfSet.iterator().next();
-		assertEquals("a",elementOf.get(0));
-		assertEquals("Python",elementOf.get(1));
+		Relation elementOf = elementOfSet.iterator().next();
+		assertEquals("a",elementOf.getSubject());
+		assertEquals("Python",elementOf.getObject());
 	}
 	
 	@Test
 	public void enterRelationDeclarationFillsRelationDeclarationsWithRelationName()  {
 		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
 		
 		assertTrue(actual.containsKey("Relation"));		
 	}
@@ -80,20 +77,19 @@ public class MegalibListenerTest {
 	@Test
 	public void enterRelationDeclarationFillsRelationDeclarationsWithTypes()  {
 		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
 		
-		Set<List<String>> types = actual.get("Relation");
-		String[] expected = {"TypeOne","TypeTwo"};
+		Set<Relation> types = actual.get("Relation");
 		
-		assertTrue(types.contains(Arrays.asList(expected)));
+		assertTrue(types.contains(new Relation("TypeOne","TypeTwo")));
 	}
 	
 	@Test
 	public void enterRelationDeclarationDoesNotOverideExistingDeclarations()  {
 		String input = "Relation < TypeOne # TypeTwo\nRelation < TypeThree # TypeFour";
-		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
 		
-		Set<List<String>> types = actual.get("Relation");
+		Set<Relation> types = actual.get("Relation");
 		String[] expected1 = {"TypeOne","TypeTwo"};
 		String[] expected2 = {"TypeThree","TypeFour"};
 		
@@ -104,7 +100,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterRelationInstanceFillsRelationInstancesWithRelationName()  {
 		String input = "ObjectOne Relation ObjectTwo";
-		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
 		
 		assertTrue(actual.containsKey("Relation"));
 	}
@@ -112,59 +108,36 @@ public class MegalibListenerTest {
 	@Test
 	public void enterRelationInstanceFillsRelationInstancesWithObjects()  {
 		String input = "ObjectOne Relation ObjectTwo";
-		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
 		
-		Set<List<String>> types = actual.get("Relation");
-		String[] expected = {"ObjectOne","ObjectTwo"};
+		Set<Relation> types = actual.get("Relation");
 		
-		assertTrue(types.contains(Arrays.asList(expected)));
+		assertTrue(types.contains(new Relation("ObjectOne","ObjectTwo")));
 	}
 	
 	@Test
 	public void enterRelationInstanceDoesNotOverideExistingInstances()  {
 		String input = "ObjectOne Relation ObjectTwo\nObjectThree Relation ObjectFour";
-		Map<String, Set<List<String>>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
 		
-		Set<List<String>> types = actual.get("Relation");
-		String[] expected1 = {"ObjectOne","ObjectTwo"};
-		String[] expected2 = {"ObjectThree","ObjectFour"};
+		Set<Relation> types = actual.get("Relation");
 		
-		assertTrue(types.contains(Arrays.asList(expected1)));
-		assertTrue(types.contains(Arrays.asList(expected2)));
+		assertTrue(types.contains(new Relation("ObjectOne","ObjectTwo")));
+		assertTrue(types.contains(new Relation("ObjectThree","ObjectFour")));
 	}
 	
 	@Test
 	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunctionName()  {
-		String input = "Function : TypeOne # TypeTwo -> ReturnType";
-		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionDeclarations();
+		String input = "function : TypeOne # TypeTwo -> ReturnType";
+		Map<String, Function> actual = new MegaModelLoader().createFromString(input).getFunctionDeclarations();
 		
-		assertTrue(actual.containsKey("Function"));
-	}
-	
-	@Test
-	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunction()  {
-		String input = "Function : TypeOne # TypeTwo -> ReturnType";
-		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionDeclarations();
-		
-		Set<Function> types = actual.get("Function");
-		
-		assertEquals(1,types.size());
-	}
-	
-	@Test
-	public void enterFunctionDeclarationDoesNotOverideExistingDeclarations()  {
-		String input = "Function : TypeOne # TypeTwo -> ReturnTypeOne\nFunction : TypeThree # TypeFour -> ReturnTypeTwo";
-		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionDeclarations();
-		
-		Set<Function> types = actual.get("Function");
-		
-		assertEquals(2,types.size());
+		assertTrue(actual.containsKey("function"));
 	}
 	
 	@Test
 	public void enterFunctionInstanceFillsFunctionInstanceWithFunctionName()  {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionInstances();
+		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionApplications();
 		
 		assertTrue(actual.containsKey("Function"));
 	}
@@ -172,7 +145,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterFunctionInstanceFillsFunctionInstanceWithFunction()  {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionInstances();
+		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionApplications();
 		
 		Set<Function> functions = actual.get("Function");
 		
@@ -182,7 +155,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterFunctionInstanceDoesNotOverideExistingInstances()  {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result\nFunction(ObjectThree , ObjectFour) |-> ResultTwo";
-		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionInstances();
+		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionApplications();
 		
 		Collection<Function> types = actual.get("Function");
 		

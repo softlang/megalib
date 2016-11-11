@@ -19,8 +19,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
+import org.java.megalib.models.Relation;
 
 public class Checker {
 
@@ -35,30 +35,72 @@ public class Checker {
 		return warnings;
 	}
 
-	//TODO : Make link a relationship instance
 	public void doChecks() {
 		warnings = new HashSet<String>();
-		this.checkLinks();
-		this.checkSubtypeDeclarations();
-		this.checkInstanceDeclarations();
-		this.checkRelationshipTypes();
-		this.checkRelationshipInstances();
-		this.checkFunctionDomainRange();
-		this.checkFunctionApplications();
+		
+		instanceChecks();
+		cycleChecks();
+		checkLinks();
 	}
-	
-	public void checkLinks() {
-		Map<String, List<String>> links = model.getLinkMap();
-		for (String name : links.keySet()) {
-			checkLinkedEntityDeclared(name);
-			links.get(name).forEach(l->checkLinkWorking(l));
+
+	private void instanceChecks() {
+		Map<String, String> map = model.getInstanceOfMap();
+		for(String inst : map.keySet()){
+			if(map.get(inst).equals("Technology"))
+				warnings.add("The entity "+inst+" is underspecified. Please state a specific subtype of Technology.");
+			if(map.get(inst).equals("Language"))
+				warnings.add("The entity "+inst+" is underspecified. Please state a specific subtype of Language.");
+			if(!(inst.startsWith("?")||model.getLinkMap().containsKey(inst)))
+				warnings.add("The entity "+inst+" misses a Link for further reading.");
+			if(model.isInstanceOf(inst, "Technology")){
+				Set<Relation> usesSet = model.getRelationshipInstanceMap().get("uses");
+				Set<Relation> fset = usesSet.parallelStream()
+						.filter(r->r.getSubject().equals(inst)
+							   	&&model.isInstanceOf(r.getObject(),"Language"))
+											   .collect(Collectors.toSet());
+				if(fset.isEmpty())
+					warnings.add("The technology "+inst+" does not use any language. Please state language usage.");
+			}
+			if(model.isInstanceOf(inst, "Function")){
+				Set<Relation> implementsSet = model.getRelationshipInstanceMap().get("implements");
+				Set<Relation> fset = implementsSet.parallelStream()
+											   .filter(r->r.getObject().equals(inst))
+											   .collect(Collectors.toSet());
+				if(fset.isEmpty())
+					warnings.add("The technology "+inst+" is a non-implemented function. Please state what implements it.");
+			}
+			if(model.isInstanceOf(inst, "Artifact")){
+				if(!model.getElementOfMap().containsKey(inst)){
+					warnings.add("Language missing for artifact "+inst);
+				}
+				Set<Relation> manifestSet = model.getRelationshipInstanceMap().get("manifestsAs");
+				Set<Relation> fset = manifestSet.parallelStream()
+											   .filter(r->r.getSubject().equals(inst))
+											   .collect(Collectors.toSet());
+				if(fset.isEmpty())
+					warnings.add("Manifestation misssing for "+inst);
+				
+				Set<Relation> roleSet = model.getRelationshipInstanceMap().get("hasRole");
+				fset = roleSet.parallelStream()
+											   .filter(r->r.getSubject().equals(inst))
+											   .collect(Collectors.toSet());
+				if(fset.isEmpty())
+					warnings.add("Role misssing for "+inst);
+			}
 		}
 	}
 	
-	private void checkLinkedEntityDeclared(String name) {
-		if (!(model.getSubtypesMap().containsKey(name) || model.getInstanceOfMap().containsKey(name)
-				|| model.getRelationshipDeclarationMap().containsKey(name) || model.getRelationshipInstanceMap().containsKey(name))) {
-			warnings.add("Error at Link of '" + name + "' the entity does not exist");
+	private void cycleChecks() {
+		Set<Relation> rels = model.getRelationshipInstanceMap().get("subsetOf");
+		//all subjects that do not appear as objects anywhere can be left out.
+		
+		
+	}
+
+	private void checkLinks() {
+		Map<String, List<String>> links = model.getLinkMap();
+		for (String name : links.keySet()) {
+			links.get(name).forEach(l->checkLinkWorking(l));
 		}
 	}
 	
@@ -126,286 +168,4 @@ public class Checker {
 		
 	}
 	
-	public void checkSubtypeDeclarations() {
-		for(String subtype : model.getSubtypesMap().keySet()){
-			String type = model.getSubtypesMap().get(subtype);
-			if(!(type.equals("Entity")||model.getSubtypesMap().containsKey(type))){
-				warnings.add("Error at subtype declaration of '"+subtype+"'. The supertype '"
-						+ type + "' is not declared.");
-			}
-		}
-	}
-	
-	public void checkInstanceDeclarations() {
-		for(String entity : model.getInstanceOfMap().keySet()){
-			if(model.getSubtypesMap().containsKey(entity) || entity.equals("Entity")){
-				warnings.add("Error at entity declaration '"+entity+"'. It is defined as a type and instance at the same time.");
-				continue;
-			}
-			String type = model.getInstanceOfMap().get(entity);
-			if(type.equals("Entity")){
-				warnings.add("Error at entity declaration of '"+entity+"'. The type is underspecified.");
-				continue;
-			}
-			if(!model.getSubtypesMap().containsKey(type)||type==null){
-				warnings.add("Error at entity declaration of '"+entity+"'. The type '"
-						+ type + "' is not declared.");
-				continue;
-			}
-			//if the entity is an artifact check for a specified language
-			String temptype = type;
-			boolean isArtifact = false;
-			while(true){
-				if(temptype==null)
-					break;
-				if(temptype.equals("Artifact")){
-					isArtifact = true;
-					break;
-				}
-				if(temptype.equals("Entity")){
-					break;
-				}
-				temptype = model.getSubtypesMap().get(temptype);
-			}
-			if(isArtifact){
-				if(model.getRelationshipInstanceMap().get("elementOf")==null
-						||model.getRelationshipInstanceMap().get("elementOf")
-							.stream()
-							.filter(list -> list.get(0).equals(entity))
-							.collect(Collectors.toSet())
-							.isEmpty())
-					warnings.add("Error at artifact '"+entity+": It is not element of any language.");
-			}
-			
-			if(!(entity.startsWith("?")||model.getFunctionDeclarations().containsKey(entity)
-					||model.getFunctionInstances().containsKey(entity))){
-				if(!model.getLinkMap().containsKey(entity)){
-					warnings.add("Error at artifact '"+entity+": It has to be linked.");
-				}
-			}
-		}
-	}
-	
-	public void checkRelationshipTypes() {
-		model.getRelationshipDeclarationMap().forEach((name,declarations)->checkRelationDeclarationTypes(name,declarations));
-	}
-	
-	private void checkRelationDeclarationTypes(String name, Set<List<String>> declarations) {
-		for(List<String> declaration : declarations){
-			for(String type : declaration){
-				if(!(model.getSubtypesMap().containsKey(type)||type.equals("Entity"))){
-					warnings.add("Error at relationship declaration of '"+name+"'. The type '"+type+"'"
-							+ "is not declared!");
-				}
-			}
-		}
-	}
-	
-	public void checkRelationshipInstances() {
-		Map<String, Set<List<String>>> relationshipInstances = model.getRelationshipInstanceMap();
-		for (String name : relationshipInstances.keySet()) {
-			if (checkRelationInstancesRelationName(name)){
-				relationshipInstances.get(name).forEach(i -> 
-					checkRelationshipInstanceFitsDeclarations(name,i,model.getRelationshipDeclarationMap().get(name)));
-			}
-		}
-	}
-	
-	/**
-	 * If the relation is not declared, issue a warning
-	 * @param name
-	 * @return
-	 */
-	public boolean checkRelationInstancesRelationName(String name) {
-		if (!model.getRelationshipDeclarationMap().containsKey(name)) {
-			warnings.add("Error at relation '" + name + "'. It has not been declared!");
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Checks if the entities involved in the relationship have fitting types concerning the relationship's declaration.
-	 * @param name
-	 * @param entity
-	 * @param declarations
-	 */
-	private void checkRelationshipInstanceFitsDeclarations(String name, List<String> entity, Set<List<String>> declarations) {
-		if(declarations.parallelStream()
-				.filter(decl -> relationshipInstanceFitsDeclaration(entity,decl))
-				.collect(Collectors.toList())
-				.isEmpty())
-			warnings.add("Error at relationship instance '"+entity.get(0)+" "+name+" "+entity.get(1)+"'! The instance"
-					+ " does not fit any declaration.");
-	}
-
-
-	/**
-	 * Determines all (upper) types of an entity and performs a containment test.
-	 * @param entitys
-	 * @param decl
-	 * @return
-	 */
-	private boolean relationshipInstanceFitsDeclaration(List<String> entitys, List<String> decl) {
-		if(entitys.size()!=decl.size()){
-			return false;
-		}
-		for(int i = 0; i < entitys.size();i++){
-			if(!isInstanceOf(entitys.get(i), decl.get(i)))
-				return false;
-		}
-		return true;
-	}
-	
-	private boolean isInstanceOf(String entity, String type){
-		Set<String> types = new HashSet<>();
-		if(!model.getInstanceOfMap().containsKey(entity)){
-			warnings.add("The entity '"+entity+"' is unknown!");
-			return false;
-		}
-		types.add(model.getInstanceOfMap().get(entity));
-		while(true){
-			int size = types.size();
-			Set<String> newtypes = new HashSet<>();
-			for(String t : types){
-				if(model.getSubtypesMap().containsKey(t)){
-					newtypes.add(model.getSubtypesMap().get(t));
-				}
-			}
-			types.addAll(newtypes);
-			if(types.size()==size)
-				break;
-		}
-		if(!types.contains(type))
-			return false;
-		return true;
-	}
-
-	public void checkFunctionDomainRange() {
-		Map<String, Set<Function>> functionDeclarations = model.getFunctionDeclarations();
-		for (String functionName : functionDeclarations.keySet()) {
-			Set<Function> functiondeclarations = functionDeclarations.get(functionName);
-			for(Function fd : functiondeclarations){
-				fd.getParameterList().forEach(type -> checkIsLanguage(functionName,type));
-				fd.getReturnList().forEach(type -> checkIsLanguage(functionName,type));
-			}
-		}
-	}
-	
-	private void checkIsLanguage(String fname,String language) {
-		String type = model.getInstanceOfMap().get(language);
-		if(type==null){
-			warnings.add("Error at function declaration of '"+fname+"' : '"+language+"' is unknown.");
-			return;
-		}
-		while(!type.equals("Entity")){
-			if(type.equals("Language"))
-				return;
-			type = model.getSubtypesMap().get(type);
-		}
-		warnings.add("Error at function declaration of '"+fname+"' : '"+language+"' is not an instance of Language");
-	}
-	
-	public void checkFunctionApplications() {
-		Map<String, Set<Function>> map = model.getFunctionInstances();
-		for (String name : map.keySet()) {
-			if (checkFunctionDeclarationExists(name)) {
-				Set<Function> declarations = model.getFunctionDeclarations().get(name);
-				Set<Function> entitys = map.get(name);
-				checkFunctionApplicationInitialisedArtifacts(name,entitys);
-				entitys.forEach(i->checkFunctionInstanceFitsDeclaration(name,i,declarations));
-			}
-		}
-	}
-	
-	private boolean checkFunctionDeclarationExists(String name) {
-		if (!model.getFunctionDeclarations().containsKey(name)) {
-			warnings.add("Error at function '" + name + "'! It has not been declared");
-			return false;
-		} else
-			return true;
-	}
-	
-	private void checkFunctionApplicationInitialisedArtifacts(String name, Set<Function> entitys) {
-		for (Function entity : entitys) {
-			List<String> parameters = entity.getParameterList();
-			for (String p : parameters) {
-				if(!model.getInstanceOfMap().containsKey(p)){
-					warnings.add("Error at function application of '" + name + "'! The input '" + p + "' has not been declared!");
-				}
-			}
-			List<String> outputs = entity.getReturnList();
-			for(String o : outputs){
-				if(!model.getInstanceOfMap().containsKey(o)){
-					warnings.add("Error at function application of '" + name + "'! The output '" + o + "' has not been declared!");
-				}
-			}
-		}
-	}
-
-	/**
-	 * Checks whether the function entity fits to any declaration
-	 * @param name
-	 * @param funapplication
-	 * @param declarations
-	 */
-	private void checkFunctionInstanceFitsDeclaration(String name, Function funapplication, Set<Function> declarations) {
-		if(declarations.parallelStream()
-				.filter(d->checkInstanceElementOfDeclaration(funapplication,d))
-				.collect(Collectors.toList())
-				.isEmpty()){
-			warnings.add("Error at function application of '"+name+"' with input "+funapplication.getParameterList().toString()
-					+ " and output "+funapplication.getReturnList().toString()+"!"
-					+ " The input/output does not match any function declaration!");
-		}
-	}
-	
-	private boolean checkInstanceElementOfDeclaration(Function funapplication, Function declaration) {
-		List<String> parameter = funapplication.getParameterList();
-		List<String> parameterTypes = declaration.getParameterList();
-		if(parameter.size()!=parameterTypes.size())
-			return false;
-		for(int i = 0; i < parameter.size();i++){
-			if(!isElementOf(parameter.get(i), parameterTypes.get(i)))
-				return false;
-		}
-		List<String> returnValues = funapplication.getReturnList();
-		List<String> returnTypes = declaration.getReturnList();
-		if(returnValues.size()!=returnTypes.size())
-			return false;
-		for(int i = 0; i < returnValues.size(); i++ ){
-			if(!isElementOf(returnValues.get(i),returnTypes.get(i)))
-				return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Determines the artifact's language and its supersets and then checks, whether
-	 * the language equals one of them.
-	 * @param artifact
-	 * @param language
-	 * @return
-	 */
-	private boolean isElementOf(String artifact, String language){
-		Set<String> langs = new HashSet<>();
-		for(List<String> elemOf : model.getRelationshipInstanceMap().get("elementOf")){
-			if(elemOf.get(0).equals(artifact)){
-				langs.add(elemOf.get(1));
-			}
-		}
-		while(true){
-			int size = langs.size();
-			if(!model.getRelationshipInstanceMap().containsKey("subsetOf"))
-				break;
-			for(List<String> subsetOf : model.getRelationshipInstanceMap().get("subsetOf")){
-				if(langs.contains(subsetOf.get(0))){
-					langs.add(subsetOf.get(1));
-				}
-			}
-			if(size==langs.size())
-				break;
-		}
-		return langs.contains(language);
-	}
 }

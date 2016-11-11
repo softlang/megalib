@@ -3,10 +3,8 @@ package org.java.megalib.checker.services;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 
 import main.antlr.techdocgrammar.MegalibBaseListener;
@@ -39,30 +37,41 @@ public class MegalibListener extends MegalibBaseListener {
 	public void enterSubtypeDeclaration(SubtypeDeclarationContext context) {
 		String derivedType = context.getChild(0).getText();
 		String superType = context.getChild(2).getText();
-		model.addSubtypeOf(derivedType, superType);
+		try {
+			model.addSubtypeOf(derivedType, superType);
+		} catch (Exception e) {
+			model.addWarning(e.getMessage());
+		}
 	}
 	
 	@Override
 	public void enterInstanceDeclaration(InstanceDeclarationContext context) {
 		String instance = context.getChild(0).getText();
 		String type = context.getChild(2).getText();
-		model.addInstanceOf(instance, type);
+		try {
+			model.addInstanceOf(instance, type);
+		} catch (Exception e) {
+			model.addWarning(e.getMessage());
+		}
 		if(context.getChildCount() == 10){
 			String o = context.getChild(4).getText();
-			List<String> list = new ArrayList<>();
-			list.add(instance);
-			list.add(o);
-			model.addRelationInstances("elementOf", list);
+			try {
+				model.addRelationInstances("elementOf", instance,o);
+			} catch (Exception e) {
+				model.addWarning(e.getMessage());
+			}
 			o = context.getChild(6).getText();
-			list = new ArrayList<>();
-			list.add(instance);
-			list.add(o);
-			model.addRelationInstances("hasRole", list);
+			try {
+				model.addRelationInstances("hasRole", instance,o);
+			} catch (Exception e) {
+				model.addWarning(e.getMessage());
+			}
 			o = context.getChild(8).getText();
-			list = new ArrayList<>();
-			list.add(instance);
-			list.add(o);
-			model.addRelationInstances("manifestsAs", list);
+			try {
+				model.addRelationInstances("manifestsAs", instance,o);
+			} catch (Exception e) {
+				model.addWarning(e.getMessage());
+			}
 		}
 	}
 	
@@ -72,11 +81,11 @@ public class MegalibListener extends MegalibBaseListener {
 		String type1 = context.getChild(2).getText();
 		String type2 =  context.getChild(4).getText();
 		
-		List<String> typeList = new LinkedList<String>();
-		typeList.add(type1);
-		typeList.add(type2);
-		
-		model.addRelationDeclaration(relation, typeList);
+		try {
+			model.addRelationDeclaration(relation, type1,type2);
+		} catch (Exception e) {
+			model.addWarning(e.getMessage());
+		}
 	}
 	
 	@Override
@@ -85,18 +94,21 @@ public class MegalibListener extends MegalibBaseListener {
 		String instance1 = context.getChild(0).getText();
 		String instance2 =  context.getChild(2).getText();
 		
-		List<String> instances = new LinkedList<String>();
+		List<String> instances = new ArrayList<String>();
 		instances.add(instance1);
 		instances.add(instance2);
-				
-		model.addRelationInstances(relation, instances);
+		try {
+			model.addRelationInstances(relation, instance1,instance2);
+		} catch (Exception e) {
+			model.addWarning(e.getMessage());
+		}
 	}
 	
 	@Override
 	public void enterFunctionDeclaration(FunctionDeclarationContext context) {
 		String functionName = context.getChild(0).getText();
-		LinkedList<String> parameterTypes = new LinkedList<String>();
-		LinkedList<String> returnTypes = new LinkedList<String>();
+		List<String> parameterTypes = new ArrayList<String>();
+		List<String> returnTypes = new ArrayList<String>();
 		
 		boolean parameter = true;
 		for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
@@ -113,20 +125,23 @@ public class MegalibListener extends MegalibBaseListener {
 			
 		}
 		
-		Function function = new Function();
-		
-		function.setParameterList(parameterTypes);
-		function.setReturnList(returnTypes);
-		
-		model.addFunctionDeclaration(functionName, function);
-		model.addInstanceOf(functionName, "Function");
+		try {
+			model.addFunctionDeclaration(functionName, parameterTypes,returnTypes);
+		} catch (Exception e) {
+			model.addWarning(e.getMessage());
+		}
+		try {
+			model.addInstanceOf(functionName, "Function");
+		} catch (Exception e) {
+			model.addWarning(e.getMessage());
+		}
 	}
 	
 	@Override
 	public void enterFunctionInstance(FunctionInstanceContext context) {
 		String functionName = context.getChild(0).getText();
-		LinkedList<String> returnObject = new LinkedList<String>();
-		LinkedList<String> parameters = new LinkedList<String>();
+		List<String> outputs = new ArrayList<String>();
+		List<String> inputs = new ArrayList<String>();
 		
 		boolean parameter = true;
 		for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
@@ -134,22 +149,23 @@ public class MegalibListener extends MegalibBaseListener {
 					&& !context.getChild(childIndex).getText().equals("|->")
 					&& !context.getChild(childIndex).getText().equals("(")
 					&& !context.getChild(childIndex).getText().equals(")") )
-				returnObject.add(context.getChild(childIndex).getText());
+				outputs.add(context.getChild(childIndex).getText());
 			
 			if(!context.getChild(childIndex).getText().equals(",") && parameter == true 
 					&& !context.getChild(childIndex).getText().equals("|->") 
 					&& !context.getChild(childIndex).getText().equals("(")
 					&& !context.getChild(childIndex).getText().equals(")") )
-				parameters.add(context.getChild(childIndex).getText());
+				inputs.add(context.getChild(childIndex).getText());
 			
 			if(context.getChild(childIndex).getText().equals("|->"))
 				parameter = false;
 		}
-		Function function = new Function();
-		function.setParameterList(parameters);
-		function.setReturnList(returnObject);
 	
-		model.addFunctionInstance(functionName, function);
+		try {
+			model.addFunctionApplication(functionName, inputs,outputs);
+		} catch (Exception e) {
+			model.addWarning(e.getMessage());
+		}
 	}
 	
 	@Override
@@ -162,10 +178,14 @@ public class MegalibListener extends MegalibBaseListener {
 		if(model.getLinkMap().containsKey(entityname)){
 			links = model.getLinkMap().get(entityname);
 		} else {	
-			links = new LinkedList<String>();
+			links = new ArrayList<String>();
 		}
 		links.add(link);
-		model.addLinks(entityname, links);		
+		try {
+			model.addLinks(entityname, links);
+		} catch (Exception e) {
+			model.addWarning(e.getMessage());
+		}		
 	}
 	
 	public MegaModel getModel() {

@@ -20,10 +20,6 @@ import org.java.megalib.models.MegaModel;
 import main.antlr.techdocgrammar.MegalibLexer;
 import main.antlr.techdocgrammar.MegalibParser;
 
-/**
- * @author mmay, aemmerichs
- *
- */
 public class MegaModelLoader {
 	
 	/**
@@ -68,7 +64,12 @@ public class MegaModelLoader {
 		ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
 		try {
 			MegaModel m = getListener(input).getModel();
-			processImports(m);
+			if(m.getCriticalWarnings().isEmpty()){
+				//TODO : Offer name information
+				m.getCriticalWarnings().forEach(w -> System.err.println(w));
+				throw new Exception("Resolve critical errors in "+folder);
+			}
+			//TODO : First derive import topology then start import process
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 			return null;
@@ -76,9 +77,7 @@ public class MegaModelLoader {
 			System.err.println(e.getMessage());
 			return null;
 		}
-		Set<String> importPaths = initialModel.getImports();
-		for(String p : importPaths)
-			importModel(folder+p);
+		//TODO : Resolve importpaths
 		return initialModel;
 	}
 
@@ -102,31 +101,19 @@ public class MegaModelLoader {
 		return listener;
 	}
 	
+	/** TODO Not working import process
 	private void importModel(String filepath) {
 		if(loadedModules.contains(filepath)){
 			return;
 		}
 		MegaModel importModel = createFromFile(filepath);
-		processImports(importModel);
+		try{
+			processImports(importModel);
+		}catch(Exception e){
+			
+		}
 		loadedModules.add(filepath);
 	}
-	
-	private void processImports(MegaModel importModel){
-		importModel.getLinkMap().forEach((k,v)-> initialModel.addLinks(k, v));
-		importModel.getSubtypesMap().forEach((k,v)-> initialModel.addSubtypeOf(k, v));
-		importModel.getInstanceOfMap().forEach((k,v)->initialModel.addInstanceOf(k, v));
-		importModel.getRelationshipInstanceMap()
-			.forEach((n,set)->set
-					.forEach(entry->initialModel.addRelationInstances(n, entry)));
-		importModel.getRelationshipDeclarationMap()
-			.forEach((n,set)->set
-					.forEach(entry -> initialModel.addRelationDeclaration(n, entry)));
-		importModel.getFunctionDeclarations()
-			.forEach((n,set)->set
-					.forEach(entry -> initialModel.addFunctionDeclaration(n, entry)));
-		importModel.getFunctionInstances()
-			.forEach((n,set)->set
-					.forEach(entry -> initialModel.addFunctionInstance(n, entry)));
-	}
+	*/
 	
 }
