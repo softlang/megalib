@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.antlr.v4.runtime.ANTLRErrorListener;
@@ -25,14 +27,16 @@ public class MegaModelLoader {
 	/**
 	 * A set containing the qualified names of all loaded models
 	 */
-	private Set<String> loadedModules;
+	private Set<String> done;
+	private List<String> todo;
 	/**
 	 * A growing megamodel that starts with the prelude statements
 	 */
 	private MegaModel initialModel;
 	
 	public MegaModelLoader(){
-		loadedModules = new HashSet<String>();
+		done = new HashSet<String>();
+		todo = new LinkedList<String>();
 		initialModel = new MegaModel();
 		initialModel = createFromFile("Prelude.megal");
 	}

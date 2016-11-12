@@ -21,6 +21,8 @@ public class MegaModel {
 	private Map<String, Function> functionDeclarations;
 	private Map<String, Set<Function>> functionInstances;
 	private Map<String, List<String>> linkMap;
+	private Map<String, String> substMap;
+	private String qualifiedName;
 	private Set<String> toImport;
 	
 	private List<String> criticalWarnings;
@@ -35,6 +37,7 @@ public class MegaModel {
 		functionDeclarations = new HashMap<>();
 		functionInstances = new HashMap<>();
 		linkMap = new HashMap<>();
+		substMap = new HashMap<>();
 		toImport = new HashSet<>();
 	}
 
@@ -251,6 +254,25 @@ public class MegaModel {
 		toImport.add(filepath);
 	}
 	
+	public String getQualifiedName() {
+		return qualifiedName;
+	}
+
+	public void setQualifiedName(String qualifiedName) {
+		this.qualifiedName = qualifiedName;
+	}
+	
+	public void addSubstitutes(String by, String e) throws Exception{
+		if(!instanceOfMap.containsKey(e)){
+			throw new Exception("Unable to substitute : "+e+" does not exist.");
+		}
+		if(substMap.containsKey(e)){
+			throw new Exception("Unable to substitute "+e+" by "+by+": "+e+" is already substituted elsewhere.");
+		}
+		substMap.put(e, by);
+		
+	}
+
 	public boolean isInstanceOf(String entity, String type){
 		if(!instanceOfMap.containsKey(entity))
 			return false;

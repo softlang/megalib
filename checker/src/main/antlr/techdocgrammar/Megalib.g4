@@ -15,7 +15,9 @@ statements:	( subtypeDeclaration
 
 module: 'module' name;
 
-imports: 'import' name;
+imports: 'import' name ('where{' (substitution)+ '}')?;
+
+substitution : name 'substitutes' name;
 
 subtypeDeclaration: name '<' name;
 

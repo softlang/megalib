@@ -13,8 +13,10 @@ import main.antlr.techdocgrammar.MegalibParser.FunctionInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.ImportsContext;
 import main.antlr.techdocgrammar.MegalibParser.InstanceDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.LinkContext;
+import main.antlr.techdocgrammar.MegalibParser.ModuleContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
+import main.antlr.techdocgrammar.MegalibParser.SubstitutionContext;
 import main.antlr.techdocgrammar.MegalibParser.SubtypeDeclarationContext;
 
 public class MegalibListener extends MegalibBaseListener {
@@ -25,12 +27,29 @@ public class MegalibListener extends MegalibBaseListener {
 	}
 	
 	@Override
+	public void enterModule(ModuleContext ctx) {
+		String name = ctx.getChild(1).getText();
+		model.setQualifiedName(name);
+	}
+	
+	@Override
 	public void enterImports(ImportsContext context) {
 		String name = context.getChild(1).getText();
 		String workingDir = Paths.get("").toAbsolutePath().normalize().toString();
 		String filepath = workingDir.concat(File.separator + name + ".megal");
 		model.addImport(filepath);
-		
+	}
+	
+	@Override
+	public void enterSubstitution(SubstitutionContext ctx) {
+		String subject = ctx.getChild(0).getText();
+		String object = ctx.getChild(2).getText();
+		try {
+			model.addSubstitutes(subject, object);
+		} catch (Exception e) {
+			model.addWarning(e.getMessage());
+		}
+		super.enterSubstitution(ctx);
 	}
 	
 	@Override

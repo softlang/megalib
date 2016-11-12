@@ -39,6 +39,7 @@ public class Checker {
 		warnings = new HashSet<String>();
 		
 		instanceChecks();
+		//TODO check cycle for subtypeOf
 		cycleChecks("subsetOf");
 		cycleChecks("partOf");
 		cycleChecks("conformsTo");
