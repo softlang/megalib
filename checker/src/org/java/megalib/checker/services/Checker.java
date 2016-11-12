@@ -39,7 +39,9 @@ public class Checker {
 		warnings = new HashSet<String>();
 		
 		instanceChecks();
-		cycleChecks();
+		cycleChecks("subsetOf");
+		cycleChecks("partOf");
+		cycleChecks("conformsTo");
 		checkLinks();
 	}
 
@@ -90,10 +92,25 @@ public class Checker {
 		}
 	}
 	
-	private void cycleChecks() {
-		Set<Relation> rels = model.getRelationshipInstanceMap().get("subsetOf");
-		//all subjects that do not appear as objects anywhere can be left out.
+	private void cycleChecks(String name) {
+		Set<Relation> rels = model.getRelationshipInstanceMap().get(name);
+		Set<String> subjects;
+		Set<String> objects;
 		
+		while(true){
+			subjects = rels.parallelStream().map(r -> r.getSubject()).collect(Collectors.toSet());
+			objects = rels.parallelStream().map(r -> r.getObject()).collect(Collectors.toSet());
+			Set<String> diff = new HashSet<String>(subjects);
+			diff.removeAll(objects);
+			if(diff.isEmpty())
+				break;
+			rels = rels.parallelStream().filter(r -> !diff.contains(r.getSubject())).collect(Collectors.toSet());
+		}
+		Set<String> result = new HashSet<>(objects);
+		result.retainAll(subjects);
+		if(!result.isEmpty()){
+			warnings.add("Cycles exist concerning the relationship "+name+" involving the following entities :"+result);
+		}
 		
 	}
 
