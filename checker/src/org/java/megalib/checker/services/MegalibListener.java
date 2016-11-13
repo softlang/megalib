@@ -1,7 +1,5 @@
 package org.java.megalib.checker.services;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +8,8 @@ import org.java.megalib.models.MegaModel;
 import main.antlr.techdocgrammar.MegalibBaseListener;
 import main.antlr.techdocgrammar.MegalibParser.FunctionDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.FunctionInstanceContext;
-import main.antlr.techdocgrammar.MegalibParser.ImportsContext;
 import main.antlr.techdocgrammar.MegalibParser.InstanceDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.LinkContext;
-import main.antlr.techdocgrammar.MegalibParser.ModuleContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.SubstitutionContext;
@@ -22,22 +18,8 @@ import main.antlr.techdocgrammar.MegalibParser.SubtypeDeclarationContext;
 public class MegalibListener extends MegalibBaseListener {
 	private MegaModel model;
 	
-	public MegalibListener(){
-		model = new MegaModel();
-	}
-	
-	@Override
-	public void enterModule(ModuleContext ctx) {
-		String name = ctx.getChild(1).getText();
-		model.setQualifiedName(name);
-	}
-	
-	@Override
-	public void enterImports(ImportsContext context) {
-		String name = context.getChild(1).getText();
-		String workingDir = Paths.get("").toAbsolutePath().normalize().toString();
-		String filepath = workingDir.concat(File.separator + name + ".megal");
-		model.addImport(filepath);
+	public MegalibListener(MegaModel m){
+		model = m;
 	}
 	
 	@Override

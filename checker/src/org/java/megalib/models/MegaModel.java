@@ -22,8 +22,6 @@ public class MegaModel {
 	private Map<String, Set<Function>> functionInstances;
 	private Map<String, List<String>> linkMap;
 	private Map<String, String> substMap;
-	private String qualifiedName;
-	private Set<String> toImport;
 	
 	private List<String> criticalWarnings;
 	
@@ -38,7 +36,6 @@ public class MegaModel {
 		functionInstances = new HashMap<>();
 		linkMap = new HashMap<>();
 		substMap = new HashMap<>();
-		toImport = new HashSet<>();
 	}
 
 	public Map<String, String> getSubtypesMap() {
@@ -243,23 +240,6 @@ public class MegaModel {
 		if(!instanceOfMap.containsKey(entity))
 			throw new Exception("Error at linking "+entity+". Declaration is missing.");
 		linkMap.put(entity, links);
-	}
-
-	public Set<String> getImports() {
-		return Collections.unmodifiableSet(toImport);
-	}
-
-	//TODO unresolvable import?
-	public void addImport(String filepath) {
-		toImport.add(filepath);
-	}
-	
-	public String getQualifiedName() {
-		return qualifiedName;
-	}
-
-	public void setQualifiedName(String qualifiedName) {
-		this.qualifiedName = qualifiedName;
 	}
 	
 	public void addSubstitutes(String by, String e) throws Exception{

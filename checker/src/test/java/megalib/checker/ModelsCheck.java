@@ -16,7 +16,9 @@ public class ModelsCheck {
 		for(File o : f.listFiles()){
 			if(o.getAbsolutePath().endsWith(".megal")){
 				System.err.println(o.getName());
-				Checker resultChecker = new Checker(new MegaModelLoader().createFromFile(o.getAbsolutePath()));
+				MegaModelLoader ml = new MegaModelLoader();
+				ml.loadFile(o.getAbsolutePath());
+				Checker resultChecker = new Checker(ml.getModel());
 				resultChecker.doChecks();
 				resultChecker.getWarnings().forEach(w -> System.out.println(w));
 				assertEquals(0,resultChecker.getWarnings().size());

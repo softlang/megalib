@@ -24,7 +24,7 @@ public class MegalibListenerTest {
 	public void preludeIsParsed(){
 		MegaModelLoader ml = new MegaModelLoader();
 		String input = "Subtype < Type";
-		MegaModel model = ml.createFromString(input);
+		MegaModel model = ml.loadString(input);
 		
 		assertEquals(20,model.getInstanceOfMap().size());
 		assertEquals(31,model.getSubtypesMap().size());
@@ -33,7 +33,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterEntityDeclarationFillsEntityDeclarations() {
 		String input = "DerivedType < Type";
-		Map<String, String> actual = new MegaModelLoader().createFromString(input).getSubtypesMap();
+		Map<String, String> actual = new MegaModelLoader().loadString(input).getSubtypesMap();
 		
 		assertTrue(actual.containsKey("DerivedType"));
 		assertEquals(actual.get("DerivedType").toString(),"Type");
@@ -42,7 +42,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterEntityInstanceFillsEntityInstances(){
 		String input = "Instance : Type";
-		MegaModel model = new MegaModelLoader().createFromString(input);
+		MegaModel model = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = model.getInstanceOfMap();
 		
 		assertTrue(imap.containsKey("Instance"));
@@ -54,7 +54,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterArtifactInstance(){
 		String input = "a : Artifact<Python,?r,?m>";
-		MegaModel model = new MegaModelLoader().createFromString(input);
+		MegaModel model = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = model.getInstanceOfMap();
 		assertEquals(21,imap.size());
 		assertTrue(imap.containsKey("a"));
@@ -69,7 +69,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterRelationDeclarationFillsRelationDeclarationsWithRelationName()  {
 		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipDeclarationMap();
 		
 		assertTrue(actual.containsKey("Relation"));		
 	}
@@ -77,7 +77,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterRelationDeclarationFillsRelationDeclarationsWithTypes()  {
 		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipDeclarationMap();
 		
 		Set<Relation> types = actual.get("Relation");
 		
@@ -87,7 +87,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterRelationDeclarationDoesNotOverideExistingDeclarations()  {
 		String input = "Relation < TypeOne # TypeTwo\nRelation < TypeThree # TypeFour";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipDeclarationMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipDeclarationMap();
 		
 		Set<Relation> types = actual.get("Relation");
 		String[] expected1 = {"TypeOne","TypeTwo"};
@@ -100,7 +100,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterRelationInstanceFillsRelationInstancesWithRelationName()  {
 		String input = "ObjectOne Relation ObjectTwo";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipInstanceMap();
 		
 		assertTrue(actual.containsKey("Relation"));
 	}
@@ -108,7 +108,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterRelationInstanceFillsRelationInstancesWithObjects()  {
 		String input = "ObjectOne Relation ObjectTwo";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipInstanceMap();
 		
 		Set<Relation> types = actual.get("Relation");
 		
@@ -118,7 +118,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterRelationInstanceDoesNotOverideExistingInstances()  {
 		String input = "ObjectOne Relation ObjectTwo\nObjectThree Relation ObjectFour";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().createFromString(input).getRelationshipInstanceMap();
+		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipInstanceMap();
 		
 		Set<Relation> types = actual.get("Relation");
 		
@@ -129,7 +129,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunctionName()  {
 		String input = "function : TypeOne # TypeTwo -> ReturnType";
-		Map<String, Function> actual = new MegaModelLoader().createFromString(input).getFunctionDeclarations();
+		Map<String, Function> actual = new MegaModelLoader().loadString(input).getFunctionDeclarations();
 		
 		assertTrue(actual.containsKey("function"));
 	}
@@ -137,7 +137,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterFunctionInstanceFillsFunctionInstanceWithFunctionName()  {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionApplications();
+		Map<String, Set<Function>> actual = new MegaModelLoader().loadString(input).getFunctionApplications();
 		
 		assertTrue(actual.containsKey("Function"));
 	}
@@ -145,7 +145,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterFunctionInstanceFillsFunctionInstanceWithFunction()  {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionApplications();
+		Map<String, Set<Function>> actual = new MegaModelLoader().loadString(input).getFunctionApplications();
 		
 		Set<Function> functions = actual.get("Function");
 		
@@ -155,7 +155,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterFunctionInstanceDoesNotOverideExistingInstances()  {
 		String input = "Function(ObjectOne , ObjectTwo) |-> Result\nFunction(ObjectThree , ObjectFour) |-> ResultTwo";
-		Map<String, Set<Function>> actual = new MegaModelLoader().createFromString(input).getFunctionApplications();
+		Map<String, Set<Function>> actual = new MegaModelLoader().loadString(input).getFunctionApplications();
 		
 		Collection<Function> types = actual.get("Function");
 		
@@ -165,7 +165,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterLinkFillsLinksWithName()  {
 		String input = "Name = \"test\"";
-		Map<String, List<String>> actual = new MegaModelLoader().createFromString(input).getLinkMap();
+		Map<String, List<String>> actual = new MegaModelLoader().loadString(input).getLinkMap();
 		
 		assertTrue(actual.containsKey("Name"));
 	}
@@ -173,7 +173,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterLinkFillsLinksWithLinkString()  {
 		String input = "Name = \"test\"";
-		Map<String, List<String>> actual = new MegaModelLoader().createFromString(input).getLinkMap();
+		Map<String, List<String>> actual = new MegaModelLoader().loadString(input).getLinkMap();
 		
 		String link = actual.get("Name").get(0);
 		assertEquals("test", link);
@@ -182,7 +182,7 @@ public class MegalibListenerTest {
 	@Test
 	public void enterLinkFillsLinksDoesNotOverride()  {
 		String input = "Name = \"test\"\nName = \"testTwo\"";
-		Map<String, List<String>> actual = new MegaModelLoader().createFromString(input).getLinkMap();
+		Map<String, List<String>> actual = new MegaModelLoader().loadString(input).getLinkMap();
 		
 		assertEquals(2,actual.get("Name").size());
 		String link = actual.get("Name").get(0);
@@ -194,19 +194,21 @@ public class MegalibListenerTest {
 	
 	@Test
 	public void fileNotFoundReturnsNull() throws IOException{
-		assertNull(new MegaModelLoader().createFromFile(""));
+		MegaModelLoader ml = new MegaModelLoader();
+		ml.loadFile("");
+		assertNull(ml.getModel());
 	}
 	
 	@Test
 	public void testSyntacticallyInvalidString(){
 		String input = "xy test";
-		assertNull(new MegaModelLoader().createFromString(input));
+		assertNull(new MegaModelLoader().loadString(input));
 	}	
 	
 	@Test
 	public void testComment() throws IOException{
 		String input = "// test hello world";
-		MegaModel actual = new MegaModelLoader().createFromString(input);
+		MegaModel actual = new MegaModelLoader().loadString(input);
 		assertNotNull(actual);
 	}
 }

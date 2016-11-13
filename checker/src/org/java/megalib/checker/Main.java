@@ -8,13 +8,16 @@ import org.java.megalib.checker.services.MegaModelLoader;
 
 /**
  * @author mmay@uni-koblenz.de, aemmerichs@uni-koblenz.de
+ * @author heinz
  *
  */
 public class Main {
 	
 	public static void main(String[] args) {
 		try {
-			Checker resultChecker = new Checker(new MegaModelLoader().createFromFile(getFilepathOfArguments(args)));
+			MegaModelLoader ml = new MegaModelLoader();
+			ml.loadFile(getFilepathOfArguments(args));
+			Checker resultChecker = new Checker(ml.getModel());
 			resultChecker.doChecks();
 			resultChecker.getWarnings().forEach(w -> System.out.println(w));
 		}
