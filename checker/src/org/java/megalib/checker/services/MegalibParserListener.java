@@ -15,10 +15,10 @@ import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.SubstitutionContext;
 import main.antlr.techdocgrammar.MegalibParser.SubtypeDeclarationContext;
 
-public class MegalibListener extends MegalibBaseListener {
+public class MegalibParserListener extends MegalibBaseListener {
 	private MegaModel model;
 	
-	public MegalibListener(MegaModel m){
+	public MegalibParserListener(MegaModel m){
 		model = m;
 	}
 	
@@ -190,6 +190,6 @@ public class MegalibListener extends MegalibBaseListener {
 	}
 	
 	public MegaModel getModel() {
-		return this.model;
+		return model;
 	}
 }
