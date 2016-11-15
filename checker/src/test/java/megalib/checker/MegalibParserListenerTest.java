@@ -1,9 +1,6 @@
 package test.java.megalib.checker;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -18,25 +15,34 @@ import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
 import org.junit.Test;
 
-public class MegalibListenerTest {
+/**
+ * Tests the correct behavior for MegaModelLoader and MegaModel functionality.
+ * Especially the constraints relevant for creation time are tested in a black box manner.
+ * 
+ * @author heinz
+ *
+ */
+public class MegalibParserListenerTest {
 	
 	@Test
 	public void preludeIsParsed(){
 		MegaModelLoader ml = new MegaModelLoader();
-		String input = "Subtype < Type";
-		MegaModel model = ml.loadString(input);
+		MegaModel model = ml.getModel();
 		
-		assertEquals(20,model.getInstanceOfMap().size());
-		assertEquals(31,model.getSubtypesMap().size());
+		assertEquals(19,model.getInstanceOfMap().size());
+		assertEquals(29,model.getSubtypesMap().size());
+		assertEquals(0,model.getCriticalWarnings().size());
 	}
 	
 	@Test
-	public void enterEntityDeclarationFillsEntityDeclarations() {
+	public void addSubtypeInvalidSupertype() {
 		String input = "DerivedType < Type";
-		Map<String, String> actual = new MegaModelLoader().loadString(input).getSubtypesMap();
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> subtypes = m.getSubtypesMap();
 		
-		assertTrue(actual.containsKey("DerivedType"));
-		assertEquals(actual.get("DerivedType").toString(),"Type");
+		assertFalse(subtypes.containsKey("DerivedType"));
+		m.getCriticalWarnings().forEach(w->System.out.println(w));
+		assertEquals(1,m.getCriticalWarnings().size());
 	}
 	
 	@Test

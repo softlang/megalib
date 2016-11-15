@@ -37,11 +37,25 @@ public class MegaModelLoader {
 	public MegaModelLoader(){
 		todos = new LinkedList<>();
 		model = new MegaModel();
+		loadPrelude();
 		loadFile("Prelude.megal");
 	}
-	
+
 	public MegaModel getModel(){
 		return model;
+	}
+	
+	private void loadPrelude() {
+		File f = null;
+		String data = "";
+		try{
+			f = new File("Prelude.megal");
+			data = FileUtils.readFileToString(f);
+		}catch(IOException e){
+			System.err.println(e.getMessage());
+			return;
+		}
+		model = loadString(data);
 	}
 	
 	public void loadFile(String filepath) {
@@ -110,38 +124,34 @@ public class MegaModelLoader {
 		return listener;
 	}
 	
-	private void resolveImports(String data, String path){
+	private void resolveImports(String data, String path) throws Exception{
 		List<Relation> imports = new LinkedList<>();
 		Set<String> processed = new HashSet<>();
 		Set<String> toProcess = new HashSet<>();
-		try {
-			MegalibImportListener l = (MegalibImportListener) parse(data,new MegalibImportListener());
-			imports.addAll(l.getImports());
-			toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
-			toProcess.removeAll(processed);
-			processed.add(l.getName());
-			// Resolve module name to file path
-			int lvl = l.getName().split(".").length;
-			root = new File(path);
-			assert(root.exists());
-			// Get root folder
-			for(int i = 0; i<lvl; i++){
-				root = root.getParentFile();
-			}
-			while(!toProcess.isEmpty()){
-				String p = toProcess.iterator().next();
-				p = root.getAbsolutePath()+ p.replaceAll(".", "\\");
-				String pdata = FileUtils.readFileToString(new File(p)); 
-				l = (MegalibImportListener) parse(pdata,new MegalibImportListener());
-				imports.addAll(l.getImports());
-				toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
-				toProcess.removeAll(processed);
-				processed.add(l.getName());
-			}
-			
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
+		
+	    MegalibImportListener l = (MegalibImportListener) parse(data,new MegalibImportListener());
+	    imports.addAll(l.getImports());
+	    toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
+	    toProcess.removeAll(processed);
+	    processed.add(l.getName());
+	    // Resolve module name to file path
+	    int lvl = l.getName().split(".").length;
+	    root = new File(path);
+	    assert(root.exists());
+	    // Get root folder
+	    for(int i = 0; i<lvl; i++){
+	    	root = root.getParentFile();
+	    }      
+	    while(!toProcess.isEmpty()){
+	    	String p = toProcess.iterator().next();
+	    	p = root.getAbsolutePath()+ p.replaceAll(".", "\\");
+	    	String pdata = FileUtils.readFileToString(new File(p)); 
+	    	l = (MegalibImportListener) parse(pdata,new MegalibImportListener());
+	    	imports.addAll(l.getImports());
+	    	toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
+	    	toProcess.removeAll(processed);
+	    	processed.add(l.getName());
+	    }      
 		
 		while(!imports.isEmpty()){
 			Set<String> subjects = imports.parallelStream().map(r -> r.getSubject()).collect(Collectors.toSet());

@@ -36,6 +36,7 @@ public class MegaModel {
 		functionInstances = new HashMap<>();
 		linkMap = new HashMap<>();
 		substMap = new HashMap<>();
+		criticalWarnings = new ArrayList<>();
 	}
 
 	public Map<String, String> getSubtypesMap() {
