@@ -28,9 +28,15 @@ public class MegalibParserListenerTest {
 	public void preludeIsParsed(){
 		MegaModelLoader ml = new MegaModelLoader();
 		MegaModel model = ml.getModel();
-		
+		model.getCriticalWarnings().forEach(w->System.out.println(w));
 		assertEquals(19,model.getInstanceOfMap().size());
+		assertEquals(19,model.getLinkMap().size());
 		assertEquals(29,model.getSubtypesMap().size());
+		Map<String, Set<Relation>> rm = model.getRelationshipDeclarationMap();
+		//the number of distinct relation ship names
+		assertEquals(14,rm.size());
+		int count = rm.values().stream().map(set -> set.size()).reduce(0, (a,b) -> a+b);
+		assertEquals(42, count);
 		assertEquals(0,model.getCriticalWarnings().size());
 	}
 	
@@ -41,7 +47,7 @@ public class MegalibParserListenerTest {
 		Map<String, String> subtypes = m.getSubtypesMap();
 		
 		assertFalse(subtypes.containsKey("DerivedType"));
-		m.getCriticalWarnings().forEach(w->System.out.println(w));
+		assertTrue(m.getCriticalWarnings().contains("Error at DerivedType: The declared supertype is not a subtype of Entity"));
 		assertEquals(1,m.getCriticalWarnings().size());
 	}
 	
