@@ -18,9 +18,9 @@ Every relationship instance's left side is an instance
 Every relationship instance's right side is an instance
 
 Every Function has only one declaration // we don't want to allow overloading for functions
-Every Function declaration's domains are declared entities
+Every Function declaration's domains are instantiated
 Every function declaration's domains are languages
-Every function declaration's ranges are declared entities
+Every function declaration's ranges are instantiated
 Every function declaration's ranges are languages
 
 Every function application has a declaration
@@ -34,6 +34,7 @@ instanceOf's right side is not Language // we don't emphasize underspecification
 For every instanceOf's left side there exists a hasLink relationship if it doesn't start with `?'.
 Every Technology uses at least one Language
 Every Function is implemented
+Every declared function is applied at least once
 Every Artifact is element of a language
 Every Artifact has a manifestation 
 Every Artifact has a role

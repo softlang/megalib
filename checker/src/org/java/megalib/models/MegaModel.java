@@ -174,19 +174,19 @@ public class MegaModel {
 		}
 		f = new Function(inputs,outputs);
 		for(String i : inputs){
-			String type = instanceOfMap.get("i");
+			String type = instanceOfMap.get(i);
 			if(type==null){
 				throw new Exception("Error at "+functionName+"'s declaration"+": The language "+i+" was not declared.");
 			}
-			if(!isInstanceOf(type, "Language"))
+			if(!isSubtypeOf(type, "Language"))
 				throw new Exception("Error at "+functionName+"'s declaration"+": "+i+" is not a language.");
 		}
 		for(String o : outputs){
-			String type = instanceOfMap.get("i");
+			String type = instanceOfMap.get(o);
 			if(type==null){
 				throw new Exception("Error at "+functionName+"'s declaration"+": The language "+o+" was not declared.");
 			}
-			if(!isInstanceOf(type, "Language"))
+			if(!isSubtypeOf(type, "Language"))
 				throw new Exception("Error at "+functionName+"'s declaration"+": "+o+" is not a language.");
 		}
 		functionDeclarations.put(functionName, f);
@@ -206,7 +206,8 @@ public class MegaModel {
 			set = functionInstances.get(name);
 		}
 		if(set.contains(app)){
-			throw new Exception("Error at application of "+name+": It already exists.");
+			throw new Exception("Error at application of "+name+" with inputs "+app.getInputs()+" "
+					+ "and outputs "+app.getOutputs()+": It already exists.");
 		}
 		checkFunctionInstanceFits(app,functionDeclarations.get(name));
 		set.add(app);
@@ -217,16 +218,22 @@ public class MegaModel {
 		List<String> dis = instance.getInputs();
 		List<String> dls = function.getInputs();
 		for(int i=0;i<dis.size();i++){
+			if(!isInstanceOf(dis.get(i),"Artifact")){
+				throw new Exception("Error at application "+dis.get(i)+" is not instance of Artifact.");
+			}
 			if(!isElementOf(dis.get(i),dls.get(i))){
-				throw new Exception("Error at application"+dis.get(i)+" is not element of "+dls.get(i)+".");
+				throw new Exception("Error at application "+dis.get(i)+" is not element of "+dls.get(i)+".");
 			}
 		}
 		
 		List<String> ris = instance.getOutputs();
 		List<String> rls = function.getOutputs();
 		for(int i=0;i<ris.size();i++){
+			if(!isInstanceOf(ris.get(i),"Artifact")){
+				throw new Exception("Error at application "+ris.get(i)+" is not instance of Artifact.");
+			}
 			if(!isElementOf(ris.get(i),rls.get(i))){
-				throw new Exception("Error at application"+ris.get(i)+" is not element of "+rls.get(i)+".");
+				throw new Exception("Error at application "+ris.get(i)+" is not element of "+rls.get(i)+".");
 			}
 		}
 	}
@@ -274,6 +281,8 @@ public class MegaModel {
 	}
 	
 	private boolean isElementOf(String art, String lang) {
+		if(!elementOfMap.containsKey(art))
+			return false;
 		String temp = elementOfMap.get(art);
 		if(temp.equals(lang))
 			return true;

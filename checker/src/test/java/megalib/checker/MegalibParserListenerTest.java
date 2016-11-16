@@ -1,10 +1,14 @@
 package test.java.megalib.checker;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -140,7 +144,7 @@ public class MegalibParserListenerTest {
 	}
 	
 	@Test
-	public void enterArtifactInstance(){
+	public void addInstanceOfArtifact(){
 		String input = "Python : ProgrammingLanguage "
 				+ "a : Artifact<Python,MvcModel,File>";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -154,136 +158,326 @@ public class MegalibParserListenerTest {
 	}
 	
 	@Test
-	public void enterRelationDeclarationFillsRelationDeclarationsWithRelationName()  {
-		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipDeclarationMap();
+	public void addRelationDeclarationUnknownDomain()  {
+		String input = "Relation < TypeOne # Artifact";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipDeclarationMap();
+		
+		assertFalse(actual.containsKey("Relation"));		
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at declaration of Relation: Its domain TypeOne is not subtype of Entity."));
+	}
+	
+	@Test
+	public void addRelationDeclarationUnknownRange()  {
+		String input = "Relation < Artifact # TypeTwo";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipDeclarationMap();
+		
+		assertFalse(actual.containsKey("Relation"));		
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at declaration of Relation: Its range TypeTwo is not subtype of Entity."));
+	}
+	
+	@Test
+	public void addRelationDeclarationDouble()  {
+		String input = "Relation < Artifact # Artifact "
+				+ "Relation < Artifact # Artifact";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipDeclarationMap();
 		
 		assertTrue(actual.containsKey("Relation"));		
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at declaration of Relation: It is declared twice with the same types."));
 	}
 	
 	@Test
-	public void enterRelationDeclarationFillsRelationDeclarationsWithTypes()  {
-		String input = "Relation < TypeOne # TypeTwo";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipDeclarationMap();
+	public void addRelationDeclarationOverloaded()  {
+		String input = "Relation < Artifact # Artifact\nRelation < Technology # Technology";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipDeclarationMap();
 		
-		Set<Relation> types = actual.get("Relation");
-		
-		assertTrue(types.contains(new Relation("TypeOne","TypeTwo")));
+		assertTrue(actual.containsKey("Relation"));		
+		assertEquals(0,m.getCriticalWarnings().size());
+		assertTrue(actual.get("Relation").contains(new Relation("Artifact","Artifact")));
+		assertTrue(actual.get("Relation").contains(new Relation("Technology","Technology")));
 	}
 	
 	@Test
-	public void enterRelationDeclarationDoesNotOverideExistingDeclarations()  {
-		String input = "Relation < TypeOne # TypeTwo\nRelation < TypeThree # TypeFour";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipDeclarationMap();
+	public void addRelationInstanceDouble(){
+		String input = "a : ProgrammingLanguage "
+				+ "b : ProgrammingLanguage "
+				+ "a subsetOf b "
+				+ "a subsetOf b";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipInstanceMap();
 		
-		Set<Relation> types = actual.get("Relation");
-		String[] expected1 = {"TypeOne","TypeTwo"};
-		String[] expected2 = {"TypeThree","TypeFour"};
-		
-		assertTrue(types.contains(Arrays.asList(expected1)));
-		assertTrue(types.contains(Arrays.asList(expected2)));
+		assertTrue(actual.containsKey("subsetOf"));
+		assertTrue(actual.get("subsetOf").contains(new Relation("a","b")));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at instance of subsetOf: 'a subsetOf b' already exists."));
 	}
 	
 	@Test
-	public void enterRelationInstanceFillsRelationInstancesWithRelationName()  {
-		String input = "ObjectOne Relation ObjectTwo";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipInstanceMap();
+	public void addRelationInstanceUnfitDomain(){
+		String input = "a : Framework "
+				+ "b : ProgrammingLanguage "
+				+ "a subsetOf b ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipInstanceMap();
 		
-		assertTrue(actual.containsKey("Relation"));
+		assertFalse(actual.containsKey("subsetOf"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at instance of subsetOf: 'a subsetOf b' does not fit any declaration."));
 	}
 	
 	@Test
-	public void enterRelationInstanceFillsRelationInstancesWithObjects()  {
-		String input = "ObjectOne Relation ObjectTwo";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipInstanceMap();
+	public void addRelationInstanceUnfitRange(){
+		String input = "a : Framework "
+				+ "b : ProgrammingLanguage "
+				+ "b subsetOf a ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipInstanceMap();
 		
-		Set<Relation> types = actual.get("Relation");
-		
-		assertTrue(types.contains(new Relation("ObjectOne","ObjectTwo")));
+		assertFalse(actual.containsKey("subsetOf"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at instance of subsetOf: 'b subsetOf a' does not fit any declaration."));
 	}
 	
 	@Test
-	public void enterRelationInstanceDoesNotOverideExistingInstances()  {
-		String input = "ObjectOne Relation ObjectTwo\nObjectThree Relation ObjectFour";
-		Map<String, Set<Relation>> actual = new MegaModelLoader().loadString(input).getRelationshipInstanceMap();
+	public void addRelationInstanceMultiFit(){
+		String input = "subsetOf < ProgrammingLanguage # ProgrammingLanguage "
+				+ "a : ProgrammingLanguage "
+				+ "b : ProgrammingLanguage "
+				+ "a subsetOf b ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipInstanceMap();
 		
-		Set<Relation> types = actual.get("Relation");
-		
-		assertTrue(types.contains(new Relation("ObjectOne","ObjectTwo")));
-		assertTrue(types.contains(new Relation("ObjectThree","ObjectFour")));
+		assertFalse(actual.containsKey("subsetOf"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at instance of subsetOf: 'a subsetOf b' fits multiple declarations."));
 	}
 	
 	@Test
-	public void enterFunctionDeclarationFillsFunctionDeclarationsWithFunctionName()  {
-		String input = "function : TypeOne # TypeTwo -> ReturnType";
-		Map<String, Function> actual = new MegaModelLoader().loadString(input).getFunctionDeclarations();
-		
-		assertTrue(actual.containsKey("function"));
+	public void addRelationInstanceDomainNotInstance(){
+		String input = "b : ProgrammingLanguage "
+				+ "a subsetOf b";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipInstanceMap();
+		assertFalse(actual.containsKey("subsetOf"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at instance of subsetOf: a is not instantiated."));
 	}
 	
 	@Test
-	public void enterFunctionInstanceFillsFunctionInstanceWithFunctionName()  {
-		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		Map<String, Set<Function>> actual = new MegaModelLoader().loadString(input).getFunctionApplications();
-		
-		assertTrue(actual.containsKey("Function"));
+	public void addRelationInstanceRangeNotInstance(){
+		String input = "a : ProgrammingLanguage "
+				+ "a subsetOf b";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Relation>> actual = m.getRelationshipInstanceMap();
+		assertFalse(actual.containsKey("subsetOf"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at instance of subsetOf: b is not instantiated."));
 	}
 	
 	@Test
-	public void enterFunctionInstanceFillsFunctionInstanceWithFunction()  {
-		String input = "Function(ObjectOne , ObjectTwo) |-> Result";
-		Map<String, Set<Function>> actual = new MegaModelLoader().loadString(input).getFunctionApplications();
+	public void addFunctionDeclarationOverloading(){
+		String input = "a : ProgrammingLanguage "
+				+ "b : ProgrammingLanguage "
+				+ "f : a -> a "
+				+ "f : b -> b";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Function> actual = m.getFunctionDeclarations();
+		assertTrue(actual.containsKey("f"));
 		
-		Set<Function> functions = actual.get("Function");
-		
-		assertEquals(1,functions.size());
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error: The function f has multiple declarations."));
 	}
 	
 	@Test
-	public void enterFunctionInstanceDoesNotOverideExistingInstances()  {
-		String input = "Function(ObjectOne , ObjectTwo) |-> Result\nFunction(ObjectThree , ObjectFour) |-> ResultTwo";
-		Map<String, Set<Function>> actual = new MegaModelLoader().loadString(input).getFunctionApplications();
+	public void addFunctionDeclarationDomainNotInstantiated(){
+		String input = "b : ProgrammingLanguage "
+				+ "f : a -> b ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Function> actual = m.getFunctionDeclarations();
+		assertFalse(actual.containsKey("f"));
 		
-		Collection<Function> types = actual.get("Function");
-		
-		assertEquals(2,types.size());
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at f's declaration: The language a was not declared."));
 	}
 	
 	@Test
-	public void enterLinkFillsLinksWithName()  {
-		String input = "Name = \"test\"";
-		Map<String, List<String>> actual = new MegaModelLoader().loadString(input).getLinkMap();
+	public void addFunctionDeclarationRangeNotInstantiated(){
+		String input = "a : ProgrammingLanguage "
+				+ "f : a -> b ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Function> actual = m.getFunctionDeclarations();
+		assertFalse(actual.containsKey("f"));
 		
-		assertTrue(actual.containsKey("Name"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at f's declaration: The language b was not declared."));
 	}
 	
 	@Test
-	public void enterLinkFillsLinksWithLinkString()  {
-		String input = "Name = \"test\"";
-		Map<String, List<String>> actual = new MegaModelLoader().loadString(input).getLinkMap();
+	public void addFunctionDeclarationDomainMultipleNotInstantiated(){
+		String input = "b : ProgrammingLanguage "
+				+ "f : b # a # b -> b # b # a ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Function> actual = m.getFunctionDeclarations();
+		assertFalse(actual.containsKey("f"));
 		
-		String link = actual.get("Name").get(0);
-		assertEquals("test", link);
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at f's declaration: The language a was not declared."));
 	}
 	
 	@Test
-	public void enterLinkFillsLinksDoesNotOverride()  {
-		String input = "Name = \"test\"\nName = \"testTwo\"";
-		Map<String, List<String>> actual = new MegaModelLoader().loadString(input).getLinkMap();
+	public void addFunctionDeclarationRangeMultipleNotInstantiated(){
+		String input = "b : ProgrammingLanguage "
+				+ "f : b  # b -> b # b # a ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Function> actual = m.getFunctionDeclarations();
+		assertFalse(actual.containsKey("f"));
 		
-		assertEquals(2,actual.get("Name").size());
-		String link = actual.get("Name").get(0);
-		String link2 = actual.get("Name").get(1);
-		
-		assertEquals("test", link);
-		assertEquals("testTwo", link2);
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at f's declaration: The language a was not declared."));
 	}
 	
 	@Test
-	public void fileNotFoundReturnsNull() throws IOException{
+	public void addFunctionDeclarationDomainNotALanguage(){
+		String input = "b : ProgrammingLanguage "
+				+ "f : Grammar -> b ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Function> actual = m.getFunctionDeclarations();
+		assertFalse(actual.containsKey("f"));
+		
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at f's declaration: Grammar is not a language."));
+	}
+	
+	@Test
+	public void addFunctionDeclarationRangeNotALanguage(){
+		String input = "b : ProgrammingLanguage "
+				+ "f : b -> Grammar ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Function> actual = m.getFunctionDeclarations();
+		assertFalse(actual.containsKey("f"));
+		
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at f's declaration: Grammar is not a language."));
+	}
+	
+	@Test
+	public void addFunctionDeclaration(){
+		String input = "l : ProgrammingLanguage "
+				+ "f : l -> l";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Function> actual = m.getFunctionDeclarations();
+		assertEquals(0,m.getCriticalWarnings().size());
+		assertTrue(actual.containsKey("f"));
+	}
+	
+	@Test
+	public void addFunctionDeclarationMulti(){
+		String input = "a : ProgrammingLanguage "
+				+ "b : ProgrammingLanguage "
+				+ "f : b  # b -> b # b # a ";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Function> actual = m.getFunctionDeclarations();
+		assertTrue(actual.containsKey("f"));
+		
+		assertEquals(0,m.getCriticalWarnings().size());
+	}
+	
+	@Test
+	public void addFunctionApplicationNotDeclared(){
+		String input = "f(a)|->a";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Function>> actual = m.getFunctionApplications();
+		
+		assertTrue(actual.isEmpty());
+		m.getCriticalWarnings().forEach(w -> System.out.println(w));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at application of f: A declaration has to be stated beforehand."));
+	}
+	
+	@Test
+	public void addFunctionApplication(){
+		String input = "l : ProgrammingLanguage "
+				+ "f : l # l # l -> l # l "
+				+ "a : Artifact<l,MvcModel,File> "
+				+ "b : Artifact<l,MvcView,File> "
+				+ "f(a,b,a)|->(b,a)";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Function>> actual = m.getFunctionApplications();
+		m.getCriticalWarnings().forEach(w -> System.out.println(w));
+		assertEquals(1,actual.size());
+		assertTrue(actual.containsKey("f"));
+		assertEquals(1,actual.get("f").size());
+		Function f = actual.get("f").iterator().next();
+		assertEquals(3,f.getInputs().size());
+		assertEquals("a",f.getInputs().get(0));
+		assertEquals("b",f.getInputs().get(1));
+		assertEquals("a",f.getInputs().get(2));
+		assertEquals(2,f.getOutputs().size());
+		assertEquals("b",f.getOutputs().get(0));
+		assertEquals("a",f.getOutputs().get(1));
+	}
+	
+	@Test
+	public void addFunctionApplicationDuplicate(){
+		String input = "l : ProgrammingLanguage "
+				+ "f : l # l # l -> l # l "
+				+ "a : Artifact<l,MvcModel,File> "
+				+ "b : Artifact<l,MvcView,File> "
+				+ "c : Artifact<l,MvcMode,File> "
+				+ "f(a,b,c)|->(b,a) "
+				+ "f(a,b,c)|->(b,a)";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Function>> actual = m.getFunctionApplications();
+		assertTrue(actual.containsKey("f"));
+		assertEquals(1,actual.get("f").size());
+		Iterator<Function> i = actual.get("f").iterator();
+		Function f = i.next();
+		assertFalse(i.hasNext());
+		
+		assertEquals(3,f.getInputs().size());
+		assertEquals(2,f.getOutputs().size());
+		
+		assertEquals("a",f.getInputs().get(0));
+		assertEquals("b",f.getInputs().get(1));
+		assertEquals("c",f.getInputs().get(2));
+		
+		assertEquals("b",f.getOutputs().get(0));
+		assertEquals("a",f.getOutputs().get(1));
+		
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at application of f with inputs [a] and outputs [a]: It already exists."));
+		
+	}
+	
+	@Test
+	public void addFunctionApplicationNotInstantiatedInput(){
+		String input = "l : DataRepresentationLanguage "
+				+ "f : l -> l "
+				+ "b : Artifact<l,Grammar,File> "
+				+ "f(a)|->b";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Function>> actual = m.getFunctionApplications();
+		m.getCriticalWarnings().forEach(w -> System.out.println(w));
+		assertTrue(m.getFunctionDeclarations().containsKey("f"));
+		assertTrue(actual.isEmpty());
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at application a is not instance of Artifact."));
+	}
+	
+	
+	
+	@Test
+	public void fileNotFoundReturnsNull(){
 		MegaModelLoader ml = new MegaModelLoader();
 		ml.loadFile("");
-		assertNull(ml.getModel());
+		assertEquals(1,ml.getModel().getCriticalWarnings().size());
+		assertTrue(ml.getModel().getCriticalWarnings().contains("File '' does not exist"));
 	}
 	
 	@Test
@@ -295,6 +489,13 @@ public class MegalibParserListenerTest {
 	@Test
 	public void testComment() throws IOException{
 		String input = "// test hello world";
+		MegaModel actual = new MegaModelLoader().loadString(input);
+		assertNotNull(actual);
+	}
+	
+	@Test
+	public void testCommentAfterStmt() throws IOException{
+		String input = "a : ProgrammingLanguage // test hello world";
 		MegaModel actual = new MegaModelLoader().loadString(input);
 		assertNotNull(actual);
 	}

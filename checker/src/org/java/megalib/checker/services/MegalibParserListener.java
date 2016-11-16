@@ -115,24 +115,18 @@ public class MegalibParserListener extends MegalibBaseListener {
 		for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
 			if(!context.getChild(childIndex).getText().equals("#") && parameter == false 
 					&& !context.getChild(childIndex).getText().equals("->"))
-			returnTypes.add(context.getChild(childIndex).getText());
+				parameterTypes.add(context.getChild(childIndex).getText());
 			
 			if(!context.getChild(childIndex).getText().equals("#") && parameter == true 
 					&& !context.getChild(childIndex).getText().equals("->"))
-			parameterTypes.add(context.getChild(childIndex).getText());
+				returnTypes.add(context.getChild(childIndex).getText());
 			
 			if(context.getChild(childIndex).getText().equals("->"))
 				parameter = false;
-			
 		}
 		
 		try {
 			model.addFunctionDeclaration(functionName, parameterTypes,returnTypes);
-		} catch (Exception e) {
-			model.addWarning(e.getMessage());
-		}
-		try {
-			model.addInstanceOf(functionName, "Function");
 		} catch (Exception e) {
 			model.addWarning(e.getMessage());
 		}
@@ -165,6 +159,7 @@ public class MegalibParserListener extends MegalibBaseListener {
 		try {
 			model.addFunctionApplication(functionName, inputs,outputs);
 		} catch (Exception e) {
+			e.printStackTrace();
 			model.addWarning(e.getMessage());
 		}
 	}

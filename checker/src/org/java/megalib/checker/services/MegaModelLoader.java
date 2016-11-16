@@ -65,7 +65,7 @@ public class MegaModelLoader {
 			f = new File(filepath);
 			data = FileUtils.readFileToString(f);
 		}catch(IOException e){
-			System.err.println(e.getMessage());
+			model.addWarning(e.getMessage());
 			return;
 		}
 		loadCompleteModelFrom(data,filepath);
@@ -75,7 +75,7 @@ public class MegaModelLoader {
 	    try {
 			return ((MegalibParserListener) parse(data,new MegalibParserListener(model))).getModel();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 		return null;
 	}
