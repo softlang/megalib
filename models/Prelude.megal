@@ -4,7 +4,6 @@ DataRepresentationLanguage < Language // Any binding?
 MarkupLanguage < Language
 TransformationLanguage < Language
 QueryLanguage < Language 
-elementOf < Artifact # Language
 subsetOf < Language # Language
 
 String : DataRepresentationLanguage
@@ -21,7 +20,8 @@ Specification < Artifact
 Value < Artifact
 Configuration < Artifact
 
-defines < Artifact # Entity // Too general?
+defines < Artifact # Language 
+elementOf < Artifact # Language
 conformsTo < Artifact # Artifact
 correspondsTo < Artifact # Artifact
 
@@ -62,12 +62,9 @@ MvcView = "https://en.wikipedia.org/wiki/Model-view-controller"
 MvcController : Role
 MvcController = "https://en.wikipedia.org/wiki/Model-view-controller"
 hasRole < Artifact # Role
-participantOf < Role # DesignPattern
-participantOf < Role # ArchitecturalStyle
-// aspectOf??? < Role # ProgrammingDomain . Better name needed
 
 Function < Entity
-Transformation < Function
+Transformation < Function //Experimental subtype
 implements < Artifact # Function
 
 // Classification of technologies
@@ -87,23 +84,24 @@ partOf < Technology # Technology
 partOf < System # System
 
 // Implementation relationships
-implements < Artifact # Function
 implements < Technology # Function
 implements < Technology # Language
-implements < System # Function
+// implements < System # Function - Does this make sense?
 
-// We should eventually replace Concept by more specific categories.
-Concept < Entity
-Paradigm < Concept // Maybe we should derive from Entity directly
-ProgrammingDomain < Concept
-TechnologySpace < Concept
-DesignPattern < Concept
-ArchitecturalStyle < Concept
-AbstractProcess < Concept // Name?
+Paradigm < Entity 
+ProgrammingDomain < Entity
+TechnologySpace < Entity
+DesignPattern < Entity
+ArchitecturalStyle < Entity
+AbstractProcess < Entity // better name? CommonProcess?
 Serialization : AbstractProcess
 Serialization = "https://en.wikipedia.org/wiki/Serialization"
 
-belongsTo < Technology # ProgrammingDomain // should that be supports
+participantOf < Role # DesignPattern
+participantOf < Role # ArchitecturalStyle
+// aspectOf??? < Role # ProgrammingDomain . Better name needed
+belongsTo < Technology # TechnologySpace
+supports < Technology # ProgrammingDomain 
 realizes < Artifact # AbstractProcess
 realizes < Technology # AbstractProcess
 
@@ -127,7 +125,6 @@ uses < Artifact # Language
 // Facilitation (deferred usage)
 facilitates < Technology # DesignPattern
 facilitates < Technology # ArchitecturalStyle
-facilitates < Technology # ProgrammingDomain // Should we add this one?
 facilitates < Technology # AbstractProcess
 facilitates < Language # Paradigm
 facilitates < Language # ProgrammingDomain

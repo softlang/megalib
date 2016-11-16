@@ -17,7 +17,7 @@ import org.junit.Test;
 
 /**
  * Tests the correct behavior for MegaModelLoader and MegaModel functionality.
- * Especially the constraints relevant for creation time are tested in a black box manner.
+ * Especially the constraints relevant for creation time are tested.
  * 
  * @author heinz
  *
@@ -31,12 +31,12 @@ public class MegalibParserListenerTest {
 		model.getCriticalWarnings().forEach(w->System.out.println(w));
 		assertEquals(19,model.getInstanceOfMap().size());
 		assertEquals(19,model.getLinkMap().size());
-		assertEquals(29,model.getSubtypesMap().size());
+		assertEquals(28,model.getSubtypesMap().size());
 		Map<String, Set<Relation>> rm = model.getRelationshipDeclarationMap();
 		//the number of distinct relation ship names
-		assertEquals(14,rm.size());
+		assertEquals(15,rm.size());
 		int count = rm.values().stream().map(set -> set.size()).reduce(0, (a,b) -> a+b);
-		assertEquals(42, count);
+		assertEquals(41, count);
 		assertEquals(0,model.getCriticalWarnings().size());
 	}
 	
