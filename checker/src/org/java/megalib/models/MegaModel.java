@@ -47,8 +47,10 @@ public class MegaModel {
 		if(!(subtypeOfMap.containsKey(type)||type.equals("Entity"))){
 			throw new Exception("Error at "+subtype+": The declared supertype is not a subtype of Entity");
 		}
-		if(subtypeOfMap.put(subtype, type)!=null)
+		if(subtypeOfMap.containsKey(subtype))
 			throw new Exception("Error at "+subtype+": Multiple inheritance is not allowed.");
+		else
+			subtypeOfMap.put(subtype, type);
 	}
 
 	public Map<String, String> getInstanceOfMap() {
@@ -60,7 +62,7 @@ public class MegaModel {
 			throw new Exception("Error at "+instance+": It is instance and type at the same time.");
 		}
 		if(instance.equals("Entity")){
-			throw new Exception("Error at "+instance+": The name 'Entity' is a MegaL keyword.");
+			throw new Exception("Error at "+instance+": The root type `Entity' cannot be instantiated.");
 		}
 		if(!subtypeOfMap.containsKey(type)||type.equals("Entity")){
 			throw new Exception("Error at "+instance+": The instantiated type is not (transitive) subtype of Entity.");

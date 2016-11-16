@@ -52,30 +52,105 @@ public class MegalibParserListenerTest {
 	}
 	
 	@Test
-	public void enterEntityInstanceFillsEntityInstances(){
-		String input = "Instance : Type";
-		MegaModel model = new MegaModelLoader().loadString(input);
-		Map<String, String> imap = model.getInstanceOfMap();
+	public void addSubtypeValidSupertype() {
+		String input = "DerivedType < Artifact";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> subtypes = m.getSubtypesMap();
 		
-		assertTrue(imap.containsKey("Instance"));
-		assertEquals(imap.get("Instance").toString(),"Type");
-		Map<String, Set<Relation>> emap = model.getRelationshipInstanceMap();
-		assertTrue(emap.isEmpty());
+		assertTrue(subtypes.containsKey("DerivedType"));
+		assertEquals(0,m.getCriticalWarnings().size());
+		assertEquals("Artifact",subtypes.get("DerivedType"));
+	}
+	
+	@Test
+	public void addSubtypeOfEntity() {
+		String input = "DerivedType < Entity";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> subtypes = m.getSubtypesMap();
+		
+		assertTrue(subtypes.containsKey("DerivedType"));
+		assertEquals(0,m.getCriticalWarnings().size());
+		assertEquals("Entity",subtypes.get("DerivedType"));
+	}
+	
+	@Test
+	public void addSubtypeMultipleInh() {
+		String input = "DerivedType < Technology \n"
+				+ "DerivedType < System";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> subtypes = m.getSubtypesMap();
+		
+		assertTrue(subtypes.containsKey("DerivedType"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at DerivedType: Multiple inheritance is not allowed."));
+		assertEquals("Technology",subtypes.get("DerivedType"));
+	}
+	
+	@Test
+	public void addEntityInstance(){
+		String input = "Entity : Artifact";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> imap = m.getInstanceOfMap();
+		assertFalse(imap.containsKey("Entity"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at Entity: The root type `Entity' cannot be instantiated."));
+	}
+	
+	@Test
+	public void addInstanceOfUnknown(){
+		String input = "Instance : Type";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> imap = m.getInstanceOfMap();
+		
+		assertFalse(imap.containsKey("Instance"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at Instance: The instantiated type is not (transitive) subtype of Entity."));
+	}
+	
+	@Test
+	public void addInstanceOfEntity(){
+		String input = "Artifact : Technology";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> imap = m.getInstanceOfMap();
+		
+		assertFalse(imap.containsKey("Artifact"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at Artifact: It is instance and type at the same time."));
+	}
+	
+	@Test
+	public void addInstanceOfMulitple(){
+		String input = "t : Technology "
+				+ "t : Artifact";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> imap = m.getInstanceOfMap();
+		
+		assertEquals("Technology",imap.get("t"));
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at t: Multiple types cannot be assigned to the same instance."));
+	}
+	
+	@Test
+	public void addInstanceOfProgrammingLanguage(){
+		String input = "Java : ProgrammingLanguage";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> imap = m.getInstanceOfMap();
+		assertEquals("ProgrammingLanguage",imap.get("Java"));
+		assertEquals(0,m.getCriticalWarnings().size());
 	}
 	
 	@Test
 	public void enterArtifactInstance(){
-		String input = "a : Artifact<Python,?r,?m>";
-		MegaModel model = new MegaModelLoader().loadString(input);
-		Map<String, String> imap = model.getInstanceOfMap();
+		String input = "Python : ProgrammingLanguage "
+				+ "a : Artifact<Python,MvcModel,File>";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, String> imap = m.getInstanceOfMap();
 		assertEquals(21,imap.size());
 		assertTrue(imap.containsKey("a"));
-		assertEquals(imap.get("a").toString(),"Artifact");
-		Set<Relation> elementOfSet = model.getRelationshipInstanceMap().get("elementOf");
-		assertEquals(1,elementOfSet.size());
-		Relation elementOf = elementOfSet.iterator().next();
-		assertEquals("a",elementOf.getSubject());
-		assertEquals("Python",elementOf.getObject());
+		assertEquals("Artifact",imap.get("a"));
+		assertTrue(m.getRelationshipInstanceMap().get("elementOf").contains(new Relation("a","Python")));
+		assertTrue(m.getRelationshipInstanceMap().get("hasRole").contains(new Relation("a","MvcModel")));
+		assertTrue(m.getRelationshipInstanceMap().get("manifestsAs").contains(new Relation("a","File")));
 	}
 	
 	@Test
