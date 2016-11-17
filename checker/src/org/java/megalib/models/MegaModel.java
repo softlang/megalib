@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.java.megalib.checker.services.WellFormednessException;
+
 public class MegaModel {
 	private Map<String, String> subtypeOfMap;
 	private Map<String, String> instanceOfMap;
@@ -43,12 +45,12 @@ public class MegaModel {
 		return Collections.unmodifiableMap(subtypeOfMap);
 	}
 	
-	public void addSubtypeOf(String subtype, String type) throws Exception{
+	public void addSubtypeOf(String subtype, String type) throws WellFormednessException{
 		if(!(subtypeOfMap.containsKey(type)||type.equals("Entity"))){
-			throw new Exception("Error at "+subtype+": The declared supertype is not a subtype of Entity");
+			throw new WellFormednessException("Error at "+subtype+": The declared supertype is not a subtype of Entity");
 		}
 		if(subtypeOfMap.containsKey(subtype))
-			throw new Exception("Error at "+subtype+": Multiple inheritance is not allowed.");
+			throw new WellFormednessException("Error at "+subtype+": Multiple inheritance is not allowed.");
 		else
 			subtypeOfMap.put(subtype, type);
 	}
@@ -57,18 +59,18 @@ public class MegaModel {
 		return Collections.unmodifiableMap(instanceOfMap);
 	}
 	
-	public void addInstanceOf(String instance, String type) throws Exception {
+	public void addInstanceOf(String instance, String type) throws WellFormednessException {
 		if(subtypeOfMap.containsKey(instance)){
-			throw new Exception("Error at "+instance+": It is instance and type at the same time.");
+			throw new WellFormednessException("Error at "+instance+": It is instance and type at the same time.");
 		}
 		if(instance.equals("Entity")){
-			throw new Exception("Error at "+instance+": The root type `Entity' cannot be instantiated.");
+			throw new WellFormednessException("Error at "+instance+": The root type `Entity' cannot be instantiated.");
 		}
 		if(!subtypeOfMap.containsKey(type)||type.equals("Entity")){
-			throw new Exception("Error at "+instance+": The instantiated type is not (transitive) subtype of Entity.");
+			throw new WellFormednessException("Error at "+instance+": The instantiated type is not (transitive) subtype of Entity.");
 		}
 		if(instanceOfMap.containsKey(instance)){
-			throw new Exception("Error at "+instance+": Multiple types cannot be assigned to the same instance.");
+			throw new WellFormednessException("Error at "+instance+": Multiple types cannot be assigned to the same instance.");
 		}
 		instanceOfMap.put(instance, type);
 	}
@@ -84,11 +86,11 @@ public class MegaModel {
 	 * @param relationTypes
 	 * @throws Exception 
 	 */
-	public void addRelationDeclaration(String name, String sType, String oType) throws Exception {
+	public void addRelationDeclaration(String name, String sType, String oType) throws WellFormednessException {
 		if(!(subtypeOfMap.containsKey(sType)))
-			throw new Exception("Error at declaration of "+name+": Its domain "+sType+" is not subtype of Entity.");
+			throw new WellFormednessException("Error at declaration of "+name+": Its domain "+sType+" is not subtype of Entity.");
 		if(!(subtypeOfMap.containsKey(oType)))
-			throw new Exception("Error at declaration of "+name+": Its range "+oType+" is not subtype of Entity.");
+			throw new WellFormednessException("Error at declaration of "+name+": Its range "+oType+" is not subtype of Entity.");
 		
 		Set<Relation> set = new HashSet<>();
 		if(relationDeclarationMap.containsKey(name))
@@ -96,7 +98,7 @@ public class MegaModel {
 		Relation decl = new Relation(sType,oType);
 		
 		if(set.contains(decl))
-			throw new Exception("Error at declaration of "+name+": It is declared twice with the same types.");
+			throw new WellFormednessException("Error at declaration of "+name+": It is declared twice with the same types.");
 		
 		set.add(decl);
 		relationDeclarationMap.put(name, set);
@@ -106,21 +108,21 @@ public class MegaModel {
 		return Collections.unmodifiableMap(relationInstanceMap);
 	}
 	
-	public void addRelationInstances(String name, String subject, String object) throws Exception {
+	public void addRelationInstances(String name, String subject, String object) throws WellFormednessException {
 		Set<Relation> set = new HashSet<>();
 		if(relationInstanceMap.containsKey(name)){
 			set = relationInstanceMap.get(name);
 		}
 		if(!instanceOfMap.containsKey(subject)){
-			throw new Exception("Error at instance of "+name+": "+subject+" is not instantiated.");
+			throw new WellFormednessException("Error at instance of "+name+": "+subject+" is not instantiated.");
 		}
 		if(!instanceOfMap.containsKey(object)){
-			throw new Exception("Error at instance of "+name+": "+object+" is not instantiated.");
+			throw new WellFormednessException("Error at instance of "+name+": "+object+" is not instantiated.");
 		}
 		
 		Relation i = new Relation(subject,object);
 		if(set.contains(i)){
-			throw new Exception("Error at instance of "+name+": '"+subject+" "+name+" "+object+"' already exists.");
+			throw new WellFormednessException("Error at instance of "+name+": '"+subject+" "+name+" "+object+"' already exists.");
 		}
 		checkRelationInstanceFits(name,subject,object);
 		if(name.equals("elementOf"))
@@ -131,7 +133,7 @@ public class MegaModel {
 		relationInstanceMap.put(name, set);
 	}
 
-	private void checkRelationInstanceFits(String name, String subject, String object) throws Exception {
+	private void checkRelationInstanceFits(String name, String subject, String object) throws WellFormednessException {
 		Set<Relation> decls = relationDeclarationMap.get(name);
 		
 		//determine (super-)types of subject
@@ -158,36 +160,36 @@ public class MegaModel {
 			}
 		}
 		if(count==0)
-			throw new Exception("Error at instance of "+name+": '"+subject+" "+name+" "+object+"' does not fit any declaration.");
+			throw new WellFormednessException("Error at instance of "+name+": '"+subject+" "+name+" "+object+"' does not fit any declaration.");
 		if(count>1)
-			throw new Exception("Error at instance of "+name+": '"+subject+" "+name+" "+object+"' fits multiple declarations.");
+			throw new WellFormednessException("Error at instance of "+name+": '"+subject+" "+name+" "+object+"' fits multiple declarations.");
 	}
 
 	public Map<String, Function> getFunctionDeclarations() {
 		return Collections.unmodifiableMap(functionDeclarations);
 	}
 	
-	public void addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs) throws Exception {
+	public void addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs) throws WellFormednessException {
 		Function f = null;
 		if(functionDeclarations.containsKey(functionName)){
-			throw new Exception("Error: The function "+functionName+" has multiple declarations.");
+			throw new WellFormednessException("Error: The function "+functionName+" has multiple declarations.");
 		}
 		f = new Function(inputs,outputs);
 		for(String i : inputs){
 			String type = instanceOfMap.get(i);
 			if(type==null){
-				throw new Exception("Error at "+functionName+"'s declaration"+": The language "+i+" was not declared.");
+				throw new WellFormednessException("Error at "+functionName+"'s declaration"+": The language "+i+" was not declared.");
 			}
 			if(!isSubtypeOf(type, "Language"))
-				throw new Exception("Error at "+functionName+"'s declaration"+": "+i+" is not a language.");
+				throw new WellFormednessException("Error at "+functionName+"'s declaration"+": "+i+" is not a language.");
 		}
 		for(String o : outputs){
 			String type = instanceOfMap.get(o);
 			if(type==null){
-				throw new Exception("Error at "+functionName+"'s declaration"+": The language "+o+" was not declared.");
+				throw new WellFormednessException("Error at "+functionName+"'s declaration"+": The language "+o+" was not declared.");
 			}
 			if(!isSubtypeOf(type, "Language"))
-				throw new Exception("Error at "+functionName+"'s declaration"+": "+o+" is not a language.");
+				throw new WellFormednessException("Error at "+functionName+"'s declaration"+": "+o+" is not a language.");
 		}
 		functionDeclarations.put(functionName, f);
 	}
@@ -196,33 +198,40 @@ public class MegaModel {
 		return Collections.unmodifiableMap(functionInstances);
 	}
 	
-	public void addFunctionApplication(String name, List<String> inputs, List<String> outputs) throws Exception {
+	public void addFunctionApplication(String name, List<String> inputs, List<String> outputs) throws WellFormednessException {
 		Function app = new Function(inputs,outputs);
 		if(!functionDeclarations.containsKey(name)){
-			throw new Exception("Error at application of "+name+": A declaration has to be stated beforehand.");
+			throw new WellFormednessException("Error at application of "+name+": A declaration has to be stated beforehand.");
 		}
 		Set<Function> set = new HashSet<>();
 		if(functionInstances.containsKey(name)){
 			set = functionInstances.get(name);
 		}
 		if(set.contains(app)){
-			throw new Exception("Error at application of "+name+" with inputs "+app.getInputs()+" "
+			throw new WellFormednessException("Error at application of "+name+" with inputs "+app.getInputs()+" "
 					+ "and outputs "+app.getOutputs()+": It already exists.");
 		}
+		if(app.getInputs().size()!=functionDeclarations.get(name).getInputs().size())
+			throw new WellFormednessException("Error at application of "+name+" with inputs "+app.getInputs()+" "
+					+ "and outputs "+app.getOutputs()+": It does not fit to the declaration.");
+		if(app.getOutputs().size()!=functionDeclarations.get(name).getOutputs().size())
+			throw new WellFormednessException("Error at application of "+name+" with inputs "+app.getInputs()+" "
+					+ "and outputs "+app.getOutputs()+": It does not fit to the declaration.");
 		checkFunctionInstanceFits(app,functionDeclarations.get(name));
 		set.add(app);
 		functionInstances.put(name, set);
 	}
 
-	private void checkFunctionInstanceFits(Function instance, Function function) throws Exception {
+	private void checkFunctionInstanceFits(Function instance, Function function) throws WellFormednessException {
 		List<String> dis = instance.getInputs();
 		List<String> dls = function.getInputs();
+
 		for(int i=0;i<dis.size();i++){
 			if(!isInstanceOf(dis.get(i),"Artifact")){
-				throw new Exception("Error at application "+dis.get(i)+" is not instance of Artifact.");
+				throw new WellFormednessException("Error at a function application: "+dis.get(i)+" is not instance of Artifact.");
 			}
 			if(!isElementOf(dis.get(i),dls.get(i))){
-				throw new Exception("Error at application "+dis.get(i)+" is not element of "+dls.get(i)+".");
+				throw new WellFormednessException("Error at a function application: "+dis.get(i)+" is not element of "+dls.get(i)+".");
 			}
 		}
 		
@@ -230,10 +239,10 @@ public class MegaModel {
 		List<String> rls = function.getOutputs();
 		for(int i=0;i<ris.size();i++){
 			if(!isInstanceOf(ris.get(i),"Artifact")){
-				throw new Exception("Error at application "+ris.get(i)+" is not instance of Artifact.");
+				throw new WellFormednessException("Error at application "+ris.get(i)+" is not instance of Artifact.");
 			}
 			if(!isElementOf(ris.get(i),rls.get(i))){
-				throw new Exception("Error at application "+ris.get(i)+" is not element of "+rls.get(i)+".");
+				throw new WellFormednessException("Error at application "+ris.get(i)+" is not element of "+rls.get(i)+".");
 			}
 		}
 	}
@@ -246,18 +255,18 @@ public class MegaModel {
 		return Collections.unmodifiableMap(linkMap);
 	}
 
-	public void addLinks(String entity, List<String> links) throws Exception {
+	public void addLinks(String entity, List<String> links) throws WellFormednessException {
 		if(!instanceOfMap.containsKey(entity))
-			throw new Exception("Error at linking "+entity+". Declaration is missing.");
+			throw new WellFormednessException("Error at linking "+entity+". Declaration is missing.");
 		linkMap.put(entity, links);
 	}
 	
-	public void addSubstitutes(String by, String e) throws Exception{
+	public void addSubstitutes(String by, String e) throws WellFormednessException{
 		if(!instanceOfMap.containsKey(e)){
-			throw new Exception("Unable to substitute : "+e+" does not exist.");
+			throw new WellFormednessException("Unable to substitute : "+e+" does not exist.");
 		}
 		if(substMap.containsKey(e)){
-			throw new Exception("Unable to substitute "+e+" by "+by+": "+e+" is already substituted elsewhere.");
+			throw new WellFormednessException("Unable to substitute "+e+" by "+by+": "+e+" is already substituted elsewhere.");
 		}
 		substMap.put(e, by);
 		

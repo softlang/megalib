@@ -7,9 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -395,7 +393,6 @@ public class MegalibParserListenerTest {
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
 		
 		assertTrue(actual.isEmpty());
-		m.getCriticalWarnings().forEach(w -> System.out.println(w));
 		assertEquals(1,m.getCriticalWarnings().size());
 		assertTrue(m.getCriticalWarnings().contains("Error at application of f: A declaration has to be stated beforehand."));
 	}
@@ -409,7 +406,6 @@ public class MegalibParserListenerTest {
 				+ "f(a,b,a)|->(b,a)";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
-		m.getCriticalWarnings().forEach(w -> System.out.println(w));
 		assertEquals(1,actual.size());
 		assertTrue(actual.containsKey("f"));
 		assertEquals(1,actual.get("f").size());
@@ -429,29 +425,15 @@ public class MegalibParserListenerTest {
 				+ "f : l # l # l -> l # l "
 				+ "a : Artifact<l,MvcModel,File> "
 				+ "b : Artifact<l,MvcView,File> "
-				+ "c : Artifact<l,MvcMode,File> "
+				+ "c : Artifact<l,MvcModel,File> "
 				+ "f(a,b,c)|->(b,a) "
 				+ "f(a,b,c)|->(b,a)";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
 		assertTrue(actual.containsKey("f"));
 		assertEquals(1,actual.get("f").size());
-		Iterator<Function> i = actual.get("f").iterator();
-		Function f = i.next();
-		assertFalse(i.hasNext());
-		
-		assertEquals(3,f.getInputs().size());
-		assertEquals(2,f.getOutputs().size());
-		
-		assertEquals("a",f.getInputs().get(0));
-		assertEquals("b",f.getInputs().get(1));
-		assertEquals("c",f.getInputs().get(2));
-		
-		assertEquals("b",f.getOutputs().get(0));
-		assertEquals("a",f.getOutputs().get(1));
-		
 		assertEquals(1,m.getCriticalWarnings().size());
-		assertTrue(m.getCriticalWarnings().contains("Error at application of f with inputs [a] and outputs [a]: It already exists."));
+		assertTrue(m.getCriticalWarnings().contains("Error at application of f with inputs [a, b, c] and outputs [b, a]: It already exists."));
 		
 	}
 	
@@ -463,11 +445,10 @@ public class MegalibParserListenerTest {
 				+ "f(a)|->b";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
-		m.getCriticalWarnings().forEach(w -> System.out.println(w));
 		assertTrue(m.getFunctionDeclarations().containsKey("f"));
 		assertTrue(actual.isEmpty());
 		assertEquals(1,m.getCriticalWarnings().size());
-		assertTrue(m.getCriticalWarnings().contains("Error at application a is not instance of Artifact."));
+		assertTrue(m.getCriticalWarnings().contains("Error at a function application: a is not instance of Artifact."));
 	}
 	
 	

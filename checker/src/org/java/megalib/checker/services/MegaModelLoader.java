@@ -74,8 +74,10 @@ public class MegaModelLoader {
 	public MegaModel loadString(String data){
 	    try {
 			return ((MegalibParserListener) parse(data,new MegalibParserListener(model))).getModel();
-		} catch (Exception e) {
+		} catch (WellFormednessException e) {
 			System.err.println(e.getMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -92,19 +94,19 @@ public class MegaModelLoader {
 				model = ((MegalibParserListener) parse(pdata,new MegalibParserListener(model))).getModel();
 				if(!model.getCriticalWarnings().isEmpty()){
 					model.getCriticalWarnings().forEach(w -> System.err.println(w));
-					throw new Exception("Resolve critical errors first"+(path.equals("")? " in "+path : ""));
+					throw new WellFormednessException("Resolve critical errors first"+(path.equals("")? " in "+path : ""));
 				}
 			}
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 			return;
-		} catch (Exception e) {
+		} catch (WellFormednessException e) {
 			System.err.println(e.getMessage());
 			return;
 		}
 	}
 
-	public MegalibBaseListener parse(String data, MegalibBaseListener listener) throws Exception{
+	public MegalibBaseListener parse(String data, MegalibBaseListener listener) throws WellFormednessException, IOException{
 		ByteArrayInputStream stream = new ByteArrayInputStream(data.getBytes());
 		ANTLRInputStream antlrStream = new ANTLRInputStream(stream);
 		MegalibLexer lexer = new MegalibLexer(antlrStream);
@@ -117,14 +119,14 @@ public class MegaModelLoader {
 		for(ANTLRErrorListener el : parser.getErrorListeners()){
 			if(el instanceof MegalibErrorListener){
 				if(((MegalibErrorListener) el).getCount()>0){
-					throw new Exception("Syntactic errors exist : Fix them before further checks");
+					throw new WellFormednessException("Syntactic errors exist : Fix them before further checks");
 				}
 			}
 		}
 		return listener;
 	}
 	
-	private void resolveImports(String data, String path) throws Exception{
+	private void resolveImports(String data, String path) throws WellFormednessException, IOException{
 		List<Relation> imports = new LinkedList<>();
 		Set<String> processed = new HashSet<>();
 		Set<String> toProcess = new HashSet<>();

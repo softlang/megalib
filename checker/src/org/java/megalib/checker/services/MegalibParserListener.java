@@ -28,7 +28,7 @@ public class MegalibParserListener extends MegalibBaseListener {
 		String object = ctx.getChild(2).getText();
 		try {
 			model.addSubstitutes(subject, object);
-		} catch (Exception e) {
+		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
 		}
 		super.enterSubstitution(ctx);
@@ -40,7 +40,7 @@ public class MegalibParserListener extends MegalibBaseListener {
 		String superType = context.getChild(2).getText();
 		try {
 			model.addSubtypeOf(derivedType, superType);
-		} catch (Exception e) {
+		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
 		}
 	}
@@ -58,19 +58,19 @@ public class MegalibParserListener extends MegalibBaseListener {
 			String o = context.getChild(4).getText();
 			try {
 				model.addRelationInstances("elementOf", instance,o);
-			} catch (Exception e) {
+			} catch (WellFormednessException e) {
 				model.addWarning(e.getMessage());
 			}
 			o = context.getChild(6).getText();
 			try {
 				model.addRelationInstances("hasRole", instance,o);
-			} catch (Exception e) {
+			} catch (WellFormednessException e) {
 				model.addWarning(e.getMessage());
 			}
 			o = context.getChild(8).getText();
 			try {
 				model.addRelationInstances("manifestsAs", instance,o);
-			} catch (Exception e) {
+			} catch (WellFormednessException e) {
 				model.addWarning(e.getMessage());
 			}
 		}
@@ -84,7 +84,7 @@ public class MegalibParserListener extends MegalibBaseListener {
 		
 		try {
 			model.addRelationDeclaration(relation, type1,type2);
-		} catch (Exception e) {
+		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
 		}
 	}
@@ -100,7 +100,7 @@ public class MegalibParserListener extends MegalibBaseListener {
 		instances.add(instance2);
 		try {
 			model.addRelationInstances(relation, instance1,instance2);
-		} catch (Exception e) {
+		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
 		}
 	}
@@ -115,11 +115,11 @@ public class MegalibParserListener extends MegalibBaseListener {
 		for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
 			if(!context.getChild(childIndex).getText().equals("#") && parameter == false 
 					&& !context.getChild(childIndex).getText().equals("->"))
-				parameterTypes.add(context.getChild(childIndex).getText());
+				returnTypes.add(context.getChild(childIndex).getText());
 			
 			if(!context.getChild(childIndex).getText().equals("#") && parameter == true 
 					&& !context.getChild(childIndex).getText().equals("->"))
-				returnTypes.add(context.getChild(childIndex).getText());
+				parameterTypes.add(context.getChild(childIndex).getText());
 			
 			if(context.getChild(childIndex).getText().equals("->"))
 				parameter = false;
@@ -127,7 +127,7 @@ public class MegalibParserListener extends MegalibBaseListener {
 		
 		try {
 			model.addFunctionDeclaration(functionName, parameterTypes,returnTypes);
-		} catch (Exception e) {
+		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
 		}
 	}
@@ -158,8 +158,7 @@ public class MegalibParserListener extends MegalibBaseListener {
 	
 		try {
 			model.addFunctionApplication(functionName, inputs,outputs);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
 		}
 	}
@@ -179,7 +178,7 @@ public class MegalibParserListener extends MegalibBaseListener {
 		links.add(link);
 		try {
 			model.addLinks(entityname, links);
-		} catch (Exception e) {
+		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
 		}		
 	}
