@@ -36,7 +36,7 @@ instanceOf's right side is not Language // we don't emphasize underspecification
 For every instanceOf's left side there exists a hasLink relationship if it doesn't start with `?'.
 Every Technology uses at least one Language
 Every Function is implemented
-Every declared function is applied at least once
+Every Function is applied at least once
 Every Artifact is element of a language
 Every Artifact has a manifestation 
 Every Artifact has a role

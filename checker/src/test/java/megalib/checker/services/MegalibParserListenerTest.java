@@ -1,4 +1,4 @@
-package test.java.megalib.checker;
+package test.java.megalib.checker.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -50,6 +50,15 @@ public class MegalibParserListenerTest {
 		assertFalse(subtypes.containsKey("DerivedType"));
 		assertTrue(m.getCriticalWarnings().contains("Error at DerivedType: The declared supertype is not a subtype of Entity"));
 		assertEquals(1,m.getCriticalWarnings().size());
+	}
+	
+	@Test
+	public void addSubtypeEntity(){
+		String input = "Type < Entity "
+				+ "Entity < Type";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at Entity < Type: Entity is a MegaL keyword."));
 	}
 	
 	@Test

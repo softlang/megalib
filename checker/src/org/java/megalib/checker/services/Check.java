@@ -8,7 +8,9 @@ import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,29 +24,33 @@ import javax.net.ssl.X509TrustManager;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
 
-public class Checker {
+public class Check {
 
 	private MegaModel model;
-	private Set<String> warnings;
+	private List<String> warnings;
 	
-	public Checker(MegaModel model) {
+	public Check(MegaModel model) {
 		this.model = model;
+		doChecks();
 	}
 	
-	public Set<String> getWarnings() {
+	public List<String> getWarnings() {
 		return warnings;
 	}
 
-	public void doChecks() {
-		warnings = new HashSet<String>();
+	private void doChecks() {
+		warnings = new LinkedList<String>();
 		
 		instanceChecks();
-		//TODO check cycle for subtypeOf
-		cycleChecks("subsetOf");
-		cycleChecks("partOf");
-		cycleChecks("conformsTo");
+		cyclicSubtypingChecks();
+		cyclicRelationChecks("subsetOf");
+		cyclicRelationChecks("partOf");
+		cyclicRelationChecks("conformsTo");
+		model.getFunctionDeclarations().keySet().forEach(f -> checkFunction(f));
 		checkLinks();
 	}
+
+	
 
 	private void instanceChecks() {
 		Map<String, String> map = model.getInstanceOfMap();
@@ -53,10 +59,14 @@ public class Checker {
 				warnings.add("The entity "+inst+" is underspecified. Please state a specific subtype of Technology.");
 			if(map.get(inst).equals("Language"))
 				warnings.add("The entity "+inst+" is underspecified. Please state a specific subtype of Language.");
-			if(!(inst.startsWith("?")||model.getLinkMap().containsKey(inst)))
+			if(!(inst.startsWith("?")||model.getLinkMap().containsKey(inst)||map.get(inst).equals("Function")))
 				warnings.add("The entity "+inst+" misses a Link for further reading.");
 			if(model.isInstanceOf(inst, "Technology")){
 				Set<Relation> usesSet = model.getRelationshipInstanceMap().get("uses");
+				if(null==usesSet){
+					warnings.add("The technology "+inst+" does not use any language. Please state language usage.");
+					continue;
+				}
 				Set<Relation> fset = usesSet.parallelStream()
 						.filter(r->r.getSubject().equals(inst)
 							   	&&model.isInstanceOf(r.getObject(),"Language"))
@@ -64,19 +74,15 @@ public class Checker {
 				if(fset.isEmpty())
 					warnings.add("The technology "+inst+" does not use any language. Please state language usage.");
 			}
-			if(model.isInstanceOf(inst, "Function")){
-				Set<Relation> implementsSet = model.getRelationshipInstanceMap().get("implements");
-				Set<Relation> fset = implementsSet.parallelStream()
-											   .filter(r->r.getObject().equals(inst))
-											   .collect(Collectors.toSet());
-				if(fset.isEmpty())
-					warnings.add("The technology "+inst+" is a non-implemented function. Please state what implements it.");
-			}
 			if(model.isInstanceOf(inst, "Artifact")){
 				if(!model.getElementOfMap().containsKey(inst)){
 					warnings.add("Language missing for artifact "+inst);
 				}
 				Set<Relation> manifestSet = model.getRelationshipInstanceMap().get("manifestsAs");
+				if(null==manifestSet){
+					warnings.add("Manifestation misssing for "+inst);
+					continue;
+				}
 				Set<Relation> fset = manifestSet.parallelStream()
 											   .filter(r->r.getSubject().equals(inst))
 											   .collect(Collectors.toSet());
@@ -84,6 +90,10 @@ public class Checker {
 					warnings.add("Manifestation misssing for "+inst);
 				
 				Set<Relation> roleSet = model.getRelationshipInstanceMap().get("hasRole");
+				if(null==roleSet){
+					warnings.add("Role misssing for "+inst);
+					continue;
+				}
 				fset = roleSet.parallelStream()
 											   .filter(r->r.getSubject().equals(inst))
 											   .collect(Collectors.toSet());
@@ -93,7 +103,28 @@ public class Checker {
 		}
 	}
 	
-	private void cycleChecks(String name) {
+	private void cyclicSubtypingChecks() {
+		Map<String, String> map = new HashMap<>();
+		map.putAll(model.getSubtypesMap());
+		while(true){
+			Set<String> subtypeset = map.keySet();
+			Set<String> typeset = map.values().stream().collect(Collectors.toSet());
+			Set<String> diff = new HashSet<String>(subtypeset);
+			diff.removeAll(typeset);
+			if(diff.isEmpty())
+				break;
+			for(String t : diff){
+				map.remove(t);
+			}
+		}
+		if(!map.isEmpty()){
+			warnings.add("Cycles exist in the subtyping hierarchy within the following entries :"+map);
+		}
+	}
+	
+	private void cyclicRelationChecks(String name) {
+		if(!model.getRelationshipInstanceMap().containsKey(name))
+			return;
 		Set<Relation> rels = model.getRelationshipInstanceMap().get(name);
 		Set<String> subjects;
 		Set<String> objects;
@@ -113,6 +144,24 @@ public class Checker {
 			warnings.add("Cycles exist concerning the relationship "+name+" involving the following entities :"+result);
 		}
 		
+	}
+	
+	private void checkFunction(String name){
+		//check implements existence
+		Set<Relation> implementsSet = model.getRelationshipInstanceMap().get("implements");
+		if(null==implementsSet){
+			warnings.add("The function "+name+" is not implemented. Please state what implements it.");
+		}else{
+			Set<Relation> fset = implementsSet.parallelStream()
+									   .filter(r->r.getObject().equals(name))
+									   .collect(Collectors.toSet());
+			if(fset.isEmpty())
+				warnings.add("The function "+name+" is not implemented. Please state what implements it.");
+		}
+		//check application existence
+		if(!model.getFunctionApplications().containsKey(name)){
+			warnings.add("The function "+name+" is not applied yet. Please state an actual application.");
+		}
 	}
 
 	private void checkLinks() {

@@ -3,7 +3,7 @@
  */
 package org.java.megalib.checker;
 
-import org.java.megalib.checker.services.Checker;
+import org.java.megalib.checker.services.Check;
 import org.java.megalib.checker.services.MegaModelLoader;
 
 /**
@@ -17,9 +17,12 @@ public class Main {
 		try {
 			MegaModelLoader ml = new MegaModelLoader();
 			ml.loadFile(getFilepathOfArguments(args));
-			Checker resultChecker = new Checker(ml.getModel());
-			resultChecker.doChecks();
-			resultChecker.getWarnings().forEach(w -> System.out.println(w));
+			if(ml.getModel().getCriticalWarnings().isEmpty())
+				System.out.println("Congratulations! There are no well-formedness issues at creation time.");
+			else
+				ml.getModel().getCriticalWarnings().forEach(w -> System.out.println(w));
+			Check check = new Check(ml.getModel());
+			check.getWarnings().forEach(w -> System.out.println(w));
 		}
 		catch (EmptyFileNameException e) {
 			e.printStackTrace();

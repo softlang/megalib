@@ -46,6 +46,8 @@ public class MegaModel {
 	}
 	
 	public void addSubtypeOf(String subtype, String type) throws WellFormednessException{
+		if(subtype.equals("Entity"))
+			throw new WellFormednessException("Error at "+subtype+" < "+type+": Entity is a MegaL keyword.");
 		if(!(subtypeOfMap.containsKey(type)||type.equals("Entity"))){
 			throw new WellFormednessException("Error at "+subtype+": The declared supertype is not a subtype of Entity");
 		}
@@ -170,6 +172,7 @@ public class MegaModel {
 	}
 	
 	public void addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs) throws WellFormednessException {
+		instanceOfMap.put(functionName, "Function");
 		Function f = null;
 		if(functionDeclarations.containsKey(functionName)){
 			throw new WellFormednessException("Error: The function "+functionName+" has multiple declarations.");
