@@ -7,7 +7,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -445,13 +444,68 @@ public class MegalibParserListenerTest {
 				+ "f(a)|->b";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
-		assertTrue(m.getFunctionDeclarations().containsKey("f"));
 		assertTrue(actual.isEmpty());
 		assertEquals(1,m.getCriticalWarnings().size());
 		assertTrue(m.getCriticalWarnings().contains("Error at a function application: a is not instance of Artifact."));
 	}
 	
+	@Test
+	public void addFunctionApplicationNotInstantiatedOutput(){
+		String input = "l : DataRepresentationLanguage "
+				+ "f : l -> l "
+				+ "a : Artifact<l,Grammar,File> "
+				+ "f(a)|->b";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Function>> actual = m.getFunctionApplications();
+		assertTrue(actual.isEmpty());
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at a function application: b is not instance of Artifact."));
+	}
 	
+	@Test
+	public void addFunctionApplicationUnfitDomain(){
+		String input = "l1 : DataRepresentationLanguage "
+				+ "l2 : DataRepresentationLanguage "
+				+ "f : l1 # l2 -> l2 "
+				+ "a1 : Artifact<l1,MvcModel,File> "
+				+ "a2 : Artifact<l2,MvcView,File> "
+				+ "f(a1,a1)|->a2";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Function>> actual = m.getFunctionApplications();
+		assertTrue(actual.isEmpty());
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at a function application: a1 is not element of l2."));
+	}
+	
+	@Test
+	public void addFunctionApplicationUnfitRange(){
+		String input = "l1 : DataRepresentationLanguage "
+				+ "l2 : DataRepresentationLanguage "
+				+ "f : l1 # l2 -> l2 "
+				+ "a1 : Artifact<l1,MvcModel,File> "
+				+ "a2 : Artifact<l2,MvcView,File> "
+				+ "f(a1,a2)|->a1";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Function>> actual = m.getFunctionApplications();
+		assertTrue(actual.isEmpty());
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at a function application: a1 is not element of l2."));
+	}
+	
+	@Test
+	public void addFunctionApplicationSubset(){
+		String input = "l1 : DataRepresentationLanguage "
+				+ "l2 : DataRepresentationLanguage "
+				+ "l2 subsetOf l1 "
+				+ "f : l1 # l2 -> l2 "
+				+ "a1 : Artifact<l1,MvcModel,File> "
+				+ "a2 : Artifact<l2,MvcView,File> "
+				+ "f(a2,a2)|->a2";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		Map<String, Set<Function>> actual = m.getFunctionApplications();
+		assertTrue(actual.containsKey("f"));
+		assertEquals(0,m.getCriticalWarnings().size());
+	}
 	
 	@Test
 	public void fileNotFoundReturnsNull(){

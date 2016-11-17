@@ -24,8 +24,10 @@ Every function declaration's ranges are instantiated
 Every function declaration's ranges are languages
 
 Every function application has a declaration
-Every function application fits to a declaration
 Every function application exists once
+Every artifact in a function application is instantiated
+Every function application fits to a declaration in the sense that it is element of (a subset of) the corresponding language in the declaration.
+
 -------------------------------
 Wellformedness Checks : 
 

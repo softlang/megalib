@@ -239,10 +239,10 @@ public class MegaModel {
 		List<String> rls = function.getOutputs();
 		for(int i=0;i<ris.size();i++){
 			if(!isInstanceOf(ris.get(i),"Artifact")){
-				throw new WellFormednessException("Error at application "+ris.get(i)+" is not instance of Artifact.");
+				throw new WellFormednessException("Error at a function application: "+ris.get(i)+" is not instance of Artifact.");
 			}
 			if(!isElementOf(ris.get(i),rls.get(i))){
-				throw new WellFormednessException("Error at application "+ris.get(i)+" is not element of "+rls.get(i)+".");
+				throw new WellFormednessException("Error at a function application: "+ris.get(i)+" is not element of "+rls.get(i)+".");
 			}
 		}
 	}
