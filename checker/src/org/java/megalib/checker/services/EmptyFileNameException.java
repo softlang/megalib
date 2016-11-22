@@ -1,4 +1,4 @@
-package org.java.megalib.checker;
+package org.java.megalib.checker.services;
 
 public class EmptyFileNameException extends Exception {
 

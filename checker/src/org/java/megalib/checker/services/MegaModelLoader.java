@@ -73,7 +73,7 @@ public class MegaModelLoader {
 	public MegaModel loadString(String data){
 	    try {
 			return ((MegalibParserListener) parse(data,new MegalibParserListener(model))).getModel();
-		} catch (WellFormednessException e) {
+		} catch (MegalibParserException e) {
 			System.err.println(e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -98,15 +98,17 @@ public class MegaModelLoader {
 			}
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
-			e.printStackTrace();
 			return;
 		} catch (WellFormednessException e) {
 			System.err.println(e.getMessage());
 			return;
+		} catch (MegalibParserException e) {
+			System.err.println(e.getMessage());
+			System.exit(0);
 		}
 	}
 
-	public MegalibBaseListener parse(String data, MegalibBaseListener listener) throws WellFormednessException, IOException{
+	public MegalibBaseListener parse(String data, MegalibBaseListener listener) throws MegalibParserException, IOException{
 		ByteArrayInputStream stream = new ByteArrayInputStream(data.getBytes());
 		ANTLRInputStream antlrStream = new ANTLRInputStream(stream);
 		MegalibLexer lexer = new MegalibLexer(antlrStream);
@@ -119,14 +121,14 @@ public class MegaModelLoader {
 		for(ANTLRErrorListener el : parser.getErrorListeners()){
 			if(el instanceof MegalibErrorListener){
 				if(((MegalibErrorListener) el).getCount()>0){
-					throw new WellFormednessException("Syntactic errors exist : Fix them before further checks");
+					throw new MegalibParserException("Syntactic errors exist : Fix them before further checks");
 				}
 			}
 		}
 		return listener;
 	}
 	
-	private void resolveImports(String data, String abspath) throws WellFormednessException, IOException{
+	private void resolveImports(String data, String abspath) throws MegalibParserException, IOException{
 		List<Relation> imports = new LinkedList<>();
 		Set<String> processed = new HashSet<>();
 		Set<String> toProcess = new HashSet<>();

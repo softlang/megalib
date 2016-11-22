@@ -71,7 +71,7 @@ implements < Artifact # Function
 Technology < Entity
 API < Technology
 Library < Technology
-Framework < Technology
+Framework < Technology    //need one more : What is a compiler?
 System < Entity
 Application < System
 WebApplication < System

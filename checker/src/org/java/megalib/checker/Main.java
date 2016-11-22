@@ -4,6 +4,7 @@
 package org.java.megalib.checker;
 
 import org.java.megalib.checker.services.Check;
+import org.java.megalib.checker.services.EmptyFileNameException;
 import org.java.megalib.checker.services.MegaModelLoader;
 
 /**
@@ -17,6 +18,7 @@ public class Main {
 		try {
 			MegaModelLoader ml = new MegaModelLoader();
 			ml.loadFile(getFilepathOfArguments(args));
+			
 			if(ml.getModel().getCriticalWarnings().isEmpty())
 				System.out.println("Congratulations! There are no well-formedness issues at creation time.");
 			else
