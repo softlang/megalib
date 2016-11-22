@@ -1,0 +1,5 @@
+module bcd.B
+
+import A
+
+?a2 : Artifact<HTML,Information,WebResource>

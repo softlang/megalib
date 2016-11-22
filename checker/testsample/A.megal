@@ -1,0 +1,5 @@
+module A 
+
+HTML : MarkupLanguage
+Information : Role
+?a1 : Artifact<HTML,Information,WebResource>

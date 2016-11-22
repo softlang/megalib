@@ -20,6 +20,8 @@ import org.junit.Test;
  * Tests the correct behavior for MegaModelLoader and MegaModel functionality.
  * Especially the constraints relevant for creation time are tested.
  * 
+ * TODO : Test Substitutes 
+ * 
  * @author heinz
  *
  */

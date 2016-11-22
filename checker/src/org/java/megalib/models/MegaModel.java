@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.java.megalib.checker.services.WellFormednessException;
 
@@ -272,6 +273,59 @@ public class MegaModel {
 			throw new WellFormednessException("Unable to substitute "+e+" by "+by+": "+e+" is already substituted elsewhere.");
 		}
 		substMap.put(e, by);
+		//instanceofmap
+		String v = instanceOfMap.get(e);
+		instanceOfMap.remove(e);
+		instanceOfMap.put(by, v);
+		//elementofmap
+		if(elementOfMap.containsKey(e)){
+			v = elementOfMap.get(e);
+			elementOfMap.remove(e);
+			elementOfMap.put(by, v);
+		}
+		//subsetofmap
+		if(subsetOfMap.containsKey(e)){
+			v = subsetOfMap.get(e);
+			subsetOfMap.remove(e);
+			subsetOfMap.put(by, v);
+		}
+		
+		//linkmap
+		if(linkMap.containsKey(e)){
+			List<String> links = linkMap.get(e);
+			linkMap.remove(e);
+			linkMap.put(by, links);
+		}
+		
+		//relationinstancemap
+		Map<String, Set<Relation>> newMap = new HashMap<>();
+		for(String name : relationInstanceMap.keySet()){
+			Set<Relation> newset = relationInstanceMap.get(name).parallelStream().map(r -> {
+				String subject = r.getSubject();
+				String object = r.getObject();
+				if(subject.equals(e)){
+					return new Relation(by,object);
+				}
+				if(object.equals(e)){
+					return new Relation(subject,by);
+				}
+				return r;
+			}).collect(Collectors.toSet());
+			newMap.put(name, newset);
+		}
+		relationInstanceMap = newMap;
+		
+		//functioninstance
+		Map<String, Set<Function>> newFMap = new HashMap<>();
+		for(String name : functionInstances.keySet()){
+			Set<Function> newset = functionInstances.get(name).parallelStream().map(f -> {
+				List<String> inputs = f.getInputs().stream().map(i -> (i.equals(e)? by : i)).collect(Collectors.toList());
+				List<String> outputs = f.getOutputs().stream().map(o -> (o.equals(e)? by : o)).collect(Collectors.toList());
+				return new Function(inputs,outputs);
+			}).collect(Collectors.toSet());
+			newFMap.put(name, newset);
+		}
+		functionInstances = newFMap;
 		
 	}
 
