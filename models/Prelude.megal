@@ -1,9 +1,12 @@
 Language < Entity
 ProgrammingLanguage < Language
+ObjectLanguage < Language
 DataRepresentationLanguage < Language // Any binding?
 MarkupLanguage < Language
 TransformationLanguage < Language
 QueryLanguage < Language 
+SchemaLanguage < Language
+CommandLineLanguage < Language
 subsetOf < Language # Language
 
 String : DataRepresentationLanguage
@@ -13,13 +16,8 @@ Number = "https://en.wikipedia.org/wiki/Number"
 Boolean : DataRepresentationLanguage
 Boolean = "https://en.wikipedia.org/wiki/Boolean_data_type"
 
+//Classification by Language, Role and Manifestation
 Artifact < Entity
-// Purpose-based classification of artifacts
-SyntaxDefinition < Artifact
-Specification < Artifact
-Value < Artifact
-Configuration < Artifact
-
 defines < Artifact # Language 
 elementOf < Artifact # Language
 conformsTo < Artifact # Artifact
@@ -61,6 +59,8 @@ MvcView : Role
 MvcView = "https://en.wikipedia.org/wiki/Model-view-controller"
 MvcController : Role
 MvcController = "https://en.wikipedia.org/wiki/Model-view-controller"
+Value : Role
+Value = "https://en.wikipedia.org/wiki/Value_(computer_science)"
 hasRole < Artifact # Role
 
 Function < Entity
@@ -71,7 +71,9 @@ implements < Artifact # Function
 Technology < Entity
 API < Technology
 Library < Technology
-Framework < Technology    //need one more : What is a compiler?
+Framework < Technology
+Compiler < Technology
+Interpreter < Technology
 System < Entity
 Application < System
 WebApplication < System

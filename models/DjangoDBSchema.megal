@@ -1,80 +1,62 @@
 module DjangoDBSchema
 
-WebApplicationFramework < Technology
+WebApplicationFramework < Framework   // Maybe not, maybe web application development is rather a domain?
 Django : WebApplicationFramework
-Python : Language
-Interpreter < Technology
-PythonInterpreter : Interpreter
-PythonInterpreter implements Python
-PythonObject : Language
+Python : ProgrammingLanguage
+PythonObject : ObjectLanguage
 Django uses Python
 
 
-Database < Artifact  
-DesignPattern < Paradigm
 MVC : DesignPattern
 Django facilitates MVC
-WebApplication < System
 ?MyWebApp : WebApplication
 ?MyWebApp uses MVC
 
 
-HTML : Language
-DjangoCLI : Language
+HTML : MarkupLanguage
+DjangoCLI : CommandLineLanguage
 DjangoCLI subsetOf Python
 Django implements DjangoCLI
-SQL : Language
-DDL : Language
+SQL : QueryLanguage
+DDL : SchemaLanguage
 DDL subsetOf SQL
-SQLITE3IMAGE : Language
+SQLITE3IMAGE : DataRepresentationLanguage
 
-
-?dbsqlite3 : Database<SQLITE3IMAGE>
+?dbsqlite3 : Artifact<SQLITE3IMAGE, Database, File>
 ?dbsqlite3 partOf ?MyWebApp
-BusinessLogic < Artifact
-?models.py : BusinessLogic<Python>
+?models.py : Artifact<Python,MvcModel,File>
 ?models.py partOf ?MyWebApp
-?pythonObject : Artifact<PythonObject>
+?pythonObject : Artifact<PythonObject, Value, Transient>
 ?pythonObject conformsTo ?models.py
 ?models.py correspondsTo ?dbsqlite3
 
-
-DatabaseManagementScript < Artifact
-?manage.py : DatabaseManagementScript<Python>
+DatabaseManagement : Role
+?manage.py : Artifact<Python, DatabaseManagement,File>
 ?manage.py partOf ?MyWebApp
+schemaRequest : SQLITE3IMAGE -> DDL
 ?manage.py implements schemaRequest
 
 
-Schema < Artifact
-?dbSchema : Schema
-?dbSchema elementOf DDL
-
-schemaRequest : SQLITE3IMAGE -> DDL
+?dbSchema : Artifact<DDL,Schema,Transient>
 schemaRequest(?dbsqlite3) |-> ?dbSchema
 
-
-?schemaRequCmd : Artifact
-?schemaRequCmd elementOf DjangoCLI
-String : Language
-DDL subsetOf String
-evalCLI : DjangoCLI -> String
-Django implements evalCLI
-evalCLI(?schemaRequCmd) |-> ?dbSchema
+Command : Role
+?schemaRequCmd : Artifact<DjangoCLI,Command,Transient>
+evalSchemaRequ : DjangoCLI -> DDL
+Django implements evalSchemaRequ
+evalSchemaRequ(?schemaRequCmd) |-> ?dbSchema
 
 
-WebApplicationFramework = "https://en.wikipedia.org/wiki/Web_framework"
 Django = "https://www.djangoproject.com/"
 Python = "https://docs.python.org/2/reference/"
 PythonObject = "https://docs.python.org/2/reference/"
-PythonInterpreter = "https://docs.python.org/2/reference/"
-Interpreter = "https://en.wikipedia.org/wiki/Interpreter_(computing)"
 Database = "https://en.wikipedia.org/wiki/Database"
 MVC = "https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller"
-WebApplication = "https://en.wikipedia.org/wiki/Web_application"
 HTML = "http://www.w3schools.com/html/"
 DjangoCLI = "http://docs.django-cms.org/en/release-3.3.x/reference/cli.html"
 SQL = "http://dbpedia.org/page/SQL"
 DDL = "http://dbpedia.org/page/Data_definition_language"
 SQLITE3IMAGE = "https://docs.python.org/2/library/sqlite3.html"
-BusinessLogic = "https://en.wikipedia.org/wiki/Business_logic"
 String = "https://en.wikipedia.org/wiki/String_(computer_science)"
+DatabaseManagement = "https://en.wikipedia.org/wiki/Database"
+Command = "https://en.wikipedia.org/wiki/Command-line_interface"

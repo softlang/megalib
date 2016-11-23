@@ -22,9 +22,12 @@ public class Main {
 			if(ml.getModel().getCriticalWarnings().isEmpty())
 				System.out.println("Congratulations! There are no well-formedness issues at creation time.");
 			else
-				ml.getModel().getCriticalWarnings().forEach(w -> System.out.println(w));
+				return;
 			Check check = new Check(ml.getModel());
-			check.getWarnings().forEach(w -> System.out.println(w));
+			if(check.getWarnings().isEmpty())
+				System.out.println("Congratulations! There are no warnings.");
+			else
+				check.getWarnings().forEach(w -> System.out.println(w));
 		}
 		catch (EmptyFileNameException e) {
 			e.printStackTrace();
