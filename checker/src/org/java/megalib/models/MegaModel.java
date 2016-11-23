@@ -137,6 +137,8 @@ public class MegaModel {
 	}
 
 	private void checkRelationInstanceFits(String name, String subject, String object) throws WellFormednessException {
+		if(!relationDeclarationMap.containsKey(name))
+			throw new WellFormednessException("Error at instance of "+name+": '"+subject+" "+name+" "+object+"' does not fit any declaration.");
 		Set<Relation> decls = relationDeclarationMap.get(name);
 		
 		//determine (super-)types of subject

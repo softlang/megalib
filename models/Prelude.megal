@@ -22,6 +22,7 @@ defines < Artifact # Language
 elementOf < Artifact # Language
 conformsTo < Artifact # Artifact
 correspondsTo < Artifact # Artifact
+embeddedInto < Artifact # Artifact
 
 // Manifestations of artifacts
 Manifestation < Entity

@@ -1,4 +1,4 @@
-module DjangoDBSchema
+module django.DBSchema
 
 WebApplicationFramework < Framework   // Maybe not, maybe web application development is rather a domain?
 Django : WebApplicationFramework

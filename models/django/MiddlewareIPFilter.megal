@@ -1,4 +1,4 @@
-module DjangoMiddlewareIPFilter
+module django.MiddlewareIPFilter
 
 
 WebApplicationFramework < Technology

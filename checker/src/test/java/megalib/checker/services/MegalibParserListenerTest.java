@@ -37,9 +37,9 @@ public class MegalibParserListenerTest {
 		assertEquals(28,model.getSubtypesMap().size());
 		Map<String, Set<Relation>> rm = model.getRelationshipDeclarationMap();
 		//the number of distinct relation ship names
-		assertEquals(15,rm.size());
+		assertEquals(16,rm.size());
 		int count = rm.values().stream().map(set -> set.size()).reduce(0, (a,b) -> a+b);
-		assertEquals(41, count);
+		assertEquals(42, count);
 		assertEquals(0,model.getCriticalWarnings().size());
 	}
 	
@@ -209,6 +209,16 @@ public class MegalibParserListenerTest {
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertTrue(actual.get("Relation").contains(new Relation("Artifact","Artifact")));
 		assertTrue(actual.get("Relation").contains(new Relation("Technology","Technology")));
+	}
+	
+	@Test
+	public void addRelationInstanceUndeclared(){
+		String input = "a : ProgrammingLanguage "
+				+ "b : ProgrammingLanguage "
+				+ "a r b";
+		MegaModel m = new MegaModelLoader().loadString(input);
+		assertEquals(1,m.getCriticalWarnings().size());
+		assertTrue(m.getCriticalWarnings().contains("Error at instance of r: 'a r b' does not fit any declaration."));
 	}
 	
 	@Test

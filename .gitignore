@@ -6,3 +6,4 @@ checker/megalib.checker/checker.jar
 checker/target/
 .recommenders/
 checker/Prelude.megal
+models/checker.jar

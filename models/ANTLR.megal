@@ -25,9 +25,8 @@ String : Language
 ?aParser partOf ?anApp
 ?anApp uses ?aLanguage
 
-?aParser implements accept
-Boolean : Language
 accept : String -> Boolean
+?aParser implements accept
 True : Artifact<Boolean>
 False : Artifact<Boolean>
 ?posArtifact : Artifact<?aLanguage>

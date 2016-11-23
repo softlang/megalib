@@ -1,41 +1,36 @@
-module DjangoObjectQuery
+module django.ObjectQuery
 
 
-WebApplicationFramework < Technology
-Django : WebApplicationFramework
-Python : Language
-PythonObject : Language
+Django : Framework
+Python : ProgrammingLanguage
+PythonObject : ObjectLanguage
 Django uses Python
 
 ModelViewController : DesignPattern
 ObjectRelationalMapping  : ProgrammingDomain
 Django facilitates ModelViewController
-Django.Models : Technology
+Django.Models : Framework
+Django.Models uses Python
 Django.Models partOf Django
-Django.Models facilitates ObjectRelationalMapping 
+Django.Models supports ObjectRelationalMapping 
 
-
-WebApplication < System
 ?BookSystem : WebApplication
-Model < Artifact
-?BookClass : Model<Python>
-?BookClass partOf ?BookSystem
 ?BookSystem uses Django
-?BookClass elementOf Python
+?BookClass : Artifact<Python,MvcModel,File>
+?BookClass partOf ?BookSystem
 
-
-?books : Artifact<PythonObject>
-?books manifestsAs Transient
+?books : Artifact<PythonObject,Value,Transient>
 ?books conformsTo ?BookClass
-?filteredBooks : Artifact<PythonObject>
-?filteredBooks manifestsAs Transient
+?filteredBooks : Artifact<PythonObject,Value,Transient>
 ?filteredBooks conformsTo ?BookClass
 ?filteredBooks partOf ?books
 
-
-DjangoQuery : Language
-?NameEqualsNothing : Artifact<DjangoQuery>
+DjangoQuery : QueryLanguage
+?Class : Role // vague
+?QueryingClass : Artifact<Python,?Class,File>
+?NameEqualsNothing : Artifact<DjangoQuery,Query,Fragment>
 ?NameEqualsNothing manifestsAs Transient
+?NameEqualsNothing embeddedInto ?QueryingClass
 filter : DjangoQuery # PythonObject -> PythonObject
 filter(?NameEqualsNothing,?books) |-> ?filteredBooks
 Django implements filter
