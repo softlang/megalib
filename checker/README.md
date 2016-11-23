@@ -6,8 +6,8 @@
 * Remember that you need to define a JAVA_HOME in your path. Else you cannot use .jars from command line.
 * You use the checker via the command line as follows. Imagine you place the checker.jar and Prelude inside of the models folder. The checker expects a path to the megamodel you want to check after '-f'
 	
-       cd models
-       java -jar "checker.jar" -f "DjangoDBSchema.megal"
+         cd models
+         java -jar "checker.jar" -f "DjangoDBSchema.megal"
 	
 
 ## Allowed Grammar For The Checker
