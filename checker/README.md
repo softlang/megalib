@@ -16,10 +16,10 @@ For a detailled syntax definition see the ANTLR grammar 'Megalib.g4' and the exa
 
 ### General conventions:
 
-	All words are written with letters from a-z, A-Z, 0..9, '.' in camelCase
-	There exists only one constant Entity-Type called: "Entity", which is the Top-Type of everything
-	Abstract instances start with a '?'.
-	We hijack the symbol '+' for example in 'File+' to state that something manifests as a set of files.
+* All words are written with letters from a-z, A-Z, 0..9, '.' in camelCase. 
+* There exists only one constant Entity-Type called: "Entity", which is the Top-Type of everything.
+* Abstract instances start with a '?'.
+* We hijack the symbol '+' for example in 'File+' to state that something manifests as a set of files.
 
 ### Modularization
 	
@@ -33,10 +33,11 @@ For a detailled syntax definition see the ANTLR grammar 'Megalib.g4' and the exa
 
 * The modularization further allows a separation of concerns. While one module might hold information about general key facts on a technology another module might concern itself with a concrete system that uses the technology. For example, a general fact for any web application that uses Django is that there exists a model. In a concrete usage scenario this file may be linked to a file in a repository or in a file system. All general key facts for the existing abstract model also hold for the concrete model. Thus it can be substituted and has to be linked.
 
-       import django.MVC where {
-       		model.py substitutes ?model.py
-	}
-
+```
+  import django.MVC where {
+    model.py substitutes ?model.py
+  }
+```
 
 ### Statements: 
 
