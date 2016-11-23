@@ -269,6 +269,8 @@ public class MegaModel {
 		if(!instanceOfMap.containsKey(e)){
 			throw new WellFormednessException("Unable to substitute : "+e+" does not exist.");
 		}
+		if(instanceOfMap.containsKey(by))
+			throw new WellFormednessException("Unable to substitute "+e+" by "+by+". "+by+" already exists");
 		if(substMap.containsKey(e)){
 			throw new WellFormednessException("Unable to substitute "+e+" by "+by+": "+e+" is already substituted elsewhere.");
 		}
