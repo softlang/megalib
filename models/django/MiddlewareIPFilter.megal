@@ -10,6 +10,7 @@ Django uses Python
 
 Django.Middleware : Framework
 Django.Middleware partOf Django
+Django.Middleware uses Python
 Middleware : TechnologySpace
 Django.Middleware belongsTo Middleware
 ?MyWebApp : WebApplication
@@ -17,9 +18,9 @@ IPFilter : Artifact<Python,Configuration,File>
 IPFilter partOf ?MyWebApp
 IPFilter uses Django.Middleware
 
-
-HTTPRequest : Language
-PythonException : Language
+CommunicationLanguage < Language   // better name?
+HTTPRequest : CommunicationLanguage
+PythonException : ObjectLanguage
 PythonException subsetOf PythonObject
 checkRequest : HTTPRequest -> PythonException
 IPFilter implements checkRequest
@@ -41,3 +42,4 @@ Middleware = "https://en.wikipedia.org/wiki/Middleware"
 Django.Middleware = "https://docs.djangoproject.com/es/1.10/topics/http/middleware/"
 PythonException = "https://docs.python.org/3/tutorial/errors.html"
 HTTPRequest = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5"
+WebApplicationDevelopment = "https://en.wikipedia.org/wiki/Web_application" //better link needed

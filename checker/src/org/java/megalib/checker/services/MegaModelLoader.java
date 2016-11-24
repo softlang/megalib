@@ -49,7 +49,7 @@ public class MegaModelLoader {
 		File f = null;
 		String data = "";
 		try{
-			f = new File("Prelude.megal");
+			f = new File("../models/Prelude.megal");
 			data = FileUtils.readFileToString(f);
 		}catch(IOException e){
 			System.err.println(e.getMessage());
@@ -92,6 +92,7 @@ public class MegaModelLoader {
 			resolveImports(data,abspath);
 			System.out.println("Loading:");
 			todos.forEach(t -> System.out.println(" "+t));
+			System.out.println();
 			while(!todos.isEmpty()){
 				String p = todos.poll();
 				p = root.getAbsolutePath()+ "\\\\"+ p.replaceAll("\\.", "\\\\") + ".megal";

@@ -31,14 +31,14 @@ public class MegalibParserListenerTest {
 		MegaModelLoader ml = new MegaModelLoader();
 		MegaModel model = ml.getModel();
 		model.getCriticalWarnings().forEach(w->System.out.println(w));
-		assertEquals(20,model.getInstanceOfMap().size());
-		assertEquals(20,model.getLinkMap().size());
+		assertEquals(22,model.getInstanceOfMap().size());
+		assertEquals(22,model.getLinkMap().size());
 		assertEquals(29,model.getSubtypesMap().size());
 		Map<String, Set<Relation>> rm = model.getRelationshipDeclarationMap();
 		//the number of distinct relation ship names
-		assertEquals(15,rm.size());
+		assertEquals(16,rm.size());
 		int count = rm.values().stream().map(set -> set.size()).reduce(0, (a,b) -> a+b);
-		assertEquals(41, count);
+		assertEquals(42, count);
 		assertEquals(0,model.getCriticalWarnings().size());
 	}
 	
@@ -156,7 +156,6 @@ public class MegalibParserListenerTest {
 				+ "a : Artifact<Python,MvcModel,File>";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = m.getInstanceOfMap();
-		assertEquals(22,imap.size());
 		assertTrue(imap.containsKey("a"));
 		assertEquals("Artifact",imap.get("a"));
 		assertTrue(m.getRelationshipInstanceMap().get("elementOf").contains(new Relation("a","Python")));

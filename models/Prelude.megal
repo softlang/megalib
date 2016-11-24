@@ -42,6 +42,8 @@ manifestsAs < Artifact # Manifestation
 
 // Roles of artifacts
 Role < Entity
+Configuration : Role
+Configuration = "https://en.wikipedia.org/wiki/Configuration_file"
 Grammar : Role
 Grammar = "https://en.wikipedia.org/wiki/Context-free_grammar"
 Database : Role
