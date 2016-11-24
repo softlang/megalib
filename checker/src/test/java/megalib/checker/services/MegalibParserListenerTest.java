@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,14 +31,14 @@ public class MegalibParserListenerTest {
 		MegaModelLoader ml = new MegaModelLoader();
 		MegaModel model = ml.getModel();
 		model.getCriticalWarnings().forEach(w->System.out.println(w));
-		assertEquals(19,model.getInstanceOfMap().size());
-		assertEquals(19,model.getLinkMap().size());
-		assertEquals(28,model.getSubtypesMap().size());
+		assertEquals(20,model.getInstanceOfMap().size());
+		assertEquals(20,model.getLinkMap().size());
+		assertEquals(29,model.getSubtypesMap().size());
 		Map<String, Set<Relation>> rm = model.getRelationshipDeclarationMap();
 		//the number of distinct relation ship names
-		assertEquals(16,rm.size());
+		assertEquals(15,rm.size());
 		int count = rm.values().stream().map(set -> set.size()).reduce(0, (a,b) -> a+b);
-		assertEquals(42, count);
+		assertEquals(41, count);
 		assertEquals(0,model.getCriticalWarnings().size());
 	}
 	
@@ -157,7 +156,7 @@ public class MegalibParserListenerTest {
 				+ "a : Artifact<Python,MvcModel,File>";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = m.getInstanceOfMap();
-		assertEquals(21,imap.size());
+		assertEquals(22,imap.size());
 		assertTrue(imap.containsKey("a"));
 		assertEquals("Artifact",imap.get("a"));
 		assertTrue(m.getRelationshipInstanceMap().get("elementOf").contains(new Relation("a","Python")));
@@ -529,11 +528,11 @@ public class MegalibParserListenerTest {
 	}
 	
 	@Test
-	public void fileNotFoundReturnsNull(){
+	public void fileNotFoundReturnsCriticalError(){
 		MegaModelLoader ml = new MegaModelLoader();
 		ml.loadFile("");
 		assertEquals(1,ml.getModel().getCriticalWarnings().size());
-		assertTrue(ml.getModel().getCriticalWarnings().contains("File '' does not exist"));
+		assertTrue(ml.getModel().getCriticalWarnings().contains("Error : The file '' could not be loaded."));
 	}
 	
 	@Test
@@ -543,14 +542,14 @@ public class MegalibParserListenerTest {
 	}	
 	
 	@Test
-	public void testComment() throws IOException{
+	public void testComment() {
 		String input = "// test hello world";
 		MegaModel actual = new MegaModelLoader().loadString(input);
 		assertNotNull(actual);
 	}
 	
 	@Test
-	public void testCommentAfterStmt() throws IOException{
+	public void testCommentAfterStmt() {
 		String input = "a : ProgrammingLanguage // test hello world";
 		MegaModel actual = new MegaModelLoader().loadString(input);
 		assertNotNull(actual);

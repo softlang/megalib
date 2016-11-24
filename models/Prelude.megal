@@ -62,6 +62,8 @@ MvcController : Role
 MvcController = "https://en.wikipedia.org/wiki/Model-view-controller"
 Value : Role
 Value = "https://en.wikipedia.org/wiki/Value_(computer_science)"
+Message : Role
+Message = "https://en.wikipedia.org/wiki/Message_passing"
 hasRole < Artifact # Role
 
 Function < Entity

@@ -5,6 +5,7 @@ package org.java.megalib.checker.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -52,7 +53,8 @@ public class MegaModelLoader {
 			data = FileUtils.readFileToString(f);
 		}catch(IOException e){
 			System.err.println(e.getMessage());
-			return;
+			e.printStackTrace();
+			System.exit(1);
 		}
 		model = loadString(data);
 	}
@@ -62,12 +64,15 @@ public class MegaModelLoader {
 		String data = "";
 		try{
 			f = new File(filepath);
+			if(!f.exists())
+				throw new FileNotFoundException();
 			data = FileUtils.readFileToString(f);
 		}catch(IOException e){
-			model.addWarning(e.getMessage());
+			model.addWarning("Error : The file '"+filepath+"' could not be loaded.");
 			return;
-		}
+		} 
 		loadCompleteModelFrom(data,f.getAbsolutePath());
+		
 	}
 	
 	public MegaModel loadString(String data){
@@ -77,15 +82,16 @@ public class MegaModelLoader {
 			System.err.println(e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 
 	
 	private void loadCompleteModelFrom(String data, String abspath){
 		try {
-			
 			resolveImports(data,abspath);
+			System.out.println("Loading:");
+			todos.forEach(t -> System.out.println(" "+t));
 			while(!todos.isEmpty()){
 				String p = todos.poll();
 				p = root.getAbsolutePath()+ "\\\\"+ p.replaceAll("\\.", "\\\\") + ".megal";
@@ -164,10 +170,13 @@ public class MegaModelLoader {
 			Set<String> objects = imports.parallelStream().map(r -> r.getObject()).collect(Collectors.toSet());
 			Set<String> diff = new HashSet<>(objects);
 			diff.removeAll(subjects);
+			if(diff.isEmpty())
+				throw new MegalibParserException("Error : Cycle identified in imports");
 			todos.addAll(diff);
 			imports.removeIf(r -> diff.contains(r.getObject()));
 		}
-		todos.add(loadedModuleName);
+		if(!loadedModuleName.equals(""))
+			todos.add(loadedModuleName);
 	}
 	
 }
