@@ -1,23 +1,19 @@
 module django.ScriptClassification
 
-Django : WebApplicationFramework
+Django : Framework
+WebApplicationDevelopment : ProgrammingDomain
 Python : ProgrammingLanguage
 ?awebapp : WebApplication
 ?awebapp uses Python
 ?awebapp uses Django
-Configuration : Role
+
 Initialization : Role
 Administration : Role
 ModelViewController : DesignPattern
-View : Role
-Model : Role
-Controller : Role
-Model participantOf ModelViewController
-View participantOf ModelViewController
-Controller participantOf ModelViewController
+MvcModel participantOf ModelViewController
+MvcView participantOf ModelViewController
+MvcController participantOf ModelViewController
 TestSuite : Role
-Testing : ProgrammingDomain
-TestSuite participantOf Testing
 Router : Role
 
 ?init.py : Artifact<Python,Configuration,File>
@@ -25,9 +21,10 @@ Router : Role
 
 ?manage.py : Artifact<Python,Administration,File>
 ?manage.py partOf ?awebapp
-?manage.py manifestsAs File
-?manage.py hasRole Administration
 
+FileSystemLanguage < Language
+?FolderLanguage : FileSystemLanguage
+Package : Role
 ?apackage : Artifact<?FolderLanguage,Package,Folder> //FolderLanguage feels weird
 ?apackage partOf ?awebapp
 
@@ -43,7 +40,7 @@ Router : Role
 ?tests.py : Artifact<Python, TestSuite,File>
 ?tests.py partOf ?apackage
 
-?views.py : Artifact<Python, View, File> // Every view cares about rendering content (see render function)
+?views.py : Artifact<Python, MvcView, File> // Every view cares about rendering content (see render function)
 ?views.py partOf ?apackage
 
 ?settings.py : Artifact<Python,Configuration,File>

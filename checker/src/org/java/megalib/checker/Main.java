@@ -18,9 +18,16 @@ public class Main {
 	public static void main(String[] args) {
 		
 		if (argumentsExists(args)) {
-			if(new File(args[1]).exists())
+			if(new File(args[1]).exists()){
+				if(!args[1].endsWith(".megal")){
+					if(new File(args[1]).isDirectory())
+						checkDirectory(args[1]);
+					else
+						System.out.println("Could not recognize '"+args[1]+"' as a megamodel based on the file ending.");
+				}else {
 					checkFile(args[1]);
-			else
+				}
+			}else
 				System.err.println("The file '"+args[1]+"' does not exist.");
 		}else{
 			if(args.length>0){
