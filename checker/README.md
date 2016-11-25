@@ -2,12 +2,17 @@
 
 ## How To Use The Checker
 
-* The checker.jar and the Prelude.megal always have to be in the same folder, when you want to use the checker.
-* Remember that you need to define a JAVA_HOME in your path. Else you cannot use .jars from command line.
-* You use the checker via the command line as follows. Imagine you place the checker.jar and Prelude inside of the models folder. The checker expects a path to the megamodel you want to check after '-f'
+* Install Java correctly.
+* Clone this repository.
+* Check a single model as follows:
 	
          cd models
-         java -jar "checker.jar" -f "DjangoDBSchema.megal"
+         java -jar "../checker/checker.jar" -f "django/DBSchema.megal"
+	 
+* Check all models 
+	
+         cd models
+         java -jar ../checker/checker.jar
 	
 
 ## Allowed Grammar For The Checker
