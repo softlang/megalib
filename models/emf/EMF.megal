@@ -1,63 +1,61 @@
 module EMF
 
 
-Java : Language
-JavaObject : Language
-EMF : Technology
+Java : ProgrammingLanguage
+JavaObject : ObjectLanguage
+EMF : Framework
 EMF uses Java
-EMFCore : Technology
+EMFCore : Framework
 EMFCore partOf EMF
+EMFCore uses Java
 
 
-org.eclipse.emf.ecore : Technology
+org.eclipse.emf.ecore : Framework
 org.eclipse.emf.ecore partOf EMFCore
 org.eclipse.emf.ecore uses Java
-ECore : Language
+ECore : SchemaLanguage
 org.eclipse.emf.ecore implements ECore
 
 
-
-EMFSerializer < Technology
-EMFPersistence : EMFSerializer
+EMFPersistence : Framework
+EMFPersistence uses Java
 EMFPersistence partOf EMFCore
-XML : Language
-XMI : Language
+EMFPersistence realizes Serialization
+XML : DataRepresentationLanguage
+XMI : DataRepresentationLanguage
 XMI subsetOf XML
-Specification < Artifact
 
-English : Language
-XMISpec : Specification<English>
+PDF : FileFormat
+XMISpec : Artifact<PDF,Specification,WebResource>
 XMISpec defines XMI
-ECore.XMI : Language
+ECore.XMI : DataRepresentationLanguage
 EMF implements ECore.XMI
 ECore.XMI subsetOf XMI
 
 
-?MyModels.XMI : Language
+?MyModels.XMI : DataRepresentationLanguage
 ?MyModels.XMI subsetOf ECore.XMI
-MetaModel < Artifact
-?MyMeta.ecore : MetaModel
+?MyMeta.ecore : Artifact<ECore,MdeMetamodel,File>
 ?MyMeta.ecore defines ?MyModels.XMI
-?MyMeta.ecore elementOf ECore.XMI
 
+//code generation is missing
+?MyModels.Java : ObjectLanguage
+?MyModels.Java subsetOf JavaObject
 
-Model < Artifact
-?MyModel : Model<JavaObject>
+?MyModel : Artifact<?MyModels.Java,MdeModel,Transient>
 ?MyModel conformsTo ?MyMeta.ecore
-?MyModel.xmi : Model<?MyModels.XMI>
+?MyModel.xmi : Artifact<?MyModels.XMI,MdeModel,File>
 ?MyModel.xmi conformsTo ?MyMeta.ecore
 ?MyModel correspondsTo ?MyModel.xmi
 
 
-saveModel : JavaObject -> ?MyModels.XMI
+saveModel : ?MyModels.Java -> ?MyModels.XMI
 EMFPersistence implements saveModel
 saveModel(?MyModel) |-> ?MyModel.xmi
-loadModel : ?MyModels.XMI -> JavaObject
+loadModel : ?MyModels.XMI -> ?MyModels.Java
 EMFPersistence implements loadModel
 loadModel(?MyModel.xmi) |-> ?MyModel
 
-
-English = "https://en.wikipedia.org/wiki/English_language"
 Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
 JavaObject = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
 EMF = "https://eclipse.org/modeling/emf/"
@@ -66,6 +64,7 @@ org.eclipse.emf.ecore = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.
 ECore = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/org/eclipse/emf/ecore/package-summary.html#details"
 XML = "http://www.w3schools.com/xml/"
 XMI = "http://www.omg.org/spec/XMI/"
-XMISpec = "http://www.omg.org/spec/XMI/"
+XMISpec = "http://www.omg.org/spec/XMI/2.5.1/PDF"
 EMFPersistence = "https://eclipse.org/modeling/emf/"
 ECore.XMI = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html"
+PDF = "https://en.wikipedia.org/wiki/Portable_Document_Format"

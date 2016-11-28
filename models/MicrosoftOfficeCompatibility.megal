@@ -1,19 +1,23 @@
 module MicrosoftOfficeCompatibility
 
 XML : DataRepresentationLanguage
-BinaryFormat : DataRepresentationLanguage 
+BinaryFormat : FileFormat 
 MicrosoftOfficeOpenXML : StylesheetLanguage 
 MicrosoftOfficeOpenXML subsetOf XML
-MicrosoftOfficeBinaryFileFormat : DocumentFileFormat
-MicrosoftOfficeBinaryFileFormat subsetOf BinaryFileFormat
+MicrosoftOfficeBinaryFileFormat : FileFormat
+MicrosoftOfficeBinaryFileFormat subsetOf BinaryFormat
 
-OfficeSuite < Technology
-MicrosoftOffice2003 : OfficeSuite
+
+MicrosoftOffice2003 : Technology // we need a classifier here in analogy to library, API and framework.
+OfficeWare : TechnologySpace
+MicrosoftOffice2003 belongsTo OfficeWare
 MicrosoftOffice2003 implements MicrosoftOfficeBinaryFileFormat
-Converter < Technology
-MicrosoftOfficeCompatibility : Converter
+Conversion : AbstractProcess
+
+MicrosoftOfficeCompatibility : Plugin //see comment above
+MicrosoftOfficeCompatibility realizes Conversion
 MicrosoftOfficeCompatibility implements convert
-convert : MicrosoftOfficeOpenXML -> MicrosoftOfficeBinaryFileFormat
+convert :  MicrosoftOfficeOpenXML -> MicrosoftOfficeBinaryFileFormat
 MicrosoftOffice2003 uses MicrosoftOfficeCompatibility
 
 XSD : SchemaLanguage
@@ -24,4 +28,4 @@ Document : Role
 ?aNewOfficeFile : Artifact<MicrosoftOfficeOpenXML,Document,File>
 ?aNewOfficeFile conformsTo MicrosoftOfficeOpenXMLSchema
 ?anOldOfficeFile : Artifact<BinaryFileFormat,Document,File>
-convert(?aNewOfficeFile) |-> ?anOldOfficeFile
+convert(?aNewOfficeFile) |-> ?anOldOfficeFile      // this cannot be found anywhere
