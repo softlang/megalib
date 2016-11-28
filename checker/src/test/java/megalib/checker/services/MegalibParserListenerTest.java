@@ -31,14 +31,14 @@ public class MegalibParserListenerTest {
 		MegaModelLoader ml = new MegaModelLoader();
 		MegaModel model = ml.getModel();
 		model.getCriticalWarnings().forEach(w->System.out.println(w));
-		assertEquals(22,model.getInstanceOfMap().size());
-		assertEquals(22,model.getLinkMap().size());
-		assertEquals(29,model.getSubtypesMap().size());
+		assertEquals(23,model.getInstanceOfMap().size());
+		assertEquals(23,model.getLinkMap().size());
+		assertEquals(33,model.getSubtypesMap().size());
 		Map<String, Set<Relation>> rm = model.getRelationshipDeclarationMap();
 		//the number of distinct relation ship names
 		assertEquals(16,rm.size());
 		int count = rm.values().stream().map(set -> set.size()).reduce(0, (a,b) -> a+b);
-		assertEquals(42, count);
+		assertEquals(43, count);
 		assertEquals(0,model.getCriticalWarnings().size());
 	}
 	
@@ -153,7 +153,10 @@ public class MegalibParserListenerTest {
 	@Test
 	public void addInstanceOfArtifact(){
 		String input = "Python : ProgrammingLanguage "
-				+ "a : Artifact<Python,MvcModel,File>";
+				+ "a : Artifact "
+				+ "a elementOf Python "
+				+ "a hasRole MvcModel "
+				+ "a manifestsAs File";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = m.getInstanceOfMap();
 		assertTrue(imap.containsKey("a"));
@@ -419,8 +422,10 @@ public class MegalibParserListenerTest {
 	public void addFunctionApplication(){
 		String input = "l : ProgrammingLanguage "
 				+ "f : l # l # l -> l # l "
-				+ "a : Artifact<l,MvcModel,File> "
-				+ "b : Artifact<l,MvcView,File> "
+				+ "a : Artifact "
+				+ "a elementOf l "
+				+ "b : Artifact "
+				+ "b elementOf l "
 				+ "f(a,b,a)|->(b,a)";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
@@ -441,9 +446,12 @@ public class MegalibParserListenerTest {
 	public void addFunctionApplicationDuplicate(){
 		String input = "l : ProgrammingLanguage "
 				+ "f : l # l # l -> l # l "
-				+ "a : Artifact<l,MvcModel,File> "
-				+ "b : Artifact<l,MvcView,File> "
-				+ "c : Artifact<l,MvcModel,File> "
+				+ "a : Artifact "
+				+ "a elementOf l "
+				+ "b : Artifact "
+				+ "b elementOf l "
+				+ "c : Artifact "
+				+ "c elementOf l "
 				+ "f(a,b,c)|->(b,a) "
 				+ "f(a,b,c)|->(b,a)";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -459,7 +467,8 @@ public class MegalibParserListenerTest {
 	public void addFunctionApplicationNotInstantiatedInput(){
 		String input = "l : DataRepresentationLanguage "
 				+ "f : l -> l "
-				+ "b : Artifact<l,Grammar,File> "
+				+ "b : Artifact "
+				+ "b elementOf l "
 				+ "f(a)|->b";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
@@ -472,7 +481,8 @@ public class MegalibParserListenerTest {
 	public void addFunctionApplicationNotInstantiatedOutput(){
 		String input = "l : DataRepresentationLanguage "
 				+ "f : l -> l "
-				+ "a : Artifact<l,Grammar,File> "
+				+ "a : Artifact "
+				+ "a elementOf l "
 				+ "f(a)|->b";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
@@ -486,8 +496,12 @@ public class MegalibParserListenerTest {
 		String input = "l1 : DataRepresentationLanguage "
 				+ "l2 : DataRepresentationLanguage "
 				+ "f : l1 # l2 -> l2 "
-				+ "a1 : Artifact<l1,MvcModel,File> "
-				+ "a2 : Artifact<l2,MvcView,File> "
+				+ "a1 : Artifact "
+				+ "a1 elementOf l1 "
+				+ "a1 hasRole MvcModel "
+				+ "a1 manifestsAs File "
+				+ "a2 : Artifact "
+				+ "a2 elementOf l2 "
 				+ "f(a1,a1)|->a2";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
@@ -501,8 +515,10 @@ public class MegalibParserListenerTest {
 		String input = "l1 : DataRepresentationLanguage "
 				+ "l2 : DataRepresentationLanguage "
 				+ "f : l1 # l2 -> l2 "
-				+ "a1 : Artifact<l1,MvcModel,File> "
-				+ "a2 : Artifact<l2,MvcView,File> "
+				+ "a1 : Artifact "
+				+ "a1 elementOf l1 "
+				+ "a2 : Artifact "
+				+ "a2 elementOf l2 "
 				+ "f(a1,a2)|->a1";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
@@ -517,8 +533,10 @@ public class MegalibParserListenerTest {
 				+ "l2 : DataRepresentationLanguage "
 				+ "l2 subsetOf l1 "
 				+ "f : l1 # l2 -> l2 "
-				+ "a1 : Artifact<l1,MvcModel,File> "
-				+ "a2 : Artifact<l2,MvcView,File> "
+				+ "a1 : Artifact "
+				+ "a1 elementOf l1 "
+				+ "a2 : Artifact "
+				+ "a2 elementOf l2 " 
 				+ "f(a2,a2)|->a2";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();

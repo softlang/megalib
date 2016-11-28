@@ -51,28 +51,8 @@ public class MegalibParserListener extends MegalibBaseListener {
 		String type = context.getChild(2).getText();
 		try {
 			model.addInstanceOf(instance, type);
-		} catch (Exception e) {
+		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
-		}
-		if(context.getChildCount() == 10){
-			String o = context.getChild(4).getText();
-			try {
-				model.addRelationInstances("elementOf", instance,o);
-			} catch (WellFormednessException e) {
-				model.addWarning(e.getMessage());
-			}
-			o = context.getChild(6).getText();
-			try {
-				model.addRelationInstances("hasRole", instance,o);
-			} catch (WellFormednessException e) {
-				model.addWarning(e.getMessage());
-			}
-			o = context.getChild(8).getText();
-			try {
-				model.addRelationInstances("manifestsAs", instance,o);
-			} catch (WellFormednessException e) {
-				model.addWarning(e.getMessage());
-			}
 		}
 	}
 	

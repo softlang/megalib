@@ -7,7 +7,6 @@ MicrosoftOfficeOpenXML subsetOf XML
 MicrosoftOfficeBinaryFileFormat : FileFormat
 MicrosoftOfficeBinaryFileFormat subsetOf BinaryFormat
 
-SoftwareSuite < Technology // ? 
 MicrosoftOffice2003 : SoftwareSuite 
 OfficeWare : TechnologySpace
 MicrosoftOffice2003 belongsTo OfficeWare
@@ -16,16 +15,25 @@ Conversion : AbstractProcess
 
 MicrosoftOfficeCompatibility : Plugin //see comment above
 MicrosoftOfficeCompatibility realizes Conversion
-MicrosoftOfficeCompatibility implements convert
 convert :  MicrosoftOfficeOpenXML -> MicrosoftOfficeBinaryFileFormat
+MicrosoftOfficeCompatibility implements convert
 MicrosoftOffice2003 uses MicrosoftOfficeCompatibility
 
 XSD : SchemaLanguage
-MicrosoftOfficeOpenXMLSchema : Artifact<XSD,Schema,File+>
+MicrosoftOfficeOpenXMLSchema : Artifact
+MicrosoftOfficeOpenXMLSchema elementOf XSD
+MicrosoftOfficeOpenXMLSchema hasRole Schema
+MicrosoftOfficeOpenXMLSchema manifestsAs File+
 MicrosoftOfficeOpenXMLSchema defines MicrosoftOfficeOpenXML
 
 Document : Role
-?aNewOfficeFile : Artifact<MicrosoftOfficeOpenXML,Document,File>
+?aNewOfficeFile : Artifact
+?aNewOfficeFile elementOf MicrosoftOfficeOpenXML
+?aNewOfficeFile hasRole Document
+?aNewOfficeFile manifestsAs File
 ?aNewOfficeFile conformsTo MicrosoftOfficeOpenXMLSchema
-?anOldOfficeFile : Artifact<BinaryFileFormat,Document,File>
+?anOldOfficeFile : Artifact
+?anOldOfficeFile elementOf MicrosoftOfficeBinaryFileFormat
+?anOldOfficeFile hasRole Document
+?anOldOfficeFile manifestsAs File
 convert(?aNewOfficeFile) |-> ?anOldOfficeFile      // this cannot be found anywhere

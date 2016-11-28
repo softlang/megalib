@@ -73,7 +73,10 @@ public class CheckTest {
 	public void checkFunctionImplementation(){
 		String input = "?l : ProgrammingLanguage "
 				+ "f : ?l -> ?l "
-				+ "?a : Artifact<?l,MvcModel,File> "
+				+ "?a : Artifact "
+				+ "?a elementOf ?l "
+				+ "?a hasRole MvcModel"
+				+ "?a manifestsAs File "
 				+ "f(?a)|->?a";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Check c = new Check(m);
@@ -87,7 +90,10 @@ public class CheckTest {
 	public void checkFunctionApplication(){
 		String input = "?l : ProgrammingLanguage "
 				+ "f : ?l -> ?l "
-				+ "?a : Artifact<?l,MvcModel,File> "
+				+ "?a : Artifact "
+				+ "?a elementOf ?l "
+				+ "?a hasRole MvcModel "
+				+ "?a manifestsAs File "
 				+ "?t : Library "
 				+ "?t uses ?l "
 				+ "?t implements f";

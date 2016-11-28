@@ -3,7 +3,6 @@ grammar Megalib;
 //Head of the construct, containing entity or function
 declaration: module? (imports)* statements EOF;
 
-
 statements:	( subtypeDeclaration
 			   | instanceDeclaration
 			   | relationDeclaration
@@ -11,7 +10,8 @@ statements:	( subtypeDeclaration
 			   | functionDeclaration
 			   | functionInstance
 			   | link
-			   | COMMENT)+ ;
+			   | LINECOMMENT
+			   | BLOCKCOMMENT)+ ;
 
 module: 'module' name;
 
@@ -21,8 +21,7 @@ substitution : name 'substitutes' name;
 
 subtypeDeclaration: name '<' name;
 
-// instance : type (possible for artifacts <language,role,manifestation>)
-instanceDeclaration : name ':' name ( '<' name ',' name ',' name  '>' )?;
+instanceDeclaration : name ':' name;
 
 relationDeclaration: name '<' name '#' name;
 
@@ -36,7 +35,8 @@ link: name '=' LINK;
 
 name: '?'? WORD ('.' WORD)* '+'?;
 
-COMMENT: '//' (WORD|'?'|'.'|'<'|'#'|':'|'>'|','|';'|'\"'|'('|')'|' ')+;
+BLOCKCOMMENT: '/*' (WORD|'?'|'.'|'<'|'#'|':'|'>'|','|';'|'\"'|'('|')'|' ')+ '*/';
+LINECOMMENT: '//' (WORD|'?'|'.'|'<'|'#'|':'|'>'|','|';'|'\"'|'('|')'|' ')+;
 WORD: ([a-zA-Z0-9] | '\'' | '-')+;
 LINK: '"' (~(' '|'\t'|'\f'|'\n'|'\r'))+ '"' ;
 WS: (' '|'\t'|'\f'|'\n'|'\r') -> skip;

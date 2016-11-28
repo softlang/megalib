@@ -39,7 +39,6 @@ public class Main {
 				checkDirectory(".");
 			}
 		}
-		
 	}
 
 	private static void checkDirectory(String dir) {
