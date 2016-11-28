@@ -9,6 +9,7 @@ QueryLanguage < Language
 SchemaLanguage < Language
 CommandLineLanguage < Language
 subsetOf < Language # Language
+embeddedInto < Language # Language 
 
 String : DataRepresentationLanguage
 String = "https://en.wikipedia.org/wiki/String_(computer_science)"
@@ -23,7 +24,7 @@ defines < Artifact # Language
 elementOf < Artifact # Language
 conformsTo < Artifact # Artifact
 correspondsTo < Artifact # Artifact
-embeddedInto < Artifact # Artifact
+embeddedInto < Artifact # Artifact // formulate via mechanism, partOf and language embedding
 
 // Manifestations of artifacts
 Manifestation < Entity

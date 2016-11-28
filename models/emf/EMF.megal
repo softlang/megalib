@@ -1,8 +1,9 @@
 module EMF
 
-
+//links in group
+// group/segment id?
 Java : ProgrammingLanguage
-JavaObject : ObjectLanguage
+JavaObject : ObjectLanguage // ObjectLanguage unfit
 EMF : Framework
 EMF uses Java
 EMFCore : Framework
@@ -10,7 +11,7 @@ EMFCore partOf EMF
 EMFCore uses Java
 
 
-org.eclipse.emf.ecore : Framework
+org.eclipse.emf.ecore : Framework //Component?
 org.eclipse.emf.ecore partOf EMFCore
 org.eclipse.emf.ecore uses Java
 ECore : SchemaLanguage
@@ -26,7 +27,7 @@ XMI : DataRepresentationLanguage
 XMI subsetOf XML
 
 PDF : FileFormat
-XMISpec : Artifact<PDF,Specification,WebResource>
+XMISpec : Artifact<PDF,Specification,WebResource> //Abstrahiern, unabhängig vom Format
 XMISpec defines XMI
 ECore.XMI : DataRepresentationLanguage
 EMF implements ECore.XMI
@@ -42,7 +43,8 @@ ECore.XMI subsetOf XMI
 ?MyModels.Java : ObjectLanguage
 ?MyModels.Java subsetOf JavaObject
 
-?MyModel : Artifact<?MyModels.Java,MdeModel,Transient>
+
+?MyModel : Artifact<?MyModels.JavaObject,MdeModel,Transient>
 ?MyModel conformsTo ?MyMeta.ecore
 ?MyModel.xmi : Artifact<?MyModels.XMI,MdeModel,File>
 ?MyModel.xmi conformsTo ?MyMeta.ecore
