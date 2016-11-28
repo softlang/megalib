@@ -1,36 +1,39 @@
 module Jackson
 
-JSON : Language
-Java : Language
-JavaObject : Language
-JavaClass < Artifact
-?ModelClass : JavaClass<Java>
+JSON : DataRepresentationLanguage
+Java : ProgrammingLanguage
+JavaObject : ObjectGraph
+Class : Role
+?ModelClass : Artifact
+?ModelClass elementOf Java
+?ModelClass hasRole Class
 ?ModelClass manifestsAs File
 
-Object < Artifact
-?aModel : Object<JavaObject>
+?aModel : Artifact
+?aModel elementOf JavaObject
+?aModel hasRole Value
 ?aModel manifestsAs Transient
 ?aModel conformsTo ?ModelClass
-?aJSONString : Artifact<JSON>
+?aJSONString : Artifact 
+?aJSONString elementOf JSON
 ?aJSONString manifestsAs Transient
 ?aJSONString conformsTo ?ModelClass
 ?aJSONString correspondsTo ?aModel
 
-Serialization < Technology
-Jackson : Technology
+Jackson : Library
 JSONWare : TechnologySpace
 Jackson belongsTo JSONWare
-ObjectMapper : Serialization
+ObjectMapper : Library
 ObjectMapper partOf Jackson
+ObjectMapper realizes Serialization
 
 readValue : JSON -> JavaObject
 readValue(?aJSONString) |-> ?aModel
 ObjectMapper implements readValue 
 
 Jackson = "https://github.com/FasterXML"
-Serialization = "https://en.wikipedia.org/wiki/Serialization"
 ObjectMapper = "https://github.com/FasterXML/jackson-databind/blob/master/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java"
 Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
-JavaObject = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
+JavaObject = "https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html"
 JSON = "http://www.json.org/"
 JSONWare = "http://www.json.org/"

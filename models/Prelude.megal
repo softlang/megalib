@@ -1,7 +1,7 @@
 Language < Entity
 FileFormat < Language
 ProgrammingLanguage < Language
-ObjectLanguage < Language
+ObjectGraph < Language
 DataRepresentationLanguage < Language // Any binding?
 MarkupLanguage < Language
 TransformationLanguage < Language

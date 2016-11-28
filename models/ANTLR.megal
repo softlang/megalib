@@ -6,8 +6,7 @@ Java : ANTLRTargetLanguage
 ANTLR uses Java
 MetaProgramming : TechnologySpace
 
-/*
-ANTLRGrammar : Language
+/*ANTLRGrammar : Language
 ANTLR implements generateSources
 generateSources : ANTLRGrammar -> Java
 ?aGrammar.g4 : Grammar<ANTLRGrammar>

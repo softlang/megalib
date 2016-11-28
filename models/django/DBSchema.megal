@@ -3,7 +3,7 @@ module django.DBSchema
 WebApplicationFramework < Framework   // Maybe not, maybe web application development is rather a domain?
 Django : WebApplicationFramework
 Python : ProgrammingLanguage
-PythonObject : ObjectLanguage
+PythonObject : ObjectGraph
 Django uses Python
 
 
@@ -22,26 +22,45 @@ DDL : SchemaLanguage
 DDL subsetOf SQL
 SQLITE3IMAGE : DataRepresentationLanguage
 
-?dbsqlite3 : Artifact<SQLITE3IMAGE, Database, File>
+?dbsqlite3 : Artifact
+?dbsqlite3 elementOf SQLITE3IMAGE
+?dbsqlite3 hasRole Database
+?dbsqlite3 manifestsAs File
 ?dbsqlite3 partOf ?MyWebApp
-?models.py : Artifact<Python,MvcModel,File>
+?models.py : Artifact
+?models.py elementOf Python
+?models.py hasRole MvcModel
+?models.py manifestsAs File
 ?models.py partOf ?MyWebApp
-?pythonObject : Artifact<PythonObject, Value, Transient>
-?pythonObject conformsTo ?models.py
 ?models.py correspondsTo ?dbsqlite3
+?pythonObject : Artifact
+?pythonObject elementOf PythonObject
+?pythonObject hasRole Value
+?pythonObject manifestsAs Transient
+?pythonObject conformsTo ?models.py
+
 
 DatabaseManagement : Role
-?manage.py : Artifact<Python, DatabaseManagement,File>
+?manage.py : Artifact
+?manage.py elementOf Python
+?manage.py hasRole DatabaseManagement
+?manage.py manifestsAs File
 ?manage.py partOf ?MyWebApp
 schemaRequest : SQLITE3IMAGE -> DDL
 ?manage.py implements schemaRequest
 
 
-?dbSchema : Artifact<DDL,Schema,Transient>
+?dbSchema : Artifact
+?dbSchema elementOf DDL
+?dbSchema hasRole Schema
+?dbSchema manifestsAs Transient
 schemaRequest(?dbsqlite3) |-> ?dbSchema
 
 Command : Role
-?schemaRequCmd : Artifact<DjangoCLI,Command,Transient>
+?schemaRequCmd : Artifact
+?schemaRequCmd elementOf DjangoCLI
+?schemaRequCmd hasRole Command
+?schemaRequCmd manifestsAs Transient
 evalSchemaRequ : DjangoCLI -> DDL
 Django implements evalSchemaRequ
 evalSchemaRequ(?schemaRequCmd) |-> ?dbSchema
