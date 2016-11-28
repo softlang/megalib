@@ -6,6 +6,7 @@ DataRepresentationLanguage < Language // Any binding?
 MarkupLanguage < Language
 TransformationLanguage < Language
 QueryLanguage < Language 
+StylesheetLanguage < Language
 SchemaLanguage < Language
 CommandLineLanguage < Language
 subsetOf < Language # Language
@@ -84,6 +85,7 @@ Framework < Technology
 Plugin < Technology
 Compiler < Technology
 Interpreter < Technology
+SoftwareSuite < Technology // ? 
 System < Entity
 Application < System
 WebApplication < System

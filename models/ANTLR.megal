@@ -1,12 +1,12 @@
 module MegaLANTLR
 
-ParserGenerator < Technology
-ANTLR : ParserGenerator
+ANTLR : Technology //Classification needed
 ANTLRTargetLanguage < ProgrammingLanguage
 Java : ANTLRTargetLanguage
 ANTLR uses Java
 MetaProgramming : TechnologySpace
 
+/*
 ANTLRGrammar : Language
 ANTLR implements generateSources
 generateSources : ANTLRGrammar -> Java
@@ -57,3 +57,4 @@ String = "https://en.wikipedia.org/wiki/String_(computer_science)"
 Boolean = "https://en.wikipedia.org/wiki/Boolean_data_type"
 True = "https://en.wikipedia.org/wiki/Boolean_data_type"
 False = "https://en.wikipedia.org/wiki/Boolean_data_type"
+*/
