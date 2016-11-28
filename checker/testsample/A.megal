@@ -1,10 +1,10 @@
 module A 
 
 HTML : MarkupLanguage
-?Information : Role
+Information : Role
 ?a1 : Artifact
 ?a1 elementOf HTML
-?a1 hasRole ?Information
+?a1 hasRole Information
 ?a1 manifestsAs WebResource
 
 HTML = "https://en.wikipedia.org/wiki/HTML"
