@@ -1,8 +1,10 @@
 package org.java.megalib.checker.services;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.java.megalib.models.MegaModel;
 
 import main.antlr.techdocgrammar.MegalibBaseListener;
@@ -47,12 +49,26 @@ public class MegalibParserListener extends MegalibBaseListener {
 	
 	@Override
 	public void enterInstanceDeclaration(InstanceDeclarationContext context) {
-		String instance = context.getChild(0).getText();
-		String type = context.getChild(2).getText();
+		Iterator<ParseTree> it = context.children.iterator();
+		String instance = it.next().getText();
+		//skip :
+		it.next();
+		String type = it.next().getText();
 		try {
 			model.addInstanceOf(instance, type);
 		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
+		}
+		while(it.hasNext()){
+			//skip TAB
+			it.next();
+			String relation = it.next().getText();
+			String object = it.next().getText();
+			try {
+				model.addRelationInstances(relation, instance,object);
+			} catch (WellFormednessException e) {
+				model.addWarning(e.getMessage());
+			}
 		}
 	}
 	
@@ -71,17 +87,23 @@ public class MegalibParserListener extends MegalibBaseListener {
 	
 	@Override
 	public void enterRelationInstance(RelationInstanceContext context) {
-		String relation = context.getChild(1).getText();
-		String instance1 = context.getChild(0).getText();
-		String instance2 =  context.getChild(2).getText();
-		
-		List<String> instances = new ArrayList<String>();
-		instances.add(instance1);
-		instances.add(instance2);
+		Iterator<ParseTree> it = context.children.iterator();
+		String subject = it.next().getText();
+		String relation = it.next().getText();
+		String object =  it.next().getText();
 		try {
-			model.addRelationInstances(relation, instance1,instance2);
+			model.addRelationInstances(relation, subject,object);
 		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
+		}
+		while(it.hasNext()){
+			relation = it.next().getText();
+			object = it.next().getText();
+			try {
+				model.addRelationInstances(relation, subject,object);
+			} catch (WellFormednessException e) {
+				model.addWarning(e.getMessage());
+			}
 		}
 	}
 	

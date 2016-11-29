@@ -559,13 +559,6 @@ public class MegalibParserListenerTest {
 	}	
 	
 	@Test
-	public void testComment() {
-		String input = "// test hello world";
-		MegaModel actual = new MegaModelLoader().loadString(input);
-		assertNotNull(actual);
-	}
-	
-	@Test
 	public void testCommentAfterStmt() {
 		String input = "a : ProgrammingLanguage // test hello world";
 		MegaModel actual = new MegaModelLoader().loadString(input);

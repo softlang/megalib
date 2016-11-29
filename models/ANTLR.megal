@@ -1,4 +1,4 @@
-module MegaLANTLR
+module ANTLR
 
 ANTLR : Technology //Classification needed
 ANTLRTargetLanguage < ProgrammingLanguage

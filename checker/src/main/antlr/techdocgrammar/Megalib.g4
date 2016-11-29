@@ -1,42 +1,40 @@
 grammar Megalib;
 
 //Head of the construct, containing entity or function
-declaration: module? (imports)* statements EOF;
+declaration: module? (imports)* statement+ EOF;
 
-statements:	( subtypeDeclaration
+statement:	 subtypeDeclaration
 			   | instanceDeclaration
 			   | relationDeclaration
 			   | relationInstance
 			   | functionDeclaration
 			   | functionInstance
-			   | link
-			   | LINECOMMENT
-			   | BLOCKCOMMENT)+ ;
+			   | link ;
 
-module: 'module' name;
+module: 'module' ID;
 
-imports: 'import' name ('where{' (substitution)+ '}')?;
+imports: 'import' ID ('where{' (substitution)+ '}')?;
 
-substitution : name 'substitutes' name;
+substitution : ID 'substitutes' ID;
 
-subtypeDeclaration: name '<' name;
+subtypeDeclaration: ID '<' ID;
 
-instanceDeclaration : name ':' name;
+instanceDeclaration: ID ':' ID (TAB ID ID)*;
 
-relationDeclaration: name '<' name '#' name;
+relationDeclaration: ID '<' ID '#' ID;
 
-relationInstance: name  name  name;
+relationInstance: ID ID ID (TAB ID ID)*;
 
-functionDeclaration: name ':' name ('#' name)* '->' name ('#' name)* ;
+functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* ;
 
-functionInstance: name '(' name (',' name)* ')' '|->' (name | ('(' name (',' name)* ')'));
+functionInstance: ID '(' ID (',' ID)* ')' '|->' (ID | ('(' ID (',' ID)* ')'));
 
-link: name '=' LINK;
+link: ID '=' LINK;
 
-name: '?'? WORD ('.' WORD)* '+'?;
-
-BLOCKCOMMENT: '/*' (WORD|'?'|'.'|'<'|'#'|':'|'>'|','|';'|'\"'|'('|')'|' '|'\n'|'\r'|'\t'|'\f')+ '*/';
-LINECOMMENT: '//' (WORD|'?'|'.'|'<'|'#'|':'|'>'|','|';'|'\"'|'('|')'|' ')+;
-WORD: ([a-zA-Z0-9] | '\'' | '-')+;
-LINK: '"' (~(' '|'\t'|'\f'|'\n'|'\r'))+ '"' ;
-WS: (' '|'\t'|'\f'|'\n'|'\r') -> skip;
+ID: '?'? WORD ('.' WORD)* '+'?;
+TAB: '\t'|'    ';
+WORD: ([a-zA-Z0-9])+;
+LINK: '"' (~[ \t\f\n\r])+ '"' ;
+BLOCKCOMMENT: '/*' .*? '*/' -> skip;
+LINECOMMENT: '//' (~[\n\r])* -> skip;
+WS: (' '|'\f'|'\n'|'\r') -> skip;

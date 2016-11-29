@@ -3,29 +3,31 @@ module Jackson
 JSON : DataRepresentationLanguage
 Java : ProgrammingLanguage
 JavaObject : ObjectGraph
-Class : Role
+?Class : Role
 ?ModelClass : Artifact
-?ModelClass elementOf Java
-?ModelClass hasRole Class
-?ModelClass manifestsAs File
-
+    elementOf Java
+    hasRole ?Class
+    manifestsAs File
 ?aModel : Artifact
-?aModel elementOf JavaObject
-?aModel hasRole Value
-?aModel manifestsAs Transient
-?aModel conformsTo ?ModelClass
+    elementOf JavaObject
+    hasRole Value
+    manifestsAs Transient
+    conformsTo ?ModelClass
 ?aJSONString : Artifact 
-?aJSONString elementOf JSON
-?aJSONString manifestsAs Transient
-?aJSONString conformsTo ?ModelClass
-?aJSONString correspondsTo ?aModel
+    elementOf JSON
+    hasRole Value
+    manifestsAs Transient
+    conformsTo ?ModelClass
+    correspondsTo ?aModel
 
-Jackson : Library
 JSONWare : TechnologySpace
-Jackson belongsTo JSONWare
+Jackson : Library
+    belongsTo JSONWare
+    uses Java
 ObjectMapper : Library
-ObjectMapper partOf Jackson
-ObjectMapper realizes Serialization
+    partOf Jackson
+    realizes Serialization
+    uses Java
 
 readValue : JSON -> JavaObject
 readValue(?aJSONString) |-> ?aModel
