@@ -19,6 +19,14 @@ import org.junit.Test;
 public class CheckTest {
 	
 	@Test
+	public void checkPrelude(){
+		MegaModel m = new MegaModelLoader().getModel();
+		Check c = new Check(m);
+		assertEquals(0,m.getCriticalWarnings().size());
+		assertEquals(0,c.getWarnings().size());
+	}
+	
+	@Test
 	public void checkInstanceOfTechnology() {
 		String input = "?t : Technology "
 				+ "?l : ProgrammingLanguage "

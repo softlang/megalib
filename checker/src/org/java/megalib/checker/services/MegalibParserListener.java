@@ -45,6 +45,14 @@ public class MegalibParserListener extends MegalibBaseListener {
 		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
 		}
+		if(context.children.size()==6){
+			try {
+				String link = context.getChild(5).getText();
+				model.addLink(derivedType, link.substring(1, link.length()-1));
+			} catch (WellFormednessException e) {
+				model.addWarning(e.getMessage());
+			}
+		}
 	}
 	
 	@Override
@@ -65,7 +73,10 @@ public class MegalibParserListener extends MegalibBaseListener {
 			String relation = it.next().getText();
 			String object = it.next().getText();
 			try {
-				model.addRelationInstances(relation, instance,object);
+				if(relation.equals("="))
+					model.addLink(instance, object.substring(1, object.length()-1));
+				else
+					model.addRelationInstances(relation, instance,object);
 			} catch (WellFormednessException e) {
 				model.addWarning(e.getMessage());
 			}
@@ -100,7 +111,10 @@ public class MegalibParserListener extends MegalibBaseListener {
 			relation = it.next().getText();
 			object = it.next().getText();
 			try {
-				model.addRelationInstances(relation, subject,object);
+				if(relation.equals("="))
+					model.addLink(subject, object.substring(1, object.length()-1));
+				else
+					model.addRelationInstances(relation, subject,object);
 			} catch (WellFormednessException e) {
 				model.addWarning(e.getMessage());
 			}

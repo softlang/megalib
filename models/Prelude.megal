@@ -1,26 +1,38 @@
 Language < Entity
+    = "https://en.wikipedia.org/wiki/Computer_language"
 FileFormat < Language
+    = "https://en.wikipedia.org/wiki/File_format"
 ProgrammingLanguage < Language
+    = "https://en.wikipedia.org/wiki/Programming_language"
 ObjectGraph < Language
-DataRepresentationLanguage < Language // Any binding?
+    = "https://en.wikipedia.org/wiki/Object_graph"
+DataRepresentationLanguage < Language 
+    = "https://de.wikipedia.org/wiki/Datenformat" //need better binding
 MarkupLanguage < Language
+    = "https://en.wikipedia.org/wiki/Markup_language"
 TransformationLanguage < Language
+    = "https://en.wikipedia.org/wiki/Transformation_language" // even though the text is misleading
 QueryLanguage < Language 
+    = "https://en.wikipedia.org/wiki/Query_language"
 StylesheetLanguage < Language
+    = "https://en.wikipedia.org/wiki/Style_sheet_language"
 SchemaLanguage < Language
+    = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages"
 CommandLineLanguage < Language
+    = "https://en.wikipedia.org/wiki/Command-line_interface"
 subsetOf < Language # Language
 embeddedInto < Language # Language 
 
 String : DataRepresentationLanguage
-String = "https://en.wikipedia.org/wiki/String_(computer_science)"
+    = "https://en.wikipedia.org/wiki/String_(computer_science)"
 Number : DataRepresentationLanguage
-Number = "https://en.wikipedia.org/wiki/Number"
+    = "https://en.wikipedia.org/wiki/Number"
 Boolean : DataRepresentationLanguage
-Boolean = "https://en.wikipedia.org/wiki/Boolean_data_type"
+    = "https://en.wikipedia.org/wiki/Boolean_data_type"
 
 //Classification by Language, Role and Manifestation
 Artifact < Entity
+    = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
 defines < Artifact # Language 
 elementOf < Artifact # Language
 conformsTo < Artifact # Artifact
@@ -29,66 +41,117 @@ embeddedInto < Artifact # Artifact // formulate via mechanism, partOf and langua
 
 // Manifestations of artifacts
 Manifestation < Entity
+    = "https://en.oxforddictionaries.com/definition/manifestation"
 File : Manifestation
-File = "https://en.wikipedia.org/wiki/Computer_file"
+    = "https://en.wikipedia.org/wiki/Computer_file"
 File+ : Manifestation
-File+ = "https://en.wikipedia.org/wiki/Computer_file"
+    = "https://en.wikipedia.org/wiki/Computer_file" // a set of files
 Folder : Manifestation
-Folder = "https://en.wikipedia.org/wiki/Directory_(computing)"
+    = "https://en.wikipedia.org/wiki/Directory_(computing)"
 WebResource : Manifestation
-WebResource = "https://en.wikipedia.org/wiki/Web_resource"
+    = "https://en.wikipedia.org/wiki/Web_resource"
 Transient : Manifestation
-Transient = "https://en.wikipedia.org/wiki/Transient_(computer_programming)"
+    = "https://en.wikipedia.org/wiki/Transient_(computer_programming)"
 Fragment : Manifestation
-Fragment = "https://en.wikipedia.org/wiki/Snippet_(programming)"
+    = "https://en.wikipedia.org/wiki/Snippet_(programming)"
 manifestsAs < Artifact # Manifestation
 
 // Roles of artifacts
 Role < Entity
+    = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
 Configuration : Role
-Configuration = "https://en.wikipedia.org/wiki/Configuration_file"
+    = "https://en.wikipedia.org/wiki/Configuration_file"
 Grammar : Role
-Grammar = "https://en.wikipedia.org/wiki/Context-free_grammar"
+    = "https://en.wikipedia.org/wiki/Context-free_grammar"
 Database : Role
-Database = "https://en.wikipedia.org/wiki/Database"
+    = "https://en.wikipedia.org/wiki/Database"
 Schema : Role
-Schema = "https://en.wikipedia.org/wiki/Database_schema"
+    = "https://en.wikipedia.org/wiki/Database_schema"
 Query : Role
-Query = "https://en.wikipedia.org/wiki/Query_language"
+    = "https://en.wikipedia.org/wiki/Query_language"
 MdeModel : Role // in the sense of MDE
-MdeModel = "https://en.wikipedia.org/wiki/Model-driven_engineering"
+    = "https://en.wikipedia.org/wiki/Model-driven_engineering"
 MdeMetamodel : Role // in the sense of MDE
-MdeMetamodel = "https://en.wikipedia.org/wiki/Metamodeling"
+    = "https://en.wikipedia.org/wiki/Metamodeling"
 MvcModel : Role
-MvcModel = "https://en.wikipedia.org/wiki/Model-view-controller"
+    = "https://en.wikipedia.org/wiki/Model-view-controller"
 MvcView : Role
-MvcView = "https://en.wikipedia.org/wiki/Model-view-controller"
+    = "https://en.wikipedia.org/wiki/Model-view-controller"
 MvcController : Role
-MvcController = "https://en.wikipedia.org/wiki/Model-view-controller"
+    = "https://en.wikipedia.org/wiki/Model-view-controller"
 Value : Role
-Value = "https://en.wikipedia.org/wiki/Value_(computer_science)"
+    = "https://en.wikipedia.org/wiki/Value_(computer_science)"
 Message : Role
-Message = "https://en.wikipedia.org/wiki/Message_passing"
+    = "https://en.wikipedia.org/wiki/Message_passing"
 Specification : Role
-Specification = "https://en.wikipedia.org/wiki/Specification_(technical_standard)"
+    = "https://en.wikipedia.org/wiki/Specification_(technical_standard)"
 hasRole < Artifact # Role
 
 Function < Entity
-Transformation < Function //Experimental subtype
+    = "https://en.wikipedia.org/wiki/Function_(mathematics)"
 implements < Artifact # Function
 
 // Classification of technologies
 Technology < Entity
+    = "http://www.journals.elsevier.com/information-and-software-technology/"
 API < Technology
+    = "https://en.wikipedia.org/wiki/Application_programming_interface"
 Library < Technology
+    = "https://en.wikipedia.org/wiki/Library_(computing)"
 Framework < Technology
-Plugin < Technology
-Compiler < Technology
-Interpreter < Technology
-SoftwareSuite < Technology // ? 
+    = "https://en.wikipedia.org/wiki/Software_framework"
+Plugin < Technology // as an extension to a software suite or IDE or plug & play architecture
+    = "https://en.wikipedia.org/wiki/Plug-in_(computing)"
+Component < Technology // as part of a framework or library
+    = "https://en.wikipedia.org/wiki/Component-based_software_engineering#Software_component"
+SoftwareSuite < Technology // ?
+    = "https://en.wikipedia.org/wiki/Software_suite"
+IDE < Technology // ?
+    = "https://en.wikipedia.org/wiki/Integrated_development_environment"
+Platform < Technology 
+    = "https://en.wikipedia.org/wiki/Computing_platform"
 System < Entity
+    = "https://en.wikipedia.org/wiki/Software_system"
 Application < System
+    = "https://en.wikipedia.org/wiki/Application_software"
 WebApplication < System
+    = "https://en.wikipedia.org/wiki/Web_application"
+
+// Implementation relationships
+implements < Technology # Function
+implements < Technology # Language
+// implements < System # Function - Does this make sense?
+
+Paradigm < Entity 
+    = "https://en.wikipedia.org/wiki/Programming_paradigm"
+ProgrammingDomain < Entity
+    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
+TechnologySpace < Entity
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
+DesignPattern < Entity
+    = "https://en.wikipedia.org/wiki/Software_design_pattern"
+ArchitecturalPattern < Entity
+    = "https://en.wikipedia.org/wiki/Architectural_pattern"
+AbstractProcess < Entity 
+    = "https://en.wikipedia.org/wiki/Abstract_process"
+Serialization : AbstractProcess
+    = "https://en.wikipedia.org/wiki/Serialization"
+Construct < Entity 
+    = "https://en.wikipedia.org/wiki/Construct_(philosophy)"
+Semaphore : Construct
+    = "https://en.wikipedia.org/wiki/Semaphore_(programming)"
+
+participantOf < Role # DesignPattern
+participantOf < Role # ArchitecturalPattern
+belongsTo < Technology # TechnologySpace
+belongsTo < Language # TechnologySpace
+supports < Technology # ProgrammingDomain 
+realizes < Artifact # AbstractProcess
+realizes < Technology # AbstractProcess
+aspectOf < AbstractProcess # ProgrammingDomain
+aspectOf < Role # ProgrammingDomain // Better name needed
+aspectOf < Construct # Paradigm
+subdomainOf < ProgrammingDomain # ProgrammingDomain // Specialized problems as in ORMapping is subdomainOf persistence
 
 // Part-of relationships
 partOf < Artifact # Artifact
@@ -97,48 +160,26 @@ partOf < Artifact # Technology
 partOf < Technology # Technology
 partOf < System # System
 
-// Implementation relationships
-implements < Technology # Function
-implements < Technology # Language
-// implements < System # Function - Does this make sense?
-
-Paradigm < Entity 
-ProgrammingDomain < Entity
-TechnologySpace < Entity
-DesignPattern < Entity
-ArchitecturalStyle < Entity
-AbstractProcess < Entity // better name? CommonProcess?
-Serialization : AbstractProcess
-Serialization = "https://en.wikipedia.org/wiki/Serialization"
-
-participantOf < Role # DesignPattern
-participantOf < Role # ArchitecturalStyle
-// aspectOf??? < Role # ProgrammingDomain . Better name needed
-belongsTo < Technology # TechnologySpace
-supports < Technology # ProgrammingDomain 
-realizes < Artifact # AbstractProcess
-realizes < Technology # AbstractProcess
-
 // Usage
 uses < System # System
 uses < System # Technology
 uses < System # DesignPattern
-uses < System # ArchitecturalStyle
+uses < System # ArchitecturalPattern
 uses < System # AbstractProcess
 uses < System # Language
 uses < Technology # Technology
 uses < Technology # DesignPattern
-uses < Technology # ArchitecturalStyle
+uses < Technology # ArchitecturalPattern
 uses < Technology # Language
 uses < Artifact # DesignPattern
-uses < Artifact # ArchitecturalStyle
+uses < Artifact # ArchitecturalPattern
 uses < Artifact # System
 uses < Artifact # Technology
 uses < Artifact # Language
 
 // Facilitation (deferred usage)
 facilitates < Technology # DesignPattern
-facilitates < Technology # ArchitecturalStyle
+facilitates < Technology # ArchitecturalPattern
 facilitates < Technology # AbstractProcess
 facilitates < Language # Paradigm
 facilitates < Language # ProgrammingDomain

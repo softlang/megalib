@@ -42,6 +42,7 @@ public class Check {
 		warnings = new LinkedList<String>();
 		
 		instanceChecks();
+		subtypeChecks();
 		cyclicSubtypingChecks();
 		cyclicRelationChecks("subsetOf");
 		cyclicRelationChecks("partOf");
@@ -50,7 +51,12 @@ public class Check {
 		checkLinks();
 	}
 
-	
+	private void subtypeChecks() {
+		model.getSubtypesMap().forEach((k,v)-> {
+			if(!model.getLinkMap().containsKey(k))
+				warnings.add("Link missing for subtype "+k);
+		});
+	}
 
 	private void instanceChecks() {
 		Map<String, String> map = model.getInstanceOfMap();

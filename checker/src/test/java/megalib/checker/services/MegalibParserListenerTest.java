@@ -31,14 +31,14 @@ public class MegalibParserListenerTest {
 		MegaModelLoader ml = new MegaModelLoader();
 		MegaModel model = ml.getModel();
 		model.getCriticalWarnings().forEach(w->System.out.println(w));
-		assertEquals(23,model.getInstanceOfMap().size());
-		assertEquals(23,model.getLinkMap().size());
-		assertEquals(33,model.getSubtypesMap().size());
+		assertEquals(24,model.getInstanceOfMap().size());
+		assertEquals(24,model.getLinkMap().size());
+		assertEquals(38,model.getSubtypesMap().size());
 		Map<String, Set<Relation>> rm = model.getRelationshipDeclarationMap();
 		//the number of distinct relation ship names
-		assertEquals(16,rm.size());
+		assertEquals(18,rm.size());
 		int count = rm.values().stream().map(set -> set.size()).reduce(0, (a,b) -> a+b);
-		assertEquals(43, count);
+		assertEquals(48, count);
 		assertEquals(0,model.getCriticalWarnings().size());
 	}
 	
@@ -557,6 +557,28 @@ public class MegalibParserListenerTest {
 		String input = "xy test";
 		assertNull(new MegaModelLoader().loadString(input));
 	}	
+	
+	@Test
+	public void testTurtleSyntax(){
+		String input = "a : Artifact\n"
+				+ "    elementOf Java\n"
+				+ "    hasRole MvcModel";
+		assertNotNull(new MegaModelLoader().loadString(input));
+	}
+	
+	@Test
+	public void testTurtleInstanceLink(){
+		String input = "Java : ProgrammingLanguage\n"
+				+ "    = \"https://en.wikipedia.org/wiki/Java_(programming_language)\"";
+		assertNotNull(new MegaModelLoader().loadString(input));
+	}
+	
+	@Test
+	public void testTurtleTypeLink(){
+		String input = "Language < Entity\n"
+				+ "    =\"https://en.wikipedia.org/wiki/Computer_language\"";
+		assertNotNull(new MegaModelLoader().loadString(input));
+	}
 	
 	@Test
 	public void testCommentAfterStmt() {

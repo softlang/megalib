@@ -262,7 +262,7 @@ public class MegaModel {
 	}
 
 	public void addLink(String entity, String link) throws WellFormednessException {
-		if(!instanceOfMap.containsKey(entity))
+		if(!(instanceOfMap.containsKey(entity)||subtypeOfMap.containsKey(entity)))
 			throw new WellFormednessException("Error at linking "+entity+". Declaration is missing.");
 		Set<String> links;
 		if(!linkMap.containsKey(entity))
