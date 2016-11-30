@@ -23,7 +23,7 @@ public class MegaModel {
 	private Map<String, Set<Relation>> relationInstanceMap;
 	private Map<String, Function> functionDeclarations;
 	private Map<String, Set<Function>> functionInstances;
-	private Map<String, List<String>> linkMap;
+	private Map<String, Set<String>> linkMap;
 	private Map<String, String> substMap;
 	
 	private List<String> criticalWarnings;
@@ -257,13 +257,20 @@ public class MegaModel {
 		return Collections.unmodifiableMap(elementOfMap);
 	}
 
-	public Map<String, List<String>> getLinkMap() {
+	public Map<String,Set<String>> getLinkMap(){
 		return Collections.unmodifiableMap(linkMap);
 	}
 
-	public void addLinks(String entity, List<String> links) throws WellFormednessException {
+	public void addLink(String entity, String link) throws WellFormednessException {
 		if(!instanceOfMap.containsKey(entity))
 			throw new WellFormednessException("Error at linking "+entity+". Declaration is missing.");
+		Set<String> links;
+		if(!linkMap.containsKey(entity))
+			links = new HashSet<>();
+		else
+			links = linkMap.get(entity);
+		if(!links.add(link))
+			throw new WellFormednessException("Error at linking "+entity+" to "+link+". This link has already been assigned");
 		linkMap.put(entity, links);
 	}
 	
@@ -296,7 +303,7 @@ public class MegaModel {
 		
 		//linkmap
 		if(linkMap.containsKey(e)){
-			List<String> links = linkMap.get(e);
+			Set<String> links = linkMap.get(e);
 			linkMap.remove(e);
 			linkMap.put(by, links);
 		}

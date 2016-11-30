@@ -170,19 +170,11 @@ public class MegalibParserListener extends MegalibBaseListener {
 		String entityname = context.getChild(0).getText();
 		String link = context.getChild(2).getText();
 		link = link.substring(1, link.length()-1);
-		List<String> links;
-		
-		if(model.getLinkMap().containsKey(entityname)){
-			links = model.getLinkMap().get(entityname);
-		} else {	
-			links = new ArrayList<String>();
-		}
-		links.add(link);
 		try {
-			model.addLinks(entityname, links);
+			model.addLink(entityname, link);
 		} catch (WellFormednessException e) {
 			model.addWarning(e.getMessage());
-		}		
+		}	
 	}
 	
 	public MegaModel getModel() {

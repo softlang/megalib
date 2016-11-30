@@ -3,6 +3,6 @@ module bcd.B
 import A
 
 ?a2 : Artifact
-?a2 elementOf HTML
-?a2 hasRole Information
-?a2 manifestsAs WebResource
+    elementOf HTML
+    hasRole Information
+    manifestsAs WebResource

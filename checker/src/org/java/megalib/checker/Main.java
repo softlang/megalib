@@ -16,8 +16,6 @@ import org.java.megalib.checker.services.MegaModelLoader;
 public class Main {
 	
 	public static void main(String[] args) {
-		checkFile("../models/Jackson.megal");
-		/**
 		if (argumentsExists(args)) {
 			if(new File(args[1]).exists()){
 				if(!args[1].endsWith(".megal")){
@@ -40,7 +38,6 @@ public class Main {
 				checkDirectory(".");
 			}
 		}
-		**/
 	}
 
 	private static void checkDirectory(String dir) {

@@ -26,8 +26,8 @@ public class MegalibImportListenerTest {
 		assertEquals("Artifact",m.getInstanceOfMap().get("softlangpage1"));
 		assertEquals("Artifact",m.getInstanceOfMap().get("softlangpage2"));
 		assertEquals("MarkupLanguage",m.getInstanceOfMap().get("HTML"));
-		assertEquals("http://www.softlang.org/",m.getLinkMap().get("softlangpage1").get(0));
-		assertEquals("http://www.softlang.org/",m.getLinkMap().get("softlangpage2").get(0));
+		assertEquals("http://www.softlang.org/",m.getLinkMap().get("softlangpage1").iterator().next());
+		assertEquals("http://www.softlang.org/",m.getLinkMap().get("softlangpage2").iterator().next());
 		assertEquals(1,m.getRelationshipInstanceMap().get("correspondsTo").size());
 		assertEquals(new Relation("softlangpage1","softlangpage2"),m.getRelationshipInstanceMap().get("correspondsTo").iterator().next());
 	}

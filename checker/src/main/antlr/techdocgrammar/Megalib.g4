@@ -13,7 +13,7 @@ statement:	 subtypeDeclaration
 
 module: 'module' ID;
 
-imports: 'import' ID ('where{' (substitution)+ '}')?;
+imports: 'import' ID ('where{' (TAB substitution)+ '}')?;
 
 substitution : ID 'substitutes' ID;
 
@@ -31,8 +31,9 @@ functionInstance: ID '(' ID (',' ID)* ')' '|->' (ID | ('(' ID (',' ID)* ')'));
 
 link: ID '=' LINK;
 
-ID: '?'? WORD ('.' WORD)* '+'?;
+//Tabs enforce formatting
 TAB: '\t'|'    ';
+ID: '?'? WORD ('.' WORD)* '+'?;
 WORD: ([a-zA-Z0-9])+;
 LINK: '"' (~[ \t\f\n\r])+ '"' ;
 BLOCKCOMMENT: '/*' .*? '*/' -> skip;

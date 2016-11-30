@@ -165,7 +165,7 @@ public class Check {
 	}
 
 	private void checkLinks() {
-		Map<String, List<String>> links = model.getLinkMap();
+		Map<String, Set<String>> links = model.getLinkMap();
 		for (String name : links.keySet()) {
 			links.get(name).forEach(l->checkLinkWorking(l));
 		}
