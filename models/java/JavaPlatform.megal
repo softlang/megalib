@@ -1,0 +1,45 @@
+module java.JavaPlatform
+
+JavaWare : TechnologySpace
+    = "http://link.springer.com/chapter/10.1007%2F978-3-642-30561-0_6"
+
+Java : ProgrammingLanguage
+    = "http://docs.oracle.com/javase/specs/jls/se8/jls8.pdf"
+    belongsTo JavaWare
+    supports GeneralPurposeProgramming
+    facilitates ObjectOrientation
+    facilitates FunctionalProgramming
+    facilitates ConcurrentProgramming
+
+JavaByteCode : InstructionSet
+    = "https://en.wikipedia.org/wiki/Java_bytecode"
+    belongsTo JavaWare
+
+JavaPlatform : Platform
+    = "https://www.oracle.com/de/java/technologies/java-se.html#standard"
+    uses Java
+    belongsTo JavaWare
+    supports GeneralPurposeProgramming
+
+JavaC : Platform
+    = "https://en.wikipedia.org/wiki/Javac"
+    uses Java
+    partOf JavaPlatform
+    supports MetaProgramming
+    realizes Compilation
+    implements Java
+
+compile : Java -> JavaByteCode
+JavaC implements compile
+?javaFiles : Artifact   
+    elementOf Java
+    hasRole Input
+    manifestsAs File+
+?ClassFiles : Artifact
+    elementOf JavaByteCode
+    hasRole Output
+    manifestsAs File+
+compile(?javaFiles) |-> ?ClassFiles
+
+// JVM
+// Java native library

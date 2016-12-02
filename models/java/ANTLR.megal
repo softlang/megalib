@@ -1,4 +1,4 @@
-module ANTLR
+module java.ANTLR
 
 ANTLR : Technology //Classification needed
 ANTLRTargetLanguage < ProgrammingLanguage

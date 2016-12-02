@@ -24,6 +24,10 @@ ModelingLanguage < Language
     = "https://en.wikipedia.org/wiki/Modeling_language"
 InstructionSet < Language
     = "https://en.wikipedia.org/wiki/Instruction_set"
+ConfigurationLanguage < Language
+    = "https://en.wikipedia.org/wiki/Configuration_file"
+ReferenceLanguage < Language
+    = "https://en.wikipedia.org/wiki/Reference"
 subsetOf < Language # Language
 embeddedInto < Language # Language 
 
@@ -96,6 +100,10 @@ Log : Role
     = "https://en.wikipedia.org/wiki/Logfile"
 DescriptiveModel : Role
     = "http://www.businessdictionary.com/definition/descriptive-model.html"
+TransformationRule : Role
+    = "http://101companies.org/wiki/Transformation"
+Reference : Role
+    = "https://en.wikipedia.org/wiki/Reference"
 hasRole < Artifact # Role
 
 Function < Entity
@@ -127,6 +135,8 @@ Application < System
     = "https://en.wikipedia.org/wiki/Application_software"
 WebApplication < System
     = "https://en.wikipedia.org/wiki/Web_application"
+FileSystem < System
+    = "https://en.wikipedia.org/wiki/File_system"
 
 // Implementation relationships
 implements < Technology # Function
@@ -140,6 +150,8 @@ ObjectOrientation : Paradigm
     = "https://en.wikipedia.org/wiki/Object-oriented_programming"
 FunctionalProgramming : Paradigm
     = "https://en.wikipedia.org/wiki/Functional_programming"
+RelationalModeling : Paradigm
+    = "https://en.wikipedia.org/wiki/Relational_model"
 
 ProgrammingDomain < Entity
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
@@ -147,19 +159,28 @@ GeneralPurposeProgramming : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/General-purpose_programming_language"
 MetaProgramming : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Metaprogramming"
+DatabaseProgramming : ProgrammingDomain
+    = "http://101companies.org/wiki/Database_programming"
+// Database aspectOf DatabaseProgramming
 
 TechnologySpace < Entity
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
+
 DesignPattern < Entity
     = "https://en.wikipedia.org/wiki/Software_design_pattern"
+
 ArchitecturalPattern < Entity
     = "https://en.wikipedia.org/wiki/Architectural_pattern"
+
 AbstractProcess < Entity 
     = "https://en.wikipedia.org/wiki/Abstract_process"
 Serialization : AbstractProcess
     = "https://en.wikipedia.org/wiki/Serialization"
 Compilation : AbstractProcess
     = "https://de.wikipedia.org/wiki/Compiler"
+Transformation : AbstractProcess
+    = "https://en.wikipedia.org/wiki/Data_transformation"
+
 Construct < Entity 
     = "https://en.wikipedia.org/wiki/Construct_(philosophy)"
 Semaphore : Construct
@@ -184,17 +205,21 @@ partOf < Artifact # Technology
 partOf < Technology # Technology
 partOf < System # System
 
+// Language usage
+writtenIn < System # Language
+writtenIn < Technology # Language
+
 // Usage
 uses < System # System
 uses < System # Technology
 uses < System # DesignPattern
 uses < System # ArchitecturalPattern
 uses < System # AbstractProcess
-uses < System # Language
+uses < System # Language  // Necessary?
 uses < Technology # Technology
 uses < Technology # DesignPattern
 uses < Technology # ArchitecturalPattern
-uses < Technology # Language
+uses < Technology # Language  // Necessary?
 uses < Artifact # DesignPattern
 uses < Artifact # ArchitecturalPattern
 uses < Artifact # System

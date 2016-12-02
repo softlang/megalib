@@ -19,7 +19,7 @@ substitution : ID 'substitutes' ID;
 
 subtypeDeclaration: ID '<' ID (TAB '=' LINK)?;
 
-instanceDeclaration: ID ':' ID (TAB '=' LINK)? (TAB ID ID)*;
+instanceDeclaration: ID ':' ID (TAB '=' LINK)* (TAB ID ID)*;
 
 relationDeclaration: ID '<' ID '#' ID;
 
@@ -33,8 +33,8 @@ link: ID '=' LINK;
 
 //Tabs enforce formatting
 TAB: '\t'|'    ';
-ID: '?'? WORD ('.' WORD)* '+'?;
-WORD: ([a-zA-Z0-9])+;
+ID: '?'? WORD ('.' WORD)*;
+WORD: ([a-zA-Z0-9+#])+;
 LINK: '"' (~[ \t\f\n\r])+ '"' ;
 BLOCKCOMMENT: '/*' .*? '*/' -> skip;
 LINECOMMENT: '//' (~[\n\r])* -> skip;

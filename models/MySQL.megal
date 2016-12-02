@@ -1,46 +1,111 @@
 module MySQL
 
-DataDefinitionLanguage < SchemaLanguage // SchemaLanguage not defined
-DataManipulationLanguage < Language
-SQL : Language
-SQLDDL : DataDefinitionLanguage
-SQLDML : DataManipulationLanguage
+SQLWare : TechnologySpace
+    = "https://en.wikipedia.org/wiki/SQL"
 
-SQLDDL subsetOf SQL
-SQLDML subsetOf SQL
+SQL : QueryLanguage
+    = "https://en.wikipedia.org/wiki/SQL"
+    belongsTo SQLWare
+    facilitates RelationalModeling
+SQLQuery : QueryLanguage
+    = "https://en.wikipedia.org/wiki/SQL#Queries"
+    subsetOf SQL
+SQLDDL : SchemaLanguage
+    = "https://en.wikipedia.org/wiki/SQL#Data_definition"
+    subsetOf SQL
+SQLDML : TransformationLanguage
+    = "https://en.wikipedia.org/wiki/SQL#Data_manipulation"
+    subsetOf SQL
 
-DatabaseProgramming : ProgrammingDomain
-Database : Role
-Database participantOf DatabaseProgramming // Strange participation
+C : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/C_(programming_language)"
+C++ : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/C%2B%2B"
+C# : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)"
+ObjectiveC : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/Objective-C"
+MySQLImage : FileFormat
+    = "http://dev.mysql.com/doc/refman/5.7/en/what-is-mysql.html"
+MySQL : SoftwareSuite
+    = "https://en.wikipedia.org/wiki/MySQL"
+    supports DatabaseProgramming
+    uses C
+    uses C++
+    implements SQL
+    implements MySQLImage
+    belongsTo SQLWare
 
-MySQLImage : DataRepresentationLanguage
+//CRUD : 
+?SQLString : DataRepresentationLanguage
+create : SQLDDL # MySQLImage -> MySQLImage
+read : SQLQuery # MySQLImage -> ?SQLString
+update : SQLDML # MySQLImage -> MySQLImage
 
-RelationalModeling : Paradigm
-SQLDDL facilitates RelationalModeling
-
-DatabaseManagement < Technology // Should this be "DBMS"?
-MySQL : DatabaseManagement
-MySQL facilitates DatabaseProgramming
-SQL-Ware : TechnologySpace
-MySQL belongsTo SQL-Ware
-
-?database : Artifact<MySQLImage>
-?database hasRole Database
-
-IDE < Technology
 MySQLWorkBench : IDE
+    = "https://en.wikipedia.org/wiki/MySQL_Workbench"
+    uses MySQL
+    uses C++
+    uses C#
+    uses ObjectiveC
+    implements create
+    implements read
+    implements update
 
-?createStmt : Artifact<SQLDDL>
-Schema : Role
-?createStmt hasRole Schema
-?insertStmt : Artifact<SQLDML>
-TransformationRule : Role
-?insertStmt : TransformationRule
-?db1 : Artifact<MySQLImage>
-?db2 : Artifact<MySQLImage>
-?db3 : Artifact<MySQLImage>
-execution : SQL # MySQLImage -> MySQLImage
+?databasec0 : Artifact
+    elementOf MySQLImage
+    hasRole Database
+    manifestsAs File
+?databasec1 : Artifact
+    elementOf MySQLImage
+    hasRole Database
+    manifestsAs File
+?createStmt : Artifact
+    elementOf SQLDDL
+    hasRole Schema
+    manifestsAs Transient
+create(?createStmt,?databasec0) |-> ?databasec1
+?databasec0 partOf ?databasec1 // ?? maybe interesting
 
-MySQLWorkBench implements execution
-execution(?createStmt,?db1) |-> ?db2
-execution(?insertStmt,?db2) |-> ?db3
+?databaser : Artifact
+    elementOf MySQLImage
+    hasRole Database
+    manifestsAs File
+?query : Artifact
+    elementOf SQLQuery
+    hasRole Query 
+    manifestsAs Transient
+?resultTable : Artifact
+    elementOf ?SQLString
+    hasRole Value
+    manifestsAs Transient
+read(?query,?databaser) |-> ?resultTable
+
+?databaseu0 : Artifact
+    elementOf MySQLImage
+    hasRole Database
+    manifestsAs File
+?databaseu1 : Artifact
+    elementOf MySQLImage
+    hasRole Database
+    manifestsAs File
+?updateStmt : Artifact
+    elementOf SQLDML
+    hasRole TransformationRule
+    manifestsAs Transient
+update(?updateStmt,?databaseu0) |-> ?databaseu1
+
+?databased0 : Artifact
+    elementOf MySQLImage
+    hasRole Database
+    manifestsAs File
+?databased1 : Artifact
+    elementOf MySQLImage
+    hasRole Database
+    manifestsAs File
+?deleteStmt : Artifact
+    elementOf SQLDML
+    hasRole TransformationRule
+    manifestsAs Transient
+update(?deleteStmt,?databased0) |-> ?databased1
+?databased1 partOf ?databased0

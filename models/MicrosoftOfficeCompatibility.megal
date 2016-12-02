@@ -1,39 +1,49 @@
 module MicrosoftOfficeCompatibility
 
+OfficeWare : TechnologySpace
+    = "https://www.reference.com/business-finance/definition-office-technology-7627b30083ad168a"
+
 XML : DataRepresentationLanguage
-BinaryFormat : FileFormat 
+    = "https://en.wikipedia.org/wiki/XML"
 MicrosoftOfficeOpenXML : StylesheetLanguage 
-MicrosoftOfficeOpenXML subsetOf XML
-MicrosoftOfficeBinaryFileFormat : FileFormat
-MicrosoftOfficeBinaryFileFormat subsetOf BinaryFormat
+    = "https://en.wikipedia.org/wiki/Office_Open_XML"
+    subsetOf XML
+BinaryFormat : FileFormat 
+    = "https://en.wikipedia.org/wiki/Binary_file"
+CFBF : FileFormat
+    = "https://en.wikipedia.org/wiki/Compound_File_Binary_Format"
+    subsetOf BinaryFormat
+
+convert :  MicrosoftOfficeOpenXML -> CFBF //https://en.wikipedia.org/wiki/Office_Open_XML#Application%20support
+MicrosoftOfficeCompatibility : Plugin
+    = "http://www.pcworld.com/article/217190/microsoft_office_docx.html"
+    realizes Transformation
+    implements convert
 
 MicrosoftOffice2003 : SoftwareSuite 
-OfficeWare : TechnologySpace
-MicrosoftOffice2003 belongsTo OfficeWare
-MicrosoftOffice2003 implements MicrosoftOfficeBinaryFileFormat
-Conversion : AbstractProcess
-
-MicrosoftOfficeCompatibility : Plugin //see comment above
-MicrosoftOfficeCompatibility realizes Conversion
-convert :  MicrosoftOfficeOpenXML -> MicrosoftOfficeBinaryFileFormat
-MicrosoftOfficeCompatibility implements convert
-MicrosoftOffice2003 uses MicrosoftOfficeCompatibility
+    = "https://en.wikipedia.org/wiki/Microsoft_Office"
+    belongsTo OfficeWare
+    implements CFBF
+    uses MicrosoftOfficeCompatibility
 
 XSD : SchemaLanguage
+    = "https://en.wikipedia.org/wiki/XML_Schema_(W3C)"
 MicrosoftOfficeOpenXMLSchema : Artifact
-MicrosoftOfficeOpenXMLSchema elementOf XSD
-MicrosoftOfficeOpenXMLSchema hasRole Schema
-MicrosoftOfficeOpenXMLSchema manifestsAs File+
-MicrosoftOfficeOpenXMLSchema defines MicrosoftOfficeOpenXML
+    = "https://msdn.microsoft.com/en-us/library/dd979954(v=office.12).aspx"
+    elementOf XSD
+    hasRole Schema
+    manifestsAs File+
+    defines MicrosoftOfficeOpenXML
 
 Document : Role
+    = "https://en.wikipedia.org/wiki/Document"
 ?aNewOfficeFile : Artifact
-?aNewOfficeFile elementOf MicrosoftOfficeOpenXML
-?aNewOfficeFile hasRole Document
-?aNewOfficeFile manifestsAs File
-?aNewOfficeFile conformsTo MicrosoftOfficeOpenXMLSchema
+    elementOf MicrosoftOfficeOpenXML
+    hasRole Document
+    manifestsAs File
+    conformsTo MicrosoftOfficeOpenXMLSchema
 ?anOldOfficeFile : Artifact
-?anOldOfficeFile elementOf MicrosoftOfficeBinaryFileFormat
-?anOldOfficeFile hasRole Document
-?anOldOfficeFile manifestsAs File
-convert(?aNewOfficeFile) |-> ?anOldOfficeFile      // this cannot be found anywhere
+    elementOf CFBF
+    hasRole Document
+    manifestsAs File
+convert(?aNewOfficeFile) |-> ?anOldOfficeFile 

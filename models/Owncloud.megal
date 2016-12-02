@@ -1,33 +1,66 @@
 module Owncloud
 
-CloudService < Technology
-Owncloud : CloudService
+C++ : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/C%2B%2B"
+Java : ProgrammingLanguage
+    = "http://docs.oracle.com/javase/7/docs/technotes/guides/language/"
+PHP : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/PHP"
 
-FileSynchronization : Concept
-FileSharing : Concept
-Owncloud facilitates FileSynchronization
-Owncloud facilitates FileSharing
+FileSynchronization : AbstractProcess
+    = "https://en.wikipedia.org/wiki/File_synchronization"
+SynchronizedFile : Role
+    = "https://en.wikipedia.org/wiki/File_synchronization"
+ConflictDetection : AbstractProcess
+    = "http://www.tgrmn.com/web/kb/item35.htm"
+VersionControl : AbstractProcess
+    = "https://en.wikipedia.org/wiki/Version_control"
+IOScheduling : AbstractProcess
+    = "https://en.wikipedia.org/wiki/I/O_scheduling"
+Owncloud : SoftwareSuite
+    = "https://en.wikipedia.org/wiki/OwnCloud"
+    = "https://en.wikipedia.org/wiki/Comparison_of_file_synchronization_software"
+    realizes FileSynchronization
+    realizes ConflictDetection
+    realizes VersionControl
+    realizes IOScheduling
+    uses C++
+    uses Java
+    uses PHP
 
-CloudServer < System
-CloudClient < System
-?anOwncloudClient : CloudClient
-?anOwncloudClient uses Owncloud
-?anOwncloudServer : CloudServer
-?anOwncloudServer uses Owncloud
+?anOwncloudClient : Application
+    uses Owncloud
+?anOwncloudServer : WebApplication //?
+    uses Owncloud
 
-FileSystem < System
 ?aFileSystem1 : FileSystem
 ?aFileSystem2 : FileSystem
 
-?aFile1 : Artifact<?,?,File>
-?aFile1 partOf ?aFileSystem1
-?aFile2 : Artifact<?,?,File>
-?aFile1 equals ?aFile2
-share : URL # ? -> ?
-?aserverurl : Artifact<URL,Reference,Fragment>
-share(?aserverurl,?aFile1) |-> ?aFile2
-?aFile2 partOf ?aFileSystem2
+?l : FileFormat
+URL : ReferenceLanguage
+    = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator"
+?aFile1 : Artifact
+    elementOf ?l
+    hasRole SynchronizedFile
+    manifestsAs File
+    partOf ?aFileSystem1
+?aFile2 : Artifact
+    elementOf ?l
+    hasRole SynchronizedFile
+    manifestsAs File
+    partOf ?aFileSystem2
+?aFile1 correspondsTo ?aFile2  // equality
+?PolicyLanguage : ConfigurationLanguage
+?sharingAllowedPolicy : Artifact
+    elementOf ?PolicyLanguage
+    hasRole Configuration
+    manifestsAs WebResource
+    partOf ?anOwncloudServer
+share : URL # ?PolicyLanguage # ?l -> ?l
+Owncloud implements share
+?aserverurl : Artifact
+    elementOf URL
+    hasRole Reference
+    manifestsAs Fragment
+share(?aserverurl,?sharingAllowedPolicy,?aFile1) |-> ?aFile2
 
-?sharingPolicy : Artifact<?,Configuration,?>
-?sharingPolicy partOf ?owncloudServer
-?sharingPolicy defines share

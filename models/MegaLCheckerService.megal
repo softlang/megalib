@@ -1,16 +1,23 @@
-module MegaLANTLR
+module MegaLCheckerService
 
-import ANTLR where {
-    MegaLParser substitutes ?aParser
-} 
+import java.JavaPlatform
 
-MegaLibChecker : System
-MegaLibChecker uses Java
-?aParser partOf MegaLibChecker
-?aParser uses ANTLR
+MegaL : ModelingLanguage
+    = "http://www.softlang.org/megal"
+MegaLibChecker : Library
+    = "https://github.com/softlang/megalib/tree/master/checker"
+    uses Java
+    implements MegaL
 
+
+checkModel : MegaL -> String
 MegaLibChecker implements checkModel
-String : Language
-checkModel : MegaLObject -> String
-warningLog : Artifact<String>
-checkModel(EMFTechmodelObject) |-> warningLog
+?warningLog : Artifact
+    elementOf String
+    hasRole Log
+    manifestsAs Transient
+?megamodel : Artifact
+    elementOf MegaL
+    hasRole DescriptiveModel
+    manifestsAs File
+checkModel(?megamodel) |-> ?warningLog
