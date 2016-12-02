@@ -32,7 +32,7 @@ public class CheckTest {
 				+ "?l : ProgrammingLanguage "
 				+ "?t uses ?l";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
@@ -45,7 +45,7 @@ public class CheckTest {
 				+ "?l : Language "
 				+ "?t uses ?l";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
@@ -58,7 +58,7 @@ public class CheckTest {
 				+ "l : ProgrammingLanguage "
 				+ "t uses l";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(2,c.getWarnings().size());
@@ -70,7 +70,7 @@ public class CheckTest {
 	public void checkTechnologyUsesLanguage(){
 		String input = "?t : Library";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
@@ -87,7 +87,7 @@ public class CheckTest {
 				+ "?a manifestsAs File "
 				+ "f(?a)|->?a";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
@@ -106,7 +106,7 @@ public class CheckTest {
 				+ "?t uses ?l "
 				+ "?t implements f";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
 		assertTrue(c.getWarnings().contains("The function f is not applied yet. Please state an actual application."));
@@ -118,7 +118,7 @@ public class CheckTest {
 				+ "?a hasRole MvcModel "
 				+ "?a manifestsAs File";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
 		assertTrue(c.getWarnings().contains("Language missing for artifact ?a"));
@@ -131,7 +131,7 @@ public class CheckTest {
 				+ "?a elementOf ?l "
 				+ "?a hasRole MvcModel ";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
 		assertTrue(c.getWarnings().contains("Manifestation misssing for ?a"));
@@ -144,7 +144,7 @@ public class CheckTest {
 				+ "?a elementOf ?l "
 				+ "?a manifestsAs File";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
 		assertTrue(c.getWarnings().contains("Role misssing for ?a"));
@@ -159,18 +159,18 @@ public class CheckTest {
 				+ "?l2 subsetOf ?l3 "
 				+ "?l3 subsetOf ?l2";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
 		assertTrue(c.getWarnings().contains("Cycles exist concerning the relationship subsetOf involving the following entities :[?l2, ?l3]"));
 	}
 	
 	@Test
-	public void checkNotWellformedURI(){
+	public void checkNotWellformedURL(){
 		String input = "?l : ProgrammingLanguage "
 				+ "?l = \"notauri\"";
 		MegaModel m = new MegaModelLoader().loadString(input);
-		Check c = new Check(m);
+		Check c = new Check(m,true);
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
 		assertTrue(c.getWarnings().contains("Error at Link to 'notauri' : The URL is malformed!"));

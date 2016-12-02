@@ -20,6 +20,10 @@ SchemaLanguage < Language
     = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages"
 CommandLineLanguage < Language
     = "https://en.wikipedia.org/wiki/Command-line_interface"
+ModelingLanguage < Language
+    = "https://en.wikipedia.org/wiki/Modeling_language"
+InstructionSet < Language
+    = "https://en.wikipedia.org/wiki/Instruction_set"
 subsetOf < Language # Language
 embeddedInto < Language # Language 
 
@@ -37,7 +41,6 @@ defines < Artifact # Language
 elementOf < Artifact # Language
 conformsTo < Artifact # Artifact
 correspondsTo < Artifact # Artifact
-embeddedInto < Artifact # Artifact // formulate via mechanism, partOf and language embedding
 
 // Manifestations of artifacts
 Manifestation < Entity
@@ -81,10 +84,18 @@ MvcController : Role
     = "https://en.wikipedia.org/wiki/Model-view-controller"
 Value : Role
     = "https://en.wikipedia.org/wiki/Value_(computer_science)"
+Input : Role
+    = "http://101companies.org/wiki/Input"
+Output : Role
+    = "http://101companies.org/wiki/Output"
 Message : Role
     = "https://en.wikipedia.org/wiki/Message_passing"
 Specification : Role
     = "https://en.wikipedia.org/wiki/Specification_(technical_standard)"
+Log : Role
+    = "https://en.wikipedia.org/wiki/Logfile"
+DescriptiveModel : Role
+    = "http://www.businessdictionary.com/definition/descriptive-model.html"
 hasRole < Artifact # Role
 
 Function < Entity
@@ -120,12 +131,23 @@ WebApplication < System
 // Implementation relationships
 implements < Technology # Function
 implements < Technology # Language
-// implements < System # Function - Does this make sense?
 
 Paradigm < Entity 
     = "https://en.wikipedia.org/wiki/Programming_paradigm"
+ConcurrentProgramming : Paradigm
+    = "https://blog.golang.org/concurrency-is-not-parallelism"
+ObjectOrientation : Paradigm
+    = "https://en.wikipedia.org/wiki/Object-oriented_programming"
+FunctionalProgramming : Paradigm
+    = "https://en.wikipedia.org/wiki/Functional_programming"
+
 ProgrammingDomain < Entity
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
+GeneralPurposeProgramming : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/General-purpose_programming_language"
+MetaProgramming : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Metaprogramming"
+
 TechnologySpace < Entity
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
 DesignPattern < Entity
@@ -136,6 +158,8 @@ AbstractProcess < Entity
     = "https://en.wikipedia.org/wiki/Abstract_process"
 Serialization : AbstractProcess
     = "https://en.wikipedia.org/wiki/Serialization"
+Compilation : AbstractProcess
+    = "https://de.wikipedia.org/wiki/Compiler"
 Construct < Entity 
     = "https://en.wikipedia.org/wiki/Construct_(philosophy)"
 Semaphore : Construct
@@ -145,13 +169,13 @@ participantOf < Role # DesignPattern
 participantOf < Role # ArchitecturalPattern
 belongsTo < Technology # TechnologySpace
 belongsTo < Language # TechnologySpace
-supports < Technology # ProgrammingDomain 
+supports < Technology # ProgrammingDomain
+supports < Language # ProgrammingDomain
 realizes < Artifact # AbstractProcess
 realizes < Technology # AbstractProcess
 aspectOf < AbstractProcess # ProgrammingDomain
 aspectOf < Role # ProgrammingDomain // Better name needed
 aspectOf < Construct # Paradigm
-subdomainOf < ProgrammingDomain # ProgrammingDomain // Specialized problems as in ORMapping is subdomainOf persistence
 
 // Part-of relationships
 partOf < Artifact # Artifact

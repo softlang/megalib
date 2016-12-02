@@ -28,18 +28,22 @@ public class Check {
 
 	private MegaModel model;
 	private List<String> warnings;
+	private boolean nocon; //flag to disable checks that need internet connection
 	
-	public Check(MegaModel model) {
-		this.model = model;
-		doChecks();
+	public Check(MegaModel model){
+		doChecks(model, false);
 	}
 	
-	public List<String> getWarnings() {
-		return warnings;
+	public Check(MegaModel model, boolean nocon) {
+		doChecks(model, nocon);
 	}
 
-	private void doChecks() {
+	private void doChecks(MegaModel model, boolean nocon) {
+		this.model = model;
 		warnings = new LinkedList<String>();
+		this.nocon = nocon;
+		if(!nocon)
+			initializeTrustManagement();
 		
 		instanceChecks();
 		subtypeChecks();
@@ -172,19 +176,50 @@ public class Check {
 
 	private void checkLinks() {
 		Map<String, Set<String>> links = model.getLinkMap();
-		for (String name : links.keySet()) {
-			links.get(name).forEach(l->checkLinkWorking(l));
-		}
+		links.values()
+			 .parallelStream()
+			 .forEach(linkset -> linkset
+					 .forEach(l->checkLinkWorking(l)));
 	}
 	
-	private void checkLinkWorking(String l) {
-		URL u ;
+	private void checkLinkWorking(String link) {
+		URL u = checkURL(link);
+		if(u!=null&&!nocon)
+			checkConnection(u,link);
+	}
+
+	private void checkConnection(URL u, String link) {
+		HttpURLConnection huc;
 		try {
-			u = new URL(l);
-		} catch (MalformedURLException e) {
-			warnings.add("Error at Link to '"+l+"' : The URL is malformed!");
+			huc = (HttpURLConnection) u.openConnection();
+		} catch (IOException e) {
+			warnings.add("Error at Link to '"+link+"' : The URL connection failed!");
 			return;
 		}
+		try {
+			huc.setRequestMethod("HEAD");
+		} catch (ProtocolException e) {
+			warnings.add("Error at Link to '"+link+"' : ProtocolException!");
+			return;
+		}
+		int tries = 5;
+		while(tries>0){
+			try {
+				if(!(huc.getResponseCode()==HttpURLConnection.HTTP_OK)){
+					warnings.add("Error at Link to '"+link+"' : Link not working "+huc.getResponseCode());
+				}
+				break;
+			} catch (IOException e) {
+				tries--;
+			}
+		}
+		if(tries==0)
+			warnings.add("Error at Link to '"+link+"' : Connection failed!");
+		huc.disconnect();
+		
+	}
+
+	private void initializeTrustManagement() {
 		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
 		     public java.security.cert.X509Certificate[] getAcceptedIssuers() {
 		         java.security.cert.X509Certificate[] chck = null;
@@ -210,35 +245,20 @@ public class Check {
 		     
 		     HttpsURLConnection
 		     .setDefaultSSLSocketFactory(sc.getSocketFactory());
-		 
-		HttpURLConnection huc;
+	}
+
+	private URL checkURL(String link) {
+		URL u = null;
 		try {
-			huc = (HttpURLConnection) u.openConnection();
-		} catch (IOException e) {
-			warnings.add("Error at Link to '"+l+"' : The URL connection failed!");
-			return;
+			u = new URL(link);
+		} catch (MalformedURLException e) {
+			warnings.add("Error at Link to '"+link+"' : The URL is malformed!");
 		}
-		try {
-			huc.setRequestMethod("HEAD");
-		} catch (ProtocolException e) {
-			warnings.add("Error at Link to '"+l+"' : ProtocolException!");
-			return;
-		}
-		int tries = 5;
-		while(tries>0){
-			try {
-				if(!(huc.getResponseCode()==HttpURLConnection.HTTP_OK)){
-					warnings.add("Error at Link to '"+l+"' : Link not working "+huc.getResponseCode());
-				}
-				break;
-			} catch (IOException e) {
-				tries--;
-			}
-		}
-		if(tries==0)
-			warnings.add("Error at Link to '"+l+"' : Connection failed!");
-		huc.disconnect();
-		
+		return u;
+	}
+	
+	public List<String> getWarnings() {
+		return warnings;
 	}
 	
 }

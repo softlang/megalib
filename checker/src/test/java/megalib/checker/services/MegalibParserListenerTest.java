@@ -31,14 +31,14 @@ public class MegalibParserListenerTest {
 		MegaModelLoader ml = new MegaModelLoader();
 		MegaModel model = ml.getModel();
 		model.getCriticalWarnings().forEach(w->System.out.println(w));
-		assertEquals(24,model.getInstanceOfMap().size());
-		assertEquals(58,model.getLinkMap().size());
-		assertEquals(34,model.getSubtypesMap().size());
+		assertEquals(34,model.getInstanceOfMap().size());
+		assertEquals(70,model.getLinkMap().size());
+		assertEquals(36,model.getSubtypesMap().size());
 		Map<String, Set<Relation>> rm = model.getRelationshipDeclarationMap();
 		//the number of distinct relation ship names
-		assertEquals(18,rm.size());
+		assertEquals(17,rm.size());
 		int count = rm.values().stream().map(set -> set.size()).reduce(0, (a,b) -> a+b);
-		assertEquals(48, count);
+		assertEquals(47, count);
 		assertEquals(0,model.getCriticalWarnings().size());
 	}
 	
