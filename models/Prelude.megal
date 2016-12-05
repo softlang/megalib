@@ -224,12 +224,14 @@ uses < System # Technology
 uses < System # DesignPattern
 uses < System # ArchitecturalPattern
 uses < System # AbstractProcess
-uses < System # Language  // Necessary?
+uses < System # Language  
 uses < System # Construct
 uses < Technology # Technology
 uses < Technology # DesignPattern
 uses < Technology # ArchitecturalPattern
-uses < Technology # Language  // Necessary?
+uses < Technology # AbstractProcess
+uses < Technology # Language  
+uses < Technology # Construct
 uses < Artifact # DesignPattern
 uses < Artifact # ArchitecturalPattern
 uses < Artifact # System

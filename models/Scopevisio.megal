@@ -40,7 +40,8 @@ Scopevisio : WebService
     uses ?unknownLanguage
 
 Protocol < AbstractProcess // maybe
-HTTPSCommunication : Protocol 
+    = "https://en.wikipedia.org/wiki/Communications_protocol"
+HTTPS : Protocol 
     = "https://en.wikipedia.org/wiki/HTTPS"
 HTTPRequest : MessageLanguage
     = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods"
@@ -99,15 +100,20 @@ OpenScope : API
     manifestsAs Fragment
     partOf ?httpResponse
 communicate : HTTPRequest # URI -> HTTPResponse
-communicate(?aHTTPSRequest, ?aServiceAddress) |-> ?aHTTPSResponse
+communicate(?aHTTPSRequest, ?aServiceAddress) |-> ?httpResponse
 OpenScope implements communicate
 
-?ScopevisioClient : Application
+Authentication : Construct
+    = "https://en.wikipedia.org/wiki/Authentication"
+ScopevisioClient : SoftwareSuite
+    = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio"
     uses Java
+    uses Scopevisio
+    uses OpenScope
     implements communicate
-    uses HTTPSCommunication
+    uses HTTPS
     uses SOAP
-    uses Authentification
+    uses Authentication
 
 //TODO : This could be looked up in a client and its files.
 ?unknownConfigurationLanguage : ConfigurationLanguage
@@ -115,14 +121,17 @@ OpenScope implements communicate
     manifestsAs File
     hasRole Configuration
     elementOf ?unknownConfigurationLanguage
-    partOf ?ScopevisioClient
-?ScopevisioExe : Artifact
+    partOf ScopevisioClient
+?ScopevisioExe : Artifact //Archives and Folders do not have any elementOf relationship
     manifestsAs Archive
+    hasRole Executable
+    partOf ScopevisioClient
 
 REST : ArchitecturalPattern
     = "https://en.wikipedia.org/wiki/Representational_state_transfer"
-    
+
 ?ScopevisioDMS : Component
-    partOf ?ScopevisioClient
+    uses Java
+    partOf ScopevisioClient
     supports DocumentManagement
     uses REST
