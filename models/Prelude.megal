@@ -28,6 +28,8 @@ ConfigurationLanguage < Language
     = "https://en.wikipedia.org/wiki/Configuration_file"
 ReferenceLanguage < Language
     = "https://en.wikipedia.org/wiki/Reference"
+MessageLanguage < Language
+    = "https://en.wikipedia.org/wiki/Message_passing"
 subsetOf < Language # Language
 embeddedInto < Language # Language 
 
@@ -55,6 +57,8 @@ File+ : Manifestation
     = "https://en.wikipedia.org/wiki/Computer_file" // a set of files
 Folder : Manifestation
     = "https://en.wikipedia.org/wiki/Directory_(computing)"
+Archive : Manifestation
+    = "https://en.wikipedia.org/wiki/Archive_file"
 WebResource : Manifestation
     = "https://en.wikipedia.org/wiki/Web_resource"
 Transient : Manifestation
@@ -104,6 +108,8 @@ TransformationRule : Role
     = "http://101companies.org/wiki/Transformation"
 Reference : Role
     = "https://en.wikipedia.org/wiki/Reference"
+Executable : Role
+    = "https://en.wikipedia.org/wiki/Executable"
 hasRole < Artifact # Role
 
 Function < Entity
@@ -125,10 +131,13 @@ Component < Technology // as part of a framework or library
     = "https://en.wikipedia.org/wiki/Component-based_software_engineering#Software_component"
 SoftwareSuite < Technology // ?
     = "https://en.wikipedia.org/wiki/Software_suite"
+WebService < Technology
+    = "https://en.wikipedia.org/wiki/Web_service"
 IDE < Technology // ?
     = "https://en.wikipedia.org/wiki/Integrated_development_environment"
 Platform < Technology 
     = "https://en.wikipedia.org/wiki/Computing_platform"
+
 System < Entity
     = "https://en.wikipedia.org/wiki/Software_system"
 Application < System
@@ -216,6 +225,7 @@ uses < System # DesignPattern
 uses < System # ArchitecturalPattern
 uses < System # AbstractProcess
 uses < System # Language  // Necessary?
+uses < System # Construct
 uses < Technology # Technology
 uses < Technology # DesignPattern
 uses < Technology # ArchitecturalPattern
@@ -230,5 +240,6 @@ uses < Artifact # Language
 facilitates < Technology # DesignPattern
 facilitates < Technology # ArchitecturalPattern
 facilitates < Technology # AbstractProcess
+facilitates < Technology # Construct
 facilitates < Language # Paradigm
 facilitates < Language # ProgrammingDomain

@@ -1,45 +1,128 @@
 module Scopevisio
 
-CloudService < Technology
-Scopevisio : CloudService
-
+import java.JavaPlatform
 
 SoftwareAsAService : TechnologySpace
-Scopevisio belongsTo SoftwareAsAService
+    = "https://en.wikipedia.org/wiki/Software_as_a_service"
+   
+BusinessProgramming : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Business_software"
+EnterpriseResourcePlanning : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Enterprise_resource_planning"
+CustomerRelationshipManagement : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Customer_relationship_management"
+ProjectManagement : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Project_management_software"
+DocumentManagement : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Document_management_system"
+ECommerce : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/E-commerce"
+ServiceOrientedArchitecture : ArchitecturalPattern
+    = "https://en.wikipedia.org/wiki/Service-oriented_architecture"
 
-Scopevisio supports Marketing
-Scopevisio supports Sales
-Scopevisio supports ProjectManagement
-Scopevisio supports InvoiceManagement
-Scopevisio supports Bookkeeping
-Scopevisio supports FinanceManagement
-Scopevisio supports DocumentManagement
+/*
+The actual programming language for the online component is not mentioned
+as it actually does not matter to users.
+*/
+?unknownLanguage : ProgrammingLanguage
 
-?aScopeVisioSystem : System
-?aScopeVisioSystem uses Java
-?selectedServices : Artifact<?Unknown>
+Scopevisio : WebService
+    = "https://de.wikipedia.org/wiki/Scopevisio"
+    = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio"
+    belongsTo SoftwareAsAService
+    supports BusinessProgramming
+    supports EnterpriseResourcePlanning
+    supports CustomerRelationshipManagement
+    supports ProjectManagement
+    supports DocumentManagement
+    supports ECommerce
+    uses ServiceOrientedArchitecture
+    uses ?unknownLanguage
 
-?aHTTPSRequest : Message<SOAP>
-Reference < Artifact
-ReferencePart < Artifact
-?aServiceAddress : Reference<URI>
-?aProductName : ReferencePart<URI>
-?aProductName manifestsAs Fragment
-?aProductName partOf ?aServiceAddress
-?aServiceName : ReferencePart<URI>
-?aServiceName manifestsAs Fragment
-?aServiceName : partOf ?aServiceAddress
-?aHTTPSResponse : Message<SOAP>
-communicate : HTTPSRequest # URI -> HTTPSResponse
+Protocol < AbstractProcess // maybe
+HTTPSCommunication : Protocol 
+    = "https://en.wikipedia.org/wiki/HTTPS"
+HTTPRequest : MessageLanguage
+    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods"
+HTTPResponse : MessageLanguage
+    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message"
+
+XML : MarkupLanguage
+    = "https://en.wikipedia.org/wiki/XML"
+
+SOAP : MessageLanguage
+    = "https://en.wikipedia.org/wiki/SOAP"
+    = "https://www.w3.org/TR/soap/"
+    subsetOf XML
+    embeddedInto HTTPRequest
+    embeddedInto HTTPResponse
+URI : ReferenceLanguage
+    = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier"
+OpenScope : API
+    = "https://openscope.de/api.html"
+    partOf Scopevisio
+    uses HTTPS
+    implements SOAP
+    uses URI
+
+?aHTTPSRequest : Artifact
+    elementOf HTTPRequest
+    hasRole Message
+    manifestsAs Transient
+?aSOAPRequest : Artifact
+    elementOf SOAP
+    hasRole Message
+    manifestsAs Fragment
+    partOf ?aHTTPSRequest
+?aServiceAddress : Artifact
+    hasRole Reference
+    elementOf URI
+    manifestsAs Fragment
+    partOf ?aSOAPRequest
+?aProductName : Artifact
+    hasRole Reference
+    elementOf URI
+    manifestsAs Fragment
+    partOf ?aServiceAddress
+?aServiceName : Artifact
+    hasRole Reference
+    elementOf URI
+    manifestsAs Fragment
+    partOf ?aServiceAddress
+?httpResponse : Artifact
+    hasRole Message
+    elementOf HTTPResponse
+    manifestsAs Transient
+?contentResponse : Artifact
+    hasRole Message
+    elementOf SOAP
+    manifestsAs Fragment
+    partOf ?httpResponse
+communicate : HTTPRequest # URI -> HTTPResponse
 communicate(?aHTTPSRequest, ?aServiceAddress) |-> ?aHTTPSResponse
-?aScopeVisioSystem implements communicate
+OpenScope implements communicate
 
-JavaRuntimeEnvironment : Technology
-?aScopeVisioSystem uses JavaRuntimeEnvironment
-?aScopeVisioSystem uses Java
-?aScopeVisioSystem uses HTTPS 
-?aScopeVisioSystem uses SOAP
-?aScopeVisioSystem uses Authentification
+?ScopevisioClient : Application
+    uses Java
+    implements communicate
+    uses HTTPSCommunication
+    uses SOAP
+    uses Authentification
 
-Scopevisio = "https://www.scopevisio.com/"
-SOAP = "https://www.w3.org/TR/soap/"
+//TODO : This could be looked up in a client and its files.
+?unknownConfigurationLanguage : ConfigurationLanguage
+?selectedServices : Artifact
+    manifestsAs File
+    hasRole Configuration
+    elementOf ?unknownConfigurationLanguage
+    partOf ?ScopevisioClient
+?ScopevisioExe : Artifact
+    manifestsAs Archive
+
+REST : ArchitecturalPattern
+    = "https://en.wikipedia.org/wiki/Representational_state_transfer"
+    
+?ScopevisioDMS : Component
+    partOf ?ScopevisioClient
+    supports DocumentManagement
+    uses REST
