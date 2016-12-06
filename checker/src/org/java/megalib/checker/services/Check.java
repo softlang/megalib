@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -97,7 +96,7 @@ public class Check {
 											   .filter(r->r.getSubject().equals(inst))
 											   .collect(Collectors.toSet());
 				if(fset.isEmpty())
-					warnings.add("Manifestation misssing for "+inst);
+					warnings.add("Manifestation missing for "+inst);
 				
 				Set<Relation> roleSet = model.getRelationshipInstanceMap().get("hasRole");
 				if(null==roleSet){
@@ -124,20 +123,17 @@ public class Check {
 	 * Every subject of a part-hood relationship cannot be subject of another part-hood relationship.
 	 */
 	private void partOfCheck(){
-		Set<Relation> set = model.getRelationshipInstanceMap()
-			 .get("partOf");
-		if(set==null)
+		if(!model.getRelationshipInstanceMap().containsKey("partOf"))
 			return;
-		@SuppressWarnings("unchecked")
-		Queue<Relation> tempset = (Queue<Relation>) set.parallelStream().map(r -> r).collect(Collectors.toList());
-		Relation rel = tempset.poll();
-		String subject = rel.getSubject();
-		List<String> fobjects = tempset.parallelStream()
-									   .filter(r -> r.getSubject().equals(subject))
-									   .map(r -> r.getObject())
-									   .collect(Collectors.toList());
-		if(!fobjects.isEmpty()){
-			warnings.add(subject + " is part of multiple composites: "+fobjects+", "+rel.getObject());
+		List<String> parts = model.getRelationshipInstanceMap()
+									  .get("partOf")
+									  .parallelStream()
+									  .map(r -> r.getSubject())
+									  .collect(Collectors.toList());
+		for(String part : parts){
+			List<String> eqParts = parts.stream().filter(p -> p.equals(part)).collect(Collectors.toList());
+			if(parts.stream().filter(p -> p.equals(part)).count()>1)
+				warnings.add(part + " is part of multiple composites: "+eqParts.toString());
 		}
 	}
 	
@@ -223,7 +219,7 @@ public class Check {
 					if(impl.getObject().equals(l))
 						b = true;
 			if(!b)
-				warnings.add("The language "+l+" is neither defined nor implemented.");
+				warnings.add("State a defining artifact or an implementing technology for the language "+l+".");
 		}
 	}
 	
