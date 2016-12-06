@@ -33,13 +33,6 @@ MessageLanguage < Language
 subsetOf < Language # Language
 embeddedInto < Language # Language 
 
-String : DataRepresentationLanguage
-    = "https://en.wikipedia.org/wiki/String_(computer_science)"
-Number : DataRepresentationLanguage
-    = "https://en.wikipedia.org/wiki/Number"
-Boolean : DataRepresentationLanguage
-    = "https://en.wikipedia.org/wiki/Boolean_data_type"
-
 //Classification by Language, Role and Manifestation
 Artifact < Entity
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)"

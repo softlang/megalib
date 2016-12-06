@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
 
@@ -47,19 +49,17 @@ public class Check {
 		
 		instanceChecks();
 		subtypeChecks();
+		partOfCheck();
+		fragmentPartOfCheck();
+		partOfFragmentCheck();
+		languageDefinedOrImplemented();
+		transientIsInputOrOutput();
 		cyclicSubtypingChecks();
 		cyclicRelationChecks("subsetOf");
 		cyclicRelationChecks("partOf");
 		cyclicRelationChecks("conformsTo");
 		model.getFunctionDeclarations().keySet().forEach(f -> checkFunction(f));
 		checkLinks();
-	}
-
-	private void subtypeChecks() {
-		model.getSubtypesMap().forEach((k,v)-> {
-			if(!model.getLinkMap().containsKey(k))
-				warnings.add("Link missing for subtype "+k);
-		});
 	}
 
 	private void instanceChecks() {
@@ -110,6 +110,142 @@ public class Check {
 				if(fset.isEmpty())
 					warnings.add("Role misssing for "+inst);
 			}
+		}
+	}
+	
+	private void subtypeChecks() {
+		model.getSubtypesMap().forEach((k,v)-> {
+			if(!model.getLinkMap().containsKey(k))
+				warnings.add("Link missing for subtype "+k);
+		});
+	}
+	
+	/**
+	 * Every subject of a part-hood relationship cannot be subject of another part-hood relationship.
+	 */
+	private void partOfCheck(){
+		Set<Relation> set = model.getRelationshipInstanceMap()
+			 .get("partOf");
+		if(set==null)
+			return;
+		@SuppressWarnings("unchecked")
+		Queue<Relation> tempset = (Queue<Relation>) set.parallelStream().map(r -> r).collect(Collectors.toList());
+		Relation rel = tempset.poll();
+		String subject = rel.getSubject();
+		List<String> fobjects = tempset.parallelStream()
+									   .filter(r -> r.getSubject().equals(subject))
+									   .map(r -> r.getObject())
+									   .collect(Collectors.toList());
+		if(!fobjects.isEmpty()){
+			warnings.add(subject + " is part of multiple composites: "+fobjects+", "+rel.getObject());
+		}
+	}
+	
+	/**
+	 * All artifacts that manifest as fragments are part of another artifact
+	 * that is not a fragment.
+	 */
+	private void fragmentPartOfCheck() {
+		if(!model.getRelationshipInstanceMap().containsKey("manifestsAs"))
+			return;
+		List<String> fragments = model.getRelationshipInstanceMap()
+							  .get("manifestsAs")
+							  .parallelStream()
+							  .filter(r -> r.getObject().equals("Fragment"))
+							  .map(r -> r.getSubject())
+							  .collect(Collectors.toList());
+		for(String f : fragments){
+			List<String> composites = model.getRelationshipInstanceMap()
+									       .get("partOf")
+									       .parallelStream()
+									       .filter(r -> r.getSubject().equals(f))
+									       .map(r -> r.getObject())
+									       .collect(Collectors.toList());
+			if(composites.isEmpty()){
+				warnings.add("Composite missing for fragment "+f);
+			} else{
+				if(composites.size() > 1)
+					warnings.add("Multiple composites for fragment "+f);
+				else
+					continue;
+			}
+		}
+	}
+	
+	/**
+	 * All composite fragments do not have any part that is not a fragment.
+	 */
+	private void partOfFragmentCheck(){
+		if(!model.getRelationshipInstanceMap().containsKey("manifestsAs"))
+			return;
+		Set<String> fset = model.getRelationshipInstanceMap()
+				  .get("manifestsAs")
+				  .parallelStream()
+				  .filter(r -> r.getObject().equals("Fragment"))
+				  .map(r -> r.getSubject())
+				  .collect(Collectors.toSet());
+		for(String f : fset){
+			Set<String> parts = model.getRelationshipInstanceMap()
+				 .get("partOf")
+				 .parallelStream()
+				 .filter(r -> r.getObject().equals(f))
+				 .map(r -> r.getSubject())
+				 .collect(Collectors.toSet());
+			Set<String> diff = new HashSet<>();
+			diff.addAll(parts);
+			diff.removeAll(fset);
+			if(!parts.isEmpty()&&!diff.isEmpty())
+				warnings.add("The following parts of the fragment "+f+" are not fragments and are thus invalid:"+diff.toString());
+		}
+	}
+	
+	/**
+	 * Every language has to be defined or implemented.
+	 */
+	private void languageDefinedOrImplemented(){
+		Set<String> languages = model.getInstanceOfMap()
+			 .keySet()
+			 .parallelStream()
+			 .filter(i -> model.isInstanceOf(i, "Language"))
+			 .collect(Collectors.toSet());
+		for(String l : languages){
+			if(l.startsWith("?"))
+				continue;
+			boolean b = false;
+			if(model.getRelationshipInstanceMap().containsKey("defines"))
+				for(Relation def : model.getRelationshipInstanceMap().get("defines"))
+					if(def.getObject().equals(l))
+						b = true;
+			if(b)
+				continue;
+			if(model.getRelationshipInstanceMap().containsKey("implements"))
+				for(Relation impl : model.getRelationshipInstanceMap().get("implements"))
+					if(impl.getObject().equals(l))
+						b = true;
+			if(!b)
+				warnings.add("The language "+l+" is neither defined nor implemented.");
+		}
+	}
+	
+	private void transientIsInputOrOutput(){
+		if(!model.getRelationshipInstanceMap().containsKey("manifestsAs"))
+			return;
+		Set<String> tset = model.getRelationshipInstanceMap()
+				  .get("manifestsAs")
+				  .parallelStream()
+				  .filter(r -> r.getObject().equals("Transient"))
+				  .map(r -> r.getSubject())
+				  .collect(Collectors.toSet());
+		Set<String> iovalues = new HashSet<>();
+		Set<Function> pairs = new HashSet<>();
+		model.getFunctionApplications().forEach((k,v)-> pairs.addAll(v));
+		for(Function p : pairs){
+			iovalues.addAll(p.getInputs());
+			iovalues.addAll(p.getOutputs());
+		}
+		tset.removeAll(iovalues);
+		if(!tset.isEmpty()){
+			warnings.add("The following transients are neither input nor output of a function application: "+tset.toString());
 		}
 	}
 	

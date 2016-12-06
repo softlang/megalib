@@ -55,14 +55,13 @@ public class CheckTest {
 	@Test
 	public void checkLinkExistence(){
 		String input = "t : Library "
-				+ "l : ProgrammingLanguage "
-				+ "t uses l";
+				+ "?l : ProgrammingLanguage "
+				+ "t uses ?l";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Check c = new Check(m,true);
 		
 		assertEquals(0,m.getCriticalWarnings().size());
-		assertEquals(2,c.getWarnings().size());
-		assertTrue(c.getWarnings().contains("The entity l misses a Link for further reading."));
+		assertEquals(1,c.getWarnings().size());
 		assertTrue(c.getWarnings().contains("The entity t misses a Link for further reading."));
 	}
 	
