@@ -67,13 +67,14 @@ public class CheckTest {
 	
 	@Test
 	public void checkTechnologyUsesLanguage(){
-		String input = "?t : Library";
+		String input = "t : Library\n"
+				+ "    = \"http://softlang.wikidot.com/\"";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Check c = new Check(m,true);
 		
 		assertEquals(0,m.getCriticalWarnings().size());
 		assertEquals(1,c.getWarnings().size());
-		assertTrue(c.getWarnings().contains("The technology ?t does not use any language. Please state language usage."));
+		assertTrue(c.getWarnings().contains("The technology t does not use any language. Please state language usage."));
 	}
 	
 	@Test

@@ -70,7 +70,7 @@ public class Check {
 				warnings.add("The entity "+inst+" is underspecified. Please state a specific subtype of Language.");
 			if(!(inst.startsWith("?")||model.getLinkMap().containsKey(inst)||map.get(inst).equals("Function")))
 				warnings.add("The entity "+inst+" misses a Link for further reading.");
-			if(model.isInstanceOf(inst, "Technology")){
+			if(model.isInstanceOf(inst, "Technology")&&!inst.startsWith("?")){
 				Set<Relation> usesSet = model.getRelationshipInstanceMap().get("uses");
 				if(null==usesSet){
 					warnings.add("The technology "+inst+" does not use any language. Please state language usage.");
@@ -205,7 +205,7 @@ public class Check {
 			 .filter(i -> model.isInstanceOf(i, "Language"))
 			 .collect(Collectors.toSet());
 		for(String l : languages){
-			if(l.startsWith("?"))
+			if(l.startsWith("?")||model.getSubsetOfMap().containsKey(l))
 				continue;
 			boolean b = false;
 			if(model.getRelationshipInstanceMap().containsKey("defines"))
@@ -226,10 +226,11 @@ public class Check {
 	private void transientIsInputOrOutput(){
 		if(!model.getRelationshipInstanceMap().containsKey("manifestsAs"))
 			return;
+		
 		Set<String> tset = model.getRelationshipInstanceMap()
 				  .get("manifestsAs")
 				  .parallelStream()
-				  .filter(r -> r.getObject().equals("Transient"))
+				  .filter(r -> r.getObject().equals("Transient") && !isPart(r.getSubject()))
 				  .map(r -> r.getSubject())
 				  .collect(Collectors.toSet());
 		Set<String> iovalues = new HashSet<>();
@@ -243,6 +244,13 @@ public class Check {
 		if(!tset.isEmpty()){
 			warnings.add("The following transients are neither input nor output of a function application: "+tset.toString());
 		}
+	}
+	
+	private boolean isPart(String t){
+		if(!model.getRelationshipInstanceMap().containsKey("partOf"))
+			return false;
+		Set<Relation> partOfs = model.getRelationshipInstanceMap().get("partOf");
+		return !partOfs.parallelStream().noneMatch(r -> r.getSubject().equals(t));
 	}
 	
 	private void cyclicSubtypingChecks() {

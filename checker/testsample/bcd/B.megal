@@ -4,5 +4,5 @@ import A
 
 ?a2 : Artifact
     elementOf HTML
-    hasRole Information
-    manifestsAs WebResource
+    hasRole WebResource
+    manifestsAs Transient

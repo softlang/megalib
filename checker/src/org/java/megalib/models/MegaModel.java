@@ -274,6 +274,10 @@ public class MegaModel {
 		linkMap.put(entity, links);
 	}
 	
+	public Map<String, String> getSubsetOfMap(){
+		return Collections.unmodifiableMap(subsetOfMap);
+	}
+	
 	public void addSubstitutes(String by, String e) throws WellFormednessException{
 		if(!instanceOfMap.containsKey(e)){
 			throw new WellFormednessException("Unable to substitute : "+e+" does not exist.");
@@ -361,12 +365,19 @@ public class MegaModel {
 		if(!elementOfMap.containsKey(art))
 			return false;
 		String temp = elementOfMap.get(art);
-		if(temp.equals(lang))
+		if(temp.equals(lang)||isSubsetOf(temp, lang))
 			return true;
+		return false;
+	}
+	
+	public boolean isSubsetOf(String l1, String l2){
+		if(!subsetOfMap.containsKey(l1))
+			return false;
+		String temp = l1;
 		while(subsetOfMap.containsKey(temp)){
-			temp = subsetOfMap.get(temp);
-			if(temp.equals(lang))
+			if(subsetOfMap.get(temp).equals(l2))
 				return true;
+			temp = subsetOfMap.get(temp);
 		}
 		return false;
 	}

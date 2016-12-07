@@ -4,8 +4,6 @@ FileFormat < Language
     = "https://en.wikipedia.org/wiki/File_format"
 ProgrammingLanguage < Language
     = "https://en.wikipedia.org/wiki/Programming_language"
-ObjectGraph < Language
-    = "https://en.wikipedia.org/wiki/Object_graph"
 DataRepresentationLanguage < Language 
     = "https://de.wikipedia.org/wiki/Datenformat" //need better binding
 MarkupLanguage < Language
@@ -30,6 +28,10 @@ ReferenceLanguage < Language
     = "https://en.wikipedia.org/wiki/Reference"
 MessageLanguage < Language
     = "https://en.wikipedia.org/wiki/Message_passing"
+DataType < Language
+    = "https://en.wikipedia.org/wiki/Data_type"
+ObjectGraph < Language
+    = "https://en.wikipedia.org/wiki/Object_graph"
 subsetOf < Language # Language
 embeddedInto < Language # Language 
 
@@ -40,6 +42,8 @@ defines < Artifact # Language
 elementOf < Artifact # Language
 conformsTo < Artifact # Artifact
 correspondsTo < Artifact # Artifact
+refersTo < Artifact # Artifact
+represents < Artifact # Artifact
 
 // Manifestations of artifacts
 Manifestation < Entity
@@ -52,8 +56,6 @@ Folder : Manifestation
     = "https://en.wikipedia.org/wiki/Directory_(computing)"
 Archive : Manifestation
     = "https://en.wikipedia.org/wiki/Archive_file"
-WebResource : Manifestation
-    = "https://en.wikipedia.org/wiki/Web_resource"
 Transient : Manifestation
     = "https://en.wikipedia.org/wiki/Transient_(computer_programming)"
 Fragment : Manifestation
@@ -103,6 +105,10 @@ Reference : Role
     = "https://en.wikipedia.org/wiki/Reference"
 Executable : Role
     = "https://en.wikipedia.org/wiki/Executable"
+Program : Role
+    = "https://en.wikipedia.org/wiki/Computer_program"
+WebResource : Role // WebResource is not a manifestation. It tells us something about where it is deployed.
+    = "https://en.wikipedia.org/wiki/Web_resource"
 hasRole < Artifact # Role
 
 Function < Entity
@@ -164,6 +170,7 @@ MetaProgramming : ProgrammingDomain
 DatabaseProgramming : ProgrammingDomain
     = "http://101companies.org/wiki/Database_programming"
 // Database aspectOf DatabaseProgramming
+subdomainOf < ProgrammingDomain # ProgrammingDomain
 
 TechnologySpace < Entity
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
@@ -196,9 +203,11 @@ supports < Technology # ProgrammingDomain
 supports < Language # ProgrammingDomain
 realizes < Artifact # AbstractProcess
 realizes < Technology # AbstractProcess
+realizes < Technology # Construct
 aspectOf < AbstractProcess # ProgrammingDomain
 aspectOf < Role # ProgrammingDomain // Better name needed
-aspectOf < Construct # Paradigm
+aspectOf < Construct # Paradigm //as in Semaphore aspectOf ConcurrentProgramming
+aspectOf < Construct # ProgrammingDomain //as in LocalStorage aspectOf OfflineWebApplicationDevelopment
 
 // Part-of relationships
 partOf < Artifact # Artifact
@@ -206,10 +215,6 @@ partOf < Artifact # System
 partOf < Artifact # Technology
 partOf < Technology # Technology
 partOf < System # System
-
-// Language usage
-writtenIn < System # Language
-writtenIn < Technology # Language
 
 // Usage
 uses < System # System

@@ -22,7 +22,7 @@ public class MegalibImportListenerTest {
 		MegaModelLoader ml = new MegaModelLoader();
 		ml.loadFile("testsample/bcd/d/D.megal");
 		MegaModel m = ml.getModel();
-		assertEquals("Role",m.getInstanceOfMap().get("Information"));
+		assertEquals("Role",m.getInstanceOfMap().get("WebResource"));
 		assertEquals("Artifact",m.getInstanceOfMap().get("softlangpage1"));
 		assertEquals("Artifact",m.getInstanceOfMap().get("softlangpage2"));
 		assertEquals("MarkupLanguage",m.getInstanceOfMap().get("HTML"));

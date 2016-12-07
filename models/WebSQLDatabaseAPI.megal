@@ -1,0 +1,127 @@
+module WebSQLDatabaseAPI
+
+/*
+This prescriptive model describes a technology that is outdated : https://www.w3.org/TR/webdatabase/
+*/
+
+//import sql.SQL
+WebApplicationDevelopment : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Web_application"
+OfflineWebApplicationDevelopment : ProgrammingDomain
+    = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline"
+    subdomainOf WebApplicationDevelopment
+LocalStorage : Construct
+    = "http://www.w3schools.com/html/html5_webstorage.asp"
+    aspectOf OfflineWebApplicationDevelopment
+HTML5 : MarkupLanguage
+    = "https://www.w3.org/TR/html5/"
+HTML5JavaScript : ProgrammingLanguage
+    = "http://www.w3schools.com/html/html_scripts.asp"
+    embeddedInto HTML5
+?aBrowser : Platform
+    implements HTML5
+    implements HTML5JavaScript
+    realizes LocalStorage
+
+//SQL database API
+DatabaseAPISQL : QueryLanguage
+    = "https://www.w3.org/TR/webdatabase/#executing-sql-statements"
+    embeddedInto HTML5JavaScript
+    facilitates DatabaseProgramming
+SQLDatabaseAPI : API
+    = "https://www.w3.org/TR/offline-webapps/#offline"
+    = "https://www.tutorialspoint.com/html5/html5_web_sql.htm"
+    uses HTML5
+    implements DatabaseAPISQL
+    realizes LocalStorage
+    supports DatabaseProgramming
+    supports OfflineWebApplicationDevelopment
+?aLocalFileSystem : FileSystem
+?SQLImage : FileFormat
+?adatabase1 : Artifact
+    elementOf ?SQLImage
+    hasRole Database
+    manifestsAs File
+    partOf ?aLocalFileSystem
+?aWebApplication : WebApplication
+    uses HTML5
+    uses HTML5JavaScript
+    uses SQLDatabaseAPI
+    uses DatabaseAPISQL
+?awebsite : Artifact
+    hasRole WebResource
+    manifestsAs File
+    elementOf HTML5
+    partOf ?aWebApplication
+?ascript : Artifact
+    hasRole Program
+    manifestsAs Fragment
+    elementOf HTML5JavaScript
+    partOf ?awebsite
+
+JavaScriptString : DataType
+    = "http://www.w3schools.com/js/js_strings.asp"
+    subsetOf HTML5JavaScript // or embedded?
+JavaScriptNumber : DataType
+    = "http://www.w3schools.com/js/js_numbers.asp"
+    subsetOf HTML5JavaScript
+JavaScriptObject : ObjectGraph // we don't know whether it is one class that this is conforming to or more.
+    = "http://www.w3schools.com/js/js_object_definition.asp"
+?aBrowser implements JavaScriptObject
+openDatabase : JavaScriptString # JavaScriptString # JavaScriptString # JavaScriptNumber -> JavaScriptObject
+SQLDatabaseAPI implements openDatabase
+?aDatabasename : Artifact
+    hasRole Value
+    manifestsAs Fragment
+    elementOf JavaScriptString
+    refersTo ?adatabase1
+    partOf ?ascript
+?aDatabaseVersion : Artifact
+    hasRole Value
+    manifestsAs Fragment
+    elementOf JavaScriptString
+    partOf ?ascript
+?aDisplayName : Artifact
+    hasRole Value
+    manifestsAs Fragment
+    elementOf JavaScriptString
+    partOf ?ascript
+?anEstimatedSize : Artifact
+    hasRole Value
+    manifestsAs Fragment
+    elementOf JavaScriptNumber
+    partOf ?ascript
+?aDatabaseObject : Artifact
+    hasRole Database
+    manifestsAs Transient
+    elementOf JavaScriptObject
+    represents ?adatabase1 //??? Can we express this in another way?
+openDatabase(?aDatabasename,?aDatabaseVersion,?aDisplayName,?anEstimatedSize) |-> ?aDatabaseObject 
+
+//database transaction
+?adatabase2 : Artifact
+    hasRole Database
+    manifestsAs File
+    elementOf ?SQLImage
+    partOf ?aLocalFileSystem
+?aDatabaseObject2 : Artifact
+    hasRole Database
+    manifestsAs Transient
+    elementOf JavaScriptObject
+    represents ?adatabase2
+?aTransactionObject : Artifact
+    hasRole Value
+    manifestsAs Transient
+    elementOf JavaScriptObject
+?aqueryObject : Artifact
+    hasRole Value
+    manifestsAs Transient
+    elementOf DatabaseAPISQL
+    partOf ?aTransactionObject
+?transactionResultData : Artifact
+    hasRole Value
+    manifestsAs Transient
+    elementOf JavaScriptObject
+transaction : JavaScriptObject # JavaScriptObject -> JavaScriptObject # JavaScriptObject # ?SQLImage
+transaction(?aDatabaseObject,?aTransactionObject) |-> (?aDatabaseObject2,?transactionResultData,?adatabase2)
+SQLDatabaseAPI implements transaction
