@@ -1,0 +1,46 @@
+module java.EclEmma
+
+import java.JavaPlatform
+
+ReverseEngineering : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Reverse_engineering"
+QualityAssurance : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Software_quality_assurance"
+Metric : AbstractProcess
+    = "https://en.wikipedia.org/wiki/Software_metric"
+    aspectOf ReverseEngineering
+Testing : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Software_testing"
+    subdomainOf QualityAssurance
+CodeCoverage : AbstractProcess //specific metric
+    = "https://en.wikipedia.org/wiki/Code_coverage"
+    aspectOf Testing
+
+Eclipse : IDE
+    = "https://eclipse.org/"
+    uses Java
+EclEmma : Plugin
+    = "http://www.eclemma.org/"
+    partOf Eclipse
+    uses Java
+    implements Java
+    realizes Metric
+    realizes CodeCoverage
+    supports QualityAssurance
+
+?EclEmma.javaFiles : Artifact
+    elementOf Java
+    hasRole Input //Input?
+    manifestsAs File+
+?testFiles : Artifact
+    elementOf Java
+    hasRole Input
+    manifestsAs File+
+?aCoverageInPercent : Artifact
+    elementOf Java.Double
+    hasRole Output
+    manifestsAs Transient
+
+computeCoverage : Java # Java -> Java.Double
+computeCoverage(?EclEmma.javaFiles,?testFiles) |-> ?aCoverageInPercent
+EclEmma implements computeCoverage

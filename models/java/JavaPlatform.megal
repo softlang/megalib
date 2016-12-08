@@ -11,6 +11,10 @@ Java : ProgrammingLanguage
     facilitates FunctionalProgramming
     facilitates ConcurrentProgramming
 
+Java.Double : DataType
+    = "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html"
+    subsetOf Java
+
 JavaByteCode : InstructionSet
     = "https://en.wikipedia.org/wiki/Java_bytecode"
     belongsTo JavaWare
@@ -28,6 +32,7 @@ JavaC : Platform
     supports MetaProgramming
     realizes Compilation
     implements Java
+    implements JavaByteCode
 
 compile : Java -> JavaByteCode
 JavaC implements compile

@@ -1,7 +1,9 @@
 module django.DBSchema
 
-WebApplicationFramework < Framework   // Maybe not, maybe web application development is rather a domain?
-Django : WebApplicationFramework
+WebApplicationDevelopment : ProgrammingDomain
+
+Django : Framework
+    supports WebApplicationDevelopment
 Python : ProgrammingLanguage
 PythonObject : ObjectGraph
 Django uses Python
