@@ -102,6 +102,9 @@ OpenScope : API
 communicate : HTTPRequest # URI -> HTTPResponse
 communicate(?aHTTPSRequest, ?aServiceAddress) |-> ?httpResponse
 OpenScope implements communicate
+OpenScope implements HTTPRequest
+OpenScope implements HTTPResponse
+OpenScope implements URI
 
 Authentication : Construct
     = "https://en.wikipedia.org/wiki/Authentication"
@@ -122,7 +125,10 @@ ScopevisioClient : SoftwareSuite
     hasRole Configuration
     elementOf ?unknownConfigurationLanguage
     partOf ScopevisioClient
+EXE : FileFormat
+    = "https://en.wikipedia.org/wiki/.exe"
 ?ScopevisioExe : Artifact //Archives and Folders do not have any elementOf relationship
+    elementOf EXE
     manifestsAs Archive
     hasRole Executable
     partOf ScopevisioClient

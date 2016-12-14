@@ -4,6 +4,6 @@ import bcd.C where{
     softlangpage1 substitutes ?a1
     softlangpage2 substitutes ?a2
 }
-
+/**/
 softlangpage1 = "http://www.softlang.org/"
 softlangpage2 = "http://www.softlang.org/"

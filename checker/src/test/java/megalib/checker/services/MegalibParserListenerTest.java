@@ -35,7 +35,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addSubtypeInvalidSupertype() {
-		String input = "DerivedType < Type";
+		String input = "/**/DerivedType < Type";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> subtypes = m.getSubtypesMap();
 		
@@ -46,7 +46,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addSubtypeEntity(){
-		String input = "Type < Entity "
+		String input = "/**/Type < Entity "
 				+ "Entity < Type";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		assertEquals(1,m.getCriticalWarnings().size());
@@ -55,7 +55,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addSubtypeValidSupertype() {
-		String input = "DerivedType < Artifact";
+		String input = "/**/DerivedType < Artifact";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> subtypes = m.getSubtypesMap();
 		
@@ -66,7 +66,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addSubtypeOfEntity() {
-		String input = "DerivedType < Entity";
+		String input = "/**/DerivedType < Entity";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> subtypes = m.getSubtypesMap();
 		
@@ -77,7 +77,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addSubtypeMultipleInh() {
-		String input = "DerivedType < Technology \n"
+		String input = "/**/DerivedType < Technology \n"
 				+ "DerivedType < System";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> subtypes = m.getSubtypesMap();
@@ -90,7 +90,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addEntityInstance(){
-		String input = "Entity : Artifact";
+		String input = "/**/Entity : Artifact";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = m.getInstanceOfMap();
 		assertFalse(imap.containsKey("Entity"));
@@ -100,7 +100,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addInstanceOfUnknown(){
-		String input = "Instance : Type";
+		String input = "/**/Instance : Type";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = m.getInstanceOfMap();
 		
@@ -111,7 +111,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addInstanceOfEntity(){
-		String input = "Artifact : Technology";
+		String input = "/**/Artifact : Technology";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = m.getInstanceOfMap();
 		
@@ -122,7 +122,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addInstanceOfMulitple(){
-		String input = "t : Technology "
+		String input = "/**/t : Technology "
 				+ "t : Artifact";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = m.getInstanceOfMap();
@@ -134,7 +134,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addInstanceOfProgrammingLanguage(){
-		String input = "Java : ProgrammingLanguage";
+		String input = "/**/Java : ProgrammingLanguage";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, String> imap = m.getInstanceOfMap();
 		assertEquals("ProgrammingLanguage",imap.get("Java"));
@@ -143,7 +143,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addInstanceOfArtifact(){
-		String input = "Python : ProgrammingLanguage "
+		String input = "/**/Python : ProgrammingLanguage "
 				+ "a : Artifact "
 				+ "a elementOf Python "
 				+ "a hasRole MvcModel "
@@ -159,7 +159,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationDeclarationUnknownDomain()  {
-		String input = "Relation < TypeOne # Artifact";
+		String input = "/**/Relation < TypeOne # Artifact";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Relation>> actual = m.getRelationshipDeclarationMap();
 		
@@ -170,7 +170,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationDeclarationUnknownRange()  {
-		String input = "Relation < Artifact # TypeTwo";
+		String input = "/**/Relation < Artifact # TypeTwo";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Relation>> actual = m.getRelationshipDeclarationMap();
 		
@@ -181,7 +181,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationDeclarationDouble()  {
-		String input = "Relation < Artifact # Artifact "
+		String input = "/**/Relation < Artifact # Artifact "
 				+ "Relation < Artifact # Artifact";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Relation>> actual = m.getRelationshipDeclarationMap();
@@ -193,7 +193,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationDeclarationOverloaded()  {
-		String input = "Relation < Artifact # Artifact\nRelation < Technology # Technology";
+		String input = "/**/Relation < Artifact # Artifact\nRelation < Technology # Technology";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Relation>> actual = m.getRelationshipDeclarationMap();
 		
@@ -205,7 +205,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationInstanceUndeclared(){
-		String input = "a : ProgrammingLanguage "
+		String input = "/**/a : ProgrammingLanguage "
 				+ "b : ProgrammingLanguage "
 				+ "a r b";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -215,7 +215,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationInstanceDouble(){
-		String input = "a : ProgrammingLanguage "
+		String input = "/**/a : ProgrammingLanguage "
 				+ "b : ProgrammingLanguage "
 				+ "a subsetOf b "
 				+ "a subsetOf b";
@@ -230,7 +230,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationInstanceUnfitDomain(){
-		String input = "a : Framework "
+		String input = "/**/a : Framework "
 				+ "b : ProgrammingLanguage "
 				+ "a subsetOf b ";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -243,7 +243,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationInstanceUnfitRange(){
-		String input = "a : Framework "
+		String input = "/**/a : Framework "
 				+ "b : ProgrammingLanguage "
 				+ "b subsetOf a ";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -256,7 +256,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationInstanceMultiFit(){
-		String input = "subsetOf < ProgrammingLanguage # ProgrammingLanguage "
+		String input = "/**/subsetOf < ProgrammingLanguage # ProgrammingLanguage "
 				+ "a : ProgrammingLanguage "
 				+ "b : ProgrammingLanguage "
 				+ "a subsetOf b ";
@@ -270,7 +270,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationInstanceDomainNotInstance(){
-		String input = "b : ProgrammingLanguage "
+		String input = "/**/b : ProgrammingLanguage "
 				+ "a subsetOf b";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Relation>> actual = m.getRelationshipInstanceMap();
@@ -281,7 +281,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addRelationInstanceRangeNotInstance(){
-		String input = "a : ProgrammingLanguage "
+		String input = "/**/a : ProgrammingLanguage "
 				+ "a subsetOf b";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Relation>> actual = m.getRelationshipInstanceMap();
@@ -292,7 +292,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionDeclarationOverloading(){
-		String input = "a : ProgrammingLanguage "
+		String input = "/**/a : ProgrammingLanguage "
 				+ "b : ProgrammingLanguage "
 				+ "f : a -> a "
 				+ "f : b -> b";
@@ -306,7 +306,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionDeclarationDomainNotInstantiated(){
-		String input = "b : ProgrammingLanguage "
+		String input = "/**/b : ProgrammingLanguage "
 				+ "f : a -> b ";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Function> actual = m.getFunctionDeclarations();
@@ -318,7 +318,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionDeclarationRangeNotInstantiated(){
-		String input = "a : ProgrammingLanguage "
+		String input = "/**/a : ProgrammingLanguage "
 				+ "f : a -> b ";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Function> actual = m.getFunctionDeclarations();
@@ -330,7 +330,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionDeclarationDomainMultipleNotInstantiated(){
-		String input = "b : ProgrammingLanguage "
+		String input = "/**/b : ProgrammingLanguage "
 				+ "f : b # a # b -> b # b # a ";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Function> actual = m.getFunctionDeclarations();
@@ -342,7 +342,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionDeclarationRangeMultipleNotInstantiated(){
-		String input = "b : ProgrammingLanguage "
+		String input = "/**/b : ProgrammingLanguage "
 				+ "f : b  # b -> b # b # a ";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Function> actual = m.getFunctionDeclarations();
@@ -354,7 +354,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionDeclarationDomainNotALanguage(){
-		String input = "b : ProgrammingLanguage "
+		String input = "/**/b : ProgrammingLanguage "
 				+ "f : Grammar -> b ";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Function> actual = m.getFunctionDeclarations();
@@ -366,7 +366,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionDeclarationRangeNotALanguage(){
-		String input = "b : ProgrammingLanguage "
+		String input = "/**/b : ProgrammingLanguage "
 				+ "f : b -> Grammar ";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Function> actual = m.getFunctionDeclarations();
@@ -378,7 +378,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionDeclaration(){
-		String input = "l : ProgrammingLanguage "
+		String input = "/**/l : ProgrammingLanguage "
 				+ "f : l -> l";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Function> actual = m.getFunctionDeclarations();
@@ -388,7 +388,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionDeclarationMulti(){
-		String input = "a : ProgrammingLanguage "
+		String input = "/**/a : ProgrammingLanguage "
 				+ "b : ProgrammingLanguage "
 				+ "f : b  # b -> b # b # a ";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -400,7 +400,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionApplicationNotDeclared(){
-		String input = "f(a)|->a";
+		String input = "/**/f(a)|->a";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Map<String, Set<Function>> actual = m.getFunctionApplications();
 		
@@ -411,7 +411,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionApplication(){
-		String input = "l : ProgrammingLanguage "
+		String input = "/**/l : ProgrammingLanguage "
 				+ "f : l # l # l -> l # l "
 				+ "a : Artifact "
 				+ "a elementOf l "
@@ -435,7 +435,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionApplicationDuplicate(){
-		String input = "l : ProgrammingLanguage "
+		String input = "/**/l : ProgrammingLanguage "
 				+ "f : l # l # l -> l # l "
 				+ "a : Artifact "
 				+ "a elementOf l "
@@ -456,7 +456,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionApplicationNotInstantiatedInput(){
-		String input = "l : DataRepresentationLanguage "
+		String input = "/**/l : DataRepresentationLanguage "
 				+ "f : l -> l "
 				+ "b : Artifact "
 				+ "b elementOf l "
@@ -470,7 +470,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionApplicationNotInstantiatedOutput(){
-		String input = "l : DataRepresentationLanguage "
+		String input = "/**/l : DataRepresentationLanguage "
 				+ "f : l -> l "
 				+ "a : Artifact "
 				+ "a elementOf l "
@@ -484,7 +484,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionApplicationUnfitDomain(){
-		String input = "l1 : DataRepresentationLanguage "
+		String input = "/**/l1 : DataRepresentationLanguage "
 				+ "l2 : DataRepresentationLanguage "
 				+ "f : l1 # l2 -> l2 "
 				+ "a1 : Artifact "
@@ -503,7 +503,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionApplicationUnfitRange(){
-		String input = "l1 : DataRepresentationLanguage "
+		String input = "/**/l1 : DataRepresentationLanguage "
 				+ "l2 : DataRepresentationLanguage "
 				+ "f : l1 # l2 -> l2 "
 				+ "a1 : Artifact "
@@ -520,7 +520,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void addFunctionApplicationSubset(){
-		String input = "l1 : DataRepresentationLanguage "
+		String input = "/**/l1 : DataRepresentationLanguage "
 				+ "l2 : DataRepresentationLanguage "
 				+ "l2 subsetOf l1 "
 				+ "f : l1 # l2 -> l2 "
@@ -551,7 +551,7 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void testTurtleSyntax(){
-		String input = "a : Artifact\n"
+		String input = "/**/a : Artifact\n"
 				+ "    elementOf Java\n"
 				+ "    hasRole MvcModel";
 		assertNotNull(new MegaModelLoader().loadString(input));
@@ -559,21 +559,21 @@ public class MegalibParserListenerTest {
 	
 	@Test
 	public void testTurtleInstanceLink(){
-		String input = "Java : ProgrammingLanguage\n"
+		String input = "/**/Java : ProgrammingLanguage\n"
 				+ "    = \"https://en.wikipedia.org/wiki/Java_(programming_language)\"";
 		assertNotNull(new MegaModelLoader().loadString(input));
 	}
 	
 	@Test
 	public void testTurtleTypeLink(){
-		String input = "Language < Entity\n"
+		String input = "/**/Language < Entity\n"
 				+ "    =\"https://en.wikipedia.org/wiki/Computer_language\"";
 		assertNotNull(new MegaModelLoader().loadString(input));
 	}
 	
 	@Test
 	public void testCommentAfterStmt() {
-		String input = "a : ProgrammingLanguage // test hello world";
+		String input = "/**/a : ProgrammingLanguage // test hello world";
 		MegaModel actual = new MegaModelLoader().loadString(input);
 		assertNotNull(actual);
 	}

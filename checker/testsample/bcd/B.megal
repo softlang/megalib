@@ -1,7 +1,7 @@
 module bcd.B
 
 import A
-
+/**/
 ?a2 : Artifact
     elementOf HTML
     hasRole WebResource

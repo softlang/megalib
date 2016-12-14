@@ -2,5 +2,5 @@ module bcd.C
 
 import bcd.B
 import A
-
+/**/
 ?a1 correspondsTo ?a2

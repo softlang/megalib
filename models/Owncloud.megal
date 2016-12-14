@@ -6,6 +6,8 @@ Java : ProgrammingLanguage
     = "http://docs.oracle.com/javase/7/docs/technotes/guides/language/"
 PHP : ProgrammingLanguage
     = "https://en.wikipedia.org/wiki/PHP"
+URL : ReferenceLanguage
+    = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator"
 
 FileSynchronization : AbstractProcess
     = "https://en.wikipedia.org/wiki/File_synchronization"
@@ -24,6 +26,7 @@ Owncloud : SoftwareSuite
     realizes ConflictDetection
     realizes VersionControl
     realizes IOScheduling
+    implements URL
     uses C++
     uses Java
     uses PHP
@@ -37,8 +40,6 @@ Owncloud : SoftwareSuite
 ?aFileSystem2 : FileSystem
 
 ?l : FileFormat
-URL : ReferenceLanguage
-    = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator"
 ?aFile1 : Artifact
     elementOf ?l
     hasRole SynchronizedFile
@@ -54,13 +55,20 @@ URL : ReferenceLanguage
 ?sharingAllowedPolicy : Artifact
     elementOf ?PolicyLanguage
     hasRole Configuration
-    manifestsAs WebResource
+    manifestsAs File
     partOf ?anOwncloudServer
 share : URL # ?PolicyLanguage # ?l -> ?l
 Owncloud implements share
-?aserverurl : Artifact
+?aserverurl1 : Artifact
     elementOf URL
     hasRole Reference
     manifestsAs Fragment
-share(?aserverurl,?sharingAllowedPolicy,?aFile1) |-> ?aFile2
+    partOf ?aFileSystem1 //don't know where
+?aserverurl2 : Artifact
+    elementOf URL
+    hasRole Reference
+    manifestsAs Fragment
+    partOf ?aFileSystem2
+    correspondsTo ?aserverurl1
+share(?aserverurl1,?sharingAllowedPolicy,?aFile1) |-> ?aFile2
 

@@ -1,47 +1,50 @@
+/* Language subtypes based on PRIMARY purpose. LaTeX could be used
+to code up a general purpose program as well, but hopefully none does
+that. That is why it is classified as a markup language. */
 Language < Entity
     = "https://en.wikipedia.org/wiki/Computer_language"
-FileFormat < Language
+FileFormat < Language // not meant to be read by humans. Optimized for file system, e.g. an SQL image
     = "https://en.wikipedia.org/wiki/File_format"
-ProgrammingLanguage < Language
+ProgrammingLanguage < Language  // not specific to a domain, e.g. Java
     = "https://en.wikipedia.org/wiki/Programming_language"
-DataRepresentationLanguage < Language 
+DataRepresentationLanguage < Language // can be read by humans and represents data, e.g. JSON
     = "https://de.wikipedia.org/wiki/Datenformat" //need better binding
-MarkupLanguage < Language
+MarkupLanguage < Language  // assists in structuring data, e.g. XML
     = "https://en.wikipedia.org/wiki/Markup_language"
-TransformationLanguage < Language
+TransformationLanguage < Language // transformation statements, e.g. ATL
     = "https://en.wikipedia.org/wiki/Transformation_language" // even though the text is misleading
-QueryLanguage < Language 
+QueryLanguage < Language // query statements, e.g. SQL
     = "https://en.wikipedia.org/wiki/Query_language"
-StylesheetLanguage < Language
+StylesheetLanguage < Language // expresses presentation of structured documents, e.g. CSS
     = "https://en.wikipedia.org/wiki/Style_sheet_language"
-SchemaLanguage < Language
+SchemaLanguage < Language // formulate schemas or metamodels, e.g. XSD
     = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages"
-CommandLineLanguage < Language
+CommandLineLanguage < Language  // statements that can be entered in a command line, e.g. Bash
     = "https://en.wikipedia.org/wiki/Command-line_interface"
-ModelingLanguage < Language
+ModelingLanguage < Language  // describe or prescribe software, e.g. UML
     = "https://en.wikipedia.org/wiki/Modeling_language"
 InstructionSet < Language
-    = "https://en.wikipedia.org/wiki/Instruction_set"
+    = "https://en.wikipedia.org/wiki/Instruction_set" // hardware statements, e.g. MIPS Assembler
 ConfigurationLanguage < Language
-    = "https://en.wikipedia.org/wiki/Configuration_file"
+    = "https://en.wikipedia.org/wiki/Configuration_file" // configuration files, e.g. .class-files
 ReferenceLanguage < Language
-    = "https://en.wikipedia.org/wiki/Reference"
+    = "https://en.wikipedia.org/wiki/Reference" // express references, e.g. URI
 MessageLanguage < Language
-    = "https://en.wikipedia.org/wiki/Message_passing"
+    = "https://en.wikipedia.org/wiki/Message_passing" // structured messages, e.g. HTTP Requests
 DataType < Language
-    = "https://en.wikipedia.org/wiki/Data_type"
+    = "https://en.wikipedia.org/wiki/Data_type" // data types of a language, e.g. Boolean
 ObjectGraph < Language
-    = "https://en.wikipedia.org/wiki/Object_graph"
-subsetOf < Language # Language
+    = "https://en.wikipedia.org/wiki/Object_graph" // objects in an OO Language, e.g. Java Objects.
+subsetOf < Language # Language  
 embeddedInto < Language # Language 
 
-//Classification by Language, Role and Manifestation
+/* Digital entities classified by language, role and manifestation. */
 Artifact < Entity
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
 defines < Artifact # Language 
-elementOf < Artifact # Language
-conformsTo < Artifact # Artifact
-correspondsTo < Artifact # Artifact
+elementOf < Artifact # Language 
+conformsTo < Artifact # Artifact 
+correspondsTo < Artifact # Artifact 
 refersTo < Artifact # Artifact
 represents < Artifact # Artifact
 

@@ -1,31 +1,40 @@
 module MicrosoftOfficeCompatibility
 
+//import C++ 
+
+/* The old office suite Microsoft Office 2003 written in C++ is occasionally still in use.
+It still uses the deprecated binary format for persisting office documents. */
 OfficeWare : TechnologySpace
     = "https://www.reference.com/business-finance/definition-office-technology-7627b30083ad168a"
-
-XML : DataRepresentationLanguage
+MicrosoftOffice2003 : SoftwareSuite 
+    = "https://en.wikipedia.org/wiki/Microsoft_Office"
+    uses C++
+    belongsTo OfficeWare
+    implements CFBF
+    
+/* The microsoft office compatibility plugin enables a user to edit files
+written in the new XML format with Office 2003. */
+XML : MarkupLanguage
     = "https://en.wikipedia.org/wiki/XML"
 MicrosoftOfficeOpenXML : StylesheetLanguage 
     = "https://en.wikipedia.org/wiki/Office_Open_XML"
     subsetOf XML
-BinaryFormat : FileFormat 
-    = "https://en.wikipedia.org/wiki/Binary_file"
 CFBF : FileFormat
     = "https://en.wikipedia.org/wiki/Compound_File_Binary_Format"
-    subsetOf BinaryFormat
 
-convert :  MicrosoftOfficeOpenXML -> CFBF //https://en.wikipedia.org/wiki/Office_Open_XML#Application%20support
+/* It implements a conversion that transforms a file apparent in the new format
+into the old format. A hint on this functionality is given at:
+https://en.wikipedia.org/wiki/Office_Open_XML#Application%20support */
+convert :  MicrosoftOfficeOpenXML -> CFBF
+C++ : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/C%2B%2B"
 MicrosoftOfficeCompatibility : Plugin
     = "http://www.pcworld.com/article/217190/microsoft_office_docx.html"
+    uses C++ //pure guess since MicrosoftOffice2003 uses C++
     realizes Transformation
     implements convert
 
-MicrosoftOffice2003 : SoftwareSuite 
-    = "https://en.wikipedia.org/wiki/Microsoft_Office"
-    belongsTo OfficeWare
-    implements CFBF
-    uses MicrosoftOfficeCompatibility
-
+/* Most parts of the actual XSD schemas for the new office format are available online. */
 XSD : SchemaLanguage
     = "https://en.wikipedia.org/wiki/XML_Schema_(W3C)"
 MicrosoftOfficeOpenXMLSchema : Artifact
@@ -35,6 +44,9 @@ MicrosoftOfficeOpenXMLSchema : Artifact
     manifestsAs File+
     defines MicrosoftOfficeOpenXML
 
+/* In a concrete use case a user would load a document written in
+the XML based format. If the plugin is installed in the used Microsoft Office 2003,
+the document is converted and can then be edited. */
 Document : Role
     = "https://en.wikipedia.org/wiki/Document"
 ?aNewOfficeFile : Artifact

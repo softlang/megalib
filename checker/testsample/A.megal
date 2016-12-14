@@ -1,5 +1,5 @@
 module A 
-
+/**/
 HTML : MarkupLanguage
 ?a1 : Artifact
     elementOf HTML

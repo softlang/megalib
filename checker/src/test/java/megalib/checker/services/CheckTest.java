@@ -28,7 +28,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkInstanceOfTechnology() {
-		String input = "?t : Technology "
+		String input = "/**/?t : Technology "
 				+ "?l : ProgrammingLanguage "
 				+ "?t uses ?l";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -41,7 +41,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkInstanceOfLanguage(){
-		String input = "?t : Library "
+		String input = "/**/?t : Library "
 				+ "?l : Language "
 				+ "?t uses ?l";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -54,7 +54,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkLinkExistence(){
-		String input = "t : Library "
+		String input = "/**/t : Library "
 				+ "?l : ProgrammingLanguage "
 				+ "t uses ?l";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -67,7 +67,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkTechnologyUsesLanguage(){
-		String input = "t : Library\n"
+		String input = "/**/t : Library\n"
 				+ "    = \"http://softlang.wikidot.com/\"";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Check c = new Check(m,true);
@@ -79,7 +79,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkFunctionImplementation(){
-		String input = "?l : ProgrammingLanguage "
+		String input = "/**/?l : ProgrammingLanguage "
 				+ "f : ?l -> ?l "
 				+ "?a : Artifact "
 				+ "?a elementOf ?l "
@@ -96,7 +96,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkFunctionApplication(){
-		String input = "?l : ProgrammingLanguage "
+		String input = "/**/?l : ProgrammingLanguage "
 				+ "f : ?l -> ?l "
 				+ "?a : Artifact "
 				+ "?a elementOf ?l "
@@ -114,7 +114,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkArtifactElementOf(){
-		String input = "?a : Artifact "
+		String input = "/**/?a : Artifact "
 				+ "?a hasRole MvcModel "
 				+ "?a manifestsAs File";
 		MegaModel m = new MegaModelLoader().loadString(input);
@@ -126,7 +126,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkArtifactManifestsAs(){
-		String input = "?l : ProgrammingLanguage "
+		String input = "/**/?l : ProgrammingLanguage "
 				+ "?a : Artifact "
 				+ "?a elementOf ?l "
 				+ "?a hasRole MvcModel ";
@@ -139,7 +139,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkArtifactHasRole(){
-		String input = "?l : ProgrammingLanguage "
+		String input = "/**/?l : ProgrammingLanguage "
 				+ "?a : Artifact "
 				+ "?a elementOf ?l "
 				+ "?a manifestsAs File";
@@ -152,7 +152,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkCyclicSubsets(){
-		String input = "?l1 : ProgrammingLanguage "
+		String input = "/**/?l1 : ProgrammingLanguage "
 				+ "?l2 : ProgrammingLanguage "
 				+ "?l3 : ProgrammingLanguage "
 				+ "?l1 subsetOf ?l2 "
@@ -167,7 +167,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkNotWellformedURL(){
-		String input = "?l : ProgrammingLanguage "
+		String input = "/**/?l : ProgrammingLanguage "
 				+ "?l = \"notauri\"";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Check c = new Check(m,true);
@@ -178,7 +178,7 @@ public class CheckTest {
 	
 	@Test
 	public void checkLinkNotWorking(){
-		String input = "?l : ProgrammingLanguage "
+		String input = "/**/?l : ProgrammingLanguage "
 				+ "?l = \"http://www.nowebsitehere.de\"";
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Check c = new Check(m);

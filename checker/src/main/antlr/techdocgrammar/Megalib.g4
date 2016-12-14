@@ -1,7 +1,9 @@
 grammar Megalib;
 
 //Head of the construct, containing entity or function
-declaration: module? (imports)* statement+ EOF;
+declaration: module? (imports)* group+ EOF;
+
+group: BLOCKCOMMENT statement+;
 
 statement:	 subtypeDeclaration
 			   | instanceDeclaration
@@ -36,6 +38,6 @@ TAB: '\t'|'    ';
 ID: '?'? WORD ('.' WORD)*;
 WORD: ([a-zA-Z0-9+#])+;
 LINK: '"' (~[ \t\f\n\r])+ '"' ;
-BLOCKCOMMENT: '/*' .*? '*/' -> skip;
+BLOCKCOMMENT: '/*' .*? '*/';
 LINECOMMENT: '//' (~[\n\r])* -> skip;
 WS: (' '|'\f'|'\n'|'\r') -> skip;
