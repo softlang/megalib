@@ -6,23 +6,23 @@
 * Clone this repository.
 * Check a single model:
 	
-         cd models
-         java -jar "../checker/checker.jar" -f "django/DBSchema.megal"
+      cd models
+      java -jar "../checker/checker.jar" -f "django/DBSchema.megal"
 	 
 * Check a folder
 
-          cd models
-          java -jar "../checker/checker.jar" -f "django" 
+      cd models
+      java -jar "../checker/checker.jar" -f "django" 
 	 
 * Check all models 
 	
-         cd models
-         java -jar ../checker/checker.jar
+      cd models
+      java -jar ../checker/checker.jar
 	 
 * If you don't have internet, you can turn off connection warnings by adding -nocon at the end
 
-         cd models
-         java -jar ../checker/checker.jar -f django/DBSchema.megal -nocon
+      cd models
+      java -jar ../checker/checker.jar -f django/DBSchema.megal -nocon
 	
 
 ## Allowed Grammar For The Checker
@@ -60,48 +60,48 @@ For the statements, it is important that anything has to be declared before it i
 
 * Subtyping : 	
 
-			Artifact < Entity
-			ProgrammingLanguage < Language
+      Artifact < Entity
+      ProgrammingLanguage < Language
 
 * Instantiation: 	
 
-			Controller: Artifact
-			Java: ProgrammingLanguage
+      Controller: Artifact
+      Java: ProgrammingLanguage
 
 * Relation Declaration:
 
-			partOf < Artifact # Artifact
-			uses < Artifact # Language
+      partOf < Artifact # Artifact
+      uses < Artifact # Language
 
 * Relation Instantiation:	
 
-			Controller partOf ControllerPackage
-			JavaFile1 contains JavaFile1
+      Controller partOf ControllerPackage
+      JavaFile1 contains JavaFile1
 
 * Links (for now only URLs are supported by the checker):		
 
-			JavaFile1 = "yourFirstLink"
-			JavaFile1 = "yourSecondLink"
+      JavaFile1 = "yourFirstLink"
+      JavaFile1 = "yourSecondLink"
 			
-* Syntactic sugar in analogy to RDF Turtle syntax:
+* Syntactic sugar in analogy to RDF Turtle syntax (four spaces after new line for an additional relationship):
  
-                        JavaFile1 : Artifact
-			    = "yourLink"
-			    elementOf Java
-			    manifestsAs File
-			    hasRole Script
+      JavaFile1 : Artifact
+          = "yourLink"
+          elementOf Java
+          manifestsAs File
+          hasRole Script
 
 * Function Declaration:	
 
-			functionA: Java -> SubJava # SubJava
-			functionB: SubJava # Java -> Java # SubJava
-			functionC: SubJava # Java -> SubJava
+      functionA: Java -> SubJava # SubJava
+      functionB: SubJava # Java -> Java # SubJava
+      functionC: SubJava # Java -> SubJava
 
 * Function Application:	
 
-			functionA (JavaFile1) |-> (JavaFile2,JavaFile2)
-			functionB (JavaFile2, JavaFile1) |-> (JavaFile1, JavaFile2)
-			functionC (JavaFile2, JavaFile1) |-> JavaFile2
+      functionA (JavaFile1) |-> (JavaFile2,JavaFile2)
+      functionB (JavaFile2, JavaFile1) |-> (JavaFile1, JavaFile2)
+      functionC (JavaFile2, JavaFile1) |-> JavaFile2
 			
 
 ## Constraints
