@@ -155,7 +155,7 @@ public class MegaModelLoader {
 	// Fill the import map
 	while (!toProcess.isEmpty()) {
 	    String p = toProcess.iterator().next();
-	    p = root.getAbsolutePath() + "\\\\" + p.replaceAll("\\.", "\\\\") + ".megal";
+	    p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
 	    String pdata = FileUtils.readFileToString(new File(p));
 	    l = (MegalibImportListener) parse(pdata, new MegalibImportListener());
 	    imports.addAll(l.getImports());
