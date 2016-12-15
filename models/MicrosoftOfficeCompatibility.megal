@@ -6,12 +6,13 @@ module MicrosoftOfficeCompatibility
 It still uses the deprecated binary format for persisting office documents. */
 OfficeWare : TechnologySpace
     = "https://www.reference.com/business-finance/definition-office-technology-7627b30083ad168a"
+C++ : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/C%2B%2B"
 MicrosoftOffice2003 : SoftwareSuite 
     = "https://en.wikipedia.org/wiki/Microsoft_Office"
     uses C++
     belongsTo OfficeWare
-    implements CFBF
-    
+
 /* The microsoft office compatibility plugin enables a user to edit files
 written in the new XML format with Office 2003. */
 XML : MarkupLanguage
@@ -21,13 +22,12 @@ MicrosoftOfficeOpenXML : StylesheetLanguage
     subsetOf XML
 CFBF : FileFormat
     = "https://en.wikipedia.org/wiki/Compound_File_Binary_Format"
+MicrosoftOffice2003 implements CFBF
 
 /* It implements a conversion that transforms a file apparent in the new format
 into the old format. A hint on this functionality is given at:
 https://en.wikipedia.org/wiki/Office_Open_XML#Application%20support */
 convert :  MicrosoftOfficeOpenXML -> CFBF
-C++ : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/C%2B%2B"
 MicrosoftOfficeCompatibility : Plugin
     = "http://www.pcworld.com/article/217190/microsoft_office_docx.html"
     uses C++ //pure guess since MicrosoftOffice2003 uses C++
