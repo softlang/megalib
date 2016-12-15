@@ -4,15 +4,25 @@
 
 * Install Java correctly.
 * Clone this repository.
-* Check a single model as follows:
+* Check a single model:
 	
          cd models
          java -jar "../checker/checker.jar" -f "django/DBSchema.megal"
+	 
+* Check a folder
+
+          cd models
+          java -jar "../checker/checker.jar" -f "django" 
 	 
 * Check all models 
 	
          cd models
          java -jar ../checker/checker.jar
+	 
+* If you don't have internet, you can turn off connection warnings by adding -nocon at the end
+
+         cd models
+         java -jar ../checker/checker.jar -f django/DBSchema.megal -nocon
 	
 
 ## Allowed Grammar For The Checker
@@ -55,7 +65,7 @@ For the statements, it is important that anything has to be declared before it i
 
 * Instantiation: 	
 
-			Controller: Artifact<Java,MvcController,File>
+			Controller: Artifact
 			Java: ProgrammingLanguage
 
 * Relation Declaration:
@@ -72,6 +82,14 @@ For the statements, it is important that anything has to be declared before it i
 
 			JavaFile1 = "yourFirstLink"
 			JavaFile1 = "yourSecondLink"
+			
+* Syntactic sugar in analogy to RDF Turtle syntax:
+ 
+                        JavaFile1 : Artifact
+			    = "yourLink"
+			    elementOf Java
+			    manifestsAs File
+			    hasRole Script
 
 * Function Declaration:	
 
