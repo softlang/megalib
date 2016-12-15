@@ -6,23 +6,23 @@
 * Clone this repository.
 * Check a single model:
 	
-      cd models
-      java -jar "../checker/checker.jar" -f "django/DBSchema.megal"
+         cd models
+         java -jar "../checker/checker.jar" -f "django/DBSchema.megal"
 	 
 * Check a folder
 
-      cd models
-      java -jar "../checker/checker.jar" -f "django" 
+         cd models
+         java -jar "../checker/checker.jar" -f "django" 
 	 
 * Check all models 
 	
-      cd models
-      java -jar ../checker/checker.jar
+         cd models
+         java -jar ../checker/checker.jar
 	 
 * If you don't have internet, you can turn off connection warnings by adding -nocon at the end
 
-      cd models
-      java -jar ../checker/checker.jar -f django/DBSchema.megal -nocon
+         cd models
+         java -jar ../checker/checker.jar -f django/DBSchema.megal -nocon
 	
 
 ## Allowed Grammar For The Checker
@@ -40,68 +40,66 @@ For a detailled syntax definition see the ANTLR grammar 'Megalib.g4' and the exa
 	
 * Any technology model written in MegaL can optionally be organized in multiple modules. In this case every .megal-file that represents a module starts with a declared name.
                         
-        module rubyOnRails.ActiveRecord
+         module rubyOnRails.ActiveRecord
 			
 * A module's name encodes information on a folder that contains it. In the example above the folder the file is in has to be called 'rubyOnRails'. Only then, another module can import this module. Import statements come after the module name. The import mechanism works in a similar way as in Java or Haskell etc.
                        
-        import rubyOnRails.ActiveRecord
+         import rubyOnRails.ActiveRecord
 
 * The modularization further allows a separation of concerns. While one module might hold information about general key facts on a technology another module might concern itself with a concrete system that uses the technology. For example, a general fact for any web application that uses Django is that there exists a model. In a concrete usage scenario this file may be linked to a file in a repository or in a file system. All general key facts for the existing abstract model also hold for the concrete model. Thus it can be substituted and has to be linked.
 
-```
-  import django.MVC where {
-    model.py substitutes ?model.py
-  }
-```
+         import django.MVC where {
+           model.py substitutes ?model.py
+         }
 
 ### Statements: 
 
 For the statements, it is important that anything has to be declared before it is used. Thus, the order of the statements plays a role in the technology model. At best, it is not necessary to declare new subtypes or relations in a module, since the prelude holds the most general declarations.
 
 * Subtyping : 	
-
-      Artifact < Entity
-      ProgrammingLanguage < Language
+       
+         Artifact < Entity
+         ProgrammingLanguage < Language
 
 * Instantiation: 	
 
-      Controller: Artifact
-      Java: ProgrammingLanguage
+         Controller: Artifact
+         Java: ProgrammingLanguage
 
 * Relation Declaration:
 
-      partOf < Artifact # Artifact
-      uses < Artifact # Language
+         partOf < Artifact # Artifact
+         uses < Artifact # Language
 
 * Relation Instantiation:	
 
-      Controller partOf ControllerPackage
-      JavaFile1 contains JavaFile1
+         Controller partOf ControllerPackage
+         JavaFile1 contains JavaFile1
 
 * Links (for now only URLs are supported by the checker):		
 
-      JavaFile1 = "yourFirstLink"
-      JavaFile1 = "yourSecondLink"
+         JavaFile1 = "yourFirstLink"
+         JavaFile1 = "yourSecondLink"
 			
 * Syntactic sugar in analogy to RDF Turtle syntax (four spaces after new line for an additional relationship):
  
-      JavaFile1 : Artifact
-          = "yourLink"
-          elementOf Java
-          manifestsAs File
-          hasRole Script
+         JavaFile1 : Artifact
+             = "yourLink"
+             elementOf Java
+             manifestsAs File
+             hasRole Script
 
 * Function Declaration:	
 
-      functionA: Java -> SubJava # SubJava
-      functionB: SubJava # Java -> Java # SubJava
-      functionC: SubJava # Java -> SubJava
+         functionA: Java -> SubJava # SubJava
+         functionB: SubJava # Java -> Java # SubJava
+         functionC: SubJava # Java -> SubJava
 
 * Function Application:	
 
-      functionA (JavaFile1) |-> (JavaFile2,JavaFile2)
-      functionB (JavaFile2, JavaFile1) |-> (JavaFile1, JavaFile2)
-      functionC (JavaFile2, JavaFile1) |-> JavaFile2
+         functionA (JavaFile1) |-> (JavaFile2,JavaFile2)
+         functionB (JavaFile2, JavaFile1) |-> (JavaFile1, JavaFile2)
+         functionC (JavaFile2, JavaFile1) |-> JavaFile2
 			
 
 ## Constraints
