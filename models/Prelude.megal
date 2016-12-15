@@ -57,8 +57,6 @@ File+ : Manifestation
     = "https://en.wikipedia.org/wiki/Computer_file" // a set of files
 Folder : Manifestation
     = "https://en.wikipedia.org/wiki/Directory_(computing)"
-Archive : Manifestation
-    = "https://en.wikipedia.org/wiki/Archive_file"
 Transient : Manifestation
     = "https://en.wikipedia.org/wiki/Transient_(computer_programming)"
 Fragment : Manifestation
@@ -112,6 +110,8 @@ Program : Role
     = "https://en.wikipedia.org/wiki/Computer_program"
 WebResource : Role // WebResource is not a manifestation. It tells us something about where it is deployed.
     = "https://en.wikipedia.org/wiki/Web_resource"
+Archive : Manifestation
+    = "https://en.wikipedia.org/wiki/Archive_file"
 hasRole < Artifact # Role
 
 Function < Entity
