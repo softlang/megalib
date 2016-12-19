@@ -2,6 +2,7 @@ module WebSQLDatabaseAPI
 
 /*
 This prescriptive model describes a technology that is outdated : https://www.w3.org/TR/webdatabase/
+It deals with how technology can support HTML5 web applications to still work, when the user is offline.
 */
 
 //import sql.SQL
@@ -23,7 +24,10 @@ HTML5JavaScript : ProgrammingLanguage
     implements HTML5JavaScript
     realizes LocalStorage
 
-//SQL database API
+/* The approach is to have an SQL database at the client side
+with the necessary data. .
+Synchronization with some server side has to happen as well, but
+is not further specified. */
 DatabaseAPISQL : QueryLanguage
     = "https://www.w3.org/TR/webdatabase/#executing-sql-statements"
     embeddedInto HTML5JavaScript

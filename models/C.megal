@@ -1,0 +1,20 @@
+module C
+
+/* C is an imperative programming language that influenced
+C++, which extends the procedural style by object orientation
+and other paradigms. */
+C++ : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/C%2B%2B"
+C : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/C_(programming_language)"
+ObjectiveC : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/Objective-C"
+
+/* The GNU Compiler Collection contains a set of compilers
+and a tool chain for various languages such as C++, C and others. */
+GCC : Platform
+    = "https://en.wikipedia.org/wiki/GNU_Compiler_Collection"
+    implements C++
+    implements C
+    implements ObjectiveC
+    uses C++

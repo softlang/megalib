@@ -1,30 +1,11 @@
 module MySQL
 
-SQLWare : TechnologySpace
-    = "https://en.wikipedia.org/wiki/SQL"
+import SQL
+import DotNet
 
-SQL : QueryLanguage
-    = "https://en.wikipedia.org/wiki/SQL"
-    belongsTo SQLWare
-    facilitates RelationalModeling
-SQLQuery : QueryLanguage
-    = "https://en.wikipedia.org/wiki/SQL#Queries"
-    subsetOf SQL
-SQLDDL : SchemaLanguage
-    = "https://en.wikipedia.org/wiki/SQL#Data_definition"
-    subsetOf SQL
-SQLDML : TransformationLanguage
-    = "https://en.wikipedia.org/wiki/SQL#Data_manipulation"
-    subsetOf SQL
-
-C : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/C_(programming_language)"
-C++ : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/C%2B%2B"
-C# : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)"
-ObjectiveC : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/Objective-C"
+/* MySQL offers a workbench to assist in editing 
+databases encoded in MySQL's specific database image 
+format. */
 MySQLImage : FileFormat
     = "http://dev.mysql.com/doc/refman/5.7/en/what-is-mysql.html"
 MySQL : SoftwareSuite
@@ -36,12 +17,14 @@ MySQL : SoftwareSuite
     implements MySQLImage
     belongsTo SQLWare
 
-//CRUD : 
+/* The workbench implements the basic three operations: 
+Create, Read, Update and Delete, where Delete is also a
+form of an update as it can be described with the same
+function. */
 ?SQLString : DataRepresentationLanguage
 create : SQLDDL # MySQLImage -> MySQLImage
 read : SQLQuery # MySQLImage -> ?SQLString
 update : SQLDML # MySQLImage -> MySQLImage
-
 MySQLWorkBench : IDE
     = "https://en.wikipedia.org/wiki/MySQL_Workbench"
     uses MySQL
@@ -52,6 +35,8 @@ MySQLWorkBench : IDE
     implements read
     implements update
 
+/* An abstract scenario for Create takes an initial database
+and a create statement and returns the extended database. */
 ?databasec0 : Artifact
     elementOf MySQLImage
     hasRole Database
@@ -67,6 +52,11 @@ MySQLWorkBench : IDE
 create(?createStmt,?databasec0) |-> ?databasec1
 ?databasec0 partOf ?databasec1 // ?? maybe interesting
 
+/* An abstract scenario for Read takes a database and an SQL
+query statement and returns a String that is formatted according
+to the Select statement. 
+
+TODO : Is there conformity in output?*/
 ?databaser : Artifact
     elementOf MySQLImage
     hasRole Database
@@ -81,6 +71,9 @@ create(?createStmt,?databasec0) |-> ?databasec1
     manifestsAs Transient
 read(?query,?databaser) |-> ?resultTable
 
+/* An abstract scenario for Update takes an initial database
+and an SQL Insert or Delete statement and returns the transformed
+database. */
 ?databaseu0 : Artifact
     elementOf MySQLImage
     hasRole Database
@@ -94,18 +87,3 @@ read(?query,?databaser) |-> ?resultTable
     hasRole TransformationRule
     manifestsAs Transient
 update(?updateStmt,?databaseu0) |-> ?databaseu1
-
-?databased0 : Artifact
-    elementOf MySQLImage
-    hasRole Database
-    manifestsAs File
-?databased1 : Artifact
-    elementOf MySQLImage
-    hasRole Database
-    manifestsAs File
-?deleteStmt : Artifact
-    elementOf SQLDML
-    hasRole TransformationRule
-    manifestsAs Transient
-update(?deleteStmt,?databased0) |-> ?databased1
-?databased1 partOf ?databased0

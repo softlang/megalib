@@ -1,13 +1,12 @@
 module MicrosoftOfficeCompatibility
 
-//import C++ 
+import C
 
 /* The old office suite Microsoft Office 2003 written in C++ is occasionally still in use.
 It still uses the deprecated binary format for persisting office documents. */
 OfficeWare : TechnologySpace
     = "https://www.reference.com/business-finance/definition-office-technology-7627b30083ad168a"
-C++ : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/C%2B%2B"
+
 MicrosoftOffice2003 : SoftwareSuite 
     = "https://en.wikipedia.org/wiki/Microsoft_Office"
     uses C++
