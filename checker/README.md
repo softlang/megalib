@@ -8,11 +8,21 @@
 	
          cd models
          java -jar "../checker/checker.jar" -f "django/DBSchema.megal"
-	 
-* Check all models 
+
+* Check a folder:
+
+         cd models
+         java -jar "../checker/checker.jar" -f "django"
+         
+* Check all models: 
 	
          cd models
          java -jar ../checker/checker.jar
+         
+* When you are offline, you should turn off warnings that are created because you aren't connected to the internet via '-nocon'
+
+         cd models
+         java -jar ../checker/checker.jar -f django/DBSchema.megal -nocon
 	
 
 ## Allowed Grammar For The Checker
@@ -30,19 +40,17 @@ For a detailled syntax definition see the ANTLR grammar 'Megalib.g4' and the exa
 	
 * Any technology model written in MegaL can optionally be organized in multiple modules. In this case every .megal-file that represents a module starts with a declared name.
                         
-        module rubyOnRails.ActiveRecord
+         module rubyOnRails.ActiveRecord
 			
 * A module's name encodes information on a folder that contains it. In the example above the folder the file is in has to be called 'rubyOnRails'. Only then, another module can import this module. Import statements come after the module name. The import mechanism works in a similar way as in Java or Haskell etc.
                        
-        import rubyOnRails.ActiveRecord
+         import rubyOnRails.ActiveRecord
 
 * The modularization further allows a separation of concerns. While one module might hold information about general key facts on a technology another module might concern itself with a concrete system that uses the technology. For example, a general fact for any web application that uses Django is that there exists a model. In a concrete usage scenario this file may be linked to a file in a repository or in a file system. All general key facts for the existing abstract model also hold for the concrete model. Thus it can be substituted and has to be linked.
 
-```
-  import django.MVC where {
-    model.py substitutes ?model.py
-  }
-```
+         import django.MVC where {
+           model.py substitutes ?model.py
+         }
 
 ### Statements: 
 
@@ -50,40 +58,48 @@ For the statements, it is important that anything has to be declared before it i
 
 * Subtyping : 	
 
-			Artifact < Entity
-			ProgrammingLanguage < Language
+         Artifact < Entity
+		 ProgrammingLanguage < Language
 
 * Instantiation: 	
 
-			Controller: Artifact<Java,MvcController,File>
-			Java: ProgrammingLanguage
+		 Controller : Artifact
+		 Java : ProgrammingLanguage
 
 * Relation Declaration:
 
-			partOf < Artifact # Artifact
-			uses < Artifact # Language
+		 partOf < Artifact # Artifact
+		 uses < Artifact # Language
 
 * Relation Instantiation:	
 
-			Controller partOf ControllerPackage
-			JavaFile1 contains JavaFile1
+		 Controller partOf ControllerPackage
+         Controller uses Java
 
 * Links (for now only URLs are supported by the checker):		
 
-			JavaFile1 = "yourFirstLink"
-			JavaFile1 = "yourSecondLink"
+		 JavaFile1 = "http://softlang.org"
+		 JavaFile1 = "http://softlang.org"
+
+* Syntactic sugar in analogy to RDF Turtle syntax (four spaces after new line for an additional relationship):
+
+         JavaFile1 : Artifact
+             = "yourLink"
+             elementOf Java
+             manifestsAs File
+             hasRole Script
 
 * Function Declaration:	
 
-			functionA: Java -> SubJava # SubJava
-			functionB: SubJava # Java -> Java # SubJava
-			functionC: SubJava # Java -> SubJava
+		 functionA: Java -> SubJava # SubJava
+		 functionB: SubJava # Java -> Java # SubJava
+		 functionC: SubJava # Java -> SubJava
 
 * Function Application:	
 
-			functionA (JavaFile1) |-> (JavaFile2,JavaFile2)
-			functionB (JavaFile2, JavaFile1) |-> (JavaFile1, JavaFile2)
-			functionC (JavaFile2, JavaFile1) |-> JavaFile2
+		 functionA (JavaFile1) |-> (JavaFile2,JavaFile2)
+		 functionB (JavaFile2, JavaFile1) |-> (JavaFile1, JavaFile2)
+		 functionC (JavaFile2, JavaFile1) |-> JavaFile2
 			
 
 ## Constraints
@@ -127,7 +143,8 @@ The following constraints are checked after the model has been created. These ch
 * Every artifact is element of a language.
 * Every artifact has a role.
 * Every artifact has a manifestation.
+* Every language is defined or implemented.
 
-* There is no cycle in subset/parthood/conformance relationships.
+* There is no cycle in subset/parthood/conformance/subtyping relationships.
 * Every link is a well formed URL.
-* Every link has to refer to a web resource, where a connection to it is possible.
+* Every link has to refer to an available web resource.
