@@ -23,22 +23,22 @@ CommandLineLanguage < Language  // statements that can be entered in a command l
     = "https://en.wikipedia.org/wiki/Command-line_interface"
 ModelingLanguage < Language  // describe or prescribe software, e.g. UML
     = "https://en.wikipedia.org/wiki/Modeling_language"
-InstructionSet < Language
-    = "https://en.wikipedia.org/wiki/Instruction_set" // hardware statements, e.g. MIPS Assembler
-ConfigurationLanguage < Language
-    = "https://en.wikipedia.org/wiki/Configuration_file" // configuration files, e.g. .class-files
-ReferenceLanguage < Language
-    = "https://en.wikipedia.org/wiki/Reference" // express references, e.g. URI
-MessageLanguage < Language
-    = "https://en.wikipedia.org/wiki/Message_passing" // structured messages, e.g. HTTP Requests
-DataType < Language
-    = "https://en.wikipedia.org/wiki/Data_type" // data types of a language, e.g. Boolean
-ObjectGraph < Language
-    = "https://en.wikipedia.org/wiki/Object_graph" // objects in an OO Language, e.g. Java Objects.
+InstructionSet < Language // hardware statements, e.g. MIPS Assembler
+    = "https://en.wikipedia.org/wiki/Instruction_set" 
+ConfigurationLanguage < Language // configuration files, e.g. .class-files
+    = "https://en.wikipedia.org/wiki/Configuration_file" 
+ReferenceLanguage < Language // express references, e.g. URI
+    = "https://en.wikipedia.org/wiki/Reference" 
+MessageLanguage < Language // structured messages, e.g. HTTP Requests
+    = "https://en.wikipedia.org/wiki/Message_passing" 
+DataType < Language // data types of a language, e.g. Boolean
+    = "https://en.wikipedia.org/wiki/Data_type" 
+ObjectGraph < Language // objects in an OO Language, e.g. Java Objects.
+    = "https://en.wikipedia.org/wiki/Object_graph" 
 subsetOf < Language # Language  
 embeddedInto < Language # Language 
 
-/* Digital entities classified by language, role and manifestation. */
+/* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
 defines < Artifact # Language 
@@ -120,7 +120,7 @@ implements < Artifact # Function
 
 // Classification of technologies
 Technology < Entity
-    = "http://www.journals.elsevier.com/information-and-software-technology/"
+    = "https://www.journals.elsevier.com/information-and-software-technology/"
 API < Technology
     = "https://en.wikipedia.org/wiki/Application_programming_interface"
 Library < Technology

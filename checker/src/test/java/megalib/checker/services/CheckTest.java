@@ -183,6 +183,7 @@ public class CheckTest {
 		MegaModel m = new MegaModelLoader().loadString(input);
 		Check c = new Check(m);
 		assertEquals(0,m.getCriticalWarnings().size());
+		c.getWarnings().forEach(w -> System.out.println(w));
 		assertEquals(1,c.getWarnings().size());
 		assertTrue(c.getWarnings().contains("Error at Link to 'http://www.nowebsitehere.de' : Connection failed!"));
 	}

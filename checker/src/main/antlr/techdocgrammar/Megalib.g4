@@ -36,7 +36,7 @@ link: ID '=' LINK;
 //Tabs enforce formatting
 TAB: '\t'|'    ';
 ID: '?'? WORD ('.' WORD)*;
-WORD: ([a-zA-Z0-9+#])+;
+WORD: ([a-zA-Z0-9+#\-])+;
 LINK: '"' (~[ \t\f\n\r])+ '"' ;
 BLOCKCOMMENT: '/*' .*? '*/';
 LINECOMMENT: '//' (~[\n\r])* -> skip;

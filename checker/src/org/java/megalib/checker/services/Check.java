@@ -93,8 +93,8 @@ public class Check {
 					continue;
 				}
 				Set<Relation> fset = manifestSet.parallelStream()
-											   .filter(r->r.getSubject().equals(inst))
-											   .collect(Collectors.toSet());
+								                .filter(r->r.getSubject().equals(inst))
+								                .collect(Collectors.toSet());
 				if(fset.isEmpty())
 					warnings.add("Manifestation missing for "+inst);
 				
@@ -103,9 +103,8 @@ public class Check {
 					warnings.add("Role misssing for "+inst);
 					continue;
 				}
-				fset = roleSet.parallelStream()
-											   .filter(r->r.getSubject().equals(inst))
-											   .collect(Collectors.toSet());
+				fset = roleSet.parallelStream().filter(r->r.getSubject().equals(inst))
+							       .collect(Collectors.toSet());
 				if(fset.isEmpty())
 					warnings.add("Role misssing for "+inst);
 			}
@@ -125,15 +124,14 @@ public class Check {
 	private void partOfCheck(){
 		if(!model.getRelationshipInstanceMap().containsKey("partOf"))
 			return;
-		List<String> parts = model.getRelationshipInstanceMap()
-									  .get("partOf")
-									  .parallelStream()
-									  .map(r -> r.getSubject())
-									  .collect(Collectors.toList());
-		for(String part : parts){
-			List<String> eqParts = parts.stream().filter(p -> p.equals(part)).collect(Collectors.toList());
-			if(parts.stream().filter(p -> p.equals(part)).count()>1)
-				warnings.add(part + " is part of multiple composites: "+eqParts.toString());
+		Set<Relation> partOfs = model.getRelationshipInstanceMap().get("partOf");
+		Set<String> subjects = new HashSet<>();
+		for(Relation p : partOfs){
+		    if(!subjects.contains(p.getSubject()))
+		        subjects.add(p.getSubject());
+		    else
+		        warnings.add("Error at "+p.getSubject()+" partOf "+p.getObject()+": "
+		            + ""+p.getSubject()+" is already part of another composite.");
 		}
 	}
 	
@@ -151,8 +149,7 @@ public class Check {
 							  .map(r -> r.getSubject())
 							  .collect(Collectors.toList());
 		for(String f : fragments){
-			List<String> composites = model.getRelationshipInstanceMap()
-									       .get("partOf")
+			List<String> composites = model.getRelationshipInstanceMap().get("partOf")
 									       .parallelStream()
 									       .filter(r -> r.getSubject().equals(f))
 									       .map(r -> r.getObject())
