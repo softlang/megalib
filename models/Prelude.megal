@@ -227,6 +227,7 @@ uses < System # ArchitecturalPattern
 uses < System # AbstractProcess
 uses < System # Language  
 uses < System # Construct
+uses < Technology # Artifact
 uses < Technology # Technology
 uses < Technology # DesignPattern
 uses < Technology # ArchitecturalPattern
