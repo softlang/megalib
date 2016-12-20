@@ -1,5 +1,6 @@
 module java.JavaPlatform
 
+/* This module describes basic parts of the Java platform */
 JavaWare : TechnologySpace
     = "http://link.springer.com/chapter/10.1007%2F978-3-642-30561-0_6"
 

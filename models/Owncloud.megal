@@ -1,14 +1,22 @@
 module Owncloud
 
-C++ : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/C%2B%2B"
-Java : ProgrammingLanguage
-    = "http://docs.oracle.com/javase/7/docs/technotes/guides/language/"
+import C 
+import java.JavaPlatform
+
+/* TODO : OwnCloud is still a black box in this model.
+
+Owncloud is a cloud service that enables the synchronization of files across multiple clients.
+It further supports conflict detection, simple version control and IOScheduling to handle the 
+synchronization. Owncloud is written in C++, Java and PHP. */
 PHP : ProgrammingLanguage
     = "https://en.wikipedia.org/wiki/PHP"
+PHPInterpreter : Platform
+    = "https://secure.php.net/docs.php"
+    = "https://en.wikipedia.org/wiki/PHP"
+    implements PHP
+    uses C
 URL : ReferenceLanguage
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator"
-
 FileSynchronization : AbstractProcess
     = "https://en.wikipedia.org/wiki/File_synchronization"
 SynchronizedFile : Role
@@ -19,7 +27,7 @@ VersionControl : AbstractProcess
     = "https://en.wikipedia.org/wiki/Version_control"
 IOScheduling : AbstractProcess
     = "https://en.wikipedia.org/wiki/I/O_scheduling"
-Owncloud : SoftwareSuite
+OwnCloud : SoftwareSuite
     = "https://en.wikipedia.org/wiki/OwnCloud"
     = "https://en.wikipedia.org/wiki/Comparison_of_file_synchronization_software"
     realizes FileSynchronization
@@ -31,14 +39,27 @@ Owncloud : SoftwareSuite
     uses Java
     uses PHP
 
-?anOwncloudClient : Application
-    uses Owncloud
-?anOwncloudServer : WebApplication //?
-    uses Owncloud
-
+/* The functionality is separated over a server that can be set up and multiple clients. In this
+use case we have two clients and one server involved. The server uses a sharing policy to configure
+which files should actually be synchronized. */
 ?aFileSystem1 : FileSystem
+?anOwncloudClient1 : Application
+    partOf ?aFileSystem1
+    uses OwnCloud
 ?aFileSystem2 : FileSystem
+?anOwncloudClient2 : Application
+    partOf ?aFileSystem2
+    uses OwnCloud
+?PolicyLanguage : ConfigurationLanguage
+OwnCloud implements ?PolicyLanguage
+?anOwncloudServer : WebApplication
+    = "https://owncloud.org/install/#instructions-server"
+    uses OwnCloud
 
+
+/* A file is uploaded in the first file system and then downloaded due to the synchronization
+process by the second client. The sharing policy states that synchronization for this file
+is enabled. */
 ?l : FileFormat
 ?aFile1 : Artifact
     elementOf ?l
@@ -50,15 +71,14 @@ Owncloud : SoftwareSuite
     hasRole SynchronizedFile
     manifestsAs File
     partOf ?aFileSystem2
-?aFile1 correspondsTo ?aFile2  // equality
-?PolicyLanguage : ConfigurationLanguage
+    correspondsTo ?aFile1  // equality
 ?sharingAllowedPolicy : Artifact
     elementOf ?PolicyLanguage
     hasRole Configuration
     manifestsAs File
     partOf ?anOwncloudServer
 share : URL # ?PolicyLanguage # ?l -> ?l
-Owncloud implements share
+OwnCloud implements share
 ?aserverurl1 : Artifact
     elementOf URL
     hasRole Reference
@@ -71,4 +91,3 @@ Owncloud implements share
     partOf ?aFileSystem2
     correspondsTo ?aserverurl1
 share(?aserverurl1,?sharingAllowedPolicy,?aFile1) |-> ?aFile2
-
