@@ -2,9 +2,14 @@ module Scopevisio
 
 import java.JavaPlatform
 
+/* Scopevisio is a service based technology to support business programming with a focus
+on enterprise resource planning. It further supports customer relationship 
+management, document management and various e-commerce tasks. Tasks are implemented
+by separate components.
+The actual programming language for the online component is not mentioned
+as it actually does not matter to users. */
 SoftwareAsAService : TechnologySpace
     = "https://en.wikipedia.org/wiki/Software_as_a_service"
-   
 BusinessProgramming : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Business_software"
 EnterpriseResourcePlanning : ProgrammingDomain
@@ -19,13 +24,7 @@ ECommerce : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/E-commerce"
 ServiceOrientedArchitecture : ArchitecturalPattern
     = "https://en.wikipedia.org/wiki/Service-oriented_architecture"
-
-/*
-The actual programming language for the online component is not mentioned
-as it actually does not matter to users.
-*/
 ?unknownLanguage : ProgrammingLanguage
-
 Scopevisio : WebService
     = "https://de.wikipedia.org/wiki/Scopevisio"
     = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio"
@@ -39,6 +38,9 @@ Scopevisio : WebService
     uses ServiceOrientedArchitecture
     uses ?unknownLanguage
 
+/* A user gets a client application that can communicate with the web
+service using SOAP over the OpenScopeAPI. The communication is implemented
+using the HTTPS protocol and a requested authentication. */
 Protocol < AbstractProcess // maybe
     = "https://en.wikipedia.org/wiki/Communications_protocol"
 HTTPS : Protocol 
@@ -47,10 +49,8 @@ HTTPRequest : MessageLanguage
     = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods"
 HTTPResponse : MessageLanguage
     = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message"
-
 XML : MarkupLanguage
     = "https://en.wikipedia.org/wiki/XML"
-
 SOAP : MessageLanguage
     = "https://en.wikipedia.org/wiki/SOAP"
     = "https://www.w3.org/TR/soap/"
@@ -59,13 +59,29 @@ SOAP : MessageLanguage
     embeddedInto HTTPResponse
 URI : ReferenceLanguage
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier"
+Authentication : Construct
+    = "https://en.wikipedia.org/wiki/Authentication"
 OpenScope : API
     = "https://openscope.de/api.html"
     partOf Scopevisio
     uses HTTPS
     implements SOAP
-    uses URI
+    implements HTTPRequest
+    implements HTTPResponse
+    implements URI
+    uses Authentication
+ScopevisioClient : SoftwareSuite
+    = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio"
+    uses Java
+    uses Scopevisio
+    uses OpenScope
+    uses HTTPS
+    uses SOAP
+    uses Authentication
 
+/* When the user accesses a functionality in the client, the client sends
+a SOAP message to the corresponding service's address. The actual computation 
+is executed at the server side and the result is send back as a SOAP message */
 ?aHTTPSRequest : Artifact
     elementOf HTTPRequest
     hasRole Message
@@ -101,24 +117,12 @@ OpenScope : API
     partOf ?httpResponse
 communicate : HTTPRequest # URI -> HTTPResponse
 communicate(?aHTTPSRequest, ?aServiceAddress) |-> ?httpResponse
+ScopevisioClient implements communicate
 OpenScope implements communicate
-OpenScope implements HTTPRequest
-OpenScope implements HTTPResponse
-OpenScope implements URI
-
-Authentication : Construct
-    = "https://en.wikipedia.org/wiki/Authentication"
-ScopevisioClient : SoftwareSuite
-    = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio"
-    uses Java
-    uses Scopevisio
-    uses OpenScope
-    implements communicate
-    uses HTTPS
-    uses SOAP
-    uses Authentication
 
 //TODO : This could be looked up in a client and its files.
+/* Somewhere a user has to have a configuration that states
+which services he payed for and is able to access. */
 ?unknownConfigurationLanguage : ConfigurationLanguage
 ?selectedServices : Artifact
     manifestsAs File
@@ -133,9 +137,9 @@ EXE : FileFormat
     hasRole Executable
     partOf ScopevisioClient
 
+/* The document management service is REST based */
 REST : ArchitecturalPattern
     = "https://en.wikipedia.org/wiki/Representational_state_transfer"
-
 ?ScopevisioDMS : Component
     uses Java
     partOf ScopevisioClient
