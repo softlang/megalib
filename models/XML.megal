@@ -1,0 +1,52 @@
+module XML
+
+/* XML is a markup language invented by W3C */
+XML : MarkupLanguage
+    = "https://en.wikipedia.org/wiki/XML"
+
+/* There are multiple languages that can be used to define schemata */
+XSD : SchemaLanguage
+    = "https://en.wikipedia.org/wiki/XML_Schema_(W3C)"
+    subsetOf XML
+DTD : SchemaLanguage
+    = "https://en.wikipedia.org/wiki/Document_type_definition"
+RelaxNGXML : SchemaLanguage
+    = "https://en.wikipedia.org/wiki/RELAX_NG#XML_syntax"
+    subsetOf XML
+RelaxNGCompact : SchemaLanguage
+    = "https://en.wikipedia.org/wiki/RELAX_NG#Compact_syntax"
+
+/* Theoretically you could have an XML file that is conform to schemata 
+written in any of the schema languages. Actual correspondence between the
+schemata is difficult to verify since the partOf levels of schema fragments
+are different in every language. */
+?xsdschema : Artifact
+    elementOf XSD
+    hasRole Schema
+    manifestsAs File+
+?dtdSchema : Artifact
+    elementOf DTD
+    hasRole Schema
+    manifestsAs File
+    correspondsTo ?xsdschema //theoretical correspondence
+?rngxmlSchema : Artifact
+    elementOf RelaxNGXML
+    hasRole Schema
+    manifestsAs File
+    correspondsTo ?xsdschema
+    correspondsTo ?dtdSchema
+?rngcompactSchema : Artifact
+    elementOf RelaxNGCompact
+    hasRole Schema
+    manifestsAs File
+    correspondsTo ?xsdschema
+    correspondsTo ?dtdSchema
+    correspondsTo ?rngxmlSchema
+?xmlArtifact : Artifact
+    elementOf XML
+    hasRole Document
+    manifestsAs File+
+    conformsTo ?xsdschema
+    conformsTo ?dtdSchema
+    conformsTo ?rngxmlSchema
+    conformsTo ?rngcompactSchema

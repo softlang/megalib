@@ -14,8 +14,6 @@ MicrosoftOffice2003 : SoftwareSuite
 
 /* The microsoft office compatibility plugin enables a user to edit files
 written in the new XML format with Office 2003. */
-XML : MarkupLanguage
-    = "https://en.wikipedia.org/wiki/XML"
 MicrosoftOfficeOpenXML : StylesheetLanguage 
     = "https://en.wikipedia.org/wiki/Office_Open_XML"
     subsetOf XML
@@ -34,8 +32,6 @@ MicrosoftOfficeCompatibility : Plugin
     implements convert
 
 /* Most parts of the actual XSD schemas for the new office format are available online. */
-XSD : SchemaLanguage
-    = "https://en.wikipedia.org/wiki/XML_Schema_(W3C)"
 MicrosoftOfficeOpenXMLSchema : Artifact
     = "https://msdn.microsoft.com/en-us/library/dd979954(v=office.12).aspx"
     elementOf XSD
