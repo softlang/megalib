@@ -15,6 +15,7 @@ org.eclipse.emf.ecore : Framework //Component?
 org.eclipse.emf.ecore partOf EMFCore
 org.eclipse.emf.ecore uses Java
 ECore : SchemaLanguage
+    subsetOf Java
 org.eclipse.emf.ecore implements ECore
 
 
@@ -27,8 +28,11 @@ XMI : DataRepresentationLanguage
 XMI subsetOf XML
 
 PDF : FileFormat
-XMISpec : Artifact<PDF,Specification,WebResource> //Abstrahiern, unabhängig vom Format
-XMISpec defines XMI
+XMISpec : Artifact
+    elementOf PDF
+    hasRole Specification
+    manifestsAs File 
+    defines XMI
 ECore.XMI : DataRepresentationLanguage
 EMF implements ECore.XMI
 ECore.XMI subsetOf XMI
