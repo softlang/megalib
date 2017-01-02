@@ -33,7 +33,7 @@ MessageLanguage < Language // structured messages, e.g. HTTP Requests
     = "https://en.wikipedia.org/wiki/Message_passing" 
 DataType < Language // data types of a language, e.g. Boolean
     = "https://en.wikipedia.org/wiki/Data_type" 
-ObjectGraph < Language // objects in an OO Language, e.g. Java Objects.
+ObjectGraph < Language // object values in an OO Language, e.g. Java Objects.
     = "https://en.wikipedia.org/wiki/Object_graph" 
 subsetOf < Language # Language  
 embeddedInto < Language # Language 
@@ -41,84 +41,85 @@ embeddedInto < Language # Language
 /* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
-defines < Artifact # Language 
-elementOf < Artifact # Language 
-conformsTo < Artifact # Artifact 
-correspondsTo < Artifact # Artifact 
-refersTo < Artifact # Artifact
-represents < Artifact # Artifact
+defines < Artifact # Language // An artifact may serve as the specification for a language, e.g., a grammar.
+elementOf < Artifact # Language // Every artifact is a member of a language
+conformsTo < Artifact # Artifact  // An artifact may conform to a schema 
+correspondsTo < Artifact # Artifact // Two artifacts may be syntactically different, but semantically equal.
+refersTo < Artifact # Artifact  // Experimental! Don't use unless you know what you're doing
+represents < Artifact # Artifact // Experimental! Don't use unless you know what you're doing
 
-// Manifestations of artifacts
+/* Manifestation types of artifacts, where most are self-explanatory */
 Manifestation < Entity
     = "https://en.oxforddictionaries.com/definition/manifestation"
-File : Manifestation
+File : Manifestation // a single file
     = "https://en.wikipedia.org/wiki/Computer_file"
-File+ : Manifestation
-    = "https://en.wikipedia.org/wiki/Computer_file" // a set of files
-Folder : Manifestation
+File+ : Manifestation // a set of files
+    = "https://en.wikipedia.org/wiki/Computer_file" 
+Folder : Manifestation //a folder
     = "https://en.wikipedia.org/wiki/Directory_(computing)"
-Transient : Manifestation
+Transient : Manifestation //Temporary available values
     = "https://en.wikipedia.org/wiki/Transient_(computer_programming)"
-Fragment : Manifestation
+Fragment : Manifestation  //Some fragment of a file or transient
     = "https://en.wikipedia.org/wiki/Snippet_(programming)"
 manifestsAs < Artifact # Manifestation
 
-// Roles of artifacts
+/* Roles of artifacts */
 Role < Entity
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
-Configuration : Role
+Configuration : Role   //settings statements.
     = "https://en.wikipedia.org/wiki/Configuration_file"
-Grammar : Role
+Grammar : Role   //syntax definition
     = "https://en.wikipedia.org/wiki/Context-free_grammar"
-Database : Role
+Database : Role  //any artifact that only stores data
     = "https://en.wikipedia.org/wiki/Database"
-Schema : Role
+Schema : Role  //provide a schema
     = "https://en.wikipedia.org/wiki/Database_schema"
-Query : Role
+Query : Role  //a search declaration to satisfy information needs of software or humans
     = "https://en.wikipedia.org/wiki/Query_language"
 MdeModel : Role // in the sense of MDE
     = "https://en.wikipedia.org/wiki/Model-driven_engineering"
 MdeMetamodel : Role // in the sense of MDE
     = "https://en.wikipedia.org/wiki/Metamodeling"
-MvcModel : Role
+MvcModel : Role //data classes plus minor business logics
     = "https://en.wikipedia.org/wiki/Model-view-controller"
-MvcView : Role
+MvcView : Role //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
     = "https://en.wikipedia.org/wiki/Model-view-controller"
-MvcController : Role
+MvcController : Role //Some kind of mediator between model and view, which may execute rather complex computations
     = "https://en.wikipedia.org/wiki/Model-view-controller"
-Value : Role
+Value : Role //A runtime value in the execution process of a program
     = "https://en.wikipedia.org/wiki/Value_(computer_science)"
-Input : Role
+Input : Role //Serves as the input of some function
     = "http://101companies.org/wiki/Input"
-Output : Role
+Output : Role //Output of some function 
     = "http://101companies.org/wiki/Output"
-Message : Role
+Message : Role //A message in a communication of software components
     = "https://en.wikipedia.org/wiki/Message_passing"
-Specification : Role
+Specification : Role //Defines some other conceptual entity in either half-formal or formal manner
     = "https://en.wikipedia.org/wiki/Specification_(technical_standard)"
-Log : Role
+Log : Role //Contains runtime information that is additionally gathered.
     = "https://en.wikipedia.org/wiki/Logfile"
-DescriptiveModel : Role
+DescriptiveModel : Role  //A model that describes existing software
     = "http://www.businessdictionary.com/definition/descriptive-model.html"
-TransformationRule : Role
+TransformationRule : Role //A definition for a text- or model-transformation that declares data manipulations.
     = "http://101companies.org/wiki/Transformation"
-Reference : Role
+Reference : Role //links to some existing entity.
     = "https://en.wikipedia.org/wiki/Reference"
-Executable : Role
+Executable : Role //Any artifact that is interpreted.
     = "https://en.wikipedia.org/wiki/Executable"
-Program : Role
+Program : Role //Any kind of code that describes a mapping from input to output.
     = "https://en.wikipedia.org/wiki/Computer_program"
-WebResource : Role // WebResource is not a manifestation. It tells us something about where it is deployed.
+WebResource : Role // Contains information and is deployed on a web server.
     = "https://en.wikipedia.org/wiki/Web_resource"
-Archive : Manifestation
+Archive : Manifestation //A file that has folder functionality, such as .jar or .zip
     = "https://en.wikipedia.org/wiki/Archive_file"
 hasRole < Artifact # Role
 
+/* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity
     = "https://en.wikipedia.org/wiki/Function_(mathematics)"
 implements < Artifact # Function
 
-// Classification of technologies
+/* Classification of technologies */
 Technology < Entity
     = "https://www.journals.elsevier.com/information-and-software-technology/"
 API < Technology
@@ -140,107 +141,124 @@ IDE < Technology // ?
 Platform < Technology 
     = "https://en.wikipedia.org/wiki/Computing_platform"
 
-System < Entity
+/* Implementation relationships */
+implements < Technology # Function  //A technology may implement a mapping
+implements < Technology # Language  //A technology can process a language as input or output
+
+/* Classification of systems */
+System < Entity //a set of artifacts realizing some concrete use cases
     = "https://en.wikipedia.org/wiki/Software_system"
-Application < System
+Application < System // a professionally coordinated set of artifacts that are deployed locally
     = "https://en.wikipedia.org/wiki/Application_software"
-WebApplication < System
+WebApplication < System // a professionally coordinated set of artifacts that are deployed on a web server
     = "https://en.wikipedia.org/wiki/Web_application"
-FileSystem < System
+FileSystem < System  //A set of files managed by the user instead of being coordinated as program input or output.
     = "https://en.wikipedia.org/wiki/File_system"
 
-// Implementation relationships
-implements < Technology # Function
-implements < Technology # Language
-
+/* Ways of thinking in the context of programming that have implications on 
+language semantics, available language constructs and usage benefits */
 Paradigm < Entity 
     = "https://en.wikipedia.org/wiki/Programming_paradigm"
-ConcurrentProgramming : Paradigm
+ConcurrentProgramming : Paradigm // Programming in a way that enables and manages parallel execution
     = "https://blog.golang.org/concurrency-is-not-parallelism"
-ObjectOrientation : Paradigm
+ObjectOrientation : Paradigm // Thinking of objects and their interrelation
     = "https://en.wikipedia.org/wiki/Object-oriented_programming"
-FunctionalProgramming : Paradigm
+FunctionalProgramming : Paradigm // Programming in a way that resembles formulating mathematical functions
     = "https://en.wikipedia.org/wiki/Functional_programming"
-RelationalModeling : Paradigm
+RelationalModeling : Paradigm // Enabling the representation of entities and their interrelationships.
     = "https://en.wikipedia.org/wiki/Relational_model"
 
+/* A field of study that defines common requirements, problems, terminology and ways for technologies or 
+languages to support it. */
 ProgrammingDomain < Entity
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
+// The study on applications in general. For example, Java can be used to solve any kind
+of problem, but the solution may be more elegant in a rather domain specific language. 
 GeneralPurposeProgramming : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/General-purpose_programming_language"
+// The study on processing programs with support for language implementation 
 MetaProgramming : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Metaprogramming"
+// The study on how to efficiently store and process data 
 DatabaseProgramming : ProgrammingDomain
     = "http://101companies.org/wiki/Database_programming"
-// Database aspectOf DatabaseProgramming
-subdomainOf < ProgrammingDomain # ProgrammingDomain
-
-TechnologySpace < Entity
-    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
-
-DesignPattern < Entity
-    = "https://en.wikipedia.org/wiki/Software_design_pattern"
-
-ArchitecturalPattern < Entity
-    = "https://en.wikipedia.org/wiki/Architectural_pattern"
-
-AbstractProcess < Entity 
-    = "https://en.wikipedia.org/wiki/Abstract_process"
-Serialization : AbstractProcess
-    = "https://en.wikipedia.org/wiki/Serialization"
-Compilation : AbstractProcess
-    = "https://de.wikipedia.org/wiki/Compiler"
-Transformation : AbstractProcess
-    = "https://en.wikipedia.org/wiki/Data_transformation"
-
-Construct < Entity 
-    = "https://en.wikipedia.org/wiki/Construct_(philosophy)"
-Semaphore : Construct
-    = "https://en.wikipedia.org/wiki/Semaphore_(programming)"
-
-participantOf < Role # DesignPattern
-participantOf < Role # ArchitecturalPattern
-belongsTo < Technology # TechnologySpace
-belongsTo < Language # TechnologySpace
+subdomainOf < ProgrammingDomain # ProgrammingDomain //One may formulate a domain that covers a subset of another domain's requirements, problems, terminology and ways for languages to support it.
 supports < Technology # ProgrammingDomain
 supports < Language # ProgrammingDomain
-realizes < Artifact # AbstractProcess
-realizes < Technology # AbstractProcess
-realizes < Technology # Construct
-aspectOf < AbstractProcess # ProgrammingDomain
-aspectOf < Role # ProgrammingDomain // Better name needed
+
+/* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. */
+TechnologySpace < Entity
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
+belongsTo < Technology # TechnologySpace
+belongsTo < Language # TechnologySpace
+
+/* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
+DesignPattern < Entity
+    = "https://en.wikipedia.org/wiki/Software_design_pattern"
+ArchitecturalPattern < Entity
+    = "https://en.wikipedia.org/wiki/Architectural_pattern"
+participantOf < Role # DesignPattern
+participantOf < Role # ArchitecturalPattern  
+
+/* Commonly known processes where the realization depends on the used technologies and involved languages. */
+AbstractProcess < Entity 
+    = "https://en.wikipedia.org/wiki/Abstract_process"
+Serialization : AbstractProcess //Save runtime values in a persistent format.
+    = "https://en.wikipedia.org/wiki/Serialization"
+Compilation : AbstractProcess //Software translation of a higher level language into a lower level language
+    = "https://de.wikipedia.org/wiki/Compiler"
+Transformation : AbstractProcess // Takes input data and produces output data based on declarative rules.
+    = "https://en.wikipedia.org/wiki/Data_transformation"
+
+/* A construct is an artifact constellation where the realization depends on the program's context, and involved languages and technologies. */
+Construct < Entity 
+    = "https://en.wikipedia.org/wiki/Construct_(philosophy)"
+Semaphore : Construct //A flag to control access to a resource in the context of concurrent programs.
+    = "https://en.wikipedia.org/wiki/Semaphore_(programming)"
+
+
+/* Abstract solutions such as constructs may be an aspect of a way of thinking or field of study. */
 aspectOf < Construct # Paradigm //as in Semaphore aspectOf ConcurrentProgramming
 aspectOf < Construct # ProgrammingDomain //as in LocalStorage aspectOf OfflineWebApplicationDevelopment
+aspectOf < AbstractProcess # ProgrammingDomain
+aspectOf < Role # ProgrammingDomain 
 
-// Part-of relationships
+
+/* Part-of relationships */
 partOf < Artifact # Artifact
 partOf < Artifact # System
 partOf < Artifact # Technology
 partOf < Technology # Technology
 partOf < System # System
 
-// Usage
+/* Systems, technologies and artifacts can be reused. There is always a reference from the using
+entity to the used entity. */
 uses < System # System
 uses < System # Technology
+uses < Technology # Technology
+uses < Artifact # System
+uses < Artifact # Technology
+
+/* A language is used in the sense that some part is a member of the language */
+uses < Artifact # Language
+uses < System # Language
+uses < Technology # Language
+
+/* Re-usable forms of solutions can be used in the sense of realization. */
 uses < System # DesignPattern
 uses < System # ArchitecturalPattern
 uses < System # AbstractProcess
-uses < System # Language  
 uses < System # Construct
-uses < Technology # Artifact
-uses < Technology # Technology
 uses < Technology # DesignPattern
 uses < Technology # ArchitecturalPattern
 uses < Technology # AbstractProcess
-uses < Technology # Language  
 uses < Technology # Construct
 uses < Artifact # DesignPattern
 uses < Artifact # ArchitecturalPattern
-uses < Artifact # System
-uses < Artifact # Technology
-uses < Artifact # Language
+uses < Artifact # AbstractProcess
+uses < Artifact # Construct
 
-// Facilitation (deferred usage)
+/* A technology or a language can facilitate the usage of ideal forms of solutions */
 facilitates < Technology # DesignPattern
 facilitates < Technology # ArchitecturalPattern
 facilitates < Technology # AbstractProcess
