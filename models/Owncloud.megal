@@ -5,7 +5,7 @@ import java.JavaPlatform
 
 /* TODO : OwnCloud is still a black box in this model.
 
-Owncloud is a cloud service that enables the synchronization of files across multiple clients.
+Owncloud is a web service that enables the synchronization of files across multiple clients.
 It further supports conflict detection, simple version control and IOScheduling to handle the 
 synchronization. Owncloud is written in C++, Java and PHP. */
 PHP : ProgrammingLanguage
@@ -27,13 +27,13 @@ VersionControl : AbstractProcess
     = "https://en.wikipedia.org/wiki/Version_control"
 IOScheduling : AbstractProcess
     = "https://en.wikipedia.org/wiki/I/O_scheduling"
-OwnCloud : SoftwareSuite
+OwnCloud : WebService
     = "https://en.wikipedia.org/wiki/OwnCloud"
     = "https://en.wikipedia.org/wiki/Comparison_of_file_synchronization_software"
-    realizes FileSynchronization
-    realizes ConflictDetection
-    realizes VersionControl
-    realizes IOScheduling
+    uses FileSynchronization
+    uses ConflictDetection
+    uses VersionControl
+    uses IOScheduling
     implements URL
     uses C++
     uses Java
