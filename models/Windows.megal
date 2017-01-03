@@ -1,0 +1,14 @@
+module Windows
+
+import C
+
+/* The Windows operating system is a platform capable of executing
+files in the Portable Executable (PE) format, where the main program's
+file ending is '.exe'. */
+PE : InstructionSet
+    = "https://en.wikipedia.org/wiki/Portable_Executable"
+Windows : Platform
+    = "https://en.wikipedia.org/wiki/Microsoft_Windows"
+    implements PE
+    uses C++
+    uses C

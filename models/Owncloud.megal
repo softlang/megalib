@@ -58,13 +58,13 @@ use case we have two clients and one server involved. */
 OwnCloud uses ClientServer
 OwnCloudServer : WebService
     = "https://github.com/owncloud/core"
+    partOf OwnCloud
     uses C++
     uses C
     uses Objective-C
     uses Perl
     uses NSIS
     uses C-Make
-    partOf OwnCloud
     implements OwncloudPolicyLanguage
 OwnCloudClient : Software
     = "https://de.wikipedia.org/wiki/OwnCloud#Sync-Clients"

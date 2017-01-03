@@ -1,20 +1,52 @@
 module XML
 
-/* XML is a markup language invented by W3C */
+/* XML is a markup language invented by W3C. The specification
+is available online in an HTML version and can be viewed using
+a browser. */
 XML : MarkupLanguage
     = "https://en.wikipedia.org/wiki/XML"
+XHTML : MarkupLanguage
+    = "https://de.wikipedia.org/wiki/Extensible_Hypertext_Markup_Language"
+    subsetOf XML
+XMLSpec : Artifact
+    = "https://www.w3.org/XML/"
+    elementOf XHTML
+    hasRole Specification
+    manifestsAs File
+    defines XML
+?aBrowser : Platform
+    implements XHTML
 
 /* There are multiple languages that can be used to define schemata */
 XSD : SchemaLanguage
     = "https://en.wikipedia.org/wiki/XML_Schema_(W3C)"
     subsetOf XML
+XSDSpec : Artifact
+    = "https://www.w3.org/TR/xmlschema11-1/"
+    elementOf XHTML
+    hasRole Specification
+    manifestsAs File
+    defines XSD
 DTD : SchemaLanguage
     = "https://en.wikipedia.org/wiki/Document_type_definition"
+DTDSpec : Artifact
+    = "http://www.w3schools.com/xml/xml_dtd_intro.asp"
+    elementOf XHTML
+    hasRole Specification
+    manifestsAs File
+    defines DTD
 RelaxNGXML : SchemaLanguage
     = "https://en.wikipedia.org/wiki/RELAX_NG#XML_syntax"
     subsetOf XML
 RelaxNGCompact : SchemaLanguage
     = "https://en.wikipedia.org/wiki/RELAX_NG#Compact_syntax"
+RelaxNGSpec : Artifact
+    = "http://relaxng.org/spec-20011203.html"
+    elementOf XHTML
+    hasRole Specification
+    manifestsAs File
+    defines RelaxNGXML
+    defines RelaxNGCompact
 
 /* Theoretically you could have an XML file that is conform to schemata 
 written in any of the schema languages. Actual correspondence between the
@@ -28,7 +60,7 @@ are different in every language. */
     elementOf DTD
     hasRole Schema
     manifestsAs File
-    correspondsTo ?xsdschema //theoretical correspondence
+    correspondsTo ?xsdschema //theoretical correspondence. Impedance mismatch messes it up.
 ?rngxmlSchema : Artifact
     elementOf RelaxNGXML
     hasRole Schema

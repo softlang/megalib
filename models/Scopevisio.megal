@@ -1,6 +1,8 @@
 module Scopevisio
 
 import java.JavaPlatform
+import Windows
+import XML
 
 /* Scopevisio is a service based technology to support business programming with a focus
 on enterprise resource planning. It further supports customer relationship 
@@ -49,8 +51,6 @@ HTTPRequest : MessageLanguage
     = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods"
 HTTPResponse : MessageLanguage
     = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message"
-XML : MarkupLanguage
-    = "https://en.wikipedia.org/wiki/XML"
 SOAP : MessageLanguage
     = "https://en.wikipedia.org/wiki/SOAP"
     = "https://www.w3.org/TR/soap/"
@@ -61,10 +61,12 @@ URI : ReferenceLanguage
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier"
 Authentication : Construct
     = "https://en.wikipedia.org/wiki/Authentication"
+?l : ProgrammingLanguage
 OpenScope : API
     = "https://openscope.de/api.html"
     partOf Scopevisio
     uses HTTPS
+    uses ?l //can't identify programming language yet
     implements SOAP
     implements HTTPRequest
     implements HTTPResponse
@@ -129,17 +131,13 @@ which services he payed for and is able to access. */
     hasRole Configuration
     elementOf ?unknownConfigurationLanguage
     partOf ScopevisioClient
-EXE : FileFormat
-    = "https://en.wikipedia.org/wiki/.exe"
 ?ScopevisioExe : Artifact //Archives and Folders do not have any elementOf relationship
-    elementOf EXE
-    manifestsAs Archive
+    elementOf PE
+    manifestsAs File
     hasRole Executable
     partOf ScopevisioClient
 
 /* The document management service is REST based */
-REST : ArchitecturalPattern
-    = "https://en.wikipedia.org/wiki/Representational_state_transfer"
 ?ScopevisioDMS : Component
     uses Java
     partOf ScopevisioClient

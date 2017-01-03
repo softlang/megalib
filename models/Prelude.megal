@@ -112,8 +112,10 @@ Executable : Role //Any artifact that is executed and not only used.
     = "https://en.wikipedia.org/wiki/Executable"
 WebResource : Role // Contains information and is deployed on a web server.
     = "https://en.wikipedia.org/wiki/Web_resource"
-Archive : Manifestation //A file that has folder functionality, such as .jar or .zip
+Archive : Role //A file that has folder functionality, such as .jar or .zip
     = "https://en.wikipedia.org/wiki/Archive_file"
+Document : Role //An informal file that is deployed locally 
+    = "https://en.wikipedia.org/wiki/Document" 
 hasRole < Artifact # Role
 
 /* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
@@ -123,6 +125,8 @@ ArchitecturalPattern < Entity
     = "https://en.wikipedia.org/wiki/Architectural_pattern"
 ClientServer : ArchitecturalPattern
     = "https://de.wikipedia.org/wiki/Client-Server-Modell"
+REST : ArchitecturalPattern
+    = "https://en.wikipedia.org/wiki/Representational_state_transfer"
 participantOf < Role # DesignPattern
 participantOf < Role # ArchitecturalPattern  
 
