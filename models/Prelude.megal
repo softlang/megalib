@@ -27,6 +27,8 @@ InstructionSet < Language // hardware statements, e.g. MIPS Assembler
     = "https://en.wikipedia.org/wiki/Instruction_set" 
 ConfigurationLanguage < Language // configuration files, e.g. .class-files
     = "https://en.wikipedia.org/wiki/Configuration_file" 
+BuildLanguage < Language //languages used for writing build scripts
+    = "https://en.wikipedia.org/wiki/Build_automation"
 ReferenceLanguage < Language // express references, e.g. URI
     = "https://en.wikipedia.org/wiki/Reference" 
 MessageLanguage < Language // structured messages, e.g. HTTP Requests
@@ -68,6 +70,8 @@ Role < Entity
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
 Configuration : Role   //settings statements.
     = "https://en.wikipedia.org/wiki/Configuration_file"
+BuildScript : Role
+    = "https://en.wikipedia.org/wiki/Software_build"
 Grammar : Role   //syntax definition
     = "https://en.wikipedia.org/wiki/Context-free_grammar"
 Database : Role  //any artifact that only stores data
@@ -117,6 +121,8 @@ DesignPattern < Entity
     = "https://en.wikipedia.org/wiki/Software_design_pattern"
 ArchitecturalPattern < Entity
     = "https://en.wikipedia.org/wiki/Architectural_pattern"
+ClientServer : ArchitecturalPattern
+    = "https://de.wikipedia.org/wiki/Client-Server-Modell"
 participantOf < Role # DesignPattern
 participantOf < Role # ArchitecturalPattern  
 
@@ -125,7 +131,9 @@ Function < Entity
     = "https://en.wikipedia.org/wiki/Function_(mathematics)"
 implements < Artifact # Function
 
-/* A technology is a reusable piece of software having one to many use cases. */
+/* A technology is a reusable piece of software having one to many use cases. 
+The question on what types of classifiers exist for technology is still open.
+What follows is a list of terms that are known subtypes of software technology. */
 Technology < Entity
     = "https://www.journals.elsevier.com/information-and-software-technology/"
 API < Technology //a technology that facilitates the use of another technology/language.
@@ -138,10 +146,12 @@ Plugin < Technology // as an extension to another technology
     = "https://en.wikipedia.org/wiki/Plug-in_(computing)"
 Component < Technology // as part of a composed technology
     = "https://en.wikipedia.org/wiki/Component-based_software_engineering#Software_component"
-SoftwareSuite < Technology // a set of programs that are delivered together
+SoftwareSuite < Technology // a software collection that is deployed together
     = "https://en.wikipedia.org/wiki/Software_suite"
 WebService < Technology  // a web service that can be communicated with and provides various functionality
     = "https://en.wikipedia.org/wiki/Web_service"
+Software < Technology //a technology that consists of multiple programs and is deployed locally
+    = "https://en.wikipedia.org/wiki/Software"
 Program < Technology // a technology that implements one process that is needed in distinct use cases.
     = "https://en.wikipedia.org/wiki/Computer_program"
 IDE < Technology // an environment to facilitate writing systems or technologies.
@@ -194,9 +204,12 @@ subdomainOf < ProgrammingDomain # ProgrammingDomain //One may formulate a domain
 supports < Technology # ProgrammingDomain
 supports < Language # ProgrammingDomain
 
-/* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. */
+/* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. While a programming domain could be called a problem space,
+a technology space could be called a solution space. */
 TechnologySpace < Entity
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
+BuildAutomation : TechnologySpace
+    = "https://en.wikipedia.org/wiki/List_of_build_automation_software"
 belongsTo < Technology # TechnologySpace
 belongsTo < Language # TechnologySpace
 

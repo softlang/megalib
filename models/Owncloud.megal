@@ -1,20 +1,11 @@
 module Owncloud
 
-import C 
-import java.JavaPlatform
+import C
+import NSIS
 
-/* TODO : OwnCloud is still a black box in this model.
-
-Owncloud is a web service that enables the synchronization of files across multiple clients.
+/* Owncloud enables the synchronization of files across multiple clients.
 It further supports conflict detection, simple version control and IOScheduling to handle the 
-synchronization. Owncloud is written in C++, Java and PHP. */
-PHP : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/PHP"
-PHPInterpreter : Platform
-    = "https://secure.php.net/docs.php"
-    = "https://en.wikipedia.org/wiki/PHP"
-    implements PHP
-    uses C
+synchronization. A policy states which files are supposed to synchronized. */
 URL : ReferenceLanguage
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator"
 FileSynchronization : AbstractProcess
@@ -27,7 +18,7 @@ VersionControl : AbstractProcess
     = "https://en.wikipedia.org/wiki/Version_control"
 IOScheduling : AbstractProcess
     = "https://en.wikipedia.org/wiki/I/O_scheduling"
-OwnCloud : WebService
+OwnCloud : Software
     = "https://en.wikipedia.org/wiki/OwnCloud"
     = "https://en.wikipedia.org/wiki/Comparison_of_file_synchronization_software"
     uses FileSynchronization
@@ -35,27 +26,61 @@ OwnCloud : WebService
     uses VersionControl
     uses IOScheduling
     implements URL
+
+/* OwnCloud uses various languages. The program is written mostly in C++, C, Objective-C, 
+Perl and some bits of PHP. For the deployment process, NSIS and C-Make are used. */   
+Perl : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/Perl"
+PerlInterpreter : Platform
+    = "https://en.wikipedia.org/wiki/Perl#Implementation"
+    implements Perl
+    uses C
+PHP : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/PHP"
+OwncloudPolicyLanguage : ConfigurationLanguage
+    = "https://github.com/owncloud/core/blob/5ce66c4d5f9a895bec41f56f7cc96661eec00ae6/config/config.sample.php"
+    subsetOf PHP
+PHPInterpreter : Platform
+    = "https://secure.php.net/docs.php"
+    = "https://en.wikipedia.org/wiki/PHP"
+    implements PHP
+    uses C
+OwnCloud uses C++
+    uses C
+    uses Objective-C
+    uses Perl
+    uses NSIS
+    uses C-Make
+    implements OwncloudPolicyLanguage
+
+/* The server communicates with the connected filesystems using the client software. In this
+use case we have two clients and one server involved. */
+OwnCloud uses ClientServer
+OwnCloudServer : WebService
+    = "https://github.com/owncloud/core"
     uses C++
-    uses Java
-    uses PHP
-
-/* The functionality is separated over a server that can be set up and multiple clients. In this
-use case we have two clients and one server involved. The server uses a sharing policy to configure
-which files should actually be synchronized. */
+    uses C
+    uses Objective-C
+    uses Perl
+    uses NSIS
+    uses C-Make
+    partOf OwnCloud
+    implements OwncloudPolicyLanguage
+OwnCloudClient : Software
+    = "https://de.wikipedia.org/wiki/OwnCloud#Sync-Clients"
+    uses C++
+    uses C
+    uses Objective-C
+    uses Perl
+    uses NSIS
+    uses C-Make
+    partOf OwnCloud
+?aWebServer : FileSystem
+    uses OwnCloudServer
 ?aFileSystem1 : FileSystem
-?anOwncloudClient1 : Application
-    partOf ?aFileSystem1
-    uses OwnCloud
+    uses OwnCloudClient
 ?aFileSystem2 : FileSystem
-?anOwncloudClient2 : Application
-    partOf ?aFileSystem2
-    uses OwnCloud
-?PolicyLanguage : ConfigurationLanguage
-OwnCloud implements ?PolicyLanguage
-?anOwncloudServer : WebApplication
-    = "https://owncloud.org/install/#instructions-server"
-    uses OwnCloud
-
+    uses OwnCloudClient
 
 /* A file is uploaded in the first file system and then downloaded due to the synchronization
 process by the second client. The sharing policy states that synchronization for this file
@@ -73,11 +98,11 @@ is enabled. */
     partOf ?aFileSystem2
     correspondsTo ?aFile1  // equality
 ?sharingAllowedPolicy : Artifact
-    elementOf ?PolicyLanguage
+    elementOf OwncloudPolicyLanguage
     hasRole Configuration
     manifestsAs File
-    partOf ?anOwncloudServer
-share : URL # ?PolicyLanguage # ?l -> ?l
+    partOf ?aWebServer
+share : URL # OwncloudPolicyLanguage # ?l -> ?l
 OwnCloud implements share
 ?aserverurl1 : Artifact
     elementOf URL
