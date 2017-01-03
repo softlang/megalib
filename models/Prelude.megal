@@ -114,6 +114,14 @@ Archive : Manifestation //A file that has folder functionality, such as .jar or 
     = "https://en.wikipedia.org/wiki/Archive_file"
 hasRole < Artifact # Role
 
+/* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
+DesignPattern < Entity
+    = "https://en.wikipedia.org/wiki/Software_design_pattern"
+ArchitecturalPattern < Entity
+    = "https://en.wikipedia.org/wiki/Architectural_pattern"
+participantOf < Role # DesignPattern
+participantOf < Role # ArchitecturalPattern  
+
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity
     = "https://en.wikipedia.org/wiki/Function_(mathematics)"
@@ -192,14 +200,6 @@ TechnologySpace < Entity
 belongsTo < Technology # TechnologySpace
 belongsTo < Language # TechnologySpace
 
-/* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
-DesignPattern < Entity
-    = "https://en.wikipedia.org/wiki/Software_design_pattern"
-ArchitecturalPattern < Entity
-    = "https://en.wikipedia.org/wiki/Architectural_pattern"
-participantOf < Role # DesignPattern
-participantOf < Role # ArchitecturalPattern  
-
 /* Commonly known processes where the realization depends on the used technologies and involved languages. */
 AbstractProcess < Entity 
     = "https://en.wikipedia.org/wiki/Abstract_process"
@@ -264,4 +264,3 @@ facilitates < Technology # ArchitecturalPattern
 facilitates < Technology # AbstractProcess
 facilitates < Technology # Construct
 facilitates < Language # Paradigm
-facilitates < Language # ProgrammingDomain
