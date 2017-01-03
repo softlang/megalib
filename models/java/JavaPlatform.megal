@@ -18,6 +18,7 @@ Java.Double : DataType
 
 JavaByteCode : InstructionSet
     = "https://en.wikipedia.org/wiki/Java_bytecode"
+    = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html"
     belongsTo JavaWare
 
 JavaPlatform : Platform
@@ -26,12 +27,18 @@ JavaPlatform : Platform
     belongsTo JavaWare
     supports GeneralPurposeProgramming
 
-JavaC : Platform
-    = "https://en.wikipedia.org/wiki/Javac"
+JDK : Program
+    = "http://www.oracle.com/technetwork/java/javase/documentation/jdk8-doc-downloads-2133158.html"
     uses Java
-    partOf JavaPlatform
+    belongsTo JavaWare
+
+JavaC : Program
+    = "https://en.wikipedia.org/wiki/Javac"
+    = "https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-3.html"
+    uses Java
+    uses Compilation
+    partOf JDK
     supports MetaProgramming
-    realizes Compilation
     implements Java
     implements JavaByteCode
 
