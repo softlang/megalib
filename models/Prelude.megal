@@ -104,10 +104,8 @@ TransformationRule : Role //A definition for a text- or model-transformation tha
     = "http://101companies.org/wiki/Transformation"
 Reference : Role //links to some existing entity.
     = "https://en.wikipedia.org/wiki/Reference"
-Executable : Role //Any artifact that is interpreted.
+Executable : Role //Any artifact that is executed and not only used.
     = "https://en.wikipedia.org/wiki/Executable"
-Program : Role //Any kind of code that describes a mapping from input to output.
-    = "https://en.wikipedia.org/wiki/Computer_program"
 WebResource : Role // Contains information and is deployed on a web server.
     = "https://en.wikipedia.org/wiki/Web_resource"
 Archive : Manifestation //A file that has folder functionality, such as .jar or .zip
@@ -127,26 +125,28 @@ Function < Entity
     = "https://en.wikipedia.org/wiki/Function_(mathematics)"
 implements < Artifact # Function
 
-/* Classification of technologies */
+/* A technology is a reusable piece of software having one to many use cases. */
 Technology < Entity
     = "https://www.journals.elsevier.com/information-and-software-technology/"
-API < Technology
+API < Technology //a technology that facilitates the use of another technology/language.
     = "https://en.wikipedia.org/wiki/Application_programming_interface"
-Library < Technology
+Library < Technology //contains a set of reusable functions.
     = "https://en.wikipedia.org/wiki/Library_(computing)"
-Framework < Technology
+Framework < Technology //facilitates the realization of a specific use cases most times through code generation
     = "https://en.wikipedia.org/wiki/Software_framework"
-Plugin < Technology // as an extension to a software suite or IDE or plug & play architecture
+Plugin < Technology // as an extension to another technology
     = "https://en.wikipedia.org/wiki/Plug-in_(computing)"
-Component < Technology // as part of a framework or library
+Component < Technology // as part of a composed technology
     = "https://en.wikipedia.org/wiki/Component-based_software_engineering#Software_component"
-SoftwareSuite < Technology // ?
+SoftwareSuite < Technology // a set of programs that are delivered together
     = "https://en.wikipedia.org/wiki/Software_suite"
-WebService < Technology
+WebService < Technology  // a web service that can be communicated with and provides various functionality
     = "https://en.wikipedia.org/wiki/Web_service"
-IDE < Technology // ?
+Program < Technology // a technology that implements one process that is needed in distinct use cases.
+    = "https://en.wikipedia.org/wiki/Computer_program"
+IDE < Technology // an environment to facilitate writing systems or technologies.
     = "https://en.wikipedia.org/wiki/Integrated_development_environment"
-Platform < Technology 
+Platform < Technology  // a technology that has the capability to execute software
     = "https://en.wikipedia.org/wiki/Computing_platform"
 
 /* Implementation relationships */
@@ -181,7 +181,7 @@ languages to support it. */
 ProgrammingDomain < Entity
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
 // The study on applications in general. For example, Java can be used to solve any kind
-of problem, but the solution may be more elegant in a rather domain specific language. 
+// of problem, but the solution may be more elegant in a rather domain specific language. 
 GeneralPurposeProgramming : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/General-purpose_programming_language"
 // The study on processing programs with support for language implementation 
