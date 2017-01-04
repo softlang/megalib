@@ -4,8 +4,6 @@ module WebSQLDatabaseAPI
 This prescriptive model describes a technology that is outdated : https://www.w3.org/TR/webdatabase/
 It deals with how technology can support HTML5 web applications to still work, when the user is offline.
 */
-
-//import sql.SQL
 WebApplicationDevelopment : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Web_application"
 OfflineWebApplicationDevelopment : ProgrammingDomain
@@ -22,7 +20,7 @@ HTML5JavaScript : ProgrammingLanguage
 ?aBrowser : Platform
     implements HTML5
     implements HTML5JavaScript
-    realizes LocalStorage
+    uses LocalStorage
 
 /* The approach is to have an SQL database at the client side
 with the necessary data. .
@@ -31,13 +29,13 @@ is not further specified. */
 DatabaseAPISQL : QueryLanguage
     = "https://www.w3.org/TR/webdatabase/#executing-sql-statements"
     embeddedInto HTML5JavaScript
-    facilitates DatabaseProgramming
+    supports DatabaseProgramming
 SQLDatabaseAPI : API
     = "https://www.w3.org/TR/offline-webapps/#offline"
     = "https://www.tutorialspoint.com/html5/html5_web_sql.htm"
     uses HTML5
     implements DatabaseAPISQL
-    realizes LocalStorage
+    uses LocalStorage
     supports DatabaseProgramming
     supports OfflineWebApplicationDevelopment
 ?aLocalFileSystem : FileSystem
@@ -58,7 +56,7 @@ SQLDatabaseAPI : API
     elementOf HTML5
     partOf ?aWebApplication
 ?ascript : Artifact
-    hasRole Program
+    hasRole Executable
     manifestsAs Fragment
     elementOf HTML5JavaScript
     partOf ?awebsite
