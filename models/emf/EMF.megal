@@ -1,76 +1,78 @@
-module EMF
+module emf.EMF
 
-//links in group
-// group/segment id?
-Java : ProgrammingLanguage
-JavaObject : ObjectLanguage // ObjectLanguage unfit
-EMF : Framework
-EMF uses Java
-EMFCore : Framework
-EMFCore partOf EMF
-EMFCore uses Java
+import java.JavaPlatform
+import Eclipse
+import XML
 
+/* The eclipse modeling framework belongs to the model driven engineering
+technologies. It's an eclipse plugin implemented in Java. */
+EMF : Plugin
+    = "https://eclipse.org/modeling/emf/"
+    uses Java
+    partOf Eclipse
 
-org.eclipse.emf.ecore : Framework //Component?
-org.eclipse.emf.ecore partOf EMFCore
-org.eclipse.emf.ecore uses Java
+/* Its main component is EMFCore which implements the object model for
+EMF models ECore. */
 ECore : SchemaLanguage
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html"
     subsetOf Java
-org.eclipse.emf.ecore implements ECore
+EMFCore : Component
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html"
+    partOf EMF
+    uses Java
 
-
-EMFPersistence : Framework
-EMFPersistence uses Java
-EMFPersistence partOf EMFCore
-EMFPersistence realizes Serialization
-XML : DataRepresentationLanguage
-XMI : DataRepresentationLanguage
-XMI subsetOf XML
-
-PDF : FileFormat
+/* The EMF persistence framework allows you to persist ecore models in a subset of XMI */
+?PDF : FileFormat
+    = "https://en.wikipedia.org/wiki/Portable_Document_Format"
+XMI : MarkupLanguage
+    = "https://en.wikipedia.org/wiki/XML_Metadata_Interchange"
+    subsetOf XML
 XMISpec : Artifact
-    elementOf PDF
+    = "http://www.omg.org/spec/XMI/2.5.1/PDF"
+    elementOf ?PDF
     hasRole Specification
     manifestsAs File 
     defines XMI
 ECore.XMI : DataRepresentationLanguage
-EMF implements ECore.XMI
-ECore.XMI subsetOf XMI
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html"
+    subsetOf XMI
+EMFPersistence : Component
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/index.html?org/eclipse/emf/ecore/package-summary.html"
+    = "http://www.vogella.com/tutorials/EclipseEMFPersistence/article.html"
+    uses Java
+    partOf EMFCore
+    uses Serialization
+    implements ECore.XMI
 
 
+/* An Ecore model is a metamodel for the DSL which is a language subset of ECore */
+?MyModels.ECore : SchemaLanguage
 ?MyModels.XMI : DataRepresentationLanguage
-?MyModels.XMI subsetOf ECore.XMI
-?MyMeta.ecore : Artifact<ECore,MdeMetamodel,File>
-?MyMeta.ecore defines ?MyModels.XMI
+    subsetOf ECore.XMI
+?MyMeta.ecore : Artifact
+    elementOf ECore
+    hasRole MdeMetamodel
+    manifestsAs File
+    defines ?MyModels.XMI
+    defines ?MyModels.ECore
 
-//code generation is missing
-?MyModels.Java : ObjectLanguage
-?MyModels.Java subsetOf JavaObject
-
-
-?MyModel : Artifact<?MyModels.JavaObject,MdeModel,Transient>
-?MyModel conformsTo ?MyMeta.ecore
-?MyModel.xmi : Artifact<?MyModels.XMI,MdeModel,File>
-?MyModel.xmi conformsTo ?MyMeta.ecore
-?MyModel correspondsTo ?MyModel.xmi
-
-
-saveModel : ?MyModels.Java -> ?MyModels.XMI
+/* A Java object can be serialized in the XMI subset for a DSL */
+?MyModels.JavaObject : ObjectGraph
+    subsetOf JavaObject
+?MyModel : Artifact 
+    elementOf ?MyModels.JavaObject
+    hasRole MdeModel
+    manifestsAs Transient
+    conformsTo ?MyMeta.ecore
+?MyModel.xmi : Artifact
+    elementOf ?MyModels.XMI
+    hasRole MdeModel
+    manifestsAs File
+    conformsTo ?MyMeta.ecore
+    correspondsTo ?MyModel
+saveModel : ?MyModels.JavaObject -> ?MyModels.XMI
 EMFPersistence implements saveModel
 saveModel(?MyModel) |-> ?MyModel.xmi
-loadModel : ?MyModels.XMI -> ?MyModels.Java
+loadModel : ?MyModels.XMI -> ?MyModels.JavaObject
 EMFPersistence implements loadModel
 loadModel(?MyModel.xmi) |-> ?MyModel
-
-Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
-JavaObject = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
-EMF = "https://eclipse.org/modeling/emf/"
-EMFCore = "http://download.eclipse.org/modeling/emf/emf/javadoc/xsd/2.9.0/"
-org.eclipse.emf.ecore = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/org/eclipse/emf/ecore/package-summary.html#details"
-ECore = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/org/eclipse/emf/ecore/package-summary.html#details"
-XML = "http://www.w3schools.com/xml/"
-XMI = "http://www.omg.org/spec/XMI/"
-XMISpec = "http://www.omg.org/spec/XMI/2.5.1/PDF"
-EMFPersistence = "https://eclipse.org/modeling/emf/"
-ECore.XMI = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html"
-PDF = "https://en.wikipedia.org/wiki/Portable_Document_Format"

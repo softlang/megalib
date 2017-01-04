@@ -12,6 +12,8 @@ Java : ProgrammingLanguage
     facilitates FunctionalProgramming
     facilitates ConcurrentProgramming
 
+JavaObject : ObjectGraph
+    = "https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html"
 Java.Double : DataType
     = "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html"
     subsetOf Java
@@ -41,6 +43,7 @@ JavaC : Program
     supports MetaProgramming
     implements Java
     implements JavaByteCode
+    implements JavaObject
 
 compile : Java -> JavaByteCode
 JavaC implements compile
