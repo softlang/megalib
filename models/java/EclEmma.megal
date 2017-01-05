@@ -1,36 +1,37 @@
 module java.EclEmma
 
 import java.JavaPlatform
+import Eclipse
 
-ReverseEngineering : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Reverse_engineering"
-QualityAssurance : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Software_quality_assurance"
+/* Metrics are a general aspect of quality assurance. A metric 
+is a function that analyzes artifacts and returns a number.
+A specific kind of metric computation is the computation of code
+coverage which states how much code is actually tested. */
 Metric : AbstractProcess
     = "https://en.wikipedia.org/wiki/Software_metric"
     aspectOf ReverseEngineering
-Testing : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Software_testing"
-    subdomainOf QualityAssurance
+    aspectOf QualityAssurance
 CodeCoverage : AbstractProcess //specific metric
     = "https://en.wikipedia.org/wiki/Code_coverage"
     aspectOf Testing
 
-Eclipse : IDE
-    = "https://eclipse.org/"
-    uses Java
+/* EclEmma is an eclipse plugin which offers the functionality
+to compute code coverage. */
 EclEmma : Plugin
     = "http://www.eclemma.org/"
     partOf Eclipse
     uses Java
     implements Java
-    realizes Metric
-    realizes CodeCoverage
+    uses Metric
+    uses CodeCoverage
     supports QualityAssurance
 
+/* In a concrete use case, you would have some Java source code
+and some Java test code as input. EclEmma then offers a function
+which then computes the code coverage. */
 ?EclEmma.javaFiles : Artifact
     elementOf Java
-    hasRole Input //Input?
+    hasRole Input 
     manifestsAs File+
 ?testFiles : Artifact
     elementOf Java
@@ -40,7 +41,6 @@ EclEmma : Plugin
     elementOf Java.Double
     hasRole Output
     manifestsAs Transient
-
 computeCoverage : Java # Java -> Java.Double
 computeCoverage(?EclEmma.javaFiles,?testFiles) |-> ?aCoverageInPercent
 EclEmma implements computeCoverage
