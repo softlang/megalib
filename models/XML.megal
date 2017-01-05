@@ -3,6 +3,8 @@ module XML
 /* XML is a markup language invented by W3C. The specification
 is available online in an HTML version and can be viewed using
 a browser. */
+AuxiliaryXMLware : TechnologySpace
+    = "http://101companies.org/wiki/Auxiliary_XMLware"
 XML : MarkupLanguage
     = "https://en.wikipedia.org/wiki/XML"
 XHTML : MarkupLanguage

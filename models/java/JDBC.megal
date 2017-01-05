@@ -1,0 +1,15 @@
+module java.JDBC
+
+import java.JavaPlatform
+import SQL
+
+/* JDBC manages the access to any ODBC-accessible data source */
+?JDBCDatabaseFormat : FileFormat
+JDBC : Library
+    = "http://www.oracle.com/technetwork/java/javase/jdbc/index.html"
+    uses Java
+    partOf JavaPlatform
+    supports DatabaseProgramming
+    implements ?JDBCDatabaseFormat
+    implements SQL
+

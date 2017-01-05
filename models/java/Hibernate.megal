@@ -1,0 +1,112 @@
+module java.Hibernate
+
+import java.JavaPlatform
+import java.JDBC
+import SQL
+import XML
+
+/* The framework Hibernate supports the synchronization
+between Java objects and a relational database */
+Hibernate : Framework
+    = "http://hibernate.org/"
+    uses Java
+    partOf JavaPlatform
+    supports ObjectRelationalMapping
+    belongsTo SQLWare
+    belongsTo AuxiliaryXMLware
+    uses JDBC
+
+/* An auxiliary file deals with configuring the connection
+and the actual mapping rules */
+HibernateCFG : ConfigurationLanguage
+    = "https://docs.oracle.com/cd/E13224_01/wlw/docs103/guide/ormworkbench/hibernate-tutorial/tutHibernate9.html"
+    subsetOf XML
+Hibernate implements HibernateCFG
+?hibernate.cfg : Artifact
+    elementOf HibernateCFG
+    hasRole Configuration
+    manifestsAs File
+//TODO: How to say that it defines the actual ObjectRelationalMapping
+
+/* In the following use case we want to illustrate important
+facts for a modification of the database using Java code. */
+?createStmt : Artifact
+    elementOf SQLDDL
+    hasRole Schema
+    manifestsAs File
+?db1 : Artifact
+    elementOf ?JDBCDatabaseFormat
+    hasRole Database
+    manifestsAs File
+?db2 : Artifact
+    elementOf ?JDBCDatabaseFormat
+    hasRole Database
+    manifestsAs File
+POJO : Construct
+    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object"
+    aspectOf ObjectOrientation
+?modelClass : Artifact
+    elementOf Java
+    hasRole Schema
+    manifestsAs File
+    uses POJO
+
+/* Demonstrating querying with embedded SQL */
+?table1 : Artifact
+    elementOf ?JDBCDatabaseFormat
+    hasRole Database
+    manifestsAs Fragment
+    partOf ?db1
+?modelobject1 : Artifact
+    elementOf JavaObject
+    hasRole Value
+    manifestsAs Transient
+Hibernate.EmbeddedSQL : QueryLanguage
+    = "http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#batch-bulk-hql"
+    embeddedInto Java
+Hibernate implements Hibernate.EmbeddedSQL
+?queryclass : Artifact
+    elementOf Java
+    hasRole SourceCode
+    manifestsAs File
+?query : Artifact
+    elementOf Hibernate.EmbeddedSQL
+    hasRole Query
+    manifestsAs Fragment
+    partOf ?queryclass
+loadObject : HibernateCFG # ?JDBCDatabaseFormat # Hibernate.EmbeddedSQL -> JavaObject
+Hibernate implements loadObject
+loadObject(?hibernate.cfg, ?db1,?query) |-> ?modelobject1
+
+/* Now imagine some Java program would change an object and commit
+changes */
+modifyObject : JavaObject -> JavaObject
+commit : HibernateCFG # JavaObject # ?JDBCDatabaseFormat -> ?JDBCDatabaseFormat
+?modelobject2 : Artifact
+    elementOf JavaObject
+    hasRole Value
+    manifestsAs Transient
+?modifyingClass : Artifact
+    elementOf Java
+    hasRole SourceCode
+    manifestsAs File
+    implements modifyObject
+Hibernate implements commit
+modifyObject(?modelobject1) |-> ?modelobject2
+commit(?hibernate.cfg,?modelobject2,?db1) |-> ?db2
+?table2 : Artifact
+    elementOf ?JDBCDatabaseFormat
+    hasRole Database
+    manifestsAs Fragment
+    partOf ?db2
+
+/* Some conformance relationships to think about */
+?table1 conformsTo ?createStmt
+?table2 conformsTo ?createStmt
+?modelobject1 conformsTo ?modelClass
+?modelobject2 conformsTo ?modelClass
+
+/* Correspondence between tables and objects */
+?modelClass correspondsTo ?createStmt
+?table1 correspondsTo ?modelobject1
+?table2 correspondsTo ?modelobject2

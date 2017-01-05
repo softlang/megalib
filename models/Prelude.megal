@@ -108,6 +108,8 @@ TransformationRule : Role //A definition for a text- or model-transformation tha
     = "http://101companies.org/wiki/Transformation"
 Reference : Role //links to some existing entity.
     = "https://en.wikipedia.org/wiki/Reference"
+SourceCode : Role // An implementation of functionality
+    = "https://en.wikipedia.org/wiki/Source_code"
 Executable : Role //Any artifact that is executed and not only used.
     = "https://en.wikipedia.org/wiki/Executable"
 WebResource : Role // Contains information and is deployed on a web server.
@@ -194,6 +196,7 @@ RelationalModeling : Paradigm // Enabling the representation of entities and the
 languages to support it. */
 ProgrammingDomain < Entity
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
+subdomainOf < ProgrammingDomain # ProgrammingDomain //One may formulate a domain that covers a subset of another domain's requirements, problems, terminology and ways for languages to support it.
 // The study on applications in general. For example, Java can be used to solve any kind
 // of problem, but the solution may be more elegant in a rather domain specific language. 
 GeneralPurposeProgramming : ProgrammingDomain
@@ -204,12 +207,26 @@ MetaProgramming : ProgrammingDomain
 // The study on how to efficiently store and process data 
 DatabaseProgramming : ProgrammingDomain
     = "http://101companies.org/wiki/Database_programming"
-subdomainOf < ProgrammingDomain # ProgrammingDomain //One may formulate a domain that covers a subset of another domain's requirements, problems, terminology and ways for languages to support it.
+ReverseEngineering : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Reverse_engineering"
+QualityAssurance : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Software_quality_assurance"
+Testing : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Software_testing"
+    subdomainOf QualityAssurance
+Persistence : ProgrammingDomain
+    = "http://101companies.org/wiki/Persistence"
+ObjectRelationalMapping : ProgrammingDomain
+    = "http://101companies.org/wiki/Object-Relational_mapping"
+    subdomainOf Persistence
 supports < Technology # ProgrammingDomain
 supports < Language # ProgrammingDomain
 
 /* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. While a programming domain could be called a problem space,
-a technology space could be called a solution space. */
+a technology space could be called a solution space. 
+
+Hint: Language dependent technology spaces can be found in the corresponding
+language's main module. */
 TechnologySpace < Entity
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
 BuildAutomation : TechnologySpace
