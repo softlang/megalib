@@ -144,7 +144,7 @@ API < Technology //a technology that facilitates the use of another technology/l
     = "https://en.wikipedia.org/wiki/Application_programming_interface"
 Library < Technology //contains a set of reusable functions.
     = "https://en.wikipedia.org/wiki/Library_(computing)"
-Framework < Technology //facilitates the realization of a specific use cases most times through code generation
+Framework < Technology //facilitates the realization of specific use cases most times through code generation
     = "https://en.wikipedia.org/wiki/Software_framework"
 Plugin < Technology // as an extension to another technology
     = "https://en.wikipedia.org/wiki/Plug-in_(computing)"

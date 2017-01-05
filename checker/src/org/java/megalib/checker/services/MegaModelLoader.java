@@ -169,9 +169,9 @@ public class MegaModelLoader {
             String pdata = FileUtils.readFileToString(new File(p));
             l = (MegalibImportListener) parse(pdata, new MegalibImportListener());
             imports.addAll(l.getImports());
+            processed.add(l.getName());
             toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
             toProcess.removeAll(processed);
-            processed.add(l.getName());
         }
         // order import map in a set-based approach
         while (!imports.isEmpty()) {

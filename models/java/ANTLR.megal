@@ -1,12 +1,17 @@
 module java.ANTLR
 
-ANTLR : Technology //Classification needed
+import java.JavaPlatform
+
+/* Another Tool For Language Recognition */
+ANTLR : Framework //Classification needed
+    = "http://www.antlr.org/"
+/*
 ANTLRTargetLanguage < ProgrammingLanguage
 Java : ANTLRTargetLanguage
 ANTLR uses Java
 MetaProgramming : TechnologySpace
 
-/*ANTLRGrammar : Language
+ANTLRGrammar : Language
 ANTLR implements generateSources
 generateSources : ANTLRGrammar -> Java
 ?aGrammar.g4 : Grammar<ANTLRGrammar>
@@ -57,3 +62,4 @@ Boolean = "https://en.wikipedia.org/wiki/Boolean_data_type"
 True = "https://en.wikipedia.org/wiki/Boolean_data_type"
 False = "https://en.wikipedia.org/wiki/Boolean_data_type"
 */
+ANTLR uses Java
