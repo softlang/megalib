@@ -34,149 +34,159 @@ public class MegaModelLoader {
     private MegaModel model;
 
     public MegaModelLoader() {
-	todos = new LinkedList<>();
-	model = new MegaModel();
-	loadPrelude();
+        todos = new LinkedList<>();
+        model = new MegaModel();
+        loadPrelude();
     }
 
     public MegaModel getModel() {
-	return model;
+        return model;
     }
 
     private void loadPrelude() {
-	File f = null;
-	String data = "";
-	try {
-	    f = new File("../models/Prelude.megal");
-	    data = FileUtils.readFileToString(f);
-	} catch (IOException e) {
-	    System.err.println(e.getMessage());
-	    e.printStackTrace();
-	    System.exit(1);
-	}
-	model = loadString(data);
+        File f = null;
+        String data = "";
+        try {
+            f = new File("../models/Prelude.megal");
+            data = FileUtils.readFileToString(f);
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+        model = loadString(data);
     }
 
     public void loadFile(String filepath) {
-	File f = null;
-	String data = "";
-	try {
-	    f = new File(filepath);
-	    if (!f.exists())
-		throw new FileNotFoundException();
-	    data = FileUtils.readFileToString(f);
-	} catch (IOException e) {
-	    model.addWarning("Error : The file '" + filepath + "' could not be loaded.");
-	    return;
-	}
-	loadCompleteModelFrom(data, f.getAbsolutePath());
+        File f = null;
+        String data = "";
+        try {
+            f = new File(filepath);
+            if (!f.exists())
+                throw new FileNotFoundException();
+            data = FileUtils.readFileToString(f);
+        }
+        catch (IOException e) {
+            model.addWarning("Error : The file '" + filepath + "' could not be loaded.");
+            return;
+        }
+        if (!loadCompleteModelFrom(data, f.getAbsolutePath())) {
+            System.exit(1);
+        }
 
     }
 
     public MegaModel loadString(String data) {
-	try {
-	    return ((MegalibParserListener) parse(data, new MegalibParserListener(model))).getModel();
-	} catch (MegalibParserException e) {
-	    System.err.println(e.getMessage());
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-	return null;
+        try {
+            return ((MegalibParserListener) parse(data, new MegalibParserListener(model))).getModel();
+        }
+        catch (MegalibParserException e) {
+            System.err.println(e.getMessage());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    private void loadCompleteModelFrom(String data, String abspath) {
-	try {
-	    resolveImports(data, abspath);
-	    System.out.println("Loading:");
-	    todos.forEach(t -> System.out.println(" " + t));
-	    System.out.println();
-	    while (!todos.isEmpty()) {
-		String p = todos.poll();
-		p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
-		String pdata = FileUtils.readFileToString(new File(p));
-		model = ((MegalibParserListener) parse(pdata, new MegalibParserListener(model))).getModel();
-		if (!model.getCriticalWarnings().isEmpty()) {
-		    model.getCriticalWarnings().forEach(w -> System.err.println(w));
-		    throw new WellFormednessException(
-			    "Resolve critical errors first" + (abspath.equals("") ? " in " + abspath : ""));
-		}
-	    }
-	} catch (IOException e) {
-	    System.err.println(e.getMessage());
-	    return;
-	} catch (WellFormednessException e) {
-	    System.err.println(e.getMessage());
-	    return;
-	} catch (MegalibParserException e) {
-	    System.err.println(e.getMessage());
-	    System.exit(0);
-	}
+    private boolean loadCompleteModelFrom(String data, String abspath) {
+        try {
+            resolveImports(data, abspath);
+            System.out.println("Loading:");
+            todos.forEach(t -> System.out.println(" " + t));
+            System.out.println();
+            while (!todos.isEmpty()) {
+                String p = todos.poll();
+                p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
+                String pdata = FileUtils.readFileToString(new File(p));
+                model = ((MegalibParserListener) parse(pdata, new MegalibParserListener(model))).getModel();
+                if (!model.getCriticalWarnings().isEmpty()) {
+                    model.getCriticalWarnings().forEach(w -> System.err.println(w));
+                    throw new WellFormednessException("Resolve critical errors first"
+                                                      + (abspath.equals("") ? " in " + abspath : ""));
+                }
+            }
+            return true;
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        catch (WellFormednessException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        catch (MegalibParserException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
     }
 
-    public MegalibBaseListener parse(String data, MegalibBaseListener listener)
-	    throws MegalibParserException, IOException {
-	ByteArrayInputStream stream = new ByteArrayInputStream(data.getBytes());
-	ANTLRInputStream antlrStream = new ANTLRInputStream(stream);
-	MegalibLexer lexer = new MegalibLexer(antlrStream);
-	CommonTokenStream token = new CommonTokenStream(lexer);
+    public MegalibBaseListener parse(String data, MegalibBaseListener listener) throws MegalibParserException,
+                                                                                IOException {
+        ByteArrayInputStream stream = new ByteArrayInputStream(data.getBytes());
+        ANTLRInputStream antlrStream = new ANTLRInputStream(stream);
+        MegalibLexer lexer = new MegalibLexer(antlrStream);
+        CommonTokenStream token = new CommonTokenStream(lexer);
 
-	MegalibParser parser = new MegalibParser(token);
-	parser.addErrorListener(new MegalibErrorListener());
-	ParseTreeWalker treeWalker = new ParseTreeWalker();
-	treeWalker.walk(listener, parser.declaration());
-	for (ANTLRErrorListener el : parser.getErrorListeners()) {
-	    if (el instanceof MegalibErrorListener) {
-		if (((MegalibErrorListener) el).getCount() > 0)
-		    throw new MegalibParserException("Syntactic errors exist : Fix them before further checks");
-	    }
-	}
-	return listener;
+        MegalibParser parser = new MegalibParser(token);
+        parser.addErrorListener(new MegalibErrorListener());
+        ParseTreeWalker treeWalker = new ParseTreeWalker();
+        treeWalker.walk(listener, parser.declaration());
+        for (ANTLRErrorListener el : parser.getErrorListeners()) {
+            if (el instanceof MegalibErrorListener) {
+                if (((MegalibErrorListener) el).getCount() > 0)
+                    throw new MegalibParserException("Syntactic errors exist : Fix them before further checks");
+            }
+        }
+        return listener;
     }
 
     private void resolveImports(String data, String abspath) throws MegalibParserException, IOException {
-	List<Relation> imports = new LinkedList<>();
-	Set<String> processed = new HashSet<>();
-	Set<String> toProcess = new HashSet<>();
+        List<Relation> imports = new LinkedList<>();
+        Set<String> processed = new HashSet<>();
+        Set<String> toProcess = new HashSet<>();
 
-	MegalibImportListener l = (MegalibImportListener) parse(data, new MegalibImportListener());
-	String loadedModuleName = l.getName();
-	imports.addAll(l.getImports());
-	toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
-	toProcess.removeAll(processed);
-	processed.add(loadedModuleName);
+        MegalibImportListener l = (MegalibImportListener) parse(data, new MegalibImportListener());
+        String loadedModuleName = l.getName();
+        imports.addAll(l.getImports());
+        toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
+        toProcess.removeAll(processed);
+        processed.add(loadedModuleName);
 
-	// Resolve module name to file path
-	int lvl = loadedModuleName.split("\\.").length;
-	root = new File(abspath);
-	// Get root folder
-	for (int i = 0; i < lvl; i++) {
-	    root = root.getParentFile();
-	}
-	// Fill the import map
-	while (!toProcess.isEmpty()) {
-	    String p = toProcess.iterator().next();
-	    p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
-	    String pdata = FileUtils.readFileToString(new File(p));
-	    l = (MegalibImportListener) parse(pdata, new MegalibImportListener());
-	    imports.addAll(l.getImports());
-	    toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
-	    toProcess.removeAll(processed);
-	    processed.add(l.getName());
-	}
-	// order import map in a set-based approach
-	while (!imports.isEmpty()) {
-	    Set<String> subjects = imports.parallelStream().map(r -> r.getSubject()).collect(Collectors.toSet());
-	    Set<String> objects = imports.parallelStream().map(r -> r.getObject()).collect(Collectors.toSet());
-	    Set<String> diff = new HashSet<>(objects);
-	    diff.removeAll(subjects);
-	    if (diff.isEmpty())
-		throw new MegalibParserException("Error : Cycle identified in imports");
-	    todos.addAll(diff);
-	    imports.removeIf(r -> diff.contains(r.getObject()));
-	}
-	if (!loadedModuleName.equals("")) {
-	    todos.add(loadedModuleName);
-	}
+        // Resolve module name to file path
+        int lvl = loadedModuleName.split("\\.").length;
+        root = new File(abspath);
+        // Get root folder
+        for (int i = 0; i < lvl; i++) {
+            root = root.getParentFile();
+        }
+        // Fill the import map
+        while (!toProcess.isEmpty()) {
+            String p = toProcess.iterator().next();
+            p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
+            String pdata = FileUtils.readFileToString(new File(p));
+            l = (MegalibImportListener) parse(pdata, new MegalibImportListener());
+            imports.addAll(l.getImports());
+            toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
+            toProcess.removeAll(processed);
+            processed.add(l.getName());
+        }
+        // order import map in a set-based approach
+        while (!imports.isEmpty()) {
+            Set<String> subjects = imports.parallelStream().map(r -> r.getSubject()).collect(Collectors.toSet());
+            Set<String> objects = imports.parallelStream().map(r -> r.getObject()).collect(Collectors.toSet());
+            Set<String> diff = new HashSet<>(objects);
+            diff.removeAll(subjects);
+            if (diff.isEmpty())
+                throw new MegalibParserException("Error : Cycle identified in imports");
+            todos.addAll(diff);
+            imports.removeIf(r -> diff.contains(r.getObject()));
+        }
+        if (!loadedModuleName.equals("")) {
+            todos.add(loadedModuleName);
+        }
     }
 
 }
