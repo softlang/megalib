@@ -151,9 +151,9 @@ public class MegaModelLoader {
         MegalibImportListener l = (MegalibImportListener) parse(data, new MegalibImportListener());
         String loadedModuleName = l.getName();
         imports.addAll(l.getImports());
+        processed.add(loadedModuleName);
         toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
         toProcess.removeAll(processed);
-        processed.add(loadedModuleName);
 
         // Resolve module name to file path
         int lvl = loadedModuleName.split("\\.").length;
