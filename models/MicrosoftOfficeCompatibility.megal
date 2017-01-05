@@ -1,6 +1,7 @@
 module MicrosoftOfficeCompatibility
 
 import C
+import XML
 
 /* The old office suite Microsoft Office 2003 written in C++ is occasionally still in use.
 It still uses the deprecated binary format for persisting office documents. */
@@ -28,7 +29,7 @@ convert :  MicrosoftOfficeOpenXML -> CFBF
 MicrosoftOfficeCompatibility : Plugin
     = "http://www.pcworld.com/article/217190/microsoft_office_docx.html"
     uses C++ //pure guess since MicrosoftOffice2003 uses C++
-    realizes Transformation
+    uses Transformation
     implements convert
 
 /* Most parts of the actual XSD schemas for the new office format are available online. */
@@ -42,8 +43,6 @@ MicrosoftOfficeOpenXMLSchema : Artifact
 /* In a concrete use case a user would load a document written in
 the XML based format. If the plugin is installed in the used Microsoft Office 2003,
 the document is converted and can then be edited. */
-Document : Role
-    = "https://en.wikipedia.org/wiki/Document"
 ?aNewOfficeFile : Artifact
     elementOf MicrosoftOfficeOpenXML
     hasRole Document
