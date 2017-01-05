@@ -1,8 +1,14 @@
 module django.ScriptClassification
 
-Django : Framework
+/* Starting Django Framework module */
 WebApplicationDevelopment : ProgrammingDomain
-Python : ProgrammingLanguage
+    = "https://en.wikipedia.org/wiki/Web_application_development"
+?Python : ProgrammingLanguage
+Django : Framework
+    supports WebApplicationDevelopment
+    uses ?Python
+
+/*
 ?awebapp : WebApplication
 ?awebapp uses Python
 ?awebapp uses Django
@@ -45,3 +51,5 @@ Package : Role
 
 ?settings.py : Artifact<Python,Configuration,File>
 ?settings.py partOf ?awebapp
+*/
+Django = "https://www.djangoproject.com/"

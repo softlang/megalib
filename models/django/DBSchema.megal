@@ -1,9 +1,14 @@
 module django.DBSchema
 
+/* Starting Django Framework module */
 WebApplicationDevelopment : ProgrammingDomain
-
+    = "https://en.wikipedia.org/wiki/Web_application_development"
+?Python : ProgrammingLanguage
 Django : Framework
     supports WebApplicationDevelopment
+    uses ?Python
+
+/*
 Python : ProgrammingLanguage
 PythonObject : ObjectGraph
 Django uses Python
@@ -67,8 +72,6 @@ evalSchemaRequ : DjangoCLI -> DDL
 Django implements evalSchemaRequ
 evalSchemaRequ(?schemaRequCmd) |-> ?dbSchema
 
-
-Django = "https://www.djangoproject.com/"
 Python = "https://docs.python.org/2/reference/"
 PythonObject = "https://docs.python.org/2/reference/"
 Database = "https://en.wikipedia.org/wiki/Database"
@@ -81,3 +84,5 @@ SQLITE3IMAGE = "https://docs.python.org/2/library/sqlite3.html"
 String = "https://en.wikipedia.org/wiki/String_(computer_science)"
 DatabaseManagement = "https://en.wikipedia.org/wiki/Database"
 Command = "https://en.wikipedia.org/wiki/Command-line_interface"
+*/
+Django = "https://www.djangoproject.com/"

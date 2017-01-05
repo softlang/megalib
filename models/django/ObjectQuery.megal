@@ -1,11 +1,14 @@
 module django.ObjectQuery
 
-
+/* Starting Django Framework module */
+WebApplicationDevelopment : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Web_application_development"
+?Python : ProgrammingLanguage
 Django : Framework
-Python : ProgrammingLanguage
-PythonObject : ObjectLanguage
-Django uses Python
+    supports WebApplicationDevelopment
+    uses ?Python
 
+/*
 ModelViewController : DesignPattern
 ObjectRelationalMapping  : ProgrammingDomain
 Django facilitates ModelViewController
@@ -43,3 +46,5 @@ PythonObject = "https://docs.python.org/2/reference/"
 ModelViewController = "http://dbpedia.org/page/Model%E2%80%93view%E2%80%93controller"
 ObjectRelationalMapping  = "https://en.wikipedia.org/wiki/Object-relational_mapping"
 DjangoQuery = "https://docs.djangoproject.com/es/1.10/topics/db/queries/"
+*/
+Django = "https://www.djangoproject.com/"
