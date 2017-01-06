@@ -2,6 +2,7 @@ module java.JAXB
 
 import XML
 
+/* JAXB enables the binding of java objects to XML files */
 JAXB : Library
     = "https://jaxb.java.net/2.2.4/docs/xjc.html"
     belongsTo XML-Ware
@@ -9,6 +10,7 @@ JAXB : Library
     partOf JavaPlatform
     uses Java
 
+/* The main component is the bindingCompiler */
 bindingCompiler : CodeGenerator
 bindingFramework : Library
 bindingCompiler partOf JAXB

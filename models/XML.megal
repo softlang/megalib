@@ -7,7 +7,6 @@ XMLWare : TechnologySpace
     = "https://www.w3.org/XML/"
 AuxiliaryXMLware : TechnologySpace
     = "http://101companies.org/wiki/Auxiliary_XMLware"
-    subdomainOf XMLWare
 XML : MarkupLanguage
     = "https://en.wikipedia.org/wiki/XML"
     = "http://www.w3schools.com/xml/"

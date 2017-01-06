@@ -11,9 +11,9 @@ Hibernate : Framework
     = "http://hibernate.org/"
     uses Java
     partOf JavaPlatform
-    supports ObjectRelationalMapping
+    supports ObjectRelationalMapping //bridgesTo SQLWare??
     belongsTo SQLWare
-    belongsTo AuxiliaryXMLware
+    uses XML
     uses JDBC
 
 /* An auxiliary file deals with configuring the connection
@@ -99,6 +99,7 @@ commit(?hibernate.cfg,?modelobject2,?db1) |-> ?db2
     hasRole Database
     manifestsAs Fragment
     partOf ?db2
+loadObject(?hibernate.cfg,?db2,?query) |-> ?modelobject2
 
 /* Some conformance relationships to think about */
 ?table1 conformsTo ?createStmt

@@ -234,6 +234,7 @@ Hint: Language dependent technology spaces can be found in the corresponding
 language's main module. */
 TechnologySpace < Entity
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
+subspaceOf < TechnologySpace # TechnologySpace
 BuildAutomation : TechnologySpace
     = "https://en.wikipedia.org/wiki/List_of_build_automation_software"
 belongsTo < Technology # TechnologySpace
