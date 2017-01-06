@@ -1,3 +1,8 @@
+module ruby.rails.101Routing
+
+import ruby.RubyPlatform
+
+/*
 WebApplication < System
 101Rails : WebApplication
 101Rails uses RubyOnRails
@@ -20,3 +25,7 @@ ContributionsController elementOf Ruby
 
 ContributionsController = "https://github.com/101companies/101rails/blob/326a894e38b164c1f1508a73b1954ff807e27cf3/app/controllers/contributions_controller.rb"
 Contribute.new.Page = "http://101companies.org/contribute/new"
+*/
+RubyOnRails : Framework
+    = "http://rubyonrails.org/"
+    uses Ruby

@@ -1,12 +1,35 @@
-module Jackson
+module java.Jackson
 
+import java.JavaPlatform
+
+/* Jackson allows the serialization of Java objects into
+JSON files. */
+JSONWare : TechnologySpace
+    = "http://www.json.org/"
 JSON : DataRepresentationLanguage
-Java : ProgrammingLanguage
-JavaObject : ObjectGraph
-?Class : Role
+    = "https://en.wikipedia.org/wiki/JSON"
+    belongsTo JSONWare
+Jackson : Library
+    = "https://github.com/FasterXML"
+    belongsTo JSONWare
+    uses Java
+    implements JSON
+Jackson.ObjectMapper : Library
+    = "https://github.com/FasterXML/jackson-databind/blob/master/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java"
+    partOf Jackson
+    uses Serialization
+    uses Java
+
+/* In a use case one has a Java-based model. Now if you have an instance
+of this model and use Jackson to translate it into JSON, the output is 
+a JSON String that corresponds to the instance. */
+readValue : JSON -> JavaObject
+writeValue : JavaObject -> JSON
+Jackson.ObjectMapper implements readValue
+    implements writeValue
 ?ModelClass : Artifact
     elementOf Java
-    hasRole ?Class
+    hasRole Schema
     manifestsAs File
 ?aModel : Artifact
     elementOf JavaObject
@@ -17,25 +40,6 @@ JavaObject : ObjectGraph
     elementOf JSON
     hasRole Value
     manifestsAs Transient
-    conformsTo ?ModelClass
     correspondsTo ?aModel
-
-JSONWare : TechnologySpace
-Jackson : Library
-    belongsTo JSONWare
-    uses Java
-ObjectMapper : Library
-    partOf Jackson
-    realizes Serialization
-    uses Java
-
-readValue : JSON -> JavaObject
 readValue(?aJSONString) |-> ?aModel
-ObjectMapper implements readValue 
-
-Jackson = "https://github.com/FasterXML"
-ObjectMapper = "https://github.com/FasterXML/jackson-databind/blob/master/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java"
-Java = "https://docs.oracle.com/javase/specs/jls/se8/html/index.html"
-JavaObject = "https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html"
-JSON = "http://www.json.org/"
-JSONWare = "http://www.json.org/"
+writeValue(?aModel) |-> ?aJSONString

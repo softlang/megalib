@@ -1,10 +1,8 @@
-module RailsRouting
+module ruby.rails.Routing
 
+import ruby.RubyPlatform
 
-WebApplicationFramework < Technology
-RubyOnRails : WebApplicationFramework
-Ruby : Language
-RubyOnRails uses Ruby
+/*
 WebApplicationDevelopment : ProgrammingDomain
 Routing : ProgrammingDomain
 Routing partOf WebApplicationDevelopment
@@ -52,3 +50,7 @@ HTTPResponse = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html"
 WebApplicationDevelopment = "https://en.wikipedia.org/wiki/Web_application_development"
 Routing = "https://en.wikipedia.org/wiki/Routing"
 HTML = "http://dbpedia.org/page/HTML"
+*/
+RubyOnRails : Framework
+    = "http://rubyonrails.org/"
+    uses Ruby

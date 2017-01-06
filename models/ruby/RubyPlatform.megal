@@ -1,0 +1,14 @@
+module ruby.RubyPlatform
+
+import C
+
+/* Ruby is a Script language. Thus it is used for writing programs,
+but is more frequently interpreted than compiled. */
+Ruby : ProgrammingLanguage
+    = "https://www.ruby-lang.org/en/"
+
+RubyPlatform : Platform
+    = "https://github.com/ruby/ruby"
+    uses Ruby
+    uses C
+    implements Ruby

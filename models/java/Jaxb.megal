@@ -1,35 +1,26 @@
-module JAXB
+module java.JAXB
 
-Platform < Technology
-JavaPlatform : Platform
-Java : ProgrammingLanguage
-JavaPlatform implements Java
+import XML
 
-CodeGenerator < Technology
-Library < Technology
-DataBindingTechnology < Technology
-XMLDataBinding : ProgrammingDomain
-XML-Ware : TechnologySpace
+JAXB : Library
+    = "https://jaxb.java.net/2.2.4/docs/xjc.html"
+    belongsTo XML-Ware
+    supports XMLDataBinding
+    partOf JavaPlatform
+    uses Java
 
-JAXB : DataBindingTechnology
-JAXB belongsTo XML-Ware
-JAXB realizes XMLDataBinding
-
-JAXB partOf JavaPlatform
 bindingCompiler : CodeGenerator
 bindingFramework : Library
 bindingCompiler partOf JAXB
 bindingFramework partOf JAXB
 
-XML : DataRepresentationLanguage
-XSD : SchemaLanguage
-XSD subsetOf XML
-
 JAXB.Java : ProgrammingLanguage
-JAXB.Java subsetOf Java
+    subsetOf Java
 
 generation : XSD -> JAXB.Java
-bindingCompiler implements generation
+bindingCompiler implements JAXB.Java
+    implements XSD
+    implements generation
 
 ?xmlTypes : Artifact<XSD>
 ?xmlTypes manifestsAs File+
@@ -75,5 +66,4 @@ unmarshalling(?anXMLDoc) |-> ?anObjectGraph
 ?aMethodCall uses bindingFramework
 ?aMethodCall uses unmarshalling
 
-JAXB = "https://jaxb.java.net/2.2.4/docs/xjc.html"
 bindingFramework = "https://docs.oracle.com/javaee/5/api/javax/xml/bind/package-summary.html"

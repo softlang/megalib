@@ -1,8 +1,6 @@
 module django.DBSchema
 
 /* Starting Django Framework module */
-WebApplicationDevelopment : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Web_application_development"
 ?Python : ProgrammingLanguage
 Django : Framework
     supports WebApplicationDevelopment

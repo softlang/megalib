@@ -219,6 +219,11 @@ Persistence : ProgrammingDomain
 ObjectRelationalMapping : ProgrammingDomain
     = "http://101companies.org/wiki/Object-Relational_mapping"
     subdomainOf Persistence
+XMLDataBinding : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/XML_data_binding"
+    subdomainOf Persistence
+WebApplicationDevelopment : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Web_application_development"
 supports < Technology # ProgrammingDomain
 supports < Language # ProgrammingDomain
 

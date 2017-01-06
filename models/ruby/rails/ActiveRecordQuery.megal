@@ -1,5 +1,9 @@
-WebApplicationFramework < Technology
-RubyOnRails : WebApplicationFramework
+module ruby.rails.ActiveRecordQuery
+
+import ruby.RubyPlatform
+
+/*
+RubyOnRails : Framework
 Ruby : Language
 RubyOnRails uses Ruby
 
@@ -39,3 +43,7 @@ Ruby = "https://www.ruby-lang.org/en/documentation/"
 RubyObject = "https://www.ruby-lang.org/en/documentation/"
 Querying = "https://en.wikipedia.org/wiki/Query_language"
 ModelViewController = "http://dbpedia.org/page/Model%E2%80%93view%E2%80%93controller"
+*/
+RubyOnRails : Framework
+    = "http://rubyonrails.org/"
+    uses Ruby
