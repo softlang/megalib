@@ -7,6 +7,9 @@ XMLWare : TechnologySpace
     = "https://www.w3.org/XML/"
 AuxiliaryXMLware : TechnologySpace
     = "http://101companies.org/wiki/Auxiliary_XMLware"
+XMLDataBinding : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/XML_data_binding"
+    subdomainOf Persistence
 XML : MarkupLanguage
     = "https://en.wikipedia.org/wiki/XML"
     = "http://www.w3schools.com/xml/"

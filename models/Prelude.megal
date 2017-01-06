@@ -214,13 +214,10 @@ QualityAssurance : ProgrammingDomain
 Testing : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Software_testing"
     subdomainOf QualityAssurance
-Persistence : ProgrammingDomain
+Persistence : ProgrammingDomain //or data binding
     = "http://101companies.org/wiki/Persistence"
 ObjectRelationalMapping : ProgrammingDomain
     = "http://101companies.org/wiki/Object-Relational_mapping"
-    subdomainOf Persistence
-XMLDataBinding : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/XML_data_binding"
     subdomainOf Persistence
 WebApplicationDevelopment : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Web_application_development"
