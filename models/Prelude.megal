@@ -138,8 +138,8 @@ Function < Entity
 implements < Artifact # Function
 
 /* A technology is a reusable piece of software having one to many use cases. 
-The question on what types of classifiers exist for technology is still open.
-What follows is a list of terms that are known subtypes of software technology. */
+The question how to classify technology is still open.
+*/
 Technology < Entity
     = "https://www.journals.elsevier.com/information-and-software-technology/"
 API < Technology //a technology that facilitates the use of another technology/language.
@@ -224,6 +224,9 @@ XMLDataBinding : ProgrammingDomain
     subdomainOf Persistence
 WebApplicationDevelopment : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Web_application_development"
+OfflineWebApplicationDevelopment : ProgrammingDomain
+    = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline"
+    subdomainOf WebApplicationDevelopment
 supports < Technology # ProgrammingDomain
 supports < Language # ProgrammingDomain
 
@@ -247,14 +250,20 @@ Serialization : AbstractProcess //Save runtime values in a persistent format.
     = "https://en.wikipedia.org/wiki/Serialization"
 Compilation : AbstractProcess //Software translation of a higher level language into a lower level language
     = "https://de.wikipedia.org/wiki/Compiler"
-Transformation : AbstractProcess // Takes input data and produces output data based on declarative rules.
+Transformation : AbstractProcess // Takes input data and produces output data. Input and output are elements of a software language that is not a data type.
     = "https://en.wikipedia.org/wiki/Data_transformation"
+Validation : AbstractProcess //Validate quality
+    = "https://en.wikipedia.org/wiki/Verification_and_validation#Categories_of_validation"
+Verification : AbstractProcess //Correctness Proof
+    = "https://en.wikipedia.org/wiki/Software_verification"
 
 /* A construct is an artifact constellation where the realization depends on the program's context, and involved languages and technologies. */
 Construct < Entity 
     = "https://en.wikipedia.org/wiki/Construct_(philosophy)"
 Semaphore : Construct //A flag to control access to a resource in the context of concurrent programs.
     = "https://en.wikipedia.org/wiki/Semaphore_(programming)"
+Annotation : Construct
+    = "https://en.wikipedia.org/wiki/Annotation"
 
 
 /* Abstract solutions such as constructs may be an aspect of a way of thinking or field of study. */

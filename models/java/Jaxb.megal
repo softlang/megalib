@@ -1,71 +1,74 @@
 module java.JAXB
 
+import java.JavaPlatform
 import XML
 
 /* JAXB enables the binding of java objects to XML files */
 JAXB : Library
     = "https://jaxb.java.net/2.2.4/docs/xjc.html"
-    belongsTo XML-Ware
+    belongsTo XMLWare
     supports XMLDataBinding
     partOf JavaPlatform
     uses Java
 
-/* The main component is the bindingCompiler */
-bindingCompiler : CodeGenerator
-bindingFramework : Library
-bindingCompiler partOf JAXB
-bindingFramework partOf JAXB
+/* The main components are a binding compiler
+and the serialization framework */
+bindingCompiler : Component
+    = "https://jaxb.java.net/2.2.4/docs/xjc.html"
+    partOf JAXB
+    uses Java
+    uses Annotation
+    uses Transformation //XSD to Java model
 
+
+/* The binding compiler implements a function
+that can generate Java code from XSD files. */
 JAXB.Java : ProgrammingLanguage
+    = "https://java.net/projects/jaxb/sources/v2/show/jaxb-ri/codemodel/codemodel/src/main/java/com/sun/codemodel?rev=b820664ec9079ef731d1581c27d90b543704e92c"
     subsetOf Java
-
 generation : XSD -> JAXB.Java
 bindingCompiler implements JAXB.Java
     implements XSD
     implements generation
+?XML.Subset : DataRepresentationLanguage
+    subsetOf XML
+?xmlSchema : Artifact
+    elementOf XSD
+    manifestsAs File+
+    hasRole Schema
+    defines ?XML.Subset
+?javaModel : Artifact
+    elementOf JAXB.Java
+    manifestsAs File+
+    hasRole Schema
+    uses Annotation
+    correspondsTo ?xmlSchema
+generation(?xmlSchema) |-> ?javaModel
 
-?xmlTypes : Artifact<XSD>
-?xmlTypes manifestsAs File+
-Schema : Role
-?xmlTypes hasRole Schema
-?javaClasses : Artifact<JAXB.Java>
-?javaClasses manifestsAs File+
-Model : Role
-?javaClasses hasRole Model
-generation(?xmlTypes) |-> ?javaClasses
-?javaClasses correspondsTo ?xmlTypes
-
-
-Annotation : Concept
-bindingFramework facilitates Annotation
-?javaClasses uses Annotation
-
-ConceptualProcess < Concept
-Serialization : ConceptualProcess
-bindingFramework facilitates Serialization
-CodeGeneration : ConceptualProcess
-bindingCompiler facilitates CodeGeneration
-bindingCompiler uses CodeGeneration
-
-Validation : Concept
-JAXB facilitates Validation
-
-JVM.ObjectGraphs : ObjectLanguage
-?anObjectGraph : Value<JVM.ObjectGraphs>
-?anObjectGraph manifestsAs Transient
-?anObjectGraph conformsTo ?javaClasses
-?anXMLDoc : Data<XML>
-?anXMLDoc manifestsAs File
-?anXMLDoc conformsTo ?xmlTypes
-unmarshalling : XML -> JVM.ObjectGraphs
-unmarshalling(?anXMLDoc) |-> ?anObjectGraph
-?anXMLDoc correspondsTo ?anObjectGraph
-
-?application : Application
-?application uses Java
-?aMethodCall : SourceCode<Java>
-?aMethodCall manifestsAs Fragment
-?aMethodCall uses bindingFramework
-?aMethodCall uses unmarshalling
-
-bindingFramework = "https://docs.oracle.com/javaee/5/api/javax/xml/bind/package-summary.html"
+/* The binding framework implements the
+serialization and deserialization between
+Java objects and XML documents. */
+unmarshall : XML -> JavaObject
+marshall : JavaObject -> XML
+bindingFramework : Component
+    = "https://docs.oracle.com/javaee/5/api/javax/xml/bind/package-summary.html"
+    partOf JAXB
+    uses Java
+    uses Annotation
+    uses Serialization
+    uses Validation
+    implements marshall
+    implements unmarshall
+?anObjectGraph : Artifact
+    elementOf JavaObject
+    manifestsAs Transient
+    hasRole Value
+    conformsTo ?javaModel
+?anXMLDoc : Artifact
+    elementOf ?XML.Subset
+    manifestsAs File
+    hasRole Database
+    conformsTo ?xmlSchema
+    correspondsTo ?anObjectGraph
+unmarshall(?anXMLDoc) |-> ?anObjectGraph
+marshall(?anObjectGraph) |-> ?anXMLDoc

@@ -1,7 +1,7 @@
 module NSIS
 
 import C
-import NSIS
+import Windows
 
 /* NSIS is a scripting language for build automation. The compiler
 makensis translates it into the Portable Executable (PE) format, which

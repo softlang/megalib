@@ -2,14 +2,9 @@ module OfflineApplicationCachingAPI
 
 /* This module describes a technology to support offline Web applications.
 Note that the modeled technology is strongly discouraged by now : https://html.spec.whatwg.org/multipage/browsers.html#offline
-It might still be interesting to model it in order to be able to conceptually compare it to the new proposed Service Workers. */
-WebApplicationDevelopment : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Web_application"
-OfflineWebApplicationDevelopment : ProgrammingDomain
-    = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline"
-    subdomainOf WebApplicationDevelopment
+It might still be interesting to model it in order to be able to conceptually compare it to the new proposed Service Workers.  
 
-/* The technology specifically realizes two constructs as part of 
+The technology specifically realizes two constructs as part of 
 enabling offline web applications, namely an Offline Cache and the 
 capability to process online and offline events. */
 HTML5 : MarkupLanguage
@@ -21,8 +16,8 @@ OnlineOfflineEvents : Construct
 OfflineApplicationCachingAPI : API
     = "https://www.w3.org/TR/offline-webapps/"
     uses HTML5
-    realizes OfflineCache
-    realizes OnlineOfflineEvents
+    uses OfflineCache
+    uses OnlineOfflineEvents
 
 /* A cache-manifest describes which files are supposed to be cached
 at the client-side and which have to be accessed at the server-side. */
@@ -83,13 +78,11 @@ HTTPResponse : MessageLanguage
     manifestsAs Transient
 offlineAccess : Cache-Manifest # HTTPRequest # URI -> HTTPResponse
 offlineAccess(?manifestFile, ?offlineRequest,?aURI) |-> ?offlineResponse
+OfflineApplicationCachingAPI implements offlineAccess
 
 /* Old browsers that had offline application caching enabled, were
 able to use such backup files since the API routes the access to the backup
 using the manifest. */
-OfflineApplicationCachingAPI implements offlineAccess
-    uses ?manifestFile
-    uses ?backupFile
 ?OACBrowser : Platform 
     implements HTML5
     implements HTTPRequest

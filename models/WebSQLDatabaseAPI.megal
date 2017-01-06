@@ -4,11 +4,6 @@ module WebSQLDatabaseAPI
 This prescriptive model describes a technology that is outdated : https://www.w3.org/TR/webdatabase/
 It deals with how technology can support HTML5 web applications to still work, when the user is offline.
 */
-WebApplicationDevelopment : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Web_application"
-OfflineWebApplicationDevelopment : ProgrammingDomain
-    = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline"
-    subdomainOf WebApplicationDevelopment
 LocalStorage : Construct
     = "http://www.w3schools.com/html/html5_webstorage.asp"
     aspectOf OfflineWebApplicationDevelopment
