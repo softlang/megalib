@@ -162,7 +162,7 @@ Program < Technology // a technology that implements one process that is needed 
     = "https://en.wikipedia.org/wiki/Computer_program"
 IDE < Technology // an environment to facilitate writing systems or technologies.
     = "https://en.wikipedia.org/wiki/Integrated_development_environment"
-Platform < Technology  // a technology that has the capability to execute software
+Platform < Technology  // a technology that has the capability to execute code
     = "https://en.wikipedia.org/wiki/Computing_platform"
 
 /* Implementation relationships */
@@ -224,6 +224,10 @@ WebApplicationDevelopment : ProgrammingDomain
 OfflineWebApplicationDevelopment : ProgrammingDomain
     = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline"
     subdomainOf WebApplicationDevelopment
+ModelDrivenEngineering : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Model-driven_engineering"
+SoftwareDocumentation : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Software_documentation"
 supports < Technology # ProgrammingDomain
 supports < Language # ProgrammingDomain
 
@@ -286,7 +290,6 @@ uses < Artifact # System
 uses < Artifact # Technology
 
 /* A language is used in the sense that some part is a member of the language */
-uses < Artifact # Language
 uses < System # Language
 uses < Technology # Language
 
