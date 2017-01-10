@@ -1,0 +1,31 @@
+module UML
+
+
+/* Meta Object Facility is an OMG standard for Model driven engineering.
+Its languages CMOF and EMOF enable writing language independent metamodels.
+The Complete Meta Object Facility (CMOF) covers the complete complex vocabulary 
+and the Essential Meta Object Facility (EMOF) contains only necessary vocabulary
+as implemented and used for example in EMF. */
+CMOF : SchemaLanguage
+    = "https://en.wikipedia.org/wiki/Meta-Object_Facility"
+EMOF : SchemaLanguage
+    = ""
+    subsetOf CMOF
+
+/* A UML model has a descriptive or prescriptive purpose. It's mainly based 
+on the object oriented paradigm. */
+UML : ModelingLanguage
+    = "http://www.uml.org/"
+    supports ModelDrivenEngineering
+    supports SoftwareDocumentation
+    facilitates ObjectOrientation
+
+/* The OMG released the newest version 2.5 of the UML
+specification in 2016 */
+UMLSpec : Artifact
+    = "http://www.omg.org/spec/UML/2.5/"
+    elementOf PDF
+    hasRole Specification
+    manifestsAs File
+    defines UML
+

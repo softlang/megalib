@@ -10,18 +10,25 @@ EMF : Plugin
     = "https://eclipse.org/modeling/emf/"
     uses Java
     partOf Eclipse
+    supports ModelDrivenEngineering
 
-/* Its main component is EMFCore which implements the object model for
-EMF models ECore. */
-ECore : SchemaLanguage
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html"
-    subsetOf Java
+/* Its main component is EMFCore which implements the meta model for
+EMF models in Java based on the ECore specification. */
 EMFCore : Component
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html"
     partOf EMF
     uses Java
+EcoreJava : ProgrammingLanguage
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html"
+    subsetOf Java
+EMF implements EcoreJava
+?EcoreMetaModel : Artifact
+    elementOf EcoreJava
+    hasRole Schema
+    manifestsAs File+
+    defines EcoreJava
 
-/* The EMF persistence framework allows you to persist ecore models in a subset of XMI */
+/* XMI is an OMG standard for persisting models. */
 ?PDF : FileFormat
     = "https://en.wikipedia.org/wiki/Portable_Document_Format"
 XMI : MarkupLanguage
@@ -33,6 +40,33 @@ XMISpec : Artifact
     hasRole Specification
     manifestsAs File 
     defines XMI
+
+/* An important component is the Generator that takes a generation
+configuration which is itself a model persisted in XMI. */
+CodeGenerator : Component
+    = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html"
+    partOf EMF
+    uses Java
+
+GeneratorModel : ConfigurationLanguage
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/codegen/ecore/genmodel/GenModel.html"
+    subsetOf XMI
+
+?genModel : Artifact
+    elementOf GeneratorModel
+    hasRole Configuration
+    manifestsAs File
+
+?javaModel : Artifact
+    elementOf EcoreJava
+    hasRole MdeModel
+    manifestsAs File+
+
+generateJava : GeneratorModel -> EcoreJava
+CodeGenerator implements generateJava
+generateJava(?genModel) |-> ?javaModel
+
+/* The EMF persistence framework allows you to persist ecore models in a subset of XMI */
 ECore.XMI : DataRepresentationLanguage
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html"
     subsetOf XMI
@@ -50,7 +84,7 @@ EMFPersistence : Component
 ?MyModels.XMI : DataRepresentationLanguage
     subsetOf ECore.XMI
 ?MyMeta.ecore : Artifact
-    elementOf ECore
+    elementOf EcoreJava
     hasRole MdeMetamodel
     manifestsAs File
     defines ?MyModels.XMI
