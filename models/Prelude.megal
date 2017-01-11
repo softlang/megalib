@@ -17,6 +17,8 @@ QueryLanguage < Language // query statements, e.g. SQL
     = "https://en.wikipedia.org/wiki/Query_language"
 StylesheetLanguage < Language // expresses presentation of structured documents, e.g. CSS
     = "https://en.wikipedia.org/wiki/Style_sheet_language"
+GrammarLanguage < Language
+    = "https://en.wikipedia.org/wiki/Formal_grammar"
 SchemaLanguage < Language // formulate schemas or metamodels, e.g. XSD
     = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages"
 CommandLineLanguage < Language  // statements that can be entered in a command line, e.g. Bash
@@ -65,7 +67,10 @@ Fragment : Manifestation  //Some fragment of a file or transient
     = "https://en.wikipedia.org/wiki/Snippet_(programming)"
 manifestsAs < Artifact # Manifestation
 
-/* Roles of artifacts */
+/* Roles relate to the domain's or technological space's 
+terminology. They imply a commonly known purpose 
+that might even be defined in terms of a design or architectural
+pattern. */
 Role < Entity
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
 Configuration : Role   //settings statements.
