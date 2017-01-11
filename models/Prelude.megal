@@ -122,7 +122,9 @@ WebResource : Role // Contains information and is deployed on a web server.
 Archive : Role //A file that has folder functionality, such as .jar or .zip
     = "https://en.wikipedia.org/wiki/Archive_file"
 Document : Role //An informal file that is deployed locally 
-    = "https://en.wikipedia.org/wiki/Document" 
+    = "https://en.wikipedia.org/wiki/Document"
+Repository : Role //A database that manages code artifacts and acts as a VCS
+    = "https://en.wikipedia.org/wiki/Repository_(version_control)"
 hasRole < Artifact # Role
 
 /* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
@@ -173,6 +175,10 @@ Platform < Technology  // a technology that has the capability to execute code
 /* Implementation relationships */
 implements < Technology # Function  //A technology may implement a mapping
 implements < Technology # Language  //A technology can process a language as input or output
+
+/* Code deployment aspects */
+managedBy < Technology # Artifact //the technology's implementation may be versioned in a repo
+deployedAs < Technology # Artifact //In a usage scenario the technology is locally deployed as an artifact
 
 /* Classification of systems */
 System < Entity //a set of artifacts realizing some concrete use cases

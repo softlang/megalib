@@ -14,12 +14,6 @@ C-Make : BuildLanguage
 
 /* The GNU Compiler Collection contains a set of compilers
 and a tool chain for various languages such as C++, C and others. 
-
-Difference between the abstract technology and a concrete deployment
-Abstract vs Deployed vs Repository
-deployedAs < Technology # Artifact
-managedBy < Technology # Artifact 
-Repository : Role
 */
 GCC : Platform
     = "https://en.wikipedia.org/wiki/GNU_Compiler_Collection"
