@@ -10,6 +10,7 @@ import org.java.megalib.models.MegaModel;
 import main.antlr.techdocgrammar.MegalibBaseListener;
 import main.antlr.techdocgrammar.MegalibParser.FunctionDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.FunctionInstanceContext;
+import main.antlr.techdocgrammar.MegalibParser.ImportsContext;
 import main.antlr.techdocgrammar.MegalibParser.InstanceDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.LinkContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
@@ -29,12 +30,23 @@ public class MegalibParserListener extends MegalibBaseListener {
         String subject = ctx.getChild(0).getText();
         String object = ctx.getChild(2).getText();
         try {
-            model.substitute(subject, object);
+            model.addSubstitutes(subject, object);
         }
         catch (WellFormednessException e) {
             model.addWarning(e.getMessage());
         }
         super.enterSubstitution(ctx);
+    }
+
+    @Override
+    public void exitImports(ImportsContext ctx) {
+        try {
+            model.resolveSubstitutions();
+        }
+        catch (WellFormednessException e) {
+            model.addWarning(e.getMessage());
+        }
+        super.exitImports(ctx);
     }
 
     @Override

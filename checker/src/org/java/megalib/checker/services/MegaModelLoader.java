@@ -79,7 +79,8 @@ public class MegaModelLoader {
 
     public MegaModel loadString(String data) {
         try {
-            return ((MegalibParserListener) parse(data, new MegalibParserListener(model))).getModel();
+            model = ((MegalibParserListener) parse(data, new MegalibParserListener(model))).getModel();
+            return model;
         }
         catch (MegalibParserException e) {
             System.err.println(e.getMessage());
@@ -188,5 +189,4 @@ public class MegaModelLoader {
             todos.add(loadedModuleName);
         }
     }
-
 }
