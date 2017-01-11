@@ -29,7 +29,7 @@ public class MegalibParserListener extends MegalibBaseListener {
         String subject = ctx.getChild(0).getText();
         String object = ctx.getChild(2).getText();
         try {
-            model.addSubstitutes(subject, object);
+            model.substitute(subject, object);
         }
         catch (WellFormednessException e) {
             model.addWarning(e.getMessage());

@@ -278,7 +278,7 @@ public class MegaModel {
 		return Collections.unmodifiableMap(subsetOfMap);
 	}
 	
-	public void addSubstitutes(String by, String e) throws WellFormednessException{
+	public void substitute(String by, String e) throws WellFormednessException{
 		if(!instanceOfMap.containsKey(e)){
 			throw new WellFormednessException("Unable to substitute : "+e+" does not exist.");
 		}

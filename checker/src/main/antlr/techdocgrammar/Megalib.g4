@@ -25,7 +25,7 @@ instanceDeclaration: ID ':' ID (TAB '=' LINK)* (TAB ID ID)*;
 
 relationDeclaration: ID '<' ID '#' ID;
 
-relationInstance: ID ID ID (TAB ID ID)*;
+relationInstance: ID ID ID (TAB ID ID | TAB '=' LINK)*;
 
 functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* ;
 
