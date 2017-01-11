@@ -2,31 +2,52 @@ module java.Jackson
 
 import java.JavaPlatform
 
-/* Jackson allows the serialization of Java objects into
-JSON files. */
+/* Jackson realizes data binding between JSON and Java objects. */
 JSONWare : TechnologySpace
     = "http://www.json.org/"
 JSON : DataRepresentationLanguage
     = "https://en.wikipedia.org/wiki/JSON"
     belongsTo JSONWare
+    supports Persistence
 Jackson : Library
     = "https://github.com/FasterXML"
     belongsTo JSONWare
+    supports Persistence
     uses Java
     implements JSON
+
+/* Specifically the object mapper component implements the 
+serialization of java objects into JSON and the deserialization
+of a JSON String into Java object. The java object here has to 
+conform to a POJO. */
 Jackson.ObjectMapper : Library
     = "https://github.com/FasterXML/jackson-databind/blob/master/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java"
     partOf Jackson
     uses Serialization
     uses Java
+POJO : Construct
+    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object"
+    aspectOf ObjectOrientation
 
-/* In a use case one has a Java-based model. Now if you have an instance
-of this model and use Jackson to translate it into JSON, the output is 
-a JSON String that corresponds to the instance. */
-readValue : JSON -> JavaObject
+
+/* To serialize an object Jackson needs to take the object
+as input and return JSON as output. 
+Writing is based on an introspection of the object's class.  */
 writeValue : JavaObject -> JSON
+Introspection : Construct
+    = "https://en.wikipedia.org/wiki/Type_introspection"
+    aspectOf MetaProgramming
+Jackson.ObjectMapper implements writeValue
+    uses Introspection
+
+/* To deserialize JSON into an object Jackson needs to know
+the class that the output object should be instance of so
+it can write the values into the object using introspection again. */
+readValue : JSON # Java -> JavaObject
 Jackson.ObjectMapper implements readValue
-    implements writeValue
+
+/* A concrete scenario for (de-) serialization thus needs a POJO, a Java object
+and a JSON String. */
 ?ModelClass : Artifact
     elementOf Java
     hasRole Schema
@@ -36,10 +57,10 @@ Jackson.ObjectMapper implements readValue
     hasRole Value
     manifestsAs Transient
     conformsTo ?ModelClass
-?aJSONString : Artifact 
+?aJSONFile : Artifact 
     elementOf JSON
     hasRole Value
-    manifestsAs Transient
+    manifestsAs File
     correspondsTo ?aModel
-readValue(?aJSONString) |-> ?aModel
-writeValue(?aModel) |-> ?aJSONString
+readValue(?aJSONFile, ?ModelClass) |-> ?aModel
+writeValue(?aModel) |-> ?aJSONFile
