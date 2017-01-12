@@ -22,3 +22,4 @@ GCC : Platform
     implements Objective-C
     implements C-Make
     uses C++
+    uses C

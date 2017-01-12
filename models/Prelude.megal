@@ -75,7 +75,7 @@ Role < Entity
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
 Configuration : Role   //settings statements.
     = "https://en.wikipedia.org/wiki/Configuration_file"
-BuildScript : Role
+BuildScript : Role //Scripts for deploying software such as ANT or Maven files
     = "https://en.wikipedia.org/wiki/Software_build"
 Grammar : Role   //syntax definition
     = "https://en.wikipedia.org/wiki/Context-free_grammar"

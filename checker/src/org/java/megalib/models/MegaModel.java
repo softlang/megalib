@@ -364,6 +364,12 @@ public class MegaModel {
         return Collections.unmodifiableMap(substMap);
     }
 
+    /**
+     * TODO : Removing the abstract entity should only happen after all modules
+     * have been processed.
+     * 
+     * @throws WellFormednessException
+     */
     public void resolveSubstitutions() throws WellFormednessException {
         for (String e : substMap.keySet()) {
             for (String by : substMap.get(e)) {
