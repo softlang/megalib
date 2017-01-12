@@ -25,6 +25,7 @@ public class MegaModel {
     private Map<String, Set<Function>> functionInstances;
     private Map<String, Set<String>> linkMap;
     private Map<String, Set<String>> substMap;
+    private Set<String> removableAbstract;
 
     private List<String> criticalWarnings;
 
@@ -40,6 +41,7 @@ public class MegaModel {
         linkMap = new HashMap<>();
         substMap = new HashMap<>();
         criticalWarnings = new ArrayList<>();
+        removableAbstract = new HashSet<>();
     }
 
     public Map<String, String> getSubtypesMap() {
@@ -365,9 +367,6 @@ public class MegaModel {
     }
 
     /**
-     * TODO : Removing the abstract entity should only happen after all modules
-     * have been processed.
-     * 
      * @throws WellFormednessException
      */
     public void resolveSubstitutions() throws WellFormednessException {
@@ -449,6 +448,12 @@ public class MegaModel {
                 }
             }
 
+        }
+        substMap = new HashMap<>();
+    }
+
+    public void cleanUpAbstraction() {
+        for (String e : removableAbstract) {
             instanceOfMap.remove(e);
             elementOfMap.remove(e);
             subsetOfMap.remove(e);
@@ -474,7 +479,6 @@ public class MegaModel {
             }
             functionInstances = newAppmap;
         }
-        substMap = new HashMap<>();
     }
 
 }

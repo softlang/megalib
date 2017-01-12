@@ -80,6 +80,7 @@ public class MegaModelLoader {
     public MegaModel loadString(String data) {
         try {
             model = ((MegalibParserListener) parse(data, new MegalibParserListener(model))).getModel();
+            model.cleanUpAbstraction();
             return model;
         }
         catch (MegalibParserException e) {
@@ -102,6 +103,7 @@ public class MegaModelLoader {
                 p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
                 String pdata = FileUtils.readFileToString(new File(p));
                 model = ((MegalibParserListener) parse(pdata, new MegalibParserListener(model))).getModel();
+                model.cleanUpAbstraction();
                 if (!model.getCriticalWarnings().isEmpty()) {
                     model.getCriticalWarnings().forEach(w -> System.err.println(w));
                     throw new WellFormednessException("Resolve critical errors first"
