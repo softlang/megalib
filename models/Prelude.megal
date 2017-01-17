@@ -5,6 +5,8 @@ Language < Entity
     = "https://en.wikipedia.org/wiki/Computer_language"
 FileFormat < Language // not meant to be read by humans. Optimized for file system, e.g. an SQL image
     = "https://en.wikipedia.org/wiki/File_format"
+PDF : FileFormat
+    = "https://en.wikipedia.org/wiki/Portable_Document_Format"
 ProgrammingLanguage < Language  // not specific to a domain, e.g. Java
     = "https://en.wikipedia.org/wiki/Programming_language"
 DataRepresentationLanguage < Language // can be read by humans and represents data, e.g. JSON
@@ -144,32 +146,34 @@ Function < Entity
     = "https://en.wikipedia.org/wiki/Function_(mathematics)"
 implements < Artifact # Function
 
-/* A technology is a reusable piece of software having one to many use cases. 
-The question how to classify technology is still open.
-*/
+/* A technology is a reusable . 
+Technologies can be classified along 2 Dimensions: 
+1.) The kind of use (Code reuse as in libraries vs executable code as 
+in a program vs both as in frameworks) 
+2.) Whether it is a part or a standalone piece of software. */
 Technology < Entity
     = "https://www.journals.elsevier.com/information-and-software-technology/"
-API < Technology //a technology that facilitates the use of another technology/language.
-    = "https://en.wikipedia.org/wiki/Application_programming_interface"
 Library < Technology //contains a set of reusable functions.
     = "https://en.wikipedia.org/wiki/Library_(computing)"
+API < Library //Reusable code that facilitates the use of another technology/language. (Local API !)
+    = "https://en.wikipedia.org/wiki/Application_programming_interface"
 Framework < Technology //facilitates the realization of specific use cases most times through code generation
     = "https://en.wikipedia.org/wiki/Software_framework"
 Plugin < Technology // as an extension to another technology
     = "https://en.wikipedia.org/wiki/Plug-in_(computing)"
 Component < Technology // as part of a composed technology
     = "https://en.wikipedia.org/wiki/Component-based_software_engineering#Software_component"
-SoftwareSuite < Technology // a software collection that is deployed together
-    = "https://en.wikipedia.org/wiki/Software_suite"
-WebService < Technology  // a web service that can be communicated with and provides various functionality
-    = "https://en.wikipedia.org/wiki/Web_service"
 Software < Technology //a technology that consists of multiple programs and is deployed locally
     = "https://en.wikipedia.org/wiki/Software"
-Program < Technology // a technology that implements one process that is needed in distinct use cases.
+SoftwareSuite < Software // a software collection that is deployed and managed together
+    = "https://en.wikipedia.org/wiki/Software_suite"
+WebService < Software  // software deployed at a server, communication via HTTP
+    = "https://en.wikipedia.org/wiki/Web_service"
+Program < Software // a software that implements only one process that is needed in distinct use cases.
     = "https://en.wikipedia.org/wiki/Computer_program"
-IDE < Technology // an environment to facilitate writing systems or technologies.
+IDE < Software // an environment to facilitate writing systems or technologies.
     = "https://en.wikipedia.org/wiki/Integrated_development_environment"
-Platform < Technology  // a technology that has the capability to execute code
+Platform < Software // a technology that has the capability to execute code
     = "https://en.wikipedia.org/wiki/Computing_platform"
 
 /* Implementation relationships */
@@ -242,8 +246,7 @@ SoftwareDocumentation : ProgrammingDomain
 supports < Technology # ProgrammingDomain
 supports < Language # ProgrammingDomain
 
-/* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. While a programming domain could be called a problem space,
-a technology space could be called a solution space. 
+/* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. While a programming domain could be called a problem space, a technology space could be called a solution space. 
 
 Hint: Language dependent technology spaces can be found in the corresponding
 language's main module. */
@@ -252,6 +255,8 @@ TechnologySpace < Entity
 subspaceOf < TechnologySpace # TechnologySpace
 BuildAutomation : TechnologySpace
     = "https://en.wikipedia.org/wiki/List_of_build_automation_software"
+MDEWare : TechnologySpace
+    = "https://en.wikipedia.org/wiki/Model-driven_engineering#Tools"
 belongsTo < Technology # TechnologySpace
 belongsTo < Language # TechnologySpace
 
