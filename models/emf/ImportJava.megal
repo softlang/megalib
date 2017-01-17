@@ -1,0 +1,23 @@
+module emf.ImportJava
+
+import emf.EMF
+
+/* One can import Java interfaces annotated in a specific way and
+retrieve an Ecore model. */
+AnnotatedJavaInterfaces : ProgrammingLanguage
+    = "http://www.informit.com/store/emf-eclipse-modeling-framework-9780321331885" //described in the book
+    subsetOf Java
+EMF implements AnnotatedJavaInterfaces
+?annotatedJavaFiles : Artifact
+    elementOf AnnotatedJavaInterfaces
+    hasRole SourceCode
+    hasRole Input
+    manifestsAs File+
+    uses Annotation
+?resultingEcore : Artifact
+    elementOf Ecore.XMI
+    hasRole MdeMetamodel
+    manifestsAs File
+    correspondsTo ?annotatedJavaFiles
+importJava : AnnotatedJavaInterfaces -> Ecore.XMI
+importJava(?annotatedJavaFiles) |-> ?resultingEcore
