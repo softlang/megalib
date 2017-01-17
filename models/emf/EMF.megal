@@ -3,6 +3,7 @@ module emf.EMF
 import java.JavaPlatform
 import Eclipse
 import XML
+import RationalRose
 
 /* The eclipse modeling framework belongs to the model driven engineering
 technologies. It's an eclipse plugin implemented in Java. */
@@ -12,7 +13,25 @@ EMF : Plugin
     partOf Eclipse
     supports ModelDrivenEngineering
 
-/* Its main component is EMFCore which implements the meta model for
+/*
+List of functions:
+import annotated Java
+import XSD
+generate empty Ecore
+Initialize Ecore Diagram File
+edit Ecore in eclipse (generated Annotation)
+generateJava from Ecore
+serialize
+deserialize
+generate instance model
+edit instance model
+model validation
+copy instance model
+generate Tree viewer
+model - view synchronization (databinding)
+model - view synchronization using item providers
+
+Its main component is EMFCore which implements the meta model for
 EMF models in Java based on the ECore specification. */
 EMFCore : Component
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html"
@@ -27,6 +46,18 @@ EMF implements EcoreJava
     hasRole Schema
     manifestsAs File+
     defines EcoreJava
+
+/* EMF partially implements EMOF, thus there exist
+models written in Ecore that correspondsTo EMOF counterparts. */
+?EMOFModel : Artifact
+    elementOf EMOF
+    hasRole MdeMetamodel
+    manifestsAs Transient
+?ecoreModel : Artifact
+    elementOf Ecore.Java
+    hasRole MdeMetamodel
+    manifestsAs File+
+    correspondsTo ?EMOFModel
 
 /* XMI is an OMG standard for persisting models. */
 ?PDF : FileFormat

@@ -1,0 +1,18 @@
+module emf.RoseImport
+
+import emf.EMF
+import RationalRose
+
+/* Instead of starting with an empty EMF model
+project one may also start off by importing a class 
+diagram created via Rose. */
+?roseDiagram : Artifact
+    elementOf MDL
+    hasRole Schema
+    manifestsAs File
+?resultingEcore : Artifact
+    elementOf Ecore.XMI
+    hasRole MdeMetamodel
+    manifestsAs File
+importRose : MDL -> Ecore
+importRose(?roseDiagram) |-> ?resultingEcore

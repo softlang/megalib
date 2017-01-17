@@ -1,6 +1,7 @@
 module UML
 
 
+
 /* Meta Object Facility is an OMG standard for Model driven engineering.
 Its languages CMOF and EMOF enable writing language independent metamodels.
 The Complete Meta Object Facility (CMOF) covers the complete complex vocabulary 
@@ -9,16 +10,30 @@ as implemented and used for example in EMF. */
 CMOF : SchemaLanguage
     = "https://en.wikipedia.org/wiki/Meta-Object_Facility"
 EMOF : SchemaLanguage
-    = ""
+    = "http://www.omg.org/spec/MOF/"
     subsetOf CMOF
+MOFSpec : Artifact
+    = "http://www.omg.org/spec/MOF/"
+    elementOf PDF
+    hasRole Specification
+    manifestsAs File
 
 /* A UML model has a descriptive or prescriptive purpose. It's mainly based 
-on the object oriented paradigm. */
+on the object oriented paradigm. 
+
+TODO: How to say that it is a visual notation and not textual? */
 UML : ModelingLanguage
     = "http://www.uml.org/"
+    = "https://en.wikipedia.org/wiki/Unified_Modeling_Language"
     supports ModelDrivenEngineering
     supports SoftwareDocumentation
     facilitates ObjectOrientation
+
+/* UML class diagrams are a subset that focuses on structure and may also
+be used to model usage relationships between classes or for entity-relationships. */
+UMLClassDiagram : ModelingLanguage
+    = "https://en.wikipedia.org/wiki/Class_diagram"
+    subsetOf UML
 
 /* The OMG released the newest version 2.5 of the UML
 specification in 2016 */

@@ -1,0 +1,42 @@
+module RationalRose
+
+import UML
+import XML
+
+/* Rational Rose supports UML Modeling. A user can create a model in a 
+visual notation and save it in the specific .mdl format. No
+schema was released for MDL, but it is supposedly a subset of XML. */
+RoseMDL : FileFormat
+    = "https://www.ibm.com/developerworks/community/forums/html/topic?id=77777777-0000-0000-0000-000013786606"
+    subsetOf XML
+RationalRose : Software
+    = "http://www-03.ibm.com/software/products/en/enterprise"
+    uses Java
+    implements RoseMDL
+    implements UML
+    supports ModelDrivenEngineering
+    belongsTo MDEWare
+
+/* Class diagrams can be created and edited with RationalRose 
+and then saved in the RoseMDL format.
+Rose does presumably not support the full set of UML diagrams.
+We could not find evidence for it supporting edge classes. 
+
+TODO: How to say that it is a visual notation and not textual? */
+?RoseUML : ModelingLanguage
+    subsetOf UML
+?RoseClassDiagram : ModelingLanguage
+    subsetOf ?RoseUML
+?umlClassDiagram : Artifact
+    elementOf ?RoseClassDiagram
+    hasRole Schema
+    manifestsAs Transient
+?roseMDLFile : Artifact
+    elementOf RoseMDL
+    hasRole Schema
+    manifestsAs File
+    correspondsTo ?umlClassDiagram
+save : ?RoseUML -> RoseMDL
+save(?umlClassDiagram) |-> ?roseMDLFile
+load : RoseMDL -> ?RoseUML
+load(?roseMDLFile) |-> ?umlClassDiagram
