@@ -56,38 +56,3 @@ RelaxNGSpec : Artifact
     manifestsAs File
     defines RelaxNGXML
     defines RelaxNGCompact
-
-/* Theoretically you could have an XML file that is conform to schemata 
-written in any of the schema languages. Actual correspondence between the
-schemata is difficult to verify since the partOf levels of schema fragments
-are different in every language. */
-?xsdschema : Artifact
-    elementOf XSD
-    hasRole Schema
-    manifestsAs File+
-?dtdSchema : Artifact
-    elementOf DTD
-    hasRole Schema
-    manifestsAs File
-    correspondsTo ?xsdschema //theoretical correspondence. Impedance mismatch messes it up.
-?rngxmlSchema : Artifact
-    elementOf RelaxNGXML
-    hasRole Schema
-    manifestsAs File
-    correspondsTo ?xsdschema
-    correspondsTo ?dtdSchema
-?rngcompactSchema : Artifact
-    elementOf RelaxNGCompact
-    hasRole Schema
-    manifestsAs File
-    correspondsTo ?xsdschema
-    correspondsTo ?dtdSchema
-    correspondsTo ?rngxmlSchema
-?xmlArtifact : Artifact
-    elementOf XML
-    hasRole Document
-    manifestsAs File+
-    conformsTo ?xsdschema
-    conformsTo ?dtdSchema
-    conformsTo ?rngxmlSchema
-    conformsTo ?rngcompactSchema
