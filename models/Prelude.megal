@@ -3,7 +3,7 @@ to code up a general purpose program as well, but hopefully none does
 that. That is why it is classified as a markup language. */
 Language < Entity
     = "https://en.wikipedia.org/wiki/Computer_language"
-FileFormat < Language // not meant to be read by humans. Optimized for file system, e.g. an SQL image
+FileFormat < Language // not meant to be read by humans. Optimized for file system, e.g. an SQL image, JPG etc.
     = "https://en.wikipedia.org/wiki/File_format"
 ProgrammingLanguage < Language  // not specific to a domain, e.g. Java
     = "https://en.wikipedia.org/wiki/Programming_language"
@@ -17,7 +17,7 @@ QueryLanguage < Language // query statements, e.g. SQL
     = "https://en.wikipedia.org/wiki/Query_language"
 StylesheetLanguage < Language // expresses presentation of structured documents, e.g. CSS
     = "https://en.wikipedia.org/wiki/Style_sheet_language"
-GrammarLanguage < Language
+GrammarLanguage < Language //define syntax of a language
     = "https://en.wikipedia.org/wiki/Formal_grammar"
 SchemaLanguage < Language // formulate schemas or metamodels, e.g. XSD
     = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages"
@@ -39,6 +39,8 @@ DataType < Language // data types of a language, e.g. Boolean
     = "https://en.wikipedia.org/wiki/Data_type" 
 ObjectGraph < Language // object values in an OO Language, e.g. Java Objects.
     = "https://en.wikipedia.org/wiki/Object_graph" 
+Graphics < Language //!! Experimental !! visual images consisting of pixels that inform, illustrate or entertain
+    = "https://en.wikipedia.org/wiki/Graphics"
 subsetOf < Language # Language  
 embeddedInto < Language # Language 
 
@@ -89,6 +91,8 @@ MdeModel : Role // in the sense of MDE
     = "https://en.wikipedia.org/wiki/Model-driven_engineering"
 MdeMetamodel : Role // in the sense of MDE
     = "https://en.wikipedia.org/wiki/Metamodeling"
+Diagram : Role //a visual representation of a model
+    = "https://en.wikipedia.org/wiki/Diagram"
 MvcModel : Role //data classes plus minor business logics
     = "https://en.wikipedia.org/wiki/Model-view-controller"
 MvcView : Role //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
@@ -209,16 +213,12 @@ RelationalModeling : Paradigm // Enabling the representation of entities and the
 languages to support it. */
 ProgrammingDomain < Entity
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
-subdomainOf < ProgrammingDomain # ProgrammingDomain //One may formulate a domain that covers a subset of another domain's requirements, problems, terminology and ways for languages to support it.
-// The study on applications in general. For example, Java can be used to solve any kind
-// of problem, but the solution may be more elegant in a rather domain specific language. 
-GeneralPurposeProgramming : ProgrammingDomain
+subdomainOf < ProgrammingDomain # ProgrammingDomain //a domain covers a subset of another domain's requirements, problems, terminology and ways for languages/technologies to support it.
+GeneralPurposeProgramming : ProgrammingDomain // The study on applications in general.
     = "https://en.wikipedia.org/wiki/General-purpose_programming_language"
-// The study on processing programs with support for language implementation 
-MetaProgramming : ProgrammingDomain
+MetaProgramming : ProgrammingDomain // The study on processing programs with support for language implementation 
     = "https://en.wikipedia.org/wiki/Metaprogramming"
-// The study on how to efficiently store and process data 
-DatabaseProgramming : ProgrammingDomain
+DatabaseProgramming : ProgrammingDomain // The study on how to efficiently store and process data 
     = "http://101companies.org/wiki/Database_programming"
 ReverseEngineering : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Reverse_engineering"
@@ -241,6 +241,8 @@ ModelDrivenEngineering : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Model-driven_engineering"
 SoftwareDocumentation : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/Software_documentation"
+GraphicsProgramming : ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Computer_graphics_(computer_science)"
 supports < Technology # ProgrammingDomain
 supports < Language # ProgrammingDomain
 
@@ -271,6 +273,8 @@ Validation : AbstractProcess //Validate quality
     = "https://en.wikipedia.org/wiki/Verification_and_validation#Categories_of_validation"
 Verification : AbstractProcess //Correctness Proof
     = "https://en.wikipedia.org/wiki/Software_verification"
+Rendering : AbstractProcess //synthesizing an image from some description format
+    = "https://en.wikipedia.org/wiki/Rendering_(computer_graphics)"
 
 /* A construct is an artifact constellation where the realization depends on the program's context, and involved languages and technologies. */
 Construct < Entity 
@@ -296,18 +300,18 @@ partOf < Technology # Technology
 partOf < System # System
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
-entity to the used entity. */
+entity to the used entity. Maybe rename to reuses */
 uses < System # System
 uses < System # Technology
 uses < Technology # Technology
 uses < Artifact # System
 uses < Artifact # Technology
 
-/* A language is used in the sense that some part is a member of the language */
+/* A language is used in the sense that some part is a member of the language. Maybe rename to writtenIn */
 uses < System # Language
 uses < Technology # Language
 
-/* Re-usable forms of solutions can be used in the sense of realization. */
+/* Re-usable forms of solutions can be used in the sense of realization. Maybe rename to realizes. */
 uses < System # DesignPattern
 uses < System # ArchitecturalPattern
 uses < System # AbstractProcess
@@ -327,3 +331,13 @@ facilitates < Technology # ArchitecturalPattern
 facilitates < Technology # AbstractProcess
 facilitates < Technology # Construct
 facilitates < Language # Paradigm
+
+/* PDF file format has frequent appearence everywhere. */
+PDF : FileFormat
+    = "https://en.wikipedia.org/wiki/Portable_Document_Format"
+PDFSpec : Artifact
+    = "http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf"
+    elementOf PDF
+    hasRole Specification
+    manifestsAs File
+    defines PDF

@@ -17,6 +17,8 @@ MOFSpec : Artifact
     elementOf PDF
     hasRole Specification
     manifestsAs File
+    defines CMOF
+    defines EMOF
 
 /* A UML model has a descriptive or prescriptive purpose. It's mainly based 
 on the object oriented paradigm. 

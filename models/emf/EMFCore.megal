@@ -1,4 +1,4 @@
-module emf.EMF
+module emf.EMFCore
 
 import java.JavaPlatform
 import Eclipse
@@ -15,8 +15,6 @@ EMF : Plugin
 
 /*
 List of functions:
-import annotated Java
-import XSD
 generate empty Ecore
 Initialize Ecore Diagram File
 edit Ecore in eclipse (generated Annotation)
@@ -32,23 +30,24 @@ model - view synchronization (databinding)
 model - view synchronization using item providers
 
 Its main component is EMFCore which implements the meta model for
-EMF models in Java based on the ECore specification. */
+EMF models in Java based on the Ecore specification. */
 EMFCore : Component
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html"
     partOf EMF
     uses Java
-EcoreJava : ProgrammingLanguage
+Ecore.Java : ProgrammingLanguage
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html"
     subsetOf Java
-EMF implements EcoreJava
+EMF implements Ecore.Java
 ?EcoreMetaModel : Artifact
-    elementOf EcoreJava
+    elementOf Ecore.Java
     hasRole Schema
     manifestsAs File+
-    defines EcoreJava
+    defines Ecore.Java
 
 /* EMF partially implements EMOF, thus there exist
-models written in Ecore that correspondsTo EMOF counterparts. */
+models written in Ecore that correspondsTo EMOF counterparts. 
+Is MOF and EMOF a language?
 ?EMOFModel : Artifact
     elementOf EMOF
     hasRole MdeMetamodel
@@ -59,15 +58,13 @@ models written in Ecore that correspondsTo EMOF counterparts. */
     manifestsAs File+
     correspondsTo ?EMOFModel
 
-/* XMI is an OMG standard for persisting models. */
-?PDF : FileFormat
-    = "https://en.wikipedia.org/wiki/Portable_Document_Format"
+XMI is an OMG standard for persisting models. */
 XMI : MarkupLanguage
     = "https://en.wikipedia.org/wiki/XML_Metadata_Interchange"
     subsetOf XML
 XMISpec : Artifact
     = "http://www.omg.org/spec/XMI/2.5.1/PDF"
-    elementOf ?PDF
+    elementOf PDF
     hasRole Specification
     manifestsAs File 
     defines XMI
@@ -89,16 +86,16 @@ GeneratorModel : ConfigurationLanguage
     manifestsAs File
 
 ?javaModel : Artifact
-    elementOf EcoreJava
+    elementOf Ecore.Java
     hasRole MdeModel
     manifestsAs File+
 
-generateJava : GeneratorModel -> EcoreJava
+generateJava : GeneratorModel -> Ecore.Java
 CodeGenerator implements generateJava
 generateJava(?genModel) |-> ?javaModel
 
 /* The EMF persistence framework allows you to persist ecore models in a subset of XMI */
-ECore.XMI : DataRepresentationLanguage
+Ecore.XMI : DataRepresentationLanguage
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html"
     subsetOf XMI
 EMFPersistence : Component
@@ -107,19 +104,19 @@ EMFPersistence : Component
     uses Java
     partOf EMFCore
     uses Serialization
-    implements ECore.XMI
+    implements Ecore.XMI
 
 
-/* An Ecore model is a metamodel for the DSL which is a language subset of ECore */
-?MyModels.ECore : SchemaLanguage
+/* An Ecore model is a metamodel for the DSL which is a language subset of Ecore */
+?MyModels.Ecore : SchemaLanguage
 ?MyModels.XMI : DataRepresentationLanguage
-    subsetOf ECore.XMI
+    subsetOf Ecore.XMI
 ?MyMeta.ecore : Artifact
-    elementOf EcoreJava
+    elementOf Ecore.Java
     hasRole MdeMetamodel
     manifestsAs File
     defines ?MyModels.XMI
-    defines ?MyModels.ECore
+    defines ?MyModels.Ecore
 
 /* A Java object can be serialized in the XMI subset for a DSL */
 ?MyModels.JavaObject : ObjectGraph

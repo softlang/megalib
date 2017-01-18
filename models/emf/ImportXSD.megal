@@ -1,6 +1,6 @@
 module emf.ImportXSD
 
-import emf.EMF
+import emf.EMFCore
 import XML
 
 /* EMF can import XSD schemas and translate them into Ecore */
