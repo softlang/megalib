@@ -5,8 +5,6 @@ Language < Entity
     = "https://en.wikipedia.org/wiki/Computer_language"
 FileFormat < Language // not meant to be read by humans. Optimized for file system, e.g. an SQL image
     = "https://en.wikipedia.org/wiki/File_format"
-PDF : FileFormat
-    = "https://en.wikipedia.org/wiki/Portable_Document_Format"
 ProgrammingLanguage < Language  // not specific to a domain, e.g. Java
     = "https://en.wikipedia.org/wiki/Programming_language"
 DataRepresentationLanguage < Language // can be read by humans and represents data, e.g. JSON

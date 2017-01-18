@@ -15,7 +15,7 @@ statement:	 subtypeDeclaration
 
 module: 'module' ID;
 
-imports: 'import' ID ('where{' (TAB substitution)+ '}')?;
+imports: 'import' ID ('where' '{' (TAB substitution)+ '}')?;
 
 substitution : ID 'substitutes' ID;
 
