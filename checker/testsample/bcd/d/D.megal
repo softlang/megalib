@@ -1,6 +1,6 @@
 module bcd.d.D
 
-import bcd.C where{
+import bcd.C where {
     softlangpage1 substitutes ?a1
     softlangpage2 substitutes ?a2
 }
