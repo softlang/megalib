@@ -110,7 +110,7 @@ public class CheckTest {
         Check c = new Check(m, true);
         assertEquals(0, m.getCriticalWarnings().size());
         assertEquals(1, c.getWarnings().size());
-        assertTrue(c.getWarnings().contains("Manifestation misssing for ?a"));
+        assertTrue(c.getWarnings().contains("Manifestation missing for ?a"));
     }
 
     @Test
