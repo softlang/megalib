@@ -203,7 +203,7 @@ Paradigm < Entity
     = "https://en.wikipedia.org/wiki/Programming_paradigm"
 ConcurrentProgramming : Paradigm // Programming in a way that enables and manages parallel execution
     = "https://blog.golang.org/concurrency-is-not-parallelism"
-ObjectOrientation : Paradigm // Thinking of objects and their interrelation
+ObjectOrientedProgramming : Paradigm // Thinking of objects and their interrelation
     = "https://en.wikipedia.org/wiki/Object-oriented_programming"
 FunctionalProgramming : Paradigm // Programming in a way that resembles formulating mathematical functions
     = "https://en.wikipedia.org/wiki/Functional_programming"
@@ -211,6 +211,7 @@ RelationalModeling : Paradigm // Enabling the representation of entities and the
     = "https://en.wikipedia.org/wiki/Relational_model"
 ModularProgramming : Paradigm
     = "https://en.wikipedia.org/wiki/Modular_programming"
+specializes < Paradigm # Paradigm
 
 /* A field of study that defines common requirements, problems, terminology and ways for technologies or 
 languages to support it. */
