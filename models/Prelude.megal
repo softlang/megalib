@@ -35,6 +35,8 @@ ReferenceLanguage < Language // express references, e.g. URI
     = "https://en.wikipedia.org/wiki/Reference" 
 MessageLanguage < Language // structured messages, e.g. HTTP Requests
     = "https://en.wikipedia.org/wiki/Message_passing" 
+DomainSpecificLanguage < Language
+    = "https://en.wikipedia.org/wiki/Domain-specific_language"
 DataType < Language // data types of a language, e.g. Boolean
     = "https://en.wikipedia.org/wiki/Data_type" 
 ObjectGraph < Language // object values in an OO Language, e.g. Java Objects.
@@ -42,7 +44,8 @@ ObjectGraph < Language // object values in an OO Language, e.g. Java Objects.
 Graphics < Language //!! Experimental !! visual images consisting of pixels that inform, illustrate or entertain
     = "https://en.wikipedia.org/wiki/Graphics"
 subsetOf < Language # Language  
-embeddedInto < Language # Language 
+embeddedInto < Language # Language
+dialectOf < Language # Language //https://en.wikipedia.org/wiki/Dialect_(computing)
 
 /* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity
@@ -101,10 +104,6 @@ MvcController : Role //Some kind of mediator between model and view, which may e
     = "https://en.wikipedia.org/wiki/Model-view-controller"
 Value : Role //A runtime value in the execution process of a program
     = "https://en.wikipedia.org/wiki/Value_(computer_science)"
-Input : Role //Serves as the input of some function
-    = "http://101companies.org/wiki/Input"
-Output : Role //Output of some function 
-    = "http://101companies.org/wiki/Output"
 Message : Role //A message in a communication of software components
     = "https://en.wikipedia.org/wiki/Message_passing"
 Specification : Role //Defines some other conceptual entity in either half-formal or formal manner
@@ -129,6 +128,8 @@ Document : Role //An informal file that is deployed locally
     = "https://en.wikipedia.org/wiki/Document"
 Repository : Role //A database that manages code artifacts and acts as a VCS
     = "https://en.wikipedia.org/wiki/Repository_(version_control)"
+Module : Role
+    = "https://en.wikipedia.org/wiki/Modular_programming"
 hasRole < Artifact # Role
 
 /* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
@@ -183,7 +184,7 @@ implements < Technology # Function  //A technology may implement a mapping
 implements < Technology # Language  //A technology can process a language as input or output
 
 /* Code deployment aspects */
-managedBy < Technology # Artifact //the technology's implementation may be versioned in a repo
+managedBy < Technology # Artifact //a technology is managed by an artifact, if the artifact contains the technology's source code.
 deployedAs < Technology # Artifact //In a usage scenario the technology is locally deployed as an artifact
 
 /* Classification of systems */
@@ -208,6 +209,8 @@ FunctionalProgramming : Paradigm // Programming in a way that resembles formulat
     = "https://en.wikipedia.org/wiki/Functional_programming"
 RelationalModeling : Paradigm // Enabling the representation of entities and their interrelationships.
     = "https://en.wikipedia.org/wiki/Relational_model"
+ModularProgramming : Paradigm
+    = "https://en.wikipedia.org/wiki/Modular_programming"
 
 /* A field of study that defines common requirements, problems, terminology and ways for technologies or 
 languages to support it. */
