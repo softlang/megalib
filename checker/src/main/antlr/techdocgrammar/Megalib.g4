@@ -33,9 +33,9 @@ functionInstance: ID '(' ID (',' ID)* ')' '|->' (ID | ('(' ID (',' ID)* ')'));
 
 link: ID '=' LINK;
 
-//Tabs enforce formatting
-INDENT: ('\n'|'\r') (' '|'\t')+;
-ID: '?'? WORD ('.' WORD)*;
+//BUG AT ('\n'|'\r') (' '|'\t')+
+INDENT: '    ';
+ID: ('?'|'^')? WORD ('.' WORD)*;
 WORD: ([a-zA-Z0-9+#\-])+;
 LINK: '"' (~[ \t\f\n\r])+ '"' ;
 BLOCKCOMMENT: '/*' .*? '*/';

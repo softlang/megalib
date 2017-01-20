@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.ANTLRErrorListener;
@@ -68,10 +66,6 @@ public class MegaModelLoader {
             if (!f.exists())
                 throw new FileNotFoundException();
             data = FileUtils.readFileToString(f);
-            // manipulating the data such that it ignores tab + \n
-            Pattern p = Pattern.compile("    [\r|\n]+", Pattern.MULTILINE);
-            Matcher matcher = p.matcher(data);
-            data = matcher.replaceAll("");
         }
         catch (IOException e) {
             model.addWarning("Error : The file '" + filepath + "' could not be loaded.");
@@ -85,9 +79,6 @@ public class MegaModelLoader {
 
     public MegaModel loadString(String data) {
         try {
-            Pattern p = Pattern.compile("    [\r|\n]+", Pattern.MULTILINE);
-            Matcher matcher = p.matcher(data);
-            data = matcher.replaceAll("");
             model = ((MegalibParserListener) parse(data, new MegalibParserListener(model))).getModel();
             model.cleanUpAbstraction();
             return model;
@@ -111,9 +102,6 @@ public class MegaModelLoader {
                 String p = todos.poll();
                 p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
                 String pdata = FileUtils.readFileToString(new File(p));
-                Pattern pat = Pattern.compile("    \r", Pattern.MULTILINE);
-                Matcher matcher = pat.matcher(pdata);
-                pdata = matcher.replaceAll("");
                 model = ((MegalibParserListener) parse(pdata, new MegalibParserListener(model))).getModel();
                 model.cleanUpAbstraction();
                 if (!model.getCriticalWarnings().isEmpty()) {
