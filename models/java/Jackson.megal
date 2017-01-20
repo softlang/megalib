@@ -25,18 +25,12 @@ Jackson.ObjectMapper : Library
     partOf Jackson
     uses Serialization
     uses Java
-POJO : Construct
-    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object"
-    aspectOf ObjectOrientation
 
 
 /* To serialize an object Jackson needs to take the object
 as input and return JSON as output. 
 Writing is based on an introspection of the object's class.  */
 writeValue : JavaObject -> JSON
-Introspection : Construct
-    = "https://en.wikipedia.org/wiki/Type_introspection"
-    aspectOf MetaProgramming
 Jackson.ObjectMapper implements writeValue
     uses Introspection
 
@@ -48,19 +42,20 @@ Jackson.ObjectMapper implements readValue
 
 /* A concrete scenario for (de-) serialization thus needs a POJO, a Java object
 and a JSON String. */
-?ModelClass : Artifact
+?javaClass : Artifact
     elementOf Java
     hasRole Schema
     manifestsAs File
-?aModel : Artifact
+    uses POJO
+?model : Artifact
     elementOf JavaObject
     hasRole Value
     manifestsAs Transient
-    conformsTo ?ModelClass
-?aJSONFile : Artifact 
+    conformsTo ?javaClass
+?jsonFile : Artifact 
     elementOf JSON
     hasRole Value
     manifestsAs File
-    correspondsTo ?aModel
-readValue(?aJSONFile, ?ModelClass) |-> ?aModel
-writeValue(?aModel) |-> ?aJSONFile
+    correspondsTo ?model
+readValue(?jsonFile, ?javaClass) |-> ?model
+writeValue(?model) |-> ?jsonFile

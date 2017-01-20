@@ -55,8 +55,8 @@ OwnCloud uses C++
 
 /* The server communicates with the connected filesystems using the client software. In this
 use case we have two clients and one server involved. */
-OwnCloud uses ClientServer
-OwnCloudServer : WebService
+OwnCloud uses Client-Server
+OwnCloudServer : Software
     = "https://github.com/owncloud/core"
     partOf OwnCloud
     uses C++
@@ -75,44 +75,44 @@ OwnCloudClient : Software
     uses NSIS
     uses C-Make
     partOf OwnCloud
-?aWebServer : FileSystem
+?webServer : FileSystem
     uses OwnCloudServer
-?aFileSystem1 : FileSystem
+?fileSystem1 : FileSystem
     uses OwnCloudClient
-?aFileSystem2 : FileSystem
+?fileSystem2 : FileSystem
     uses OwnCloudClient
 
 /* A file is uploaded in the first file system and then downloaded due to the synchronization
 process by the second client. The sharing policy states that synchronization for this file
 is enabled. */
 ?l : FileFormat
-?aFile1 : Artifact
+?file1 : Artifact
     elementOf ?l
     hasRole SynchronizedFile
     manifestsAs File
-    partOf ?aFileSystem1
-?aFile2 : Artifact
+    partOf ?fileSystem1
+?file2 : Artifact
     elementOf ?l
     hasRole SynchronizedFile
     manifestsAs File
-    partOf ?aFileSystem2
-    correspondsTo ?aFile1  // equality
+    partOf ?fileSystem2
+    correspondsTo ?file1  // equality
 ?sharingAllowedPolicy : Artifact
     elementOf OwncloudPolicyLanguage
     hasRole Configuration
     manifestsAs File
-    partOf ?aWebServer
+    partOf ?webServer
 share : URL # OwncloudPolicyLanguage # ?l -> ?l
 OwnCloud implements share
-?aserverurl1 : Artifact
+?serverurl1 : Artifact
     elementOf URL
     hasRole Reference
     manifestsAs Fragment
-    partOf ?aFileSystem1 //don't know where
-?aserverurl2 : Artifact
+    partOf ?fileSystem1 //don't know where
+?serverurl2 : Artifact
     elementOf URL
     hasRole Reference
     manifestsAs Fragment
-    partOf ?aFileSystem2
-    correspondsTo ?aserverurl1
-share(?aserverurl1,?sharingAllowedPolicy,?aFile1) |-> ?aFile2
+    partOf ?fileSystem2
+    correspondsTo ?serverurl1
+share(?serverurl1,?sharingAllowedPolicy,?file1) |-> ?file2

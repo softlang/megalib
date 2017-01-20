@@ -1,9 +1,9 @@
 module java.Jackson101
 
 import java.Jackson where{
-    sampleCompany substitutes ?aJSONFile
-    companyJava substitutes ?ModelClass
-    c substitutes ?aModel
+    sampleCompany substitutes ?jsonFile
+    companyJava substitutes ?javaClass
+    companyObject substitutes ?model
 }
 
 /* The 101 implementation uses Jackson */
@@ -16,4 +16,4 @@ sampleCompany partOf JacksonDataBinding101
     = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/inputs/sampleCompany.json"
 companyJava partOf JacksonDataBinding101
     = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/src/main/java/org/softlang/company/model/Company.java"
-c = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/src/test/java/org/softlang/company/tests/TestUnparsing.java" //a code snippet creating a Company object.
+companyObject = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/src/test/java/org/softlang/company/tests/TestUnparsing.java" //a code snippet creating a Company object.

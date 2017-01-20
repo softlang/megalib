@@ -7,7 +7,7 @@ but is more frequently interpreted than compiled. */
 Ruby : ProgrammingLanguage
     = "https://www.ruby-lang.org/en/"
 
-RubyPlatform : Platform
+RubyPlatform : Software
     = "https://github.com/ruby/ruby"
     uses Ruby
     uses C

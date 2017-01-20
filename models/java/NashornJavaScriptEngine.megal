@@ -15,18 +15,18 @@ Nashorn : Platform
 
 /* In a use case an application may have some java class
 that contains the embedded JavaScript job. */
-?MyJavaApp : Application
+?javaApp : Application
     uses Java
-?ScriptJob : Artifact
-    partOf ?MyJavaApp
+?javaCode : Artifact
+    partOf ?javaApp
     elementOf Java
     hasRole Executable
     manifestsAs File
     uses Nashorn
-?DemoScript : Artifact
-    partOf ?ScriptJob
+?demoScript : Artifact
+    partOf ?javaCode
     elementOf Nashorn.JavaScript
-    hasRole Executable
+    hasRole SourceCode
     manifestsAs Fragment
 
 /* Nashorn can the be used to evaluate the JavaScript
@@ -34,9 +34,8 @@ fragment. It returns a java object wrapping the result
 of the evaluation. */
 ?returnValue : Artifact
     elementOf JavaObject
-    hasRole Output
+    hasRole Value
     manifestsAs Transient
 eval : Nashorn.JavaScript -> JavaObject
-eval(?DemoScript) |-> ?returnValue
+eval(?demoScript) |-> ?returnValue
 Nashorn implements eval
- 

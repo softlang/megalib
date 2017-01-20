@@ -16,8 +16,8 @@ OnlineOfflineEvents : Construct
 OfflineApplicationCachingAPI : API
     = "https://www.w3.org/TR/offline-webapps/"
     uses HTML5
-    uses OfflineCache
-    uses OnlineOfflineEvents
+    facilitates OfflineCache
+    facilitates OnlineOfflineEvents
 
 /* A cache-manifest describes which files are supposed to be cached
 at the client-side and which have to be accessed at the server-side. */
@@ -40,7 +40,7 @@ OfflineApplicationCachingAPI implements Cache-Manifest
     elementOf Cache-Manifest
     manifestsAs File
     refersTo ?aCachableFile
-?aURI : Artifact
+?uri : Artifact
     hasRole Reference
     manifestsAs Transient
     elementOf URI
@@ -77,16 +77,18 @@ HTTPResponse : MessageLanguage
     elementOf HTTPResponse
     manifestsAs Transient
 offlineAccess : Cache-Manifest # HTTPRequest # URI -> HTTPResponse
-offlineAccess(?manifestFile, ?offlineRequest,?aURI) |-> ?offlineResponse
+offlineAccess(?manifestFile, ?offlineRequest,?uri) |-> ?offlineResponse
 OfflineApplicationCachingAPI implements offlineAccess
 
 /* Old browsers that had offline application caching enabled, were
 able to use such backup files since the API routes the access to the backup
 using the manifest. */
-?OACBrowser : Platform 
+?OACBrowser : Software
     implements HTML5
     implements HTTPRequest
     implements HTTPResponse
     supports WebApplicationDevelopment
     supports OfflineWebApplicationDevelopment
     uses OfflineApplicationCachingAPI
+    uses OfflineCache
+    uses OnlineOfflineEvents

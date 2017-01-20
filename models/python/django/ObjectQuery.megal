@@ -1,4 +1,4 @@
-module django.ObjectQuery
+module python.django.ObjectQuery
 
 /* 
 ModelViewController : DesignPattern

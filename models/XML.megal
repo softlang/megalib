@@ -23,14 +23,14 @@ XMLSpec : Artifact
     hasRole Specification
     manifestsAs File
     defines XML
-?aBrowser : Platform
+?browser : Platform
     implements XHTML
 
 /* There are multiple languages that can be used to define schemata */
 XSD : SchemaLanguage
     = "https://en.wikipedia.org/wiki/XML_Schema_(W3C)"
     subsetOf XML
-XSDSpec : Artifact
+xsdSpec : Artifact
     = "https://www.w3.org/TR/xmlschema11-1/"
     elementOf XHTML
     hasRole Specification
@@ -38,7 +38,7 @@ XSDSpec : Artifact
     defines XSD
 DTD : SchemaLanguage
     = "https://en.wikipedia.org/wiki/Document_type_definition"
-DTDSpec : Artifact
+dtdSpec : Artifact
     = "http://www.w3schools.com/xml/xml_dtd_intro.asp"
     elementOf XHTML
     hasRole Specification
@@ -49,7 +49,7 @@ RelaxNGXML : SchemaLanguage
     subsetOf XML
 RelaxNGCompact : SchemaLanguage
     = "https://en.wikipedia.org/wiki/RELAX_NG#Compact_syntax"
-RelaxNGSpec : Artifact
+relaxNGSpec : Artifact
     = "http://relaxng.org/spec-20011203.html"
     elementOf XHTML
     hasRole Specification

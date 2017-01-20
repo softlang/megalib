@@ -1,23 +1,28 @@
-module MegaLCheckerService
+module java.MegaLCheckerService
 
 import java.JavaPlatform
+import java.ANTLR
 
-MegaL : ModelingLanguage
+/* Simple facts on MegaL */
+MegaL : KnowledgeRepresentationLanguage
     = "http://www.softlang.org/megal"
-MegaLibChecker : Library
+MegaLibChecker : Software
     = "https://github.com/softlang/megalib/tree/master/checker"
     uses Java
+    uses ANTLR
     implements MegaL
 
-
-checkModel : MegaL -> String
+MegaLWarnings : DataType
+    = "https://github.com/softlang/megalib/tree/master/checker"
+    subsetOf Java.String
+checkModel : MegaL -> MegaLWarnings
 MegaLibChecker implements checkModel
 ?warningLog : Artifact
-    elementOf String
+    elementOf MegaLWarnings
     hasRole Log
     manifestsAs Transient
 ?megamodel : Artifact
     elementOf MegaL
     hasRole DescriptiveModel
-    manifestsAs File
+    manifestsAs File+
 checkModel(?megamodel) |-> ?warningLog

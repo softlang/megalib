@@ -8,7 +8,7 @@ Java : ProgrammingLanguage
     = "http://docs.oracle.com/javase/specs/jls/se8/jls8.pdf"
     belongsTo JavaWare
     supports GeneralPurposeProgramming
-    facilitates ObjectOrientation
+    facilitates ObjectOrientedProgramming
     facilitates FunctionalProgramming
     facilitates ConcurrentProgramming
 
@@ -17,6 +17,10 @@ JavaObject : ObjectGraph
 Java.Double : DataType
     = "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html"
     subsetOf Java
+Java.String : DataType
+    = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html"
+    subsetOf JavaObject
+
 
 JavaByteCode : InstructionSet
     = "https://en.wikipedia.org/wiki/Java_bytecode"
@@ -49,13 +53,13 @@ compile : Java -> JavaByteCode
 JavaC implements compile
 ?javaFiles : Artifact   
     elementOf Java
-    hasRole Input
+    hasRole SourceCode
     manifestsAs File+
-?ClassFiles : Artifact
+?classFiles : Artifact
     elementOf JavaByteCode
-    hasRole Output
+    hasRole ByteCode
     manifestsAs File+
-compile(?javaFiles) |-> ?ClassFiles
+compile(?javaFiles) |-> ?classFiles
 
 // JVM
 // Java native library

@@ -27,10 +27,10 @@ RationalRose : Software
 and then saved in the RoseMDL format.
 Rose does presumably not support the full set of UML diagrams.
 We could not find evidence for it supporting edge classes. */
-?RoseClassDiagram : ModelingLanguage
+?Rose.UML.ClassDiagram : ModelingLanguage
     subsetOf Rose.UML
 ?umlClassDiagram : Artifact
-    elementOf ?RoseClassDiagram
+    elementOf ?Rose.UML.ClassDiagram
     hasRole Schema
     manifestsAs Transient
 ?roseMDLFile : Artifact

@@ -1,4 +1,4 @@
-module django.MiddlewareIPFilter
+module python.django.MiddlewareIPFilter
 
 /* 
 Django : Framework

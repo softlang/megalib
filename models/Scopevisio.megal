@@ -10,43 +10,22 @@ management, document management and various e-commerce tasks. Tasks are implemen
 by separate components.
 The actual programming language for the online component is not mentioned
 as it actually does not matter to users. */
-SoftwareAsAService : TechnologySpace
-    = "https://en.wikipedia.org/wiki/Software_as_a_service"
-BusinessProgramming : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Business_software"
-EnterpriseResourcePlanning : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Enterprise_resource_planning"
-CustomerRelationshipManagement : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Customer_relationship_management"
-ProjectManagement : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Project_management_software"
-DocumentManagement : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Document_management_system"
-ECommerce : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/E-commerce"
-ServiceOrientedArchitecture : ArchitecturalPattern
-    = "https://en.wikipedia.org/wiki/Service-oriented_architecture"
-?unknownLanguage : ProgrammingLanguage
+?UnknownLanguage : ProgrammingLanguage
 Scopevisio : WebService
     = "https://de.wikipedia.org/wiki/Scopevisio"
     = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio"
-    belongsTo SoftwareAsAService
+    belongsTo SoftwareAsAServiceWare
     supports BusinessProgramming
     supports EnterpriseResourcePlanning
     supports CustomerRelationshipManagement
     supports ProjectManagement
-    supports DocumentManagement
     supports ECommerce
     uses ServiceOrientedArchitecture
-    uses ?unknownLanguage
+    uses ?UnknownLanguage
 
 /* A user gets a client application that can communicate with the web
 service using SOAP over the OpenScopeAPI. The communication is implemented
 using the HTTPS protocol and a requested authentication. */
-Protocol < AbstractProcess // maybe
-    = "https://en.wikipedia.org/wiki/Communications_protocol"
-HTTPS : Protocol 
-    = "https://en.wikipedia.org/wiki/HTTPS"
 HTTPRequest : MessageLanguage
     = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods"
 HTTPResponse : MessageLanguage
@@ -61,12 +40,12 @@ URI : ReferenceLanguage
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier"
 Authentication : Construct
     = "https://en.wikipedia.org/wiki/Authentication"
-?l : ProgrammingLanguage
+?L : ProgrammingLanguage
 OpenScope : API
     = "https://openscope.de/api.html"
     partOf Scopevisio
     uses HTTPS
-    uses ?l //can't identify programming language yet
+    uses ?L //can't identify programming language yet
     implements SOAP
     implements HTTPRequest
     implements HTTPResponse
@@ -84,30 +63,30 @@ ScopevisioClient : SoftwareSuite
 /* When the user accesses a functionality in the client, the client sends
 a SOAP message to the corresponding service's address. The actual computation 
 is executed at the server side and the result is send back as a SOAP message */
-?aHTTPSRequest : Artifact
+?httpsrequest : Artifact
     elementOf HTTPRequest
     hasRole Message
     manifestsAs Transient
-?aSOAPRequest : Artifact
+?soapRequest : Artifact
     elementOf SOAP
     hasRole Message
     manifestsAs Fragment
-    partOf ?aHTTPSRequest
-?aServiceAddress : Artifact
+    partOf ?httpsrequest
+?serviceAddress : Artifact
     hasRole Reference
     elementOf URI
     manifestsAs Fragment
-    partOf ?aSOAPRequest
-?aProductName : Artifact
+    partOf ?soapRequest
+?productName : Artifact
     hasRole Reference
     elementOf URI
     manifestsAs Fragment
-    partOf ?aServiceAddress
-?aServiceName : Artifact
+    partOf ?serviceAddress
+?serviceName : Artifact
     hasRole Reference
     elementOf URI
     manifestsAs Fragment
-    partOf ?aServiceAddress
+    partOf ?serviceAddress
 ?httpResponse : Artifact
     hasRole Message
     elementOf HTTPResponse
@@ -118,24 +97,24 @@ is executed at the server side and the result is send back as a SOAP message */
     manifestsAs Fragment
     partOf ?httpResponse
 communicate : HTTPRequest # URI -> HTTPResponse
-communicate(?aHTTPSRequest, ?aServiceAddress) |-> ?httpResponse
+communicate(?httpsrequest, ?aServiceAddress) |-> ?httpResponse
 ScopevisioClient implements communicate
 OpenScope implements communicate
 
 //TODO : This could be looked up in a client and its files.
 /* Somewhere a user has to have a configuration that states
 which services he payed for and is able to access. */
-?unknownConfigurationLanguage : ConfigurationLanguage
+?UnknownConfigurationLanguage : ConfigurationLanguage
 ?selectedServices : Artifact
     manifestsAs File
     hasRole Configuration
-    elementOf ?unknownConfigurationLanguage
+    elementOf ?UnknownConfigurationLanguage
     partOf ScopevisioClient
-?ScopevisioExe : Artifact //Archives and Folders do not have any elementOf relationship
+?scopevisio : Artifact //Archives and Folders do not have any elementOf relationship
     elementOf PE
     manifestsAs File
     hasRole Executable
-    partOf ScopevisioClient
+ScopevisioClient deployedAs ?scopevisio
 
 /* The document management service is REST based */
 ?ScopevisioDMS : Component

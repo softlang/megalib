@@ -12,7 +12,7 @@ CMOF : SchemaLanguage
 EMOF : SchemaLanguage
     = "http://www.omg.org/spec/MOF/"
     subsetOf CMOF
-MOFSpec : Artifact
+mofSpec : Artifact
     = "http://www.omg.org/spec/MOF/"
     elementOf PDF
     hasRole Specification
@@ -29,20 +29,19 @@ UML : ModelingLanguage
     = "https://en.wikipedia.org/wiki/Unified_Modeling_Language"
     supports ModelDrivenEngineering
     supports SoftwareDocumentation
-    facilitates ObjectOrientation
+    facilitates ObjectOrientedProgramming
 
 /* UML class diagrams are a subset that focuses on structure and may also
 be used to model usage relationships between classes or for entity-relationships. */
-UMLClassDiagram : ModelingLanguage
+UML.ClassDiagram : ModelingLanguage
     = "https://en.wikipedia.org/wiki/Class_diagram"
     subsetOf UML
 
 /* The OMG released the newest version 2.5 of the UML
 specification in 2016 */
-UMLSpec : Artifact
+umlSpec : Artifact
     = "http://www.omg.org/spec/UML/2.5/"
     elementOf PDF
     hasRole Specification
     manifestsAs File
     defines UML
-

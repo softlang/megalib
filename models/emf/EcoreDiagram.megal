@@ -1,37 +1,38 @@
 module emf.EcoreDiagram
 
 import emf.EMFCore
+import UML
 
 /* EMF implements the generation of an XML-based visual
 description of an ecore model. */
-?ecoreXMIModel : Artifact
-    elementOf Ecore.XMI
+?ecoreModel : Artifact
+    elementOf XMI.Ecore
     hasRole MdeMetamodel
     manifestsAs File
-airdFormat : FileFormat
+AIRD : FileFormat
     = "http://www.eclipse.org/ecoretools/doc/"
     subsetOf XMI
 ?visualDescription : Artifact
-    elementOf airdFormat
+    elementOf AIRD
     hasRole MdeMetamodel
     manifestsAs File
-initializeDiagram : Ecore.XMI -> airdFormat
-initializeDiagram(?ecoreXMIModel) |-> ?visualDescription
+initializeDiagram : XMI.Ecore -> AIRD
+initializeDiagram(?ecoreFile) |-> ?visualDescription
 EMF implements initializeDiagram
-    implements airdFormat
+    implements AIRD
 
 
 /* The visual representation corresponds to a rendered UML class
 diagram. */
-Ecore.UML : ModelingLanguage
+EcoreDiagram : ModelingLanguage
     = "http://www.eclipse.org/ecoretools/doc/"
-    subsetOf UML //actually not correct, we need dialect here
+    dialectOf UML.ClassDiagram
 ?visualRepresentation : Artifact
-    elementOf Ecore.UML
+    elementOf EcoreDiagram
     hasRole Diagram
     manifestsAs Transient
-renderEcoreUML : airdFormat -> Ecore.UML
+renderEcoreUML : AIRD -> EcoreDiagram
 renderEcoreUML(?visualDescription) |-> ?visualRepresentation
 EMF implements renderEcoreUML
     uses Rendering
-    implements Ecore.UML
+    implements EcoreDiagram

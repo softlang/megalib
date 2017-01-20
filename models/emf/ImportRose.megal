@@ -12,9 +12,9 @@ EMF implements Rose.MDL
     hasRole Schema
     manifestsAs File
 ?resultingEcore : Artifact
-    elementOf Ecore.XMI
+    elementOf XMI.Ecore
     hasRole MdeMetamodel
     manifestsAs File
-importRose : Rose.MDL -> Ecore.XMI
+importRose : Rose.MDL -> XMI.Ecore
 importRose(?roseDiagram) |-> ?resultingEcore
 EMF implements importRose

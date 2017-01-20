@@ -8,18 +8,18 @@ makensis translates it into the Portable Executable (PE) format, which
 can then be interpreted by the Windows OS. */
 NSIS : BuildLanguage
     = "https://en.wikipedia.org/wiki/Nullsoft_Scriptable_Install_System"
-    belongsTo BuildAutomation
+    belongsTo BuildAutomationWare
 makensis : Platform
     = "https://en.wikipedia.org/wiki/Nullsoft_Scriptable_Install_System#Concepts"
-    belongsTo BuildAutomation
+    belongsTo BuildAutomationWare
     implements NSIS
     uses Compilation
     uses C
 
 /* makensis implements the compilation function. */
-makensis.compile : NSIS -> PE
-makensis implements makensis.compile
-?Script : Artifact
+compileNSIS : NSIS -> PE
+makensis implements compileNSIS
+?script : Artifact
     elementOf NSIS
     manifestsAs File
     hasRole BuildScript
@@ -27,4 +27,4 @@ makensis implements makensis.compile
     elementOf PE
     manifestsAs File
     hasRole Executable
-makensis.compile(?Script) |-> ?pefile
+compileNSIS(?script) |-> ?pefile

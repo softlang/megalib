@@ -9,7 +9,7 @@ Eclipse : IDE
     uses Java
 
 /* The most famous and standard plugin for Eclipse is the Java IDE. */
-Eclipse.Java : Plugin
+EclipseForJava : Plugin
     = "https://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/neon2"
     partOf Eclipse
     uses Java

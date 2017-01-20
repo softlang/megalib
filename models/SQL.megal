@@ -5,10 +5,10 @@ created tables, read and update entries in a
 relational database. */
 SQLWare : TechnologySpace
     = "https://en.wikipedia.org/wiki/SQL"
-SQL : QueryLanguage
+SQL : DomainSpecificLanguage
     = "https://en.wikipedia.org/wiki/SQL"
     belongsTo SQLWare
-    facilitates RelationalModeling
+    facilitates RelationalProgramming
 SQLQuery : QueryLanguage
     = "https://en.wikipedia.org/wiki/SQL#Queries"
     subsetOf SQL

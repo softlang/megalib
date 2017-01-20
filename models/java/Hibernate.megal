@@ -12,6 +12,7 @@ Hibernate : Framework
     uses Java
     partOf JavaPlatform
     supports ObjectRelationalMapping //bridgesTo SQLWare??
+    belongsTo JavaWare
     belongsTo SQLWare
     uses XML
     uses JDBC
@@ -22,7 +23,7 @@ HibernateCFG : ConfigurationLanguage
     = "https://docs.oracle.com/cd/E13224_01/wlw/docs103/guide/ormworkbench/hibernate-tutorial/tutHibernate9.html"
     subsetOf XML
 Hibernate implements HibernateCFG
-?hibernate.cfg : Artifact
+?config : Artifact
     elementOf HibernateCFG
     hasRole Configuration
     manifestsAs File
@@ -30,22 +31,19 @@ Hibernate implements HibernateCFG
 
 /* In the following use case we want to illustrate important
 facts for a modification of the database using Java code. */
-?createStmt : Artifact
+?create : Artifact
     elementOf SQLDDL
     hasRole Schema
     manifestsAs File
-?db1 : Artifact
+?database1 : Artifact
     elementOf ?JDBCDatabaseFormat
     hasRole Database
     manifestsAs File
-?db2 : Artifact
+?database2 : Artifact
     elementOf ?JDBCDatabaseFormat
     hasRole Database
     manifestsAs File
-POJO : Construct
-    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object"
-    aspectOf ObjectOrientation
-?modelClass : Artifact
+?javaClass : Artifact
     elementOf Java
     hasRole Schema
     manifestsAs File
@@ -56,8 +54,8 @@ POJO : Construct
     elementOf ?JDBCDatabaseFormat
     hasRole Database
     manifestsAs Fragment
-    partOf ?db1
-?modelobject1 : Artifact
+    partOf ?database1
+?object1 : Artifact
     elementOf JavaObject
     hasRole Value
     manifestsAs Transient
@@ -76,13 +74,13 @@ Hibernate implements Hibernate.EmbeddedSQL
     partOf ?queryclass
 loadObject : HibernateCFG # ?JDBCDatabaseFormat # Hibernate.EmbeddedSQL -> JavaObject
 Hibernate implements loadObject
-loadObject(?hibernate.cfg, ?db1,?query) |-> ?modelobject1
+loadObject(?config, ?database1,?query) |-> ?object1
 
 /* Now imagine some Java program would change an object and commit
 changes */
 modifyObject : JavaObject -> JavaObject
 commit : HibernateCFG # JavaObject # ?JDBCDatabaseFormat -> ?JDBCDatabaseFormat
-?modelobject2 : Artifact
+?object2 : Artifact
     elementOf JavaObject
     hasRole Value
     manifestsAs Transient
@@ -92,22 +90,22 @@ commit : HibernateCFG # JavaObject # ?JDBCDatabaseFormat -> ?JDBCDatabaseFormat
     manifestsAs File
     implements modifyObject
 Hibernate implements commit
-modifyObject(?modelobject1) |-> ?modelobject2
-commit(?hibernate.cfg,?modelobject2,?db1) |-> ?db2
+modifyObject(?object1) |-> ?object2
+commit(?config,?object2,?database1) |-> ?database2
 ?table2 : Artifact
     elementOf ?JDBCDatabaseFormat
     hasRole Database
     manifestsAs Fragment
-    partOf ?db2
-loadObject(?hibernate.cfg,?db2,?query) |-> ?modelobject2
+    partOf ?database2
+loadObject(?config,?database2,?query) |-> ?object2
 
 /* Some conformance relationships to think about */
-?table1 conformsTo ?createStmt
-?table2 conformsTo ?createStmt
-?modelobject1 conformsTo ?modelClass
-?modelobject2 conformsTo ?modelClass
+?table1 conformsTo ?create
+?table2 conformsTo ?create
+?object1 conformsTo ?javaClass
+?object2 conformsTo ?javaClass
 
 /* Correspondence between tables and objects */
-?modelClass correspondsTo ?createStmt
-?table1 correspondsTo ?modelobject1
-?table2 correspondsTo ?modelobject2
+?javaClass correspondsTo ?create
+?object1 correspondsTo ?table1
+?object2 correspondsTo ?table2

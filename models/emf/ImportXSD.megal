@@ -9,10 +9,10 @@ import XML
     hasRole Schema
     manifestsAs File+
 ?resultingEcore : Artifact
-    elementOf Ecore.XMI
+    elementOf XMI.Ecore
     hasRole MdeMetamodel
     manifestsAs File
     correspondsTo ?xsdSchema
-importXSD : XSD -> Ecore.XMI
+importXSD : XSD -> XMI.Ecore
 importXSD(?xsdSchema) |-> ?resultingEcore
 EMF implements importXSD

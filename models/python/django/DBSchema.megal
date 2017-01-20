@@ -1,23 +1,15 @@
-module django.DBSchema
+module python.django.DBSchema
 
-/* Starting Django Framework module */
-?Python : ProgrammingLanguage
-Django : Framework
-    supports WebApplicationDevelopment
-    uses ?Python
+import python.PythonPlatform
 
-/*
+/* Starting Django Framework module
 Python : ProgrammingLanguage
 PythonObject : ObjectGraph
 Django uses Python
-
-
 MVC : DesignPattern
 Django facilitates MVC
 ?MyWebApp : WebApplication
 ?MyWebApp uses MVC
-
-
 HTML : MarkupLanguage
 DjangoCLI : CommandLineLanguage
 DjangoCLI subsetOf Python
@@ -26,7 +18,6 @@ SQL : QueryLanguage
 DDL : SchemaLanguage
 DDL subsetOf SQL
 SQLITE3IMAGE : DataRepresentationLanguage
-
 ?dbsqlite3 : Artifact
 ?dbsqlite3 elementOf SQLITE3IMAGE
 ?dbsqlite3 hasRole Database
@@ -43,8 +34,6 @@ SQLITE3IMAGE : DataRepresentationLanguage
 ?pythonObject hasRole Value
 ?pythonObject manifestsAs Transient
 ?pythonObject conformsTo ?models.py
-
-
 DatabaseManagement : Role
 ?manage.py : Artifact
 ?manage.py elementOf Python
@@ -53,14 +42,11 @@ DatabaseManagement : Role
 ?manage.py partOf ?MyWebApp
 schemaRequest : SQLITE3IMAGE -> DDL
 ?manage.py implements schemaRequest
-
-
 ?dbSchema : Artifact
 ?dbSchema elementOf DDL
 ?dbSchema hasRole Schema
 ?dbSchema manifestsAs Transient
 schemaRequest(?dbsqlite3) |-> ?dbSchema
-
 Command : Role
 ?schemaRequCmd : Artifact
 ?schemaRequCmd elementOf DjangoCLI
@@ -69,7 +55,6 @@ Command : Role
 evalSchemaRequ : DjangoCLI -> DDL
 Django implements evalSchemaRequ
 evalSchemaRequ(?schemaRequCmd) |-> ?dbSchema
-
 Python = "https://docs.python.org/2/reference/"
 PythonObject = "https://docs.python.org/2/reference/"
 Database = "https://en.wikipedia.org/wiki/Database"
@@ -83,4 +68,9 @@ String = "https://en.wikipedia.org/wiki/String_(computer_science)"
 DatabaseManagement = "https://en.wikipedia.org/wiki/Database"
 Command = "https://en.wikipedia.org/wiki/Command-line_interface"
 */
-Django = "https://www.djangoproject.com/"
+Python : ProgrammingLanguage
+    = "https://docs.python.org/2/reference/"
+Django : Framework
+    = "https://www.djangoproject.com/"
+    supports WebApplicationDevelopment
+    uses Python

@@ -1,4 +1,4 @@
-module django.ScriptClassification
+module python.django.ScriptClassification
 
 /* 
 ?awebapp : WebApplication
