@@ -34,7 +34,7 @@ functionInstance: ID '(' ID (',' ID)* ')' '|->' (ID | ('(' ID (',' ID)* ')'));
 link: ID '=' LINK;
 
 //BUG AT ('\n'|'\r') (' '|'\t')+
-INDENT: '    ';
+INDENT: ('\n'|'\r') (' '|'\t')+;
 ID: ('?'|'^')? WORD ('.' WORD)*;
 WORD: ([a-zA-Z0-9+#\-])+;
 LINK: '"' (~[ \t\f\n\r])+ '"' ;
