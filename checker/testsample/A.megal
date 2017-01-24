@@ -1,9 +1,8 @@
 module A 
 /**/
-HTML : MarkupLanguage
+//
+?l : MarkupLanguage
 ?a1 : Artifact
-    elementOf HTML
+    elementOf ?l
     hasRole WebResource
     manifestsAs Transient
-
-HTML = "https://en.wikipedia.org/wiki/HTML"

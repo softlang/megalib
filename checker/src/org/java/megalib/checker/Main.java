@@ -4,9 +4,10 @@
 package org.java.megalib.checker;
 
 import java.io.File;
+import java.io.IOException;
 
-import org.java.megalib.checker.services.Check;
-import org.java.megalib.checker.services.MegaModelLoader;
+import org.java.megalib.checker.services.WellformednessCheck;
+import org.java.megalib.checker.services.ModelLoader;
 
 /**
  * @author mmay@uni-koblenz.de, aemmerichs@uni-koblenz.de
@@ -77,13 +78,19 @@ public class Main {
 
     private static void checkFile(String path, boolean nocon) {
         System.out.println("Checking " + path);
-        MegaModelLoader ml = new MegaModelLoader();
-        ml.loadFile(path);
-        if (ml.getModel().getCriticalWarnings().isEmpty()) {
-            System.out.println("  Congratulations! There are no well-formedness issues at creation time.");
-        } else
+        ModelLoader ml = new ModelLoader();
+
+        try {
+            if (ml.loadFile(path)) {
+                System.out.println("  Congratulations! There are no well-formedness issues at creation time.");
+            } else
+                return;
+        }
+        catch (IOException e) {
+            System.err.println("Unable to load file " + path);
             return;
-        Check check = new Check(ml.getModel(), nocon);
+        }
+        WellformednessCheck check = new WellformednessCheck(ml.getModel(), nocon);
         if (check.getWarnings().isEmpty()) {
             System.out.println("  Congratulations! There are no warnings.");
         } else {

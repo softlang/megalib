@@ -1,9 +1,9 @@
 package org.java.megalib.checker.services;
 
-public class MegalibParserException extends Exception{
+public class ParserException extends Exception{
 	private static final long serialVersionUID = 1L;
 
-	public MegalibParserException(String msg){
+	public ParserException(String msg){
 		super(msg);
 	}
 }

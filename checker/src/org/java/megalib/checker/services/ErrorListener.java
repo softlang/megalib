@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 
-public class MegalibErrorListener implements ANTLRErrorListener{
+public class ErrorListener implements ANTLRErrorListener{
 
 	private int count = 0;
 	

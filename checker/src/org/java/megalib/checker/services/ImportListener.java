@@ -9,12 +9,12 @@ import main.antlr.techdocgrammar.MegalibBaseListener;
 import main.antlr.techdocgrammar.MegalibParser.ImportsContext;
 import main.antlr.techdocgrammar.MegalibParser.ModuleContext;
 
-public class MegalibImportListener extends MegalibBaseListener{
+public class ImportListener extends MegalibBaseListener{
 
 	private Set<Relation> imports;
 	private String name;
 	
-	public MegalibImportListener(){
+	public ImportListener(){
 		imports = new HashSet<>();
 		name = "";
 	}

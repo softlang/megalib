@@ -25,7 +25,7 @@ instanceDeclaration: ID ':' ID (INDENT '=' LINK)* (INDENT ID ID)*;
 
 relationDeclaration: ID '<' ID '#' ID;
 
-relationInstance: ID ID ID (INDENT ID ID | INDENT '=' LINK)*;
+relationInstance: ID ID ID (INDENT '=' LINK)* (INDENT ID ID)*;
 
 functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* ;
 

@@ -10,7 +10,6 @@ import org.java.megalib.models.MegaModel;
 import main.antlr.techdocgrammar.MegalibBaseListener;
 import main.antlr.techdocgrammar.MegalibParser.FunctionDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.FunctionInstanceContext;
-import main.antlr.techdocgrammar.MegalibParser.ImportsContext;
 import main.antlr.techdocgrammar.MegalibParser.InstanceDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.LinkContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
@@ -18,54 +17,35 @@ import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.SubstitutionContext;
 import main.antlr.techdocgrammar.MegalibParser.SubtypeDeclarationContext;
 
-public class MegalibParserListener extends MegalibBaseListener {
+public class ParserListener extends MegalibBaseListener {
     private MegaModel model;
+    private TypeCheck typeCheck;
 
-    public MegalibParserListener(MegaModel m) {
+    public ParserListener(MegaModel m) {
         model = m;
+        typeCheck = new TypeCheck();
     }
 
     @Override
     public void enterSubstitution(SubstitutionContext ctx) {
         String subject = ctx.getChild(0).getText();
         String object = ctx.getChild(2).getText();
-        try {
-            model.addSubstitutes(subject, object);
+        if (typeCheck.substitutes(subject, object, model)) {
+            model.substitutes(subject, object);
         }
-        catch (WellFormednessException e) {
-            model.addWarning(e.getMessage());
-        }
-        super.enterSubstitution(ctx);
-    }
-
-    @Override
-    public void exitImports(ImportsContext ctx) {
-        try {
-            model.resolveSubstitutions();
-        }
-        catch (WellFormednessException e) {
-            model.addWarning(e.getMessage());
-        }
-        super.exitImports(ctx);
     }
 
     @Override
     public void enterSubtypeDeclaration(SubtypeDeclarationContext context) {
         String derivedType = context.getChild(0).getText();
         String superType = context.getChild(2).getText();
-        try {
+        if (typeCheck.addSubtypeOf(derivedType, superType, model)) {
             model.addSubtypeOf(derivedType, superType);
         }
-        catch (WellFormednessException e) {
-            model.addWarning(e.getMessage());
-        }
         if (context.children.size() == 6) {
-            try {
-                String link = context.getChild(5).getText();
+            String link = context.getChild(5).getText();
+            if (typeCheck.addLink(derivedType, link, model)) {
                 model.addLink(derivedType, link.substring(1, link.length() - 1));
-            }
-            catch (WellFormednessException e) {
-                model.addWarning(e.getMessage());
             }
         }
     }
@@ -76,25 +56,22 @@ public class MegalibParserListener extends MegalibBaseListener {
         String instance = it.next().getText();
         it.next(); // skip colon
         String type = it.next().getText();
-        try {
+        if (typeCheck.addInstanceOf(instance, type, model)) {
             model.addInstanceOf(instance, type);
-        }
-        catch (WellFormednessException e) {
-            model.addWarning(e.getMessage());
         }
         while (it.hasNext()) {
             it.next(); // skip TAB
             String relation = it.next().getText();
             String object = it.next().getText();
-            try {
-                if (relation.equals("=")) {
-                    model.addLink(instance, object.substring(1, object.length() - 1));
-                } else {
+            if (relation.equals("=")) {
+                String link = object.substring(1, object.length() - 1);
+                if (typeCheck.addLink(instance, link, model)) {
+                    model.addLink(instance, link);
+                }
+            } else {
+                if (typeCheck.addRelationInstance(relation, instance, object, model)) {
                     model.addRelationInstances(relation, instance, object);
                 }
-            }
-            catch (WellFormednessException e) {
-                model.addWarning(e.getMessage());
             }
         }
     }
@@ -104,12 +81,8 @@ public class MegalibParserListener extends MegalibBaseListener {
         String relation = context.getChild(0).getText();
         String type1 = context.getChild(2).getText();
         String type2 = context.getChild(4).getText();
-
-        try {
+        if (typeCheck.addRelationDeclaration(relation, type1, type2, model)) {
             model.addRelationDeclaration(relation, type1, type2);
-        }
-        catch (WellFormednessException e) {
-            model.addWarning(e.getMessage());
         }
     }
 
@@ -119,25 +92,23 @@ public class MegalibParserListener extends MegalibBaseListener {
         String subject = it.next().getText();
         String relation = it.next().getText();
         String object = it.next().getText();
-        try {
+        if (typeCheck.addRelationInstance(relation, subject, object, model)) {
             model.addRelationInstances(relation, subject, object);
         }
-        catch (WellFormednessException e) {
-            model.addWarning(e.getMessage());
-        }
+
         while (it.hasNext()) {
             it.next(); // skip TAB
             relation = it.next().getText();
             object = it.next().getText();
-            try {
-                if (relation.equals("=")) {
-                    model.addLink(subject, object.substring(1, object.length() - 1));
-                } else {
+            if (relation.equals("=")) {
+                String link = object.substring(1, object.length() - 1);
+                if (typeCheck.addLink(subject, link, model)) {
+                    model.addLink(subject, link);
+                }
+            } else {
+                if (typeCheck.addRelationInstance(relation, subject, object, model)) {
                     model.addRelationInstances(relation, subject, object);
                 }
-            }
-            catch (WellFormednessException e) {
-                model.addWarning(e.getMessage());
             }
         }
     }
@@ -165,11 +136,8 @@ public class MegalibParserListener extends MegalibBaseListener {
             }
         }
 
-        try {
+        if (typeCheck.addFunctionDeclaration(functionName, parameterTypes, returnTypes, model)) {
             model.addFunctionDeclaration(functionName, parameterTypes, returnTypes);
-        }
-        catch (WellFormednessException e) {
-            model.addWarning(e.getMessage());
         }
     }
 
@@ -200,11 +168,8 @@ public class MegalibParserListener extends MegalibBaseListener {
             }
         }
 
-        try {
+        if (typeCheck.addFunctionApplication(functionName, inputs, outputs, model)) {
             model.addFunctionApplication(functionName, inputs, outputs);
-        }
-        catch (WellFormednessException e) {
-            model.addWarning(e.getMessage());
         }
     }
 
@@ -213,15 +178,16 @@ public class MegalibParserListener extends MegalibBaseListener {
         String entityname = context.getChild(0).getText();
         String link = context.getChild(2).getText();
         link = link.substring(1, link.length() - 1);
-        try {
+        if (typeCheck.addLink(entityname, link, model)) {
             model.addLink(entityname, link);
-        }
-        catch (WellFormednessException e) {
-            model.addWarning(e.getMessage());
         }
     }
 
     public MegaModel getModel() {
         return model;
+    }
+
+    public List<String> getTypeErrors() {
+        return typeCheck.getErrors();
     }
 }

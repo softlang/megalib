@@ -25,18 +25,17 @@ import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
 
-public class Check {
+public class WellformednessCheck {
 
     private MegaModel model;
     private List<String> warnings;
-    private boolean nocon; // flag to disable checks that need internet
-                           // connection
+    private boolean nocon; // disable checks that need internet connection
 
-    public Check(MegaModel model) {
+    public WellformednessCheck(MegaModel model) {
         doChecks(model, false);
     }
 
-    public Check(MegaModel model, boolean nocon) {
+    public WellformednessCheck(MegaModel model, boolean nocon) {
         doChecks(model, nocon);
     }
 
@@ -45,7 +44,7 @@ public class Check {
         warnings = new LinkedList<>();
         this.nocon = nocon;
         if (!nocon) {
-            initializeTrustManagement();
+            // initializeTrustManagement();
         }
 
         instanceChecks();
@@ -96,7 +95,7 @@ public class Check {
                 }
                 Set<Relation> manifestSet = model.getRelationshipInstanceMap().get("manifestsAs");
                 if (null == manifestSet) {
-                    warnings.add("Manifestation misssing for " + inst);
+                    warnings.add("Manifestation missing for " + inst);
                     continue;
                 }
                 Set<Relation> fset = manifestSet.parallelStream().filter(r -> r.getSubject().equals(inst))
@@ -156,17 +155,9 @@ public class Check {
                                       .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
                                       .collect(Collectors.toList());
         for (String f : fragments) {
-            List<String> composites = model.getRelationshipInstanceMap().get("partOf").parallelStream()
-                                           .filter(r -> r.getSubject().equals(f)).map(r -> r.getObject())
-                                           .collect(Collectors.toList());
-            if (composites.isEmpty()) {
+            if (model.getRelationshipInstanceMap().get("partOf").parallelStream()
+                     .noneMatch(r -> r.getSubject().equals(f))) {
                 warnings.add("Composite missing for fragment " + f);
-            } else {
-                if (composites.size() > 1) {
-                    warnings.add("Multiple composites for fragment " + f);
-                } else {
-                    continue;
-                }
             }
         }
     }
@@ -199,30 +190,20 @@ public class Check {
      */
     private void languageDefinedOrImplemented() {
         Set<String> languages = model.getInstanceOfMap().keySet().parallelStream()
-                                     .filter(i -> model.isInstanceOf(i, "Language")).collect(Collectors.toSet());
+                                     .filter(i -> model.isInstanceOf(i, "Language") && !i.startsWith("?"))
+                                     .collect(Collectors.toSet());
+        Set<String> implementedUnionDefined = new HashSet<>();
+        if (model.getRelationshipInstanceMap().containsKey("defines")) {
+            implementedUnionDefined.addAll(model.getRelationshipInstanceMap().get("defines").parallelStream()
+                                                .map(r -> r.getObject()).collect(Collectors.toSet()));
+        }
+        if (model.getRelationshipInstanceMap().containsKey("implements")) {
+            implementedUnionDefined.addAll(model.getRelationshipInstanceMap().get("implements").parallelStream()
+                                                .map(r -> r.getObject()).collect(Collectors.toSet()));
+        }
+        languages.removeAll(implementedUnionDefined);
         for (String l : languages) {
-            if (l.startsWith("?") || model.getSubsetOfMap().containsKey(l)) {
-                continue;
-            }
-            boolean b = false;
-            if (model.getRelationshipInstanceMap().containsKey("defines")) {
-                for (Relation def : model.getRelationshipInstanceMap().get("defines"))
-                    if (def.getObject().equals(l)) {
-                        b = true;
-                    }
-            }
-            if (b) {
-                continue;
-            }
-            if (model.getRelationshipInstanceMap().containsKey("implements")) {
-                for (Relation impl : model.getRelationshipInstanceMap().get("implements"))
-                    if (impl.getObject().equals(l)) {
-                        b = true;
-                    }
-            }
-            if (!b) {
-                warnings.add("State a defining artifact or an implementing technology for the language " + l + ".");
-            }
+            warnings.add("State a defining artifact or an implementing technology for the language " + l + ".");
         }
     }
 
@@ -362,7 +343,6 @@ public class Check {
             warnings.add("Error at Link to '" + link + "' : Connection failed!");
         }
         huc.disconnect();
-
     }
 
     private void initializeTrustManagement() {
