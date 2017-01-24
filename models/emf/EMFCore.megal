@@ -6,15 +6,7 @@ import XML
 import XMI
 import RationalRose
 
-/* The eclipse modeling framework belongs to the model driven engineering
-technologies. It's an eclipse plugin implemented in Java. */
-EMF : Plugin
-    = "https://eclipse.org/modeling/emf/"
-    uses Java
-    partOf Eclipse
-    supports ModelDrivenEngineering
-
-/*
+/* 
 TODO: The story has to be cleaned up.
 
 List of functions:
@@ -32,8 +24,17 @@ generate Tree viewer
 model - view synchronization (databinding)
 model - view synchronization using item providers
 
-Its main component is EMFCore which implements the meta model for
-EMF models in Java based on the Ecore specification. */
+The eclipse modeling framework belongs to the model driven engineering
+technologies. It's an eclipse plugin implemented in Java. */
+EMF : Plugin
+    = "https://eclipse.org/modeling/emf/"
+    uses Java
+    partOf Eclipse
+    supports ModelDrivenEngineering
+    belongsTo MDEWare
+
+/* Its main component is EMFCore which contains Ecore's 
+metametamodel as several Java classes. */
 EMFCore : Component
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html"
     partOf EMF

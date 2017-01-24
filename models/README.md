@@ -1,7 +1,8 @@
 # Naming conventions
 
-If you want to write a technology model with MegaL we advise you to use the following naming conventions. In general, you may not use spaces or underscores in an entity's name and use camel-case instead. 
+If you want to write a technology model with MegaL we advise you to use the following naming conventions. 
 
+* You shouldn't use spaces or underscores in an entity's name and use camel-case instead. 
 * Part-hood can be encoded in a name by using '.' as follows: '`<composite>.<part>`', e.g., 'EMF.CodeGenerator'.
 * The name of instances of Language, Technology, System, ArchitecturalPattern, DesignPattern should use the original spelling.
 * The name of instances of Role, Paradigm, ProgrammingDomain, AbstractProcess and Construct should start with a capital letter unless there exists some original spelling.

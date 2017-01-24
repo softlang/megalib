@@ -234,6 +234,7 @@ languages to support it. */
 ProgrammingDomain < Entity
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
 subdomainOf < ProgrammingDomain # ProgrammingDomain //a domain covers a subset of another domain's requirements, problems, terminology and ways for languages/technologies to support it.
+demonstrates < System # ProgrammingDomain //Experimental! Don't use unless you know what you're doing.
 GeneralPurposeProgramming : ProgrammingDomain // The study on applications in general.
     = "https://en.wikipedia.org/wiki/General-purpose_programming_language"
 MetaProgramming : ProgrammingDomain // The study on processing programs with support for language implementation 
@@ -316,8 +317,10 @@ HTTPS : Protocol
     = "https://en.wikipedia.org/wiki/HTTPS"
 Serialization : AbstractProcess //Save runtime values in a persistent format.
     = "https://en.wikipedia.org/wiki/Serialization"
+    aspectOf Persistence
 Compilation : AbstractProcess //Software translation of a higher level language into a lower level language
     = "https://de.wikipedia.org/wiki/Compiler"
+    aspectOf MetaProgramming
 Transformation : AbstractProcess // Takes input data and produces output data. Input and output are elements of a software language that is not a data type.
     = "https://en.wikipedia.org/wiki/Data_transformation"
 Validation : AbstractProcess //Validate quality
