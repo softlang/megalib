@@ -1,8 +1,9 @@
-module A 
-/**/
-//
-?l : MarkupLanguage
+module bcd.C
+
+import bcd.B
+import A
+/* */
 ?a1 : Artifact
-    elementOf ?l
+    elementOf HTML
     hasRole WebResource
     manifestsAs Transient

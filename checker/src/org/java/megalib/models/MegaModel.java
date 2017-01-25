@@ -18,7 +18,7 @@ public class MegaModel {
     private Map<String, String> subsetOfMap;
     private Map<String, Set<Relation>> relationDeclarationMap;
     private Map<String, Set<Relation>> relationInstanceMap;
-    private Map<String, Function> functionDeclarations;
+    private Map<String,Set<Function>> functionDeclarations;
     private Map<String, Set<Function>> functionInstances;
     private Map<String, Set<String>> linkMap;
 
@@ -93,14 +93,19 @@ public class MegaModel {
         relationInstanceMap.put(name, set);
     }
 
-    public Map<String, Function> getFunctionDeclarations() {
+    public Map<String,Set<Function>> getFunctionDeclarations() {
         return Collections.unmodifiableMap(functionDeclarations);
     }
 
     public void addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs) {
         instanceOfMap.put(functionName, "Function");
+        Set<Function> declset = new HashSet<>();
+        if(functionDeclarations.containsKey(functionName)){
+            declset = functionDeclarations.get(functionName);
+        }
         Function f = new Function(inputs, outputs);
-        functionDeclarations.put(functionName, f);
+        declset.add(f);
+        functionDeclarations.put(functionName, declset);
     }
 
     public Map<String, Set<Function>> getFunctionApplications() {
@@ -136,82 +141,6 @@ public class MegaModel {
 
     public Map<String, String> getSubsetOfMap() {
         return Collections.unmodifiableMap(subsetOfMap);
-    }
-
-    public void substitutes(String by, String e) {
-        System.out.println("Substituting " + e + " by " + by);
-        String v = instanceOfMap.get(e);
-        addInstanceOf(by, v);
-
-        if (elementOfMap.containsKey(e)) {
-            v = elementOfMap.get(e);
-            addRelationInstances("elementOf", by, v);
-        }
-
-        if (subtypeOfMap.containsKey(e)) {
-            v = subtypeOfMap.get(e);
-            addRelationInstances("subsetOf", by, v);
-        }
-
-        if (linkMap.containsKey(e)) {
-            Set<String> links = linkMap.get(e);
-            for (String l : links) {
-                addLink(by, l);
-            }
-        }
-
-        Map<String, Set<Relation>> rmap = new HashMap<>();
-        for (String name : relationInstanceMap.keySet()) {
-            Set<Relation> rels = new HashSet<>();
-            for (Relation r : relationInstanceMap.get(name)) {
-                if (r.getSubject().equals(e)) {
-                    if (r.getObject().equals(e)) {
-                        rels.add(new Relation(by, by));
-                    } else {
-                        rels.add(new Relation(by, r.getObject()));
-                    }
-                } else {
-                    if (r.getObject().equals(e)) {
-                        rels.add(new Relation(r.getSubject(), by));
-                    } else {
-                        rels.add(r);
-                    }
-                }
-            }
-            rmap.put(name, rels);
-        }
-        relationInstanceMap = rmap;
-
-        if (isInstanceOf(e, "Artifact")) {
-            Map<String, Set<Function>> fdmap = new HashMap<>();
-            for (String name : functionInstances.keySet()) {
-                Set<Function> fs = new HashSet<>();
-                for (Function f : functionInstances.get(name)) {
-                    List<String> inputs = f.getInputs().stream().map(i -> i.equals(e) ? by : i)
-                                           .collect(Collectors.toList());
-                    List<String> outputs = f.getOutputs().stream().map(o -> o.equals(e) ? by : o)
-                                            .collect(Collectors.toList());
-                    fs.add(new Function(inputs, outputs));
-                }
-                fdmap.put(name, fs);
-            }
-            functionInstances = fdmap;
-        }
-
-        if (isInstanceOf(e, "Language")) {
-            substitutedLanguages.add(e);
-            Map<String, Function> newmap = new HashMap<>();
-            for (String name : functionDeclarations.keySet()) {
-                Function d = functionDeclarations.get(name);
-                List<String> inputs = d.getInputs().stream().map(i -> i.equals(e) ? by : i)
-                                       .collect(Collectors.toList());
-                List<String> outputs = d.getOutputs().stream().map(o -> o.equals(e) ? by : o)
-                                        .collect(Collectors.toList());
-                newmap.put(name, new Function(inputs, outputs)); // overwritting
-            }
-            functionDeclarations = newmap;
-        }
-
     }
 
     public boolean isInstanceOf(String entity, String type) {
@@ -273,9 +202,9 @@ public class MegaModel {
         Map<String, Set<Relation>> relmap = new HashMap<>();
         for (String name : relationInstanceMap.keySet()) {
             Set<Relation> rels = relationInstanceMap.get(name).parallelStream()
-                                                    .filter((r -> !r.getSubject().equals(e)
-                                                                  && !r.getObject().equals(e)))
-                                                    .collect(Collectors.toSet());
+                    .filter((r -> !r.getSubject().equals(e)
+                            && !r.getObject().equals(e)))
+                    .collect(Collectors.toSet());
             relmap.put(name, rels);
         }
         relationInstanceMap = relmap;
@@ -283,8 +212,8 @@ public class MegaModel {
         Map<String, Set<Function>> fAppmap = new HashMap<>();
         for (String name : functionInstances.keySet()) {
             Set<Function> fs = functionInstances.get(name).parallelStream()
-                                                .filter(f -> !f.getInputs().contains(e) && !f.getOutputs().contains(e))
-                                                .collect(Collectors.toSet());
+                    .filter(f -> !f.getInputs().contains(e) && !f.getOutputs().contains(e))
+                    .collect(Collectors.toSet());
             fAppmap.put(name, fs);
         }
         functionInstances = fAppmap;

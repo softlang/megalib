@@ -136,9 +136,6 @@ public class TypeCheck {
     }
 
     public boolean addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs, MegaModel m) {
-        if (m.getInstanceOfMap().containsKey(functionName) || m.getFunctionDeclarations().containsKey(functionName)) {
-            errors.add("Error at function declaration of " + functionName + ": It has multiple declarations.");
-        }
         for (String i : inputs) {
             String type = m.getInstanceOfMap().get(i);
             if (type == null) {
@@ -167,6 +164,17 @@ public class TypeCheck {
             errors.add("Error at application of " + name + ": A declaration has to be stated beforehand.");
             return false;
         }
+        for(String i : inputs){
+            if(!m.isInstanceOf(i, "Artifact")){
+                errors.add("Error at application of " + name + ": " + i + " is not instance of Artifact.");
+            }
+        }
+        for(String o : outputs){
+            if(!m.isInstanceOf(o, "Artifact")){
+                errors.add("Error at application of " + name + ": " + o + " is not an instance of Artifact.");
+            }
+        }
+
         Set<Function> set = new HashSet<>();
         if (m.getFunctionApplications().containsKey(name)) {
             set = m.getFunctionApplications().get(name);
@@ -174,39 +182,42 @@ public class TypeCheck {
         Function app = new Function(inputs, outputs);
         if (set.contains(app)) {
             errors.add("Error at application of " + name + " with inputs " + app.getInputs() + " " + "and outputs "
-                       + app.getOutputs() + ": It already exists.");
+                    + app.getOutputs() + ": It already exists.");
         }
-        if (app.getInputs().size() != m.getFunctionDeclarations().get(name).getInputs().size()) {
-            errors.add("Error at application of " + name + " with inputs " + app.getInputs() + " " + "and outputs "
-                       + app.getOutputs() + ": It does not fit to the declaration.");
-        }
-        if (app.getOutputs().size() != m.getFunctionDeclarations().get(name).getOutputs().size()) {
-            errors.add("Error at application of " + name + " with inputs " + app.getInputs() + " " + "and outputs "
-                       + app.getOutputs() + ": It does not fit to the declaration.");
-        }
+
+        // Stop if errors already occured
+        if(!errors.isEmpty())
+            return false;
+
         // Check fit to declaration
-        Function decl = m.getFunctionDeclarations().get(name);
-        List<String> domains = decl.getInputs();
-        for (int i = 0; i < inputs.size(); i++) {
-            if (!m.isInstanceOf(inputs.get(i), "Artifact")) {
-                errors.add("Error at application of " + name + ": " + inputs.get(i) + " is not instance of Artifact.");
+        int fitcount = 0;
+        for(Function decl : m.getFunctionDeclarations().get(name)){
+            boolean fits = true;
+            if(decl.getInputs().size() != inputs.size() || decl.getOutputs().size() != outputs.size()){
                 continue;
             }
-            if (!m.isElementOf(inputs.get(i), domains.get(i))) {
-                errors.add("Error at application of " + name + ": " + inputs.get(i) + " is not element of "
-                           + domains.get(i) + ".");
+            for(int i=0; i<inputs.size();i++){
+                if(!m.isElementOf(inputs.get(i), decl.getInputs().get(i))){
+                    fits = false;
+                    break;
+                }
+            }
+            if(!fits){
+                continue;
+            }
+            for(int i = 0; i < outputs.size(); i++){
+                if(!m.isElementOf(outputs.get(i), decl.getOutputs().get(i))){
+                    fits = false;
+                    break;
+                }
+            }
+            if(fits){
+                fitcount++;
             }
         }
-        List<String> ranges = decl.getOutputs();
-        for (int i = 0; i < outputs.size(); i++) {
-            if (!m.isInstanceOf(outputs.get(i), "Artifact")) {
-                errors.add("Error at application of " + name + ": " + outputs.get(i) + " is not instance of Artifact.");
-                continue;
-            }
-            if (!m.isElementOf(outputs.get(i), ranges.get(i))) {
-                errors.add("Error at application of " + name + ": " + outputs.get(i) + " is not element of "
-                           + ranges.get(i) + ".");
-            }
+        if(fitcount == 0){
+            errors.add("Error at application of " + name + " with inputs " + app.getInputs() + " " + "and outputs "
+                    + app.getOutputs() + ": It does not fit any declaration");
         }
         return errors.isEmpty();
     }
@@ -235,9 +246,10 @@ public class TypeCheck {
         if (m.getInstanceOfMap().containsKey(by)) {
             errors.add("Unable to substitute " + e + " by " + by + ". " + by + " already exists");
         }
-        if (m.isInstanceOf(e, "Language") && m.getSubstitutedLanguages().contains(e)) {
-            errors.add("Unable to substitute " + e + " by " + by + ". " + e
-                       + "as a language cannot be substituted more than once.");
+        if (!m.isInstanceOf(e, "Language") && !m.isInstanceOf(e, "Artifact") && !m.isInstanceOf(e, "System")
+                && !m.isInstanceOf(e, "Technology")) {
+            errors.add("Unable to substitute " + e + " by " + by
+                       + ". Only instances of Language, Artifact, System and Technology can be substituted.");
         }
         return errors.isEmpty();
     }

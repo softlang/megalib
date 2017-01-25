@@ -1,0 +1,8 @@
+module bcd.d.D
+
+import bcd.C 
+
+/* */
+f : HTML -> HTML
+f(?a1) |-> ?a2
+?spec implements f

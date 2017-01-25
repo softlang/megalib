@@ -138,6 +138,8 @@ Interface : Role
     = "https://en.wikipedia.org/wiki/Protocol_(object-oriented_programming)" //weird
 TestCase : Role
     = "https://en.wikipedia.org/wiki/Test_case"
+POJO : Role
+    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object"
 hasRole < Artifact # Role
 
 /* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
@@ -348,9 +350,6 @@ Semaphore : Construct //A flag to control access to a resource in the context of
     aspectOf ConcurrentProgramming
 Annotation : Construct
     = "https://en.wikipedia.org/wiki/Annotation"
-    aspectOf ObjectOrientedProgramming
-POJO : Construct
-    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object"
     aspectOf ObjectOrientedProgramming
 
 

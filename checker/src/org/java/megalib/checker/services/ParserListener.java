@@ -31,7 +31,13 @@ public class ParserListener extends MegalibBaseListener {
         String subject = ctx.getChild(0).getText();
         String object = ctx.getChild(2).getText();
         if (typeCheck.substitutes(subject, object, model)) {
-            model.substitutes(subject, object);
+            try{
+                model = new Substitution(getModel()).substitute(object, subject);
+            }
+            catch(TypeException e){
+                System.err.println(e.getMessage());
+                System.exit(1);
+            }
         }
     }
 
@@ -122,12 +128,12 @@ public class ParserListener extends MegalibBaseListener {
         boolean parameter = true;
         for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
             if (!context.getChild(childIndex).getText().equals("#") && parameter == false
-                && !context.getChild(childIndex).getText().equals("->")) {
+                    && !context.getChild(childIndex).getText().equals("->")) {
                 returnTypes.add(context.getChild(childIndex).getText());
             }
 
             if (!context.getChild(childIndex).getText().equals("#") && parameter == true
-                && !context.getChild(childIndex).getText().equals("->")) {
+                    && !context.getChild(childIndex).getText().equals("->")) {
                 parameterTypes.add(context.getChild(childIndex).getText());
             }
 
@@ -150,16 +156,16 @@ public class ParserListener extends MegalibBaseListener {
         boolean parameter = true;
         for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
             if (!context.getChild(childIndex).getText().equals(",") && parameter == false
-                && !context.getChild(childIndex).getText().equals("|->")
-                && !context.getChild(childIndex).getText().equals("(")
-                && !context.getChild(childIndex).getText().equals(")")) {
+                    && !context.getChild(childIndex).getText().equals("|->")
+                    && !context.getChild(childIndex).getText().equals("(")
+                    && !context.getChild(childIndex).getText().equals(")")) {
                 outputs.add(context.getChild(childIndex).getText());
             }
 
             if (!context.getChild(childIndex).getText().equals(",") && parameter == true
-                && !context.getChild(childIndex).getText().equals("|->")
-                && !context.getChild(childIndex).getText().equals("(")
-                && !context.getChild(childIndex).getText().equals(")")) {
+                    && !context.getChild(childIndex).getText().equals("|->")
+                    && !context.getChild(childIndex).getText().equals("(")
+                    && !context.getChild(childIndex).getText().equals(")")) {
                 inputs.add(context.getChild(childIndex).getText());
             }
 

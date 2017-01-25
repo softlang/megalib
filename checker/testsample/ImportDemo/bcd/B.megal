@@ -3,6 +3,6 @@ module bcd.B
 import A
 /* A derived artifact */
 ?a2 : Artifact
-    elementOf ?l
+    elementOf HTML
     hasRole WebResource
     manifestsAs Transient

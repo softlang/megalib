@@ -39,7 +39,7 @@ public class ParserListenerTest {
 
         assertFalse(subtypes.containsKey("DerivedType"));
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at DerivedType: The declared supertype is not a subtype of Entity"));
+                   .contains("Error at DerivedType: The declared supertype is not a subtype of Entity"));
         assertEquals(1, ml.getTypeErrors().size());
     }
 
@@ -110,7 +110,7 @@ public class ParserListenerTest {
         assertFalse(imap.containsKey("Instance"));
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at Instance: The instantiated type is not (transitive) subtype of Entity."));
+                   .contains("Error at Instance: The instantiated type is not (transitive) subtype of Entity."));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class ParserListenerTest {
     @Test
     public void addInstanceOfArtifact() throws ParserException, IOException {
         String input = "/**/Python : ProgrammingLanguage " + "a : Artifact " + "a elementOf Python "
-                       + "a hasRole MvcModel " + "a manifestsAs File";
+                + "a hasRole MvcModel " + "a manifestsAs File";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
@@ -171,7 +171,7 @@ public class ParserListenerTest {
         assertFalse(actual.containsKey("Relation"));
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at declaration of Relation: Its domain TypeOne is not subtype of Entity."));
+                   .contains("Error at declaration of Relation: Its domain TypeOne is not subtype of Entity."));
     }
 
     @Test
@@ -184,7 +184,7 @@ public class ParserListenerTest {
         assertFalse(actual.containsKey("Relation"));
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at declaration of Relation: Its range TypeTwo is not subtype of Entity."));
+                   .contains("Error at declaration of Relation: Its range TypeTwo is not subtype of Entity."));
     }
 
     @Test
@@ -197,7 +197,7 @@ public class ParserListenerTest {
         assertTrue(actual.containsKey("Relation"));
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at declaration of Relation: It is declared twice with the same types."));
+                   .contains("Error at declaration of Relation: It is declared twice with the same types."));
     }
 
     @Test
@@ -245,7 +245,7 @@ public class ParserListenerTest {
         assertFalse(actual.containsKey("subsetOf"));
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at instance of subsetOf: 'a subsetOf b' does not fit any declaration."));
+                   .contains("Error at instance of subsetOf: 'a subsetOf b' does not fit any declaration."));
     }
 
     @Test
@@ -258,13 +258,13 @@ public class ParserListenerTest {
         assertFalse(actual.containsKey("subsetOf"));
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at instance of subsetOf: 'b subsetOf a' does not fit any declaration."));
+                   .contains("Error at instance of subsetOf: 'b subsetOf a' does not fit any declaration."));
     }
 
     @Test
     public void addRelationInstanceMultiFit() throws ParserException, IOException {
         String input = "/**/subsetOf < ProgrammingLanguage # ProgrammingLanguage " + "a : ProgrammingLanguage "
-                       + "b : ProgrammingLanguage " + "a subsetOf b ";
+                + "b : ProgrammingLanguage " + "a subsetOf b ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
@@ -272,7 +272,7 @@ public class ParserListenerTest {
         assertFalse(actual.containsKey("subsetOf"));
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at instance of subsetOf: 'a subsetOf b' fits multiple declarations."));
+                   .contains("Error at instance of subsetOf: 'a subsetOf b' fits multiple declarations."));
     }
 
     @Test
@@ -302,11 +302,10 @@ public class ParserListenerTest {
         String input = "/**/a : ProgrammingLanguage " + "b : ProgrammingLanguage " + "f : a -> a " + "f : b -> b";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Function> actual = ml.getModel().getFunctionDeclarations();
+        Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertTrue(actual.containsKey("f"));
 
-        assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at function declaration of f: It has multiple declarations."));
+        assertEquals(0, ml.getTypeErrors().size());
     }
 
     @Test
@@ -314,7 +313,7 @@ public class ParserListenerTest {
         String input = "/**/b : ProgrammingLanguage " + "f : a -> b ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Function> actual = ml.getModel().getFunctionDeclarations();
+        Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
 
         assertEquals(1, ml.getTypeErrors().size());
@@ -326,7 +325,7 @@ public class ParserListenerTest {
         String input = "/**/a : ProgrammingLanguage " + "f : a -> b ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Function> actual = ml.getModel().getFunctionDeclarations();
+        Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
 
         assertEquals(1, ml.getTypeErrors().size());
@@ -338,7 +337,7 @@ public class ParserListenerTest {
         String input = "/**/b : ProgrammingLanguage " + "f : b # a # b -> b # b # a ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Function> actual = ml.getModel().getFunctionDeclarations();
+        Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
         assertEquals(2, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors().contains("Error at f's declaration: The domain a was not declared."));
@@ -350,7 +349,7 @@ public class ParserListenerTest {
         String input = "/**/b : ProgrammingLanguage " + "f : b  # b -> b # b # a ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Function> actual = ml.getModel().getFunctionDeclarations();
+        Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors().contains("Error at f's declaration: The range a was not declared."));
@@ -361,7 +360,7 @@ public class ParserListenerTest {
         String input = "/**/b : ProgrammingLanguage " + "f : Grammar -> b ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Function> actual = ml.getModel().getFunctionDeclarations();
+        Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
 
         assertEquals(1, ml.getTypeErrors().size());
@@ -373,7 +372,7 @@ public class ParserListenerTest {
         String input = "/**/b : ProgrammingLanguage " + "f : b -> Grammar ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Function> actual = ml.getModel().getFunctionDeclarations();
+        Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
 
         assertEquals(1, ml.getTypeErrors().size());
@@ -385,7 +384,7 @@ public class ParserListenerTest {
         String input = "/**/l : ProgrammingLanguage " + "f : l -> l";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Function> actual = ml.getModel().getFunctionDeclarations();
+        Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertEquals(0, ml.getTypeErrors().size());
         assertTrue(actual.containsKey("f"));
     }
@@ -395,7 +394,7 @@ public class ParserListenerTest {
         String input = "/**/a : ProgrammingLanguage " + "b : ProgrammingLanguage " + "f : b  # b -> b # b # a ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Function> actual = ml.getModel().getFunctionDeclarations();
+        Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertTrue(actual.containsKey("f"));
 
         assertEquals(0, ml.getTypeErrors().size());
@@ -411,13 +410,13 @@ public class ParserListenerTest {
         assertTrue(actual.isEmpty());
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at application of f: A declaration has to be stated beforehand."));
+                   .contains("Error at application of f: A declaration has to be stated beforehand."));
     }
 
     @Test
     public void addFunctionApplication() throws ParserException, IOException {
         String input = "/**/l : ProgrammingLanguage " + "f : l # l # l -> l # l " + "a : Artifact " + "a elementOf l "
-                       + "b : Artifact " + "b elementOf l " + "f(a,b,a)|->(b,a)";
+                + "b : Artifact " + "b elementOf l " + "f(a,b,a)|->(b,a)";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -437,8 +436,8 @@ public class ParserListenerTest {
     @Test
     public void addFunctionApplicationDuplicate() throws ParserException, IOException {
         String input = "/**/l : ProgrammingLanguage " + "f : l # l # l -> l # l " + "a : Artifact " + "a elementOf l "
-                       + "b : Artifact " + "b elementOf l " + "c : Artifact " + "c elementOf l " + "f(a,b,c)|->(b,a) "
-                       + "f(a,b,c)|->(b,a)";
+                + "b : Artifact " + "b elementOf l " + "c : Artifact " + "c elementOf l " + "f(a,b,c)|->(b,a) "
+                + "f(a,b,c)|->(b,a)";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -446,14 +445,14 @@ public class ParserListenerTest {
         assertEquals(1, actual.get("f").size());
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                     .contains("Error at application of f with inputs [a, b, c] and outputs [b, a]: It already exists."));
+                   .contains("Error at application of f with inputs [a, b, c] and outputs [b, a]: It already exists."));
 
     }
 
     @Test
     public void addFunctionApplicationNotInstantiatedInput() throws ParserException, IOException {
         String input = "/**/l : DataRepresentationLanguage " + "f : l -> l " + "b : Artifact " + "b elementOf l "
-                       + "f(a)|->b";
+                + "f(a)|->b";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -465,46 +464,48 @@ public class ParserListenerTest {
     @Test
     public void addFunctionApplicationNotInstantiatedOutput() throws ParserException, IOException {
         String input = "/**/l : DataRepresentationLanguage " + "f : l -> l " + "a : Artifact " + "a elementOf l "
-                       + "f(a)|->b";
+                + "f(a)|->b";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
         assertTrue(actual.isEmpty());
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at application of f: b is not instance of Artifact."));
+        assertEquals("Error at application of f: b is not an instance of Artifact.", ml.getTypeErrors().get(0));
     }
 
     @Test
     public void addFunctionApplicationUnfitDomain() throws ParserException, IOException {
         String input = "/**/l1 : DataRepresentationLanguage " + "l2 : DataRepresentationLanguage "
-                       + "f : l1 # l2 -> l2 " + "a1 : Artifact " + "a1 elementOf l1 " + "a1 hasRole MvcModel "
-                       + "a1 manifestsAs File " + "a2 : Artifact " + "a2 elementOf l2 " + "f(a1,a1)|->a2";
+                + "f : l1 # l2 -> l2 " + "a1 : Artifact " + "a1 elementOf l1 " + "a1 hasRole MvcModel "
+                + "a1 manifestsAs File " + "a2 : Artifact " + "a2 elementOf l2 " + "f(a1,a1)|->a2";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
         assertTrue(actual.isEmpty());
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at application of f: a1 is not element of l2."));
+        assertEquals("Error at application of f with inputs [a1, a1] and outputs [a2]: It does not fit any declaration",
+                     ml.getTypeErrors().get(0));
     }
 
     @Test
     public void addFunctionApplicationUnfitRange() throws ParserException, IOException {
         String input = "/**/l1 : DataRepresentationLanguage " + "l2 : DataRepresentationLanguage "
-                       + "f : l1 # l2 -> l2 " + "a1 : Artifact " + "a1 elementOf l1 " + "a2 : Artifact "
-                       + "a2 elementOf l2 " + "f(a1,a2)|->a1";
+                + "f : l1 # l2 -> l2 " + "a1 : Artifact " + "a1 elementOf l1 " + "a2 : Artifact "
+                + "a2 elementOf l2 " + "f(a1,a2)|->a1";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
         assertTrue(actual.isEmpty());
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at application of f: a1 is not element of l2.", ml.getTypeErrors().get(0));
+        assertEquals("Error at application of f with inputs [a1, a2] and outputs [a1]: It does not fit any declaration",
+                     ml.getTypeErrors().get(0));
     }
 
     @Test
     public void addFunctionApplicationSubset() throws ParserException, IOException {
         String input = "/**/l1 : DataRepresentationLanguage " + "l2 : DataRepresentationLanguage " + "l2 subsetOf l1 "
-                       + "f : l1 # l2 -> l2 " + "a1 : Artifact " + "a1 elementOf l1 " + "a2 : Artifact "
-                       + "a2 elementOf l2 " + "f(a2,a2)|->a2";
+                + "f : l1 # l2 -> l2 " + "a1 : Artifact " + "a1 elementOf l1 " + "a2 : Artifact "
+                + "a2 elementOf l2 " + "f(a2,a2)|->a2";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -533,7 +534,7 @@ public class ParserListenerTest {
     @Test
     public void testTurtleInstanceLink() throws ParserException, IOException {
         String input = "/**/Java : ProgrammingLanguage\n"
-                       + "    = \"https://en.wikipedia.org/wiki/Java_(programming_language)\"";
+                + "    = \"https://en.wikipedia.org/wiki/Java_(programming_language)\"";
         assertNotNull(new ModelLoader().loadString(input));
     }
 

@@ -15,7 +15,7 @@ import org.junit.Test;
 /**
  * @author heinz
  */
-public class SubstitutionTest {
+public class AbstractInstantiationTest {
 
     private ModelLoader ml;
 
@@ -70,6 +70,16 @@ public class SubstitutionTest {
     }
 
     @Test
+    public void abstractCleanUpTest() {
+        int size = ml.getModel().getInstanceOfMap().size();
+        ml.getModel().cleanUpAbstraction();
+        assertEquals(size - 4, ml.getModel().getInstanceOfMap().size());
+        for (String i : ml.getModel().getInstanceOfMap().keySet()) {
+            assertFalse(i.startsWith("?"));
+        }
+    }
+
+    @Test
     public void complexTest() {
         assertEquals("Role", ml.getModel().getInstanceOfMap().get("WebResource"));
         assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("softlangpage1"));
@@ -82,12 +92,6 @@ public class SubstitutionTest {
         assertEquals(1, ml.getModel().getRelationshipInstanceMap().get("correspondsTo").size());
         assertEquals(new Relation("softlangpage1", "softlangpage2"),
                      ml.getModel().getRelationshipInstanceMap().get("correspondsTo").iterator().next());
-        int size = ml.getModel().getInstanceOfMap().size();
-        ml.getModel().cleanUpAbstraction();
-        assertEquals(size - 2, ml.getModel().getInstanceOfMap().size());
-        for (String i : ml.getModel().getInstanceOfMap().keySet()) {
-            assertFalse(i.startsWith("?"));
-        }
     }
 
 }
