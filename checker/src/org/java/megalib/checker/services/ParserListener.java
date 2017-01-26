@@ -31,13 +31,7 @@ public class ParserListener extends MegalibBaseListener {
         String subject = ctx.getChild(0).getText();
         String object = ctx.getChild(2).getText();
         if (typeCheck.substitutes(subject, object, model)) {
-            try{
-                model = new Substitution(getModel()).substitute(object, subject);
-            }
-            catch(TypeException e){
-                System.err.println(e.getMessage());
-                System.exit(1);
-            }
+            model = new Substitution(getModel()).substitute(object, subject);
         }
     }
 

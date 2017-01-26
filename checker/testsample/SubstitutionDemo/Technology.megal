@@ -1,0 +1,15 @@
+module Technology
+
+import Abstract where {
+    { 
+        MySerializer substitutes ?Serializer
+        MyPL substitutes ?PL
+        ?PLproject substitutes ?project
+        ?myplprogram substitutes ?program
+        ?myolobject substitutes ?object 
+        MyOL substitutes ?OL
+    }
+}
+MySerializer = "http://www.softlang.org/"
+MyPL = "http://www.softlang.org/"
+MyOL = "http://www.softlang.org/"

@@ -15,17 +15,17 @@ statement:	 subtypeDeclaration
 
 module: 'module' ID;
 
-imports: 'import' ID ('where' '{' (INDENT substitution)+ '}')?;
+imports: 'import' ID ('where' '{' substitution+ '}')?;
 
 substitution : ID 'substitutes' ID;
 
-subtypeDeclaration: ID '<' ID (INDENT '=' LINK)?;
+subtypeDeclaration: ID '<' ID (';' '=' LINK)? '.';
 
-instanceDeclaration: ID ':' ID (INDENT '=' LINK)* (INDENT ID ID)*;
+instanceDeclaration: ID ':' ID (';' '=' LINK)* (';' ID ID)* '.';
 
-relationDeclaration: ID '<' ID '#' ID;
+relationDeclaration: ID '<' ID '#' ID '.';
 
-relationInstance: ID ID ID (INDENT '=' LINK)* (INDENT ID ID)*;
+relationInstance: ID ID ID ('=' LINK)* (ID ID)*;
 
 functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* ;
 
@@ -33,8 +33,6 @@ functionInstance: ID '(' ID (',' ID)* ')' '|->' (ID | ('(' ID (',' ID)* ')'));
 
 link: ID '=' LINK;
 
-//BUG AT ('\n'|'\r') (' '|'\t')+
-INDENT: ('\n'|'\r') (' '|'\t')+;
 ID: ('?'|'^')? WORD ('.' WORD)*;
 WORD: ([a-zA-Z0-9+#\-])+;
 LINK: '"' (~[ \t\f\n\r])+ '"' ;

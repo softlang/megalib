@@ -28,6 +28,8 @@ public class TypeCheck {
     }
 
     public boolean addSubtypeOf(String subtype, String type, MegaModel m) {
+        if(!errors.isEmpty())
+            return false;
         if (subtype.equals("Entity")) {
             errors.add("Error at " + subtype + " < " + type + ": Entity is a MegaL keyword.");
         }
@@ -41,6 +43,8 @@ public class TypeCheck {
     }
 
     public boolean addInstanceOf(String instance, String type, MegaModel m) {
+        if(!errors.isEmpty())
+            return false;
         if (m.getSubtypesMap().containsKey(instance)) {
             errors.add("Error at " + instance + ": It is instance and type at the same time.");
         }
@@ -57,6 +61,8 @@ public class TypeCheck {
     }
 
     public boolean addRelationDeclaration(String name, String sType, String oType, MegaModel m) {
+        if(!errors.isEmpty())
+            return false;
         if (!(m.getSubtypesMap().containsKey(sType))) {
             errors.add("Error at declaration of " + name + ": Its domain " + sType + " is not subtype of Entity.");
         }
@@ -73,6 +79,8 @@ public class TypeCheck {
     }
 
     public boolean addRelationInstance(String name, String subject, String object, MegaModel m) {
+        if(!errors.isEmpty())
+            return false;
         if (!m.getInstanceOfMap().containsKey(subject)) {
             errors.add("Error at instance of " + name + ": " + subject + " is not instantiated.");
         }
@@ -136,6 +144,8 @@ public class TypeCheck {
     }
 
     public boolean addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs, MegaModel m) {
+        if(!errors.isEmpty())
+            return false;
         for (String i : inputs) {
             String type = m.getInstanceOfMap().get(i);
             if (type == null) {
@@ -160,6 +170,8 @@ public class TypeCheck {
     }
 
     public boolean addFunctionApplication(String name, List<String> inputs, List<String> outputs, MegaModel m) {
+        if(!errors.isEmpty())
+            return false;
         if (!m.getFunctionDeclarations().containsKey(name)) {
             errors.add("Error at application of " + name + ": A declaration has to be stated beforehand.");
             return false;
@@ -223,6 +235,8 @@ public class TypeCheck {
     }
 
     public boolean addLink(String entity, String link, MegaModel m) {
+        if(!errors.isEmpty())
+            return false;
         if (!(m.getInstanceOfMap().containsKey(entity) || m.getSubtypesMap().containsKey(entity))) {
             errors.add("Error at linking " + entity + ". Declaration is missing.");
         }
@@ -237,6 +251,8 @@ public class TypeCheck {
     }
 
     public boolean substitutes(String by, String e, MegaModel m) {
+        if(!errors.isEmpty())
+            return false;
         if (!e.startsWith("?")) {
             errors.add("Unable to substitute: " + e + " is not abstract.");
         }

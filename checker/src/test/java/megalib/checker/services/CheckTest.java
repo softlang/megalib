@@ -35,7 +35,7 @@ public class CheckTest {
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
-                    .contains("The entity ?t is underspecified. Please state a specific subtype of Technology."));
+                   .contains("The entity ?t is underspecified. Please state a specific subtype of Technology."));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class CheckTest {
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
-                    .contains("The entity ?l is underspecified. Please state a specific subtype of Language."));
+                   .contains("The entity ?l is underspecified. Please state a specific subtype of Language."));
     }
 
     @Test
@@ -73,14 +73,14 @@ public class CheckTest {
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
-                    .contains("The technology t does not use any language. Please state language usage."));
+                   .contains("The technology t does not use any language. Please state language usage."));
     }
 
     @Test
     public void checkFunctionImplementation() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?l : ProgrammingLanguage " + "f : ?l -> ?l " + "?a : Artifact " + "?a elementOf ?l "
-                       + "?a hasRole MvcModel" + "?a manifestsAs File " + "f(?a)|->?a";
+                + "?a hasRole MvcModel" + "?a manifestsAs File " + "f(?a)|->?a";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
 
@@ -93,8 +93,8 @@ public class CheckTest {
     public void checkFunctionApplication() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?l : ProgrammingLanguage " + "f : ?l -> ?l " + "?a : Artifact " + "?a elementOf ?l "
-                       + "?a hasRole MvcModel " + "?a manifestsAs File " + "?t : Library " + "?t uses ?l "
-                       + "?t implements f";
+                + "?a hasRole MvcModel " + "?a manifestsAs File " + "?t : Library " + "?t uses ?l "
+                + "?t implements f";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
@@ -139,13 +139,14 @@ public class CheckTest {
     public void checkCyclicSubsets() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?l1 : ProgrammingLanguage " + "?l2 : ProgrammingLanguage " + "?l3 : ProgrammingLanguage "
-                       + "?l1 subsetOf ?l2 " + "?l2 subsetOf ?l3 " + "?l3 subsetOf ?l2";
+                + "?l1 subsetOf ?l2 " + "?l2 subsetOf ?l3 " + "?l3 subsetOf ?l2";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
+        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
-                    .contains("Cycles exist concerning the relationship subsetOf involving the following entities :[?l2, ?l3]"));
+                   .contains("Cycles exist concerning the relationship subsetOf involving the following entities :[?l2, ?l3]"));
     }
 
     @Test

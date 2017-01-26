@@ -10,7 +10,7 @@ public class Substitution {
         this.model = model;
     }
 
-    public MegaModel substitute(String abstractE, String by) throws TypeException {
+    public MegaModel substitute(String abstractE, String by) {
         if (model.isInstanceOf(abstractE, "Language")) {
             substituteLanguage(abstractE, by);
         }else if(model.isInstanceOf(abstractE, "Artifact")){

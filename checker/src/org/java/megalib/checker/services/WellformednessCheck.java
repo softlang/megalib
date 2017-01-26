@@ -1,5 +1,6 @@
 package org.java.megalib.checker.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -44,7 +45,7 @@ public class WellformednessCheck {
         warnings = new LinkedList<>();
         this.nocon = nocon;
         if (!nocon) {
-            // initializeTrustManagement();
+            initializeTrustManagement();
         }
 
         instanceChecks();
@@ -82,9 +83,9 @@ public class WellformednessCheck {
                     continue;
                 }
                 Set<Relation> fset = usesSet.parallelStream()
-                                            .filter(r -> r.getSubject().equals(inst)
-                                                         && model.isInstanceOf(r.getObject(), "Language"))
-                                            .collect(Collectors.toSet());
+                        .filter(r -> r.getSubject().equals(inst)
+                                && model.isInstanceOf(r.getObject(), "Language"))
+                        .collect(Collectors.toSet());
                 if (fset.isEmpty()) {
                     warnings.add("The technology " + inst + " does not use any language. Please state language usage.");
                 }
@@ -99,7 +100,7 @@ public class WellformednessCheck {
                     continue;
                 }
                 Set<Relation> fset = manifestSet.parallelStream().filter(r -> r.getSubject().equals(inst))
-                                                .collect(Collectors.toSet());
+                        .collect(Collectors.toSet());
                 if (fset.isEmpty()) {
                     warnings.add("Manifestation missing for " + inst);
                 }
@@ -139,7 +140,7 @@ public class WellformednessCheck {
                 subjects.add(p.getSubject());
             } else {
                 warnings.add("Error at " + p.getSubject() + " partOf " + p.getObject() + ": " + "" + p.getSubject()
-                             + " is already part of another composite.");
+                + " is already part of another composite.");
             }
         }
     }
@@ -152,11 +153,11 @@ public class WellformednessCheck {
         if (!model.getRelationshipInstanceMap().containsKey("manifestsAs"))
             return;
         List<String> fragments = model.getRelationshipInstanceMap().get("manifestsAs").parallelStream()
-                                      .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
-                                      .collect(Collectors.toList());
+                .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
+                .collect(Collectors.toList());
         for (String f : fragments) {
             if (model.getRelationshipInstanceMap().get("partOf").parallelStream()
-                     .noneMatch(r -> r.getSubject().equals(f))) {
+                    .noneMatch(r -> r.getSubject().equals(f))) {
                 warnings.add("Composite missing for fragment " + f);
             }
         }
@@ -169,18 +170,18 @@ public class WellformednessCheck {
         if (!model.getRelationshipInstanceMap().containsKey("manifestsAs"))
             return;
         Set<String> fset = model.getRelationshipInstanceMap().get("manifestsAs").parallelStream()
-                                .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
-                                .collect(Collectors.toSet());
+                .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
+                .collect(Collectors.toSet());
         for (String f : fset) {
             Set<String> parts = model.getRelationshipInstanceMap().get("partOf").parallelStream()
-                                     .filter(r -> r.getObject().equals(f)).map(r -> r.getSubject())
-                                     .collect(Collectors.toSet());
+                    .filter(r -> r.getObject().equals(f)).map(r -> r.getSubject())
+                    .collect(Collectors.toSet());
             Set<String> diff = new HashSet<>();
             diff.addAll(parts);
             diff.removeAll(fset);
             if (!parts.isEmpty() && !diff.isEmpty()) {
                 warnings.add("The following parts of the fragment " + f + " are not fragments and are thus invalid:"
-                             + diff.toString());
+                        + diff.toString());
             }
         }
     }
@@ -190,16 +191,16 @@ public class WellformednessCheck {
      */
     private void languageDefinedOrImplemented() {
         Set<String> languages = model.getInstanceOfMap().keySet().parallelStream()
-                                     .filter(i -> model.isInstanceOf(i, "Language") && !i.startsWith("?"))
-                                     .collect(Collectors.toSet());
+                .filter(i -> model.isInstanceOf(i, "Language") && !i.startsWith("?"))
+                .collect(Collectors.toSet());
         Set<String> implementedUnionDefined = new HashSet<>();
         if (model.getRelationshipInstanceMap().containsKey("defines")) {
             implementedUnionDefined.addAll(model.getRelationshipInstanceMap().get("defines").parallelStream()
-                                                .map(r -> r.getObject()).collect(Collectors.toSet()));
+                                           .map(r -> r.getObject()).collect(Collectors.toSet()));
         }
         if (model.getRelationshipInstanceMap().containsKey("implements")) {
             implementedUnionDefined.addAll(model.getRelationshipInstanceMap().get("implements").parallelStream()
-                                                .map(r -> r.getObject()).collect(Collectors.toSet()));
+                                           .map(r -> r.getObject()).collect(Collectors.toSet()));
         }
         languages.removeAll(implementedUnionDefined);
         for (String l : languages) {
@@ -212,8 +213,8 @@ public class WellformednessCheck {
             return;
 
         Set<String> tset = model.getRelationshipInstanceMap().get("manifestsAs").parallelStream()
-                                .filter(r -> r.getObject().equals("Transient") && !isPart(r.getSubject()))
-                                .map(r -> r.getSubject()).collect(Collectors.toSet());
+                .filter(r -> r.getObject().equals("Transient") && !isPart(r.getSubject()))
+                .map(r -> r.getSubject()).collect(Collectors.toSet());
         Set<String> iovalues = new HashSet<>();
         Set<Function> pairs = new HashSet<>();
         model.getFunctionApplications().forEach((k, v) -> pairs.addAll(v));
@@ -224,7 +225,7 @@ public class WellformednessCheck {
         tset.removeAll(iovalues);
         if (!tset.isEmpty()) {
             warnings.add("The following transients are neither input nor output of a function application: "
-                         + tset.toString());
+                    + tset.toString());
         }
     }
 
@@ -276,7 +277,7 @@ public class WellformednessCheck {
         result.retainAll(subjects);
         if (!result.isEmpty()) {
             warnings.add("Cycles exist concerning the relationship " + name + " involving the following entities :"
-                         + result);
+                    + result);
         }
 
     }
@@ -288,7 +289,7 @@ public class WellformednessCheck {
             warnings.add("The function " + name + " is not implemented. Please state what implements it.");
         } else {
             Set<Relation> fset = implementsSet.parallelStream().filter(r -> r.getObject().equals(name))
-                                              .collect(Collectors.toSet());
+                    .collect(Collectors.toSet());
             if (fset.isEmpty()) {
                 warnings.add("The function " + name + " is not implemented. Please state what implements it.");
             }
@@ -305,10 +306,30 @@ public class WellformednessCheck {
     }
 
     private void checkLinkWorking(String link) {
-        URL u = checkURL(link);
-        if (u != null && !nocon) {
-            checkConnection(u, link);
+        if(checkURL(link)){
+            if(!nocon){
+                try{
+                    checkConnection(new URL(link), link);
+                }
+                catch(MalformedURLException e){
+                    e.printStackTrace();
+                }
+            }
+        }else if(new File(link).exists())
+            return;
+        else{
+            warnings.add("The link " + link + " is not resolvable.");
         }
+    }
+
+    private boolean checkURL(String link) {
+        try{
+            new URL(link);
+        }
+        catch(MalformedURLException e){
+            return false;
+        }
+        return true;
     }
 
     private void checkConnection(URL u, String link) {
@@ -374,17 +395,6 @@ public class WellformednessCheck {
         }
 
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-    }
-
-    private URL checkURL(String link) {
-        URL u = null;
-        try {
-            u = new URL(link);
-        }
-        catch (MalformedURLException e) {
-            warnings.add("Error at Link to '" + link + "' : The URL is malformed!");
-        }
-        return u;
     }
 
     public List<String> getWarnings() {

@@ -6,21 +6,23 @@ module Abstract
 ?Serializer : Library
     uses ?PL
     implements ?PL
-    uses Serialization
+    facilitates Serialization
 
 /* Object serialization */
-?OL : ObjectLanguage
+?OL : ObjectGraph
 ?D : DataRepresentationLanguage
 f : ?OL -> ?D
 
 /* conformance to data types in an OO program */
 ?project : Application
     uses ?PL
+    uses ?Serializer
+    uses Serialization
 ?program : Artifact
     elementOf ?PL
-    hasRole Model
+    hasRole Schema
     hasRole POJO
-    manifestsAs File+ //This may change in a substituting
+    manifestsAs File+
     defines ?OL
 ?object : Artifact
     elementOf ?OL
@@ -37,3 +39,5 @@ f : ?OL -> ?D
     hasRole Value
     manifestsAs File
     correspondsTo ?object
+f(?object) |-> ?data
+?Serializer implements f
