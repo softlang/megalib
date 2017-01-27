@@ -25,6 +25,10 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.io.FileUtils;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
+import org.java.megalib.parser.ErrorListener;
+import org.java.megalib.parser.ImportListener;
+import org.java.megalib.parser.ParserException;
+import org.java.megalib.parser.ParserListener;
 
 import main.antlr.techdocgrammar.MegalibBaseListener;
 import main.antlr.techdocgrammar.MegalibLexer;

@@ -237,7 +237,8 @@ public class TypeCheck {
     public boolean addLink(String entity, String link, MegaModel m) {
         if(!errors.isEmpty())
             return false;
-        if (!(m.getInstanceOfMap().containsKey(entity) || m.getSubtypesMap().containsKey(entity))) {
+        if(!(m.getInstanceOfMap().containsKey(entity) || m.getSubtypesMap().containsKey(entity)
+             || m.getRelationshipDeclarationMap().containsKey(entity))){
             errors.add("Error at linking " + entity + ". Declaration is missing.");
         }
         Set<String> links = new HashSet<>();

@@ -1,4 +1,4 @@
-package test.java.megalib.checker.services;
+package org.java.megalib.checker.services;
 
 import static org.junit.Assert.*;
 

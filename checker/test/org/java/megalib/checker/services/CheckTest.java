@@ -1,4 +1,4 @@
-package test.java.megalib.checker.services;
+package org.java.megalib.checker.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,8 +7,8 @@ import java.io.IOException;
 
 import org.java.megalib.checker.services.WellformednessCheck;
 import org.java.megalib.checker.services.ModelLoader;
-import org.java.megalib.checker.services.ParserException;
 import org.java.megalib.models.MegaModel;
+import org.java.megalib.parser.ParserException;
 import org.junit.Test;
 
 /**

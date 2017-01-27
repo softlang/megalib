@@ -1,10 +1,14 @@
-package org.java.megalib.checker.services;
+package org.java.megalib.parser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.java.megalib.checker.services.Substitution;
+import org.java.megalib.checker.services.TypeCheck;
 import org.java.megalib.models.MegaModel;
 
 import main.antlr.techdocgrammar.MegalibBaseListener;
@@ -15,11 +19,13 @@ import main.antlr.techdocgrammar.MegalibParser.LinkContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.SubstitutionContext;
+import main.antlr.techdocgrammar.MegalibParser.SubstitutionGroupContext;
 import main.antlr.techdocgrammar.MegalibParser.SubtypeDeclarationContext;
 
 public class ParserListener extends MegalibBaseListener {
     private MegaModel model;
     private TypeCheck typeCheck;
+    private Set<String[]> substSet;
 
     public ParserListener(MegaModel m) {
         model = m;
@@ -27,12 +33,22 @@ public class ParserListener extends MegalibBaseListener {
     }
 
     @Override
+    public void enterSubstitutionGroup(SubstitutionGroupContext ctx) {
+        substSet = new HashSet<>();
+    }
+
+    @Override
+    public void exitSubstitutionGroup(SubstitutionGroupContext ctx) {
+        new Substitution(model).substituteGroup(substSet);
+        substSet = null;
+    }
+
+    @Override
     public void enterSubstitution(SubstitutionContext ctx) {
         String subject = ctx.getChild(0).getText();
         String object = ctx.getChild(2).getText();
-        if (typeCheck.substitutes(subject, object, model)) {
-            model = new Substitution(getModel()).substitute(object, subject);
-        }
+        String[] s = {subject, object};
+        substSet.add(s);
     }
 
     @Override
@@ -42,11 +58,11 @@ public class ParserListener extends MegalibBaseListener {
         if (typeCheck.addSubtypeOf(derivedType, superType, model)) {
             model.addSubtypeOf(derivedType, superType);
         }
-        if (context.children.size() == 6) {
-            String link = context.getChild(5).getText();
-            if (typeCheck.addLink(derivedType, link, model)) {
-                model.addLink(derivedType, link.substring(1, link.length() - 1));
-            }
+
+        String link = context.getChild(5).getText();
+        if (typeCheck.addLink(derivedType, link, model)) {
+            model.addLink(derivedType, link.substring(1, link.length() - 1));
+
         }
     }
 
@@ -59,8 +75,7 @@ public class ParserListener extends MegalibBaseListener {
         if (typeCheck.addInstanceOf(instance, type, model)) {
             model.addInstanceOf(instance, type);
         }
-        while (it.hasNext()) {
-            it.next(); // skip TAB
+        while(it.next().getText().equals(";")){
             String relation = it.next().getText();
             String object = it.next().getText();
             if (relation.equals("=")) {
@@ -78,11 +93,21 @@ public class ParserListener extends MegalibBaseListener {
 
     @Override
     public void enterRelationDeclaration(RelationDeclarationContext context) {
-        String relation = context.getChild(0).getText();
-        String type1 = context.getChild(2).getText();
-        String type2 = context.getChild(4).getText();
+        Iterator<ParseTree> it = context.children.iterator();
+        String relation = it.next().getText();
+        it.next(); // skip <
+        String type1 = it.next().getText();
+        it.next(); // skip #
+        String type2 = it.next().getText();
         if (typeCheck.addRelationDeclaration(relation, type1, type2, model)) {
             model.addRelationDeclaration(relation, type1, type2);
+        }
+        while(it.next().getText().equals(";")){
+            it.next(); // skip =
+            String link = it.next().getText();
+            if(typeCheck.addLink(relation, link, model)){
+                model.addLink(relation, link);
+            }
         }
     }
 
@@ -96,8 +121,7 @@ public class ParserListener extends MegalibBaseListener {
             model.addRelationInstances(relation, subject, object);
         }
 
-        while (it.hasNext()) {
-            it.next(); // skip TAB
+        while(it.next().getText().equals(";")){
             relation = it.next().getText();
             object = it.next().getText();
             if (relation.equals("=")) {
@@ -175,11 +199,27 @@ public class ParserListener extends MegalibBaseListener {
 
     @Override
     public void enterLink(LinkContext context) {
-        String entityname = context.getChild(0).getText();
-        String link = context.getChild(2).getText();
+        Iterator<ParseTree> it = context.children.iterator();
+        String subject = it.next().getText();
+        it.next(); // skip =
+        String link = it.next().getText();
         link = link.substring(1, link.length() - 1);
-        if (typeCheck.addLink(entityname, link, model)) {
-            model.addLink(entityname, link);
+        if(typeCheck.addLink(subject, link, model)){
+            model.addLink(subject, link);
+        }
+        while(it.next().getText().equals(";")){
+            String relation = it.next().getText();
+            String object = it.next().getText();
+            if(relation.equals("=")){
+                link = object.substring(1, object.length() - 1);
+                if(typeCheck.addLink(subject, link, model)){
+                    model.addLink(subject, link);
+                }
+            }else{
+                if(typeCheck.addRelationInstance(relation, subject, object, model)){
+                    model.addRelationInstances(relation, subject, object);
+                }
+            }
         }
     }
 

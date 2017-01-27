@@ -79,6 +79,12 @@ public class MegaModel {
 
     public void addRelationInstances(String name, String subject, String object) {
         Set<Relation> set = new HashSet<>();
+        if(name.startsWith("^")){
+            name = name.substring(1);
+            String temp = subject;
+            subject = object;
+            object = temp;
+        }
         if (relationInstanceMap.containsKey(name)) {
             set = relationInstanceMap.get(name);
         }

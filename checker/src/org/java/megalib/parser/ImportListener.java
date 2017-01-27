@@ -1,4 +1,4 @@
-package org.java.megalib.checker.services;
+package org.java.megalib.parser;
 
 import java.util.HashSet;
 import java.util.Set;

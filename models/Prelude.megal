@@ -1,65 +1,77 @@
 /* Language subtypes based on PRIMARY purpose. LaTeX could be used
 to code up a general purpose program as well, but hopefully none does
 that. That is why it is classified as a markup language. */
-Language < Entity
-    = "https://en.wikipedia.org/wiki/Computer_language"
-FileFormat < Language // not meant to be read by humans. Optimized for file system, e.g. an SQL image, JPG etc.
-    = "https://en.wikipedia.org/wiki/File_format"
-ProgrammingLanguage < Language  // not specific to a domain, e.g. Java
-    = "https://en.wikipedia.org/wiki/Programming_language"
-DataRepresentationLanguage < Language // can be read by humans and represents data, e.g. JSON
-    = "https://de.wikipedia.org/wiki/Datenformat" //need better binding
-MarkupLanguage < Language  // assists in structuring data, e.g. XML
-    = "https://en.wikipedia.org/wiki/Markup_language"
-TransformationLanguage < Language // transformation statements, e.g. ATL
-    = "https://en.wikipedia.org/wiki/Transformation_language" // even though the text is misleading
-QueryLanguage < Language // query statements, e.g. SQL
-    = "https://en.wikipedia.org/wiki/Query_language"
-StylesheetLanguage < Language // expresses presentation of structured documents, e.g. CSS
-    = "https://en.wikipedia.org/wiki/Style_sheet_language"
-GrammarLanguage < Language //define syntax of a language
-    = "https://en.wikipedia.org/wiki/Formal_grammar"
-SchemaLanguage < Language // formulate schemas or metamodels, e.g. XSD
-    = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages"
-CommandLineLanguage < Language  // statements that can be entered in a command line, e.g. Bash
-    = "https://en.wikipedia.org/wiki/Command-line_interface"
-ModelingLanguage < Language  // describe or prescribe software, e.g. UML
-    = "https://en.wikipedia.org/wiki/Modeling_language"
-InstructionSet < Language // hardware instructions
-    = "https://en.wikipedia.org/wiki/Instruction_set"
-AssemblyLanguage < Language
-    = "https://en.wikipedia.org/wiki/Assembly_language"
-ConfigurationLanguage < Language // configuration files, e.g. .class-files
-    = "https://en.wikipedia.org/wiki/Configuration_file" 
-BuildLanguage < Language //languages used for writing build scripts
-    = "https://en.wikipedia.org/wiki/Build_automation"
-ReferenceLanguage < Language // express references, e.g. URI
-    = "https://en.wikipedia.org/wiki/Reference" 
-MessageLanguage < Language // structured messages, e.g. HTTP Requests
-    = "https://en.wikipedia.org/wiki/Message_passing" 
-KnowledgeRepresentationLanguage < Language
-    = "https://en.wikipedia.org/wiki/Category:Knowledge_representation_languages"
-DomainSpecificLanguage < Language
-    = "https://en.wikipedia.org/wiki/Domain-specific_language"
-DataType < Language // data types of a language, e.g. Boolean
-    = "https://en.wikipedia.org/wiki/Data_type" 
-ObjectGraph < Language // object values in an OO Language, e.g. Java Objects.
-    = "https://en.wikipedia.org/wiki/Object_graph" 
-Graphics < Language //!! Experimental !! visual images consisting of pixels that inform, illustrate or entertain
-    = "https://en.wikipedia.org/wiki/Graphics"
-subsetOf < Language # Language  
-embeddedInto < Language # Language
-dialectOf < Language # Language //https://en.wikipedia.org/wiki/Dialect_(computing)
+Language < Entity;
+    = "https://en.wikipedia.org/wiki/Computer_language".
+FileFormat < Language; // not meant to be read by humans. Optimized for file system, e.g. an SQL image, JPG etc.
+    = "https://en.wikipedia.org/wiki/File_format".
+ProgrammingLanguage < Language;  // not specific to a domain, e.g. Java
+    = "https://en.wikipedia.org/wiki/Programming_language".
+DataRepresentationLanguage < Language; // can be read by humans and represents data, e.g. JSON
+    = "https://de.wikipedia.org/wiki/Datenformat". //need better binding
+MarkupLanguage < Language;  // assists in structuring data, e.g. XML
+    = "https://en.wikipedia.org/wiki/Markup_language".
+TransformationLanguage < Language; // transformation statements, e.g. ATL
+    = "https://en.wikipedia.org/wiki/Transformation_language". // even though the text is misleading
+QueryLanguage < Language; // query statements, e.g. SQL
+    = "https://en.wikipedia.org/wiki/Query_language".
+StylesheetLanguage < Language; // expresses presentation of structured documents, e.g. CSS
+    = "https://en.wikipedia.org/wiki/Style_sheet_language".
+GrammarLanguage < Language; //define syntax of a language
+    = "https://en.wikipedia.org/wiki/Formal_grammar".
+SchemaLanguage < Language; // formulate schemas or metamodels, e.g. XSD
+    = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages".
+CommandLineLanguage < Language;  // statements that can be entered in a command line, e.g. Bash
+    = "https://en.wikipedia.org/wiki/Command-line_interface".
+ModelingLanguage < Language;  // describe or prescribe software, e.g. UML
+    = "https://en.wikipedia.org/wiki/Modeling_language".
+MachineLanguage < Language; // hardware instructions
+    = "https://en.wikipedia.org/wiki/Machine_code".
+AssemblyLanguage < Language;
+    = "https://en.wikipedia.org/wiki/Assembly_language".
+ConfigurationLanguage < Language; // configuration files, e.g. .class-files
+    = "https://en.wikipedia.org/wiki/Configuration_file" .
+BuildLanguage < Language; //languages used for writing build scripts
+    = "https://en.wikipedia.org/wiki/Build_automation".
+ReferenceLanguage < Language; // express references, e.g. URI
+    = "https://en.wikipedia.org/wiki/Reference".
+MessageLanguage < Language; // structured messages, e.g. HTTP Requests
+    = "https://en.wikipedia.org/wiki/Message_passing".
+KnowledgeRepresentationLanguage < Language;
+    = "https://en.wikipedia.org/wiki/Category:Knowledge_representation_languages".
+DomainSpecificLanguage < Language;
+    = "https://en.wikipedia.org/wiki/Domain-specific_language".
+DataType < Language; // data types of a language, e.g. Boolean
+    = "https://en.wikipedia.org/wiki/Data_type".
+ObjectGraph < Language; // object values in an OO Language, e.g. Java Objects.
+    = "https://en.wikipedia.org/wiki/Object_graph".
+Graphics < Language; //!! Experimental !! visual images consisting of pixels that inform, illustrate or entertain
+    = "https://en.wikipedia.org/wiki/Graphics".
+subsetOf < Language # Language;
+    = "https://en.wikipedia.org/wiki/Subset".
+embeddedInto < Language # Language;
+    = "https://wiki.haskell.org/Embedded_domain_specific_language".
+dialectOf < Language # Language;
+    = "https://en.wikipedia.org/wiki/Dialect_(computing)".
 
 /* Digital entities classified by relating to their language, role and manifestation. */
-Artifact < Entity
-    = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
-defines < Artifact # Language // An artifact may serve as the specification for a language, e.g., a grammar.
-elementOf < Artifact # Language // Every artifact is a member of a language
-conformsTo < Artifact # Artifact  // An artifact may conform to a schema 
-correspondsTo < Artifact # Artifact // Two artifacts may be syntactically different, but semantically equal.
-refersTo < Artifact # Artifact  // Experimental! Don't use unless you know what you're doing
-represents < Artifact # Artifact // Experimental! Don't use unless you know what you're doing
+Artifact < Entity;
+    = "https://en.wikipedia.org/wiki/Artifact_(software_development)".
+defines < Artifact # Language; // An artifact may serve as the specification for a language, e.g., a grammar.
+    = "https://en.wikipedia.org/wiki/Programming_language_specification";
+    = "https://en.wikipedia.org/wiki/Syntax";
+    = "https://en.wikipedia.org/wiki/Data_model".
+elementOf < Artifact # Language; // Every artifact is a member of a language
+    = "https://en.wikipedia.org/wiki/Element_(mathematics)".
+conformsTo < Artifact # Artifact;  // An artifact may conform to a schema 
+    = "http://link.springer.com/article/10.1007%2Fs10270-006-0017-9"
+    = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering"
+correspondsTo < Artifact # Artifact; // Two artifacts may be syntactically different, but semantically equal.
+    = "http://dictionary.cambridge.org/dictionary/english/correspond"
+refersTo < Artifact # Artifact;  // Experimental! Don't use unless you know what you're doing
+    = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier"
+represents < Artifact # Artifact; // Experimental! Don't use unless you know what you're doing
+    = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering"
 
 /* Manifestation types of artifacts, where most are self-explanatory */
 Manifestation < Entity
@@ -75,6 +87,7 @@ Transient : Manifestation //Temporary available values
 Fragment : Manifestation  //Some fragment of a file or transient
     = "https://en.wikipedia.org/wiki/Snippet_(programming)"
 manifestsAs < Artifact # Manifestation
+    = "https://en.oxforddictionaries.com/definition/manifestation"
 
 /* Roles relate to the domain's or technological space's 
 terminology. They imply a commonly known purpose 
@@ -142,7 +155,8 @@ TestCase : Role
     = "https://en.wikipedia.org/wiki/Test_case"
 POJO : Role
     = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object"
-hasRole < Artifact # Role
+hasRole < Artifact # Role //Relating the artifact to an existing term known in a domain
+    = "https://en.wikipedia.org/wiki/Terminology"
 
 /* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
 DesignPattern < Entity
@@ -158,12 +172,15 @@ REST : ArchitecturalPattern
 ServiceOrientedArchitecture : ArchitecturalPattern
     = "https://en.wikipedia.org/wiki/Service-oriented_architecture"
 participantOf < Role # DesignPattern
-participantOf < Role # ArchitecturalPattern  
+    = "https://en.wikipedia.org/wiki/Software_design_pattern#Structure"
+participantOf < Role # ArchitecturalPattern
+    = "https://en.wikipedia.org/wiki/Architectural_pattern" //related to design Pattern
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity
     = "https://en.wikipedia.org/wiki/Function_(mathematics)"
 implements < Artifact # Function
+    = "https://en.wikipedia.org/wiki/Implementation"
 
 /* A technology is a reusable . 
 Technologies can be classified along 2 Dimensions: 
@@ -197,11 +214,15 @@ Platform < Software // a technology that has the capability to execute code
 
 /* Implementation relationships */
 implements < Technology # Function  //A technology may implement a mapping
+    = "https://en.wikipedia.org/wiki/Implementation"
 implements < Technology # Language  //A technology can process a language as input or output
+    = "https://en.wikipedia.org/wiki/Implementation"
 
 /* Code deployment aspects */
 managedBy < Technology # Artifact //a technology is managed by an artifact, if the artifact contains the technology's source code.
+    = "https://en.wikipedia.org/wiki/Software_repository"
 deployedAs < Technology # Artifact //In a usage scenario the technology is locally deployed as an artifact
+    = "https://en.wikipedia.org/wiki/Software_deployment"
 
 /* Classification of systems */
 System < Entity //a set of artifacts realizing some concrete use cases
@@ -232,13 +253,16 @@ AspectOrientedProgramming : Paradigm //Seperation of cross-cutting concerns
 LogicProgramming : Paradigm //programming based on formal logic
     = "https://en.wikipedia.org/wiki/Logic_programming"
 specializes < Paradigm # Paradigm
+    = "https://en.wikipedia.org/wiki/Programming_paradigm"
 
 /* A field of study that defines common requirements, problems, terminology and ways for technologies or 
 languages to support it. */
 ProgrammingDomain < Entity
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
 subdomainOf < ProgrammingDomain # ProgrammingDomain //a domain covers a subset of another domain's requirements, problems, terminology and ways for languages/technologies to support it.
+    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
 demonstrates < System # ProgrammingDomain //Experimental! Don't use unless you know what you're doing.
+    = "http://softlang.uni-koblenz.de/chrestomathy/"
 GeneralPurposeProgramming : ProgrammingDomain // The study on applications in general.
     = "https://en.wikipedia.org/wiki/General-purpose_programming_language"
 MetaProgramming : ProgrammingDomain // The study on processing programs with support for language implementation 
@@ -284,7 +308,9 @@ ECommerce : ProgrammingDomain
     = "https://en.wikipedia.org/wiki/E-commerce"
     subdomainOf BusinessProgramming
 supports < Technology # ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Software_feature" //needs better link
 supports < Language # ProgrammingDomain
+    = "https://en.wikipedia.org/wiki/Software_feature" //needs better link
 
 /* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. While a programming domain could be called a problem space, a technology space could be called a solution space. 
 
@@ -293,6 +319,7 @@ language's main module. */
 TechnologySpace < Entity
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
 subspaceOf < TechnologySpace # TechnologySpace
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
 BuildAutomationWare : TechnologySpace
     = "https://en.wikipedia.org/wiki/List_of_build_automation_software"
 MDEWare : TechnologySpace
@@ -300,21 +327,29 @@ MDEWare : TechnologySpace
 SoftwareAsAServiceWare : TechnologySpace
     = "https://en.wikipedia.org/wiki/Software_as_a_service"
 belongsTo < Technology # TechnologySpace
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
 belongsTo < Language # TechnologySpace
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
 
 /* Reusable ideal solutions. */
 AbstractProcess < Entity //Commonly known technology- and language independent processes
     = "https://en.wikipedia.org/wiki/Abstract_process"
 Protocol < AbstractProcess // A process defined by a protocol
     = "https://en.wikipedia.org/wiki/Communications_protocol"
+Algorithm < AbstractProcess
+    = "https://en.wikipedia.org/wiki/Algorithm"
 Construct < Entity //A common language- and technology independent artifact constellation
     = "https://en.wikipedia.org/wiki/Construct_(philosophy)"
 
 /* Abstract solutions an aspect of a way of thinking or field of study. */
 aspectOf < Construct # Paradigm //as in Semaphore aspectOf ConcurrentProgramming
+    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect"
 aspectOf < Construct # ProgrammingDomain //as in LocalStorage aspectOf OfflineWebApplicationDevelopment
+    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect"
 aspectOf < AbstractProcess # ProgrammingDomain
+    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect"
 aspectOf < Role # ProgrammingDomain 
+    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect"
 
 /* Known instances of abstract solutions */
 HTTPS : Protocol 
@@ -357,18 +392,28 @@ Annotation : Construct
 
 /* Part-of relationships */
 partOf < Artifact # Artifact
+    = "http://dictionary.cambridge.org/dictionary/english/part"
 partOf < Artifact # System
+    = "http://dictionary.cambridge.org/dictionary/english/part"
 partOf < Artifact # Technology
+    = "http://dictionary.cambridge.org/dictionary/english/part"
 partOf < Technology # Technology
+    = "http://dictionary.cambridge.org/dictionary/english/part"
 partOf < System # System
+    = "http://dictionary.cambridge.org/dictionary/english/part"
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */
 uses < System # System
+    = "https://en.wikipedia.org/wiki/Code_reuse"
 uses < System # Technology
+    = "https://en.wikipedia.org/wiki/Code_reuse"
 uses < Technology # Technology
+    = "https://en.wikipedia.org/wiki/Code_reuse"
 uses < Artifact # System
+    = "https://en.wikipedia.org/wiki/Code_reuse"
 uses < Artifact # Technology
+    = "https://en.wikipedia.org/wiki/Code_reuse"
 
 /* A language is used in the sense that some part is a member of the language. Maybe rename to writtenIn */
 uses < System # Language

@@ -1,5 +1,7 @@
 package org.java.megalib.checker.services;
 
+import java.util.Set;
+
 import org.java.megalib.models.MegaModel;
 
 public class Substitution {
@@ -8,6 +10,10 @@ public class Substitution {
 
     public Substitution(MegaModel model) {
         this.model = model;
+    }
+
+    public MegaModel substituteGroup(Set<String[]> substSet) {
+        return model;
     }
 
     public MegaModel substitute(String abstractE, String by) {
@@ -43,5 +49,6 @@ public class Substitution {
         // TODO Auto-generated method stub
 
     }
+
 
 }

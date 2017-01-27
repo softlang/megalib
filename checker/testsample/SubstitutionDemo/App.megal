@@ -8,6 +8,7 @@ import Technology where {
      MyD1 substitutes ?D,
      MyDS1 substitutes ?DS,
      mydata11 substitutes ?data];
+     
     [myProject2 substitutes ?PLproject,
      myProgram2 substitutes ?myplprogram,
      myObject21 substitutes ?myolobject,

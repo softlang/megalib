@@ -1,4 +1,4 @@
-package test.java.megalib.checker.services;
+package org.java.megalib.parser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.java.megalib.checker.services.ModelLoader;
-import org.java.megalib.checker.services.ParserException;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.Relation;
+import org.java.megalib.parser.ParserException;
 import org.junit.Test;
 
 /**
@@ -32,7 +32,7 @@ public class ParserListenerTest {
 
     @Test
     public void addSubtypeInvalidSupertype() throws ParserException, IOException {
-        String input = "/**/DerivedType < Type";
+        String input = "/**/DerivedType < Type.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, String> subtypes = ml.getModel().getSubtypesMap();
@@ -159,6 +159,16 @@ public class ParserListenerTest {
         assertTrue(ml.getModel().getRelationshipInstanceMap().get("elementOf").contains(new Relation("a", "Python")));
         assertTrue(ml.getModel().getRelationshipInstanceMap().get("hasRole").contains(new Relation("a", "MvcModel")));
         assertTrue(ml.getModel().getRelationshipInstanceMap().get("manifestsAs").contains(new Relation("a", "File")));
+    }
+
+    @Test
+    public void addInversePartOf() throws ParserException, IOException {
+        String input = "/**/ANTLRPython : ProgrammingLanguage. Python : ProgrammingLanguage; ^subsetOf Python.";
+        ModelLoader ml = new ModelLoader();
+        ml.loadString(input);
+        Map<String,String> imap = ml.getModel().getInstanceOfMap();
+        assertTrue(imap.containsKey("ANTLRPython"));
+        assertTrue(imap.containsKey("Python"));
     }
 
     @Test
