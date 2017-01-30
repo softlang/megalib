@@ -1,5 +1,8 @@
 package org.java.megalib.checker.services;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -87,7 +90,13 @@ public class TypeCheck {
         if (!m.getInstanceOfMap().containsKey(object)) {
             errors.add("Error at instance of " + name + ": " + object + " is not instantiated.");
         }
-        Relation i = new Relation(subject, object);
+        Relation i = null;
+        if(name.startsWith("^")){
+            name = name.substring(1);
+            i = new Relation(object, subject);
+        }else{
+            i = new Relation(subject, object);
+        }
         if (m.getRelationshipInstanceMap().containsKey(name)) {
             if (m.getRelationshipInstanceMap().get(name).contains(i)) {
                 errors.add("Error at instance of " + name + ": '" + subject + " " + name + " " + object
@@ -110,9 +119,6 @@ public class TypeCheck {
         String type = m.getInstanceOfMap().get(subject);
         while (!type.equals("Entity")) {
             subjectTs.add(type);
-            if (!m.getSubtypesMap().containsKey(type)) {
-                System.err.println("Weird stuff " + type);
-            }
             type = m.getSubtypesMap().get(type);
         }
         // determine (super-)types of object
@@ -238,9 +244,18 @@ public class TypeCheck {
         if(!errors.isEmpty())
             return false;
         if(!(m.getInstanceOfMap().containsKey(entity) || m.getSubtypesMap().containsKey(entity)
-             || m.getRelationshipDeclarationMap().containsKey(entity))){
+                || m.getRelationshipDeclarationMap().containsKey(entity))){
             errors.add("Error at linking " + entity + ". Declaration is missing.");
         }
+        try{
+            new URL(link);
+        }catch(MalformedURLException e){
+            if(!new File(link).exists()){
+                errors.add("Error at linking " + entity + ". The link '" + link + "' cannot be resolved.");
+                return false;
+            }
+        }
+
         Set<String> links = new HashSet<>();
         if (m.getLinkMap().containsKey(entity)) {
             links = m.getLinkMap().get(entity);

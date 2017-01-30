@@ -1,10 +1,10 @@
 module A 
 
 /**/
-HTML : MarkupLanguage
-    = "https://en.wikipedia.org/wiki/HTML"
-?spec : Artifact
-    elementOf HTML
-    hasRole Specification
-    manifestsAs File
-    defines HTML
+HTML : MarkupLanguage;
+    = "https://en.wikipedia.org/wiki/HTML".
+?spec : Artifact;
+    elementOf HTML;
+    hasRole Specification;
+    manifestsAs File;
+    defines HTML.

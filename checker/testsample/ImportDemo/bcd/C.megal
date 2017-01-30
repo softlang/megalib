@@ -3,7 +3,7 @@ module bcd.C
 import bcd.B
 import A
 /* */
-?a1 : Artifact
-    elementOf HTML
-    hasRole WebResource
-    manifestsAs Transient
+?a1 : Artifact;
+    elementOf HTML;
+    hasRole WebResource;
+    manifestsAs Transient.

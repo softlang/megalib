@@ -2,7 +2,6 @@ package org.java.megalib.parser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
@@ -13,7 +12,6 @@ import java.util.Set;
 import org.java.megalib.checker.services.ModelLoader;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.Relation;
-import org.java.megalib.parser.ParserException;
 import org.junit.Test;
 
 /**
@@ -46,7 +44,7 @@ public class ParserListenerTest {
     @Test
     public void addSubtypeEntity() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/Type < Entity " + "Entity < Type";
+        String input = "/**/Type < Entity. " + "Entity < Type.";
         ml.loadString(input);
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors().contains("Error at Entity < Type: Entity is a MegaL keyword."));
@@ -55,7 +53,7 @@ public class ParserListenerTest {
     @Test
     public void addSubtypeValidSupertype() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/DerivedType < Artifact";
+        String input = "/**/DerivedType < Artifact.";
         ml.loadString(input);
         Map<String, String> subtypes = ml.getModel().getSubtypesMap();
 
@@ -67,7 +65,7 @@ public class ParserListenerTest {
     @Test
     public void addSubtypeOfEntity() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/DerivedType < Entity";
+        String input = "/**/ DerivedType < Entity; = \"http://www.softlang.org/\".";
         ml.loadString(input);
         Map<String, String> subtypes = ml.getModel().getSubtypesMap();
 
@@ -78,7 +76,7 @@ public class ParserListenerTest {
 
     @Test
     public void addSubtypeMultipleInh() throws ParserException, IOException {
-        String input = "/**/DerivedType < Technology \n" + "DerivedType < System";
+        String input = "/**/DerivedType < Technology. DerivedType < System.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, String> subtypes = ml.getModel().getSubtypesMap();
@@ -91,7 +89,7 @@ public class ParserListenerTest {
 
     @Test
     public void addEntityInstance() throws ParserException, IOException {
-        String input = "/**/Entity : Artifact";
+        String input = "/**/Entity : Artifact.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
@@ -102,7 +100,7 @@ public class ParserListenerTest {
 
     @Test
     public void addInstanceOfUnknown() throws ParserException, IOException {
-        String input = "/**/Instance : Type";
+        String input = "/**/Instance : Type.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
@@ -115,7 +113,7 @@ public class ParserListenerTest {
 
     @Test
     public void addInstanceOfEntity() throws ParserException, IOException {
-        String input = "/**/Artifact : Technology";
+        String input = "/**/Artifact : Technology.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
@@ -127,7 +125,7 @@ public class ParserListenerTest {
 
     @Test
     public void addInstanceOfMulitple() throws ParserException, IOException {
-        String input = "/**/t : Technology " + "t : Artifact";
+        String input = "/**/t : Technology. " + "t : Artifact.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
@@ -139,7 +137,7 @@ public class ParserListenerTest {
 
     @Test
     public void addInstanceOfProgrammingLanguage() throws ParserException, IOException {
-        String input = "/**/Java : ProgrammingLanguage";
+        String input = "/**/Java : ProgrammingLanguage.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
@@ -149,10 +147,11 @@ public class ParserListenerTest {
 
     @Test
     public void addInstanceOfArtifact() throws ParserException, IOException {
-        String input = "/**/Python : ProgrammingLanguage " + "a : Artifact " + "a elementOf Python "
-                + "a hasRole MvcModel " + "a manifestsAs File";
+        String input = "/**/Python : ProgrammingLanguage. " + "a : Artifact; " + "elementOf Python; "
+                + "hasRole MvcModel; " + "manifestsAs File.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
         assertTrue(imap.containsKey("a"));
         assertEquals("Artifact", imap.get("a"));
@@ -163,17 +162,21 @@ public class ParserListenerTest {
 
     @Test
     public void addInversePartOf() throws ParserException, IOException {
-        String input = "/**/ANTLRPython : ProgrammingLanguage. Python : ProgrammingLanguage; ^subsetOf Python.";
+        String input = "/**/ANTLRPython : ProgrammingLanguage. Python : ProgrammingLanguage; ^subsetOf ANTLRPython.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
         Map<String,String> imap = ml.getModel().getInstanceOfMap();
         assertTrue(imap.containsKey("ANTLRPython"));
         assertTrue(imap.containsKey("Python"));
+        assertTrue(ml.getModel().getRelationshipInstanceMap().containsKey("subsetOf"));
+        Set<Relation> rmap = ml.getModel().getRelationshipInstanceMap().get("subsetOf");
+        assertTrue(rmap.contains(new Relation("ANTLRPython", "Python")));
     }
 
     @Test
     public void addRelationDeclarationUnknownDomain() throws ParserException, IOException {
-        String input = "/**/Relation < TypeOne # Artifact";
+        String input = "/**/Relation < TypeOne # Artifact.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipDeclarationMap();
@@ -186,7 +189,7 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationDeclarationUnknownRange() throws ParserException, IOException {
-        String input = "/**/Relation < Artifact # TypeTwo";
+        String input = "/**/Relation < Artifact # TypeTwo.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipDeclarationMap();
@@ -199,7 +202,7 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationDeclarationDouble() throws ParserException, IOException {
-        String input = "/**/Relation < Artifact # Artifact " + "Relation < Artifact # Artifact";
+        String input = "/**/Relation < Artifact # Artifact. " + "Relation < Artifact # Artifact.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipDeclarationMap();
@@ -212,7 +215,7 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationDeclarationOverloaded() throws ParserException, IOException {
-        String input = "/**/Relation < Artifact # Artifact\nRelation < Technology # Technology";
+        String input = "/**/Relation < Artifact # Artifact. Relation < Technology # Technology.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipDeclarationMap();
@@ -225,7 +228,7 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationInstanceUndeclared() throws ParserException, IOException {
-        String input = "/**/a : ProgrammingLanguage " + "b : ProgrammingLanguage " + "a r b";
+        String input = "/**/a : ProgrammingLanguage. " + "b : ProgrammingLanguage; " + "r b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         assertEquals(1, ml.getTypeErrors().size());
@@ -234,7 +237,7 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationInstanceDouble() throws ParserException, IOException {
-        String input = "/**/a : ProgrammingLanguage " + "b : ProgrammingLanguage " + "a subsetOf b " + "a subsetOf b";
+        String input = "/**/a : ProgrammingLanguage. " + "b : ProgrammingLanguage. a subsetOf b. a subsetOf b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
@@ -247,7 +250,7 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationInstanceUnfitDomain() throws ParserException, IOException {
-        String input = "/**/a : Framework " + "b : ProgrammingLanguage " + "a subsetOf b ";
+        String input = "/**/a : Framework. b : ProgrammingLanguage. a subsetOf b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
@@ -260,7 +263,7 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationInstanceUnfitRange() throws ParserException, IOException {
-        String input = "/**/a : Framework " + "b : ProgrammingLanguage " + "b subsetOf a ";
+        String input = "/**/a : Framework. b : ProgrammingLanguage. b subsetOf a.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
@@ -273,8 +276,8 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationInstanceMultiFit() throws ParserException, IOException {
-        String input = "/**/subsetOf < ProgrammingLanguage # ProgrammingLanguage " + "a : ProgrammingLanguage "
-                + "b : ProgrammingLanguage " + "a subsetOf b ";
+        String input = "/**/subsetOf < ProgrammingLanguage # ProgrammingLanguage. a : ProgrammingLanguage. "
+                + "b : ProgrammingLanguage. " + "a subsetOf b. ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
@@ -287,7 +290,7 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationInstanceDomainNotInstance() throws ParserException, IOException {
-        String input = "/**/b : ProgrammingLanguage " + "a subsetOf b";
+        String input = "/**/b : ProgrammingLanguage. " + "a subsetOf b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
@@ -298,7 +301,7 @@ public class ParserListenerTest {
 
     @Test
     public void addRelationInstanceRangeNotInstance() throws ParserException, IOException {
-        String input = "/**/a : ProgrammingLanguage " + "a subsetOf b";
+        String input = "/**/a : ProgrammingLanguage. " + "a subsetOf b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
@@ -309,7 +312,7 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionDeclarationOverloading() throws ParserException, IOException {
-        String input = "/**/a : ProgrammingLanguage " + "b : ProgrammingLanguage " + "f : a -> a " + "f : b -> b";
+        String input = "/**/a : ProgrammingLanguage. " + "b : ProgrammingLanguage. " + "f : a -> a. " + "f : b -> b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
@@ -320,7 +323,7 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionDeclarationDomainNotInstantiated() throws ParserException, IOException {
-        String input = "/**/b : ProgrammingLanguage " + "f : a -> b ";
+        String input = "/**/b : ProgrammingLanguage. " + "f : a -> b. ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
@@ -332,7 +335,7 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionDeclarationRangeNotInstantiated() throws ParserException, IOException {
-        String input = "/**/a : ProgrammingLanguage " + "f : a -> b ";
+        String input = "/**/a : ProgrammingLanguage. " + "f : a -> b. ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
@@ -344,7 +347,7 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionDeclarationDomainMultipleNotInstantiated() throws ParserException, IOException {
-        String input = "/**/b : ProgrammingLanguage " + "f : b # a # b -> b # b # a ";
+        String input = "/**/b : ProgrammingLanguage. " + "f : b # a # b -> b # b # a. ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
@@ -356,7 +359,7 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionDeclarationRangeMultipleNotInstantiated() throws ParserException, IOException {
-        String input = "/**/b : ProgrammingLanguage " + "f : b  # b -> b # b # a ";
+        String input = "/**/b : ProgrammingLanguage. " + "f : b  # b -> b # b # a. ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
@@ -367,7 +370,7 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionDeclarationDomainNotALanguage() throws ParserException, IOException {
-        String input = "/**/b : ProgrammingLanguage " + "f : Grammar -> b ";
+        String input = "/**/b : ProgrammingLanguage. " + "f : Grammar -> b. ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
@@ -379,19 +382,18 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionDeclarationRangeNotALanguage() throws ParserException, IOException {
-        String input = "/**/b : ProgrammingLanguage " + "f : b -> Grammar ";
+        String input = "/**/b : ProgrammingLanguage. " + "f : b -> Grammar. ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
-
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors().contains("Error at f's declaration: Grammar is not a language."));
     }
 
     @Test
     public void addFunctionDeclaration() throws ParserException, IOException {
-        String input = "/**/l : ProgrammingLanguage " + "f : l -> l";
+        String input = "/**/l : ProgrammingLanguage. " + "f : l -> l.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
@@ -401,7 +403,7 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionDeclarationMulti() throws ParserException, IOException {
-        String input = "/**/a : ProgrammingLanguage " + "b : ProgrammingLanguage " + "f : b  # b -> b # b # a ";
+        String input = "/**/a : ProgrammingLanguage. " + "b : ProgrammingLanguage. " + "f : b  # b -> b # b # a. ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
@@ -412,7 +414,7 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionApplicationNotDeclared() throws ParserException, IOException {
-        String input = "/**/f(a)|->a";
+        String input = "/**/f(a)|->a.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -425,8 +427,8 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionApplication() throws ParserException, IOException {
-        String input = "/**/l : ProgrammingLanguage " + "f : l # l # l -> l # l " + "a : Artifact " + "a elementOf l "
-                + "b : Artifact " + "b elementOf l " + "f(a,b,a)|->(b,a)";
+        String input = "/**/l : ProgrammingLanguage. " + "f : l # l # l -> l # l. " + "a : Artifact. "
+                + "a elementOf l. " + "b : Artifact. " + "b elementOf l. " + "f(a,b,a)|->(b,a).";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -445,9 +447,9 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionApplicationDuplicate() throws ParserException, IOException {
-        String input = "/**/l : ProgrammingLanguage " + "f : l # l # l -> l # l " + "a : Artifact " + "a elementOf l "
-                + "b : Artifact " + "b elementOf l " + "c : Artifact " + "c elementOf l " + "f(a,b,c)|->(b,a) "
-                + "f(a,b,c)|->(b,a)";
+        String input = "/**/l : ProgrammingLanguage. " + "f : l # l # l -> l # l. " + "a : Artifact. "
+                + "a elementOf l. " + "b : Artifact. " + "b elementOf l. " + "c : Artifact. " + "c elementOf l. "
+                + "f(a,b,c)|->(b,a). " + "f(a,b,c)|->(b,a).";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -461,8 +463,8 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionApplicationNotInstantiatedInput() throws ParserException, IOException {
-        String input = "/**/l : DataRepresentationLanguage " + "f : l -> l " + "b : Artifact " + "b elementOf l "
-                + "f(a)|->b";
+        String input = "/**/l : DataRepresentationLanguage. " + "f : l -> l. " + "b : Artifact. " + "b elementOf l. "
+                + "f(a)|->b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -473,8 +475,8 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionApplicationNotInstantiatedOutput() throws ParserException, IOException {
-        String input = "/**/l : DataRepresentationLanguage " + "f : l -> l " + "a : Artifact " + "a elementOf l "
-                + "f(a)|->b";
+        String input = "/**/l : DataRepresentationLanguage. " + "f : l -> l. " + "a : Artifact. " + "a elementOf l. "
+                + "f(a)|->b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -485,9 +487,9 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionApplicationUnfitDomain() throws ParserException, IOException {
-        String input = "/**/l1 : DataRepresentationLanguage " + "l2 : DataRepresentationLanguage "
-                + "f : l1 # l2 -> l2 " + "a1 : Artifact " + "a1 elementOf l1 " + "a1 hasRole MvcModel "
-                + "a1 manifestsAs File " + "a2 : Artifact " + "a2 elementOf l2 " + "f(a1,a1)|->a2";
+        String input = "/**/l1 : DataRepresentationLanguage. " + "l2 : DataRepresentationLanguage. "
+                + "f : l1 # l2 -> l2. " + "a1 : Artifact. " + "a1 elementOf l1. " + "a1 hasRole MvcModel. "
+                + "a1 manifestsAs File. " + "a2 : Artifact. " + "a2 elementOf l2. " + "f(a1,a1)|->a2.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -499,9 +501,9 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionApplicationUnfitRange() throws ParserException, IOException {
-        String input = "/**/l1 : DataRepresentationLanguage " + "l2 : DataRepresentationLanguage "
-                + "f : l1 # l2 -> l2 " + "a1 : Artifact " + "a1 elementOf l1 " + "a2 : Artifact "
-                + "a2 elementOf l2 " + "f(a1,a2)|->a1";
+        String input = "/**/l1 : DataRepresentationLanguage. " + "l2 : DataRepresentationLanguage. "
+                + "f : l1 # l2 -> l2. " + "a1 : Artifact. " + "a1 elementOf l1. " + "a2 : Artifact. "
+                + "a2 elementOf l2. " + "f(a1,a2)|->a1.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -513,9 +515,9 @@ public class ParserListenerTest {
 
     @Test
     public void addFunctionApplicationSubset() throws ParserException, IOException {
-        String input = "/**/l1 : DataRepresentationLanguage " + "l2 : DataRepresentationLanguage " + "l2 subsetOf l1 "
-                + "f : l1 # l2 -> l2 " + "a1 : Artifact " + "a1 elementOf l1 " + "a2 : Artifact "
-                + "a2 elementOf l2 " + "f(a2,a2)|->a2";
+        String input = "/**/l1 : DataRepresentationLanguage. " + "l2 : DataRepresentationLanguage. "
+                + "l2 subsetOf l1. " + "f : l1 # l2 -> l2. " + "a1 : Artifact. " + "a1 elementOf l1. "
+                + "a2 : Artifact. " + "a2 elementOf l2. " + "f(a2,a2)|->a2.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -536,30 +538,46 @@ public class ParserListenerTest {
     }
 
     @Test
-    public void testTurtleSyntax() throws ParserException, IOException {
-        String input = "/**/a : Artifact\n" + "    elementOf Java\n" + "    hasRole MvcModel";
-        assertNotNull(new ModelLoader().loadString(input));
+    public void testTurtleSyntaxStepwiseFailure() throws ParserException, IOException {
+        String input = "/**/a : Artifact; " + "elementOf Java;" + "hasRole MvcModel.";
+        ModelLoader ml = new ModelLoader();
+        ml.loadString(input);
+        assertEquals(1, ml.getTypeErrors().size());
+        assertEquals("Error at instance of elementOf: Java is not instantiated.", ml.getTypeErrors().get(0));
     }
 
     @Test
     public void testTurtleInstanceLink() throws ParserException, IOException {
-        String input = "/**/Java : ProgrammingLanguage\n"
-                + "    = \"https://en.wikipedia.org/wiki/Java_(programming_language)\"";
-        assertNotNull(new ModelLoader().loadString(input));
+        String input = "/**/Java : ProgrammingLanguage;"
+                + "    = \"https://en.wikipedia.org/wiki/Java_(programming_language)\".";
+        ModelLoader ml = new ModelLoader();
+        ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
     }
 
     @Test
     public void testTurtleTypeLink() throws ParserException, IOException {
-        String input = "/**/Language < Entity\n" + "    =\"https://en.wikipedia.org/wiki/Computer_language\"";
-        assertNotNull(new ModelLoader().loadString(input));
+        String input = "/**/Type < Entity;\n" + "=\"https://en.wikipedia.org/wiki/Computer_language\".";
+        ModelLoader ml = new ModelLoader();
+        ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
     }
 
     @Test
     public void testCommentAfterStmt() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/a : ProgrammingLanguage // test hello world";
+        String input = "/**/a : ProgrammingLanguage. // test hello world";
 
         ml.loadString(input);
-        assertNotNull(ml.getModel());
+        assertEquals(0, ml.getTypeErrors().size());
+    }
+
+    @Test
+    public void checkNotWellformedURL() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/?l : ProgrammingLanguage; " + "= \"notauri\".";
+        ml.loadString(input);
+        assertEquals(1, ml.getTypeErrors().size());
+        assertEquals("Error at linking ?l. The link 'notauri' cannot be resolved.", ml.getTypeErrors().get(0));
     }
 }

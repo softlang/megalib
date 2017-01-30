@@ -58,11 +58,12 @@ public class ParserListener extends MegalibBaseListener {
         if (typeCheck.addSubtypeOf(derivedType, superType, model)) {
             model.addSubtypeOf(derivedType, superType);
         }
+        if(context.getChildCount() > 4){
+            String link = context.getChild(5).getText();
+            if(typeCheck.addLink(derivedType, link.substring(1, link.length() - 1), model)){
+                model.addLink(derivedType, link.substring(1, link.length() - 1));
 
-        String link = context.getChild(5).getText();
-        if (typeCheck.addLink(derivedType, link, model)) {
-            model.addLink(derivedType, link.substring(1, link.length() - 1));
-
+            }
         }
     }
 
@@ -105,8 +106,8 @@ public class ParserListener extends MegalibBaseListener {
         while(it.next().getText().equals(";")){
             it.next(); // skip =
             String link = it.next().getText();
-            if(typeCheck.addLink(relation, link, model)){
-                model.addLink(relation, link);
+            if(typeCheck.addLink(relation, link.substring(1, link.length() - 1), model)){
+                model.addLink(relation, link.substring(1, link.length() - 1));
             }
         }
     }
@@ -116,6 +117,9 @@ public class ParserListener extends MegalibBaseListener {
         Iterator<ParseTree> it = context.children.iterator();
         String subject = it.next().getText();
         String relation = it.next().getText();
+        if(relation.startsWith("^")){
+            relation = relation.substring(1);
+        }
         String object = it.next().getText();
         if (typeCheck.addRelationInstance(relation, subject, object, model)) {
             model.addRelationInstances(relation, subject, object);
@@ -123,6 +127,9 @@ public class ParserListener extends MegalibBaseListener {
 
         while(it.next().getText().equals(";")){
             relation = it.next().getText();
+            if(relation.startsWith("^")){
+                relation = relation.substring(1);
+            }
             object = it.next().getText();
             if (relation.equals("=")) {
                 String link = object.substring(1, object.length() - 1);
@@ -144,19 +151,19 @@ public class ParserListener extends MegalibBaseListener {
         List<String> returnTypes = new ArrayList<>();
 
         boolean parameter = true;
-        for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
-            if (!context.getChild(childIndex).getText().equals("#") && parameter == false
-                    && !context.getChild(childIndex).getText().equals("->")) {
-                returnTypes.add(context.getChild(childIndex).getText());
-            }
-
-            if (!context.getChild(childIndex).getText().equals("#") && parameter == true
+        for(int childIndex = 2; childIndex < context.getChildCount() - 1; childIndex++){
+            if(!context.getChild(childIndex).getText().equals("#") && parameter
                     && !context.getChild(childIndex).getText().equals("->")) {
                 parameterTypes.add(context.getChild(childIndex).getText());
             }
 
             if (context.getChild(childIndex).getText().equals("->")) {
                 parameter = false;
+            }
+
+            if(!context.getChild(childIndex).getText().equals("#") && !parameter
+                    && !context.getChild(childIndex).getText().equals("->")){
+                returnTypes.add(context.getChild(childIndex).getText());
             }
         }
 
@@ -172,15 +179,8 @@ public class ParserListener extends MegalibBaseListener {
         List<String> inputs = new ArrayList<>();
 
         boolean parameter = true;
-        for (int childIndex = 2; childIndex < context.getChildCount(); childIndex++) {
-            if (!context.getChild(childIndex).getText().equals(",") && parameter == false
-                    && !context.getChild(childIndex).getText().equals("|->")
-                    && !context.getChild(childIndex).getText().equals("(")
-                    && !context.getChild(childIndex).getText().equals(")")) {
-                outputs.add(context.getChild(childIndex).getText());
-            }
-
-            if (!context.getChild(childIndex).getText().equals(",") && parameter == true
+        for(int childIndex = 2; childIndex < context.getChildCount() - 1; childIndex++){
+            if(!context.getChild(childIndex).getText().equals(",") && parameter
                     && !context.getChild(childIndex).getText().equals("|->")
                     && !context.getChild(childIndex).getText().equals("(")
                     && !context.getChild(childIndex).getText().equals(")")) {
@@ -189,6 +189,13 @@ public class ParserListener extends MegalibBaseListener {
 
             if (context.getChild(childIndex).getText().equals("|->")) {
                 parameter = false;
+            }
+
+            if(!context.getChild(childIndex).getText().equals(",") && !parameter
+                    && !context.getChild(childIndex).getText().equals("|->")
+                    && !context.getChild(childIndex).getText().equals("(")
+                    && !context.getChild(childIndex).getText().equals(")")){
+                outputs.add(context.getChild(childIndex).getText());
             }
         }
 

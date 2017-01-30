@@ -64,388 +64,374 @@ defines < Artifact # Language; // An artifact may serve as the specification for
 elementOf < Artifact # Language; // Every artifact is a member of a language
     = "https://en.wikipedia.org/wiki/Element_(mathematics)".
 conformsTo < Artifact # Artifact;  // An artifact may conform to a schema 
-    = "http://link.springer.com/article/10.1007%2Fs10270-006-0017-9"
-    = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering"
+    = "http://link.springer.com/article/10.1007%2Fs10270-006-0017-9";
+    = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 correspondsTo < Artifact # Artifact; // Two artifacts may be syntactically different, but semantically equal.
-    = "http://dictionary.cambridge.org/dictionary/english/correspond"
+    = "http://dictionary.cambridge.org/dictionary/english/correspond".
 refersTo < Artifact # Artifact;  // Experimental! Don't use unless you know what you're doing
-    = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier"
+    = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier".
 represents < Artifact # Artifact; // Experimental! Don't use unless you know what you're doing
-    = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering"
+    = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 
 /* Manifestation types of artifacts, where most are self-explanatory */
-Manifestation < Entity
-    = "https://en.oxforddictionaries.com/definition/manifestation"
-File : Manifestation // a single file
-    = "https://en.wikipedia.org/wiki/Computer_file"
-File+ : Manifestation // a set of files
-    = "https://en.wikipedia.org/wiki/Computer_file" 
-Folder : Manifestation //a folder
-    = "https://en.wikipedia.org/wiki/Directory_(computing)"
-Transient : Manifestation //Temporary available values
-    = "https://en.wikipedia.org/wiki/Transient_(computer_programming)"
-Fragment : Manifestation  //Some fragment of a file or transient
-    = "https://en.wikipedia.org/wiki/Snippet_(programming)"
-manifestsAs < Artifact # Manifestation
-    = "https://en.oxforddictionaries.com/definition/manifestation"
+Manifestation < Entity;
+    = "https://en.oxforddictionaries.com/definition/manifestation".
+File : Manifestation; // a single file
+    = "https://en.wikipedia.org/wiki/Computer_file".
+File+ : Manifestation; // a set of files
+    = "https://en.wikipedia.org/wiki/Computer_file".
+Folder : Manifestation; //a folder
+    = "https://en.wikipedia.org/wiki/Directory_(computing)".
+Transient : Manifestation; //Temporary available values
+    = "https://en.wikipedia.org/wiki/Transient_(computer_programming)".
+Fragment : Manifestation;  //Some fragment of a file or transient
+    = "https://en.wikipedia.org/wiki/Snippet_(programming)".
+manifestsAs < Artifact # Manifestation;
+    = "https://en.oxforddictionaries.com/definition/manifestation".
 
 /* Roles relate to the domain's or technological space's 
 terminology. They imply a commonly known purpose 
 that might even be defined in terms of a design or architectural
 pattern. */
-Role < Entity
-    = "https://en.wikipedia.org/wiki/Artifact_(software_development)"
-Configuration : Role   //settings statements.
-    = "https://en.wikipedia.org/wiki/Configuration_file"
-BuildScript : Role //Scripts for deploying software such as ANT or Maven files
-    = "https://en.wikipedia.org/wiki/Software_build"
-Grammar : Role   //syntax definition
-    = "https://en.wikipedia.org/wiki/Context-free_grammar"
-Database : Role  //any artifact that only stores data
-    = "https://en.wikipedia.org/wiki/Database"
-Schema : Role  //provide a schema
-    = "https://en.wikipedia.org/wiki/Database_schema"
-Query : Role  //a search declaration to satisfy information needs of software or humans
-    = "https://en.wikipedia.org/wiki/Query_language"
-MdeModel : Role // in the sense of MDE
-    = "https://en.wikipedia.org/wiki/Model-driven_engineering"
-MdeMetamodel : Role // in the sense of MDE
-    = "https://en.wikipedia.org/wiki/Metamodeling"
-Diagram : Role //a visual representation of a model
-    = "https://en.wikipedia.org/wiki/Diagram"
-MvcModel : Role //data classes plus minor business logics
-    = "https://en.wikipedia.org/wiki/Model-view-controller"
-MvcView : Role //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
-    = "https://en.wikipedia.org/wiki/Model-view-controller"
-MvcController : Role //Some kind of mediator between model and view, which may execute rather complex computations
-    = "https://en.wikipedia.org/wiki/Model-view-controller"
-Value : Role //A runtime value in the execution process of a program
-    = "https://en.wikipedia.org/wiki/Value_(computer_science)"
-Message : Role //A message in a communication of software components
-    = "https://en.wikipedia.org/wiki/Message_passing"
-Specification : Role //Defines some other conceptual entity in either half-formal or formal manner
-    = "https://en.wikipedia.org/wiki/Specification_(technical_standard)"
-Log : Role //Contains runtime information that is additionally gathered.
-    = "https://en.wikipedia.org/wiki/Logfile"
-DescriptiveModel : Role  //A model that describes existing software
-    = "http://www.businessdictionary.com/definition/descriptive-model.html"
-TransformationRule : Role //A definition for a text- or model-transformation that declares data manipulations.
-    = "http://101companies.org/wiki/Transformation"
-Reference : Role //links to some existing entity.
-    = "https://en.wikipedia.org/wiki/Reference"
-SourceCode : Role // An implementation of functionality
-    = "https://en.wikipedia.org/wiki/Source_code"
-ByteCode : Role //instructions for a software interpreter such as the JVM
-    = "https://en.wikipedia.org/wiki/Bytecode"
-Executable : Role //Any artifact that is executed and not only used.
-    = "https://en.wikipedia.org/wiki/Executable"
-WebResource : Role // Contains information and is deployed on a web server.
-    = "https://en.wikipedia.org/wiki/Web_resource"
-Archive : Role //A file that has folder functionality, such as .jar or .zip
-    = "https://en.wikipedia.org/wiki/Archive_file"
-Document : Role //An informal file that is deployed locally 
-    = "https://en.wikipedia.org/wiki/Document"
-Repository : Role //A database that manages code artifacts and acts as a VCS
-    = "https://en.wikipedia.org/wiki/Repository_(version_control)"
-Module : Role
-    = "https://en.wikipedia.org/wiki/Modular_programming"
-Interface : Role
-    = "https://en.wikipedia.org/wiki/Protocol_(object-oriented_programming)" //weird
-TestCase : Role
-    = "https://en.wikipedia.org/wiki/Test_case"
-POJO : Role
-    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object"
-hasRole < Artifact # Role //Relating the artifact to an existing term known in a domain
-    = "https://en.wikipedia.org/wiki/Terminology"
+Role < Entity;
+    = "https://en.wikipedia.org/wiki/Artifact_(software_development)".
+Configuration : Role;   //settings statements.
+    = "https://en.wikipedia.org/wiki/Configuration_file".
+BuildScript : Role; //Scripts for deploying software such as ANT or Maven files
+    = "https://en.wikipedia.org/wiki/Software_build".
+Grammar : Role;   //syntax definition
+    = "https://en.wikipedia.org/wiki/Context-free_grammar".
+Database : Role;  //any artifact that only stores data
+    = "https://en.wikipedia.org/wiki/Database".
+Schema : Role;  //provide a schema
+    = "https://en.wikipedia.org/wiki/Database_schema".
+Query : Role;  //a search declaration to satisfy information needs of software or humans
+    = "https://en.wikipedia.org/wiki/Query_language".
+MdeModel : Role; // in the sense of MDE
+    = "https://en.wikipedia.org/wiki/Model-driven_engineering".
+MdeMetamodel : Role; // in the sense of MDE
+    = "https://en.wikipedia.org/wiki/Metamodeling".
+Diagram : Role; //a visual representation of a model
+    = "https://en.wikipedia.org/wiki/Diagram".
+MvcModel : Role; //data classes plus minor business logics
+    = "https://en.wikipedia.org/wiki/Model-view-controller".
+MvcView : Role; //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
+    = "https://en.wikipedia.org/wiki/Model-view-controller".
+MvcController : Role; //Some kind of mediator between model and view, which may execute rather complex computations
+    = "https://en.wikipedia.org/wiki/Model-view-controller".
+Value : Role; //A runtime value in the execution process of a program
+    = "https://en.wikipedia.org/wiki/Value_(computer_science)".
+Message : Role; //A message in a communication of software components
+    = "https://en.wikipedia.org/wiki/Message_passing".
+Specification : Role; //Defines some other conceptual entity in either half-formal or formal manner
+    = "https://en.wikipedia.org/wiki/Specification_(technical_standard)".
+Log : Role; //Contains runtime information that is additionally gathered.
+    = "https://en.wikipedia.org/wiki/Logfile".
+DescriptiveModel : Role;  //A model that describes existing software
+    = "http://www.businessdictionary.com/definition/descriptive-model.html".
+TransformationRule : Role; //A definition for a text- or model-transformation that declares data manipulations.
+    = "http://101companies.org/wiki/Transformation".
+Reference : Role; //links to some existing entity.
+    = "https://en.wikipedia.org/wiki/Reference".
+SourceCode : Role; // An implementation of functionality
+    = "https://en.wikipedia.org/wiki/Source_code".
+ByteCode : Role; //instructions for a software interpreter such as the JVM
+    = "https://en.wikipedia.org/wiki/Bytecode".
+Executable : Role; //Any artifact that is executed and not only used.
+    = "https://en.wikipedia.org/wiki/Executable".
+WebResource : Role; // Contains information and is deployed on a web server.
+    = "https://en.wikipedia.org/wiki/Web_resource".
+Archive : Role; //A file that has folder functionality, such as .jar or .zip
+    = "https://en.wikipedia.org/wiki/Archive_file".
+Document : Role; //An informal file that is deployed locally 
+    = "https://en.wikipedia.org/wiki/Document".
+Repository : Role; //A database that manages code artifacts and acts as a VCS
+    = "https://en.wikipedia.org/wiki/Repository_(version_control)".
+Module : Role;
+    = "https://en.wikipedia.org/wiki/Modular_programming".
+Interface : Role;
+    = "https://en.wikipedia.org/wiki/Protocol_(object-oriented_programming)". //weird
+TestCase : Role;
+    = "https://en.wikipedia.org/wiki/Test_case".
+POJO : Role;
+    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object".
+hasRole < Artifact # Role; //Relating the artifact to an existing term known in a domain
+    = "https://en.wikipedia.org/wiki/Terminology".
 
 /* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
-DesignPattern < Entity
-    = "https://en.wikipedia.org/wiki/Software_design_pattern"
-Model-View-Controller : DesignPattern
-    = "https://en.wikipedia.org/wiki/Model-view-controller"
-ArchitecturalPattern < Entity
-    = "https://en.wikipedia.org/wiki/Architectural_pattern"
-Client-Server : ArchitecturalPattern
-    = "https://de.wikipedia.org/wiki/Client-Server-Modell"
-REST : ArchitecturalPattern
-    = "https://en.wikipedia.org/wiki/Representational_state_transfer"
-ServiceOrientedArchitecture : ArchitecturalPattern
-    = "https://en.wikipedia.org/wiki/Service-oriented_architecture"
-participantOf < Role # DesignPattern
-    = "https://en.wikipedia.org/wiki/Software_design_pattern#Structure"
-participantOf < Role # ArchitecturalPattern
-    = "https://en.wikipedia.org/wiki/Architectural_pattern" //related to design Pattern
+DesignPattern < Entity;
+    = "https://en.wikipedia.org/wiki/Software_design_pattern".
+Model-View-Controller : DesignPattern;
+    = "https://en.wikipedia.org/wiki/Model-view-controller".
+ArchitecturalPattern < Entity;
+    = "https://en.wikipedia.org/wiki/Architectural_pattern".
+Client-Server : ArchitecturalPattern;
+    = "https://de.wikipedia.org/wiki/Client-Server-Modell".
+REST : ArchitecturalPattern;
+    = "https://en.wikipedia.org/wiki/Representational_state_transfer".
+ServiceOrientedArchitecture : ArchitecturalPattern;
+    = "https://en.wikipedia.org/wiki/Service-oriented_architecture".
+participantOf < Role # DesignPattern;
+    = "https://en.wikipedia.org/wiki/Software_design_pattern#Structure".
+participantOf < Role # ArchitecturalPattern;
+    = "https://en.wikipedia.org/wiki/Architectural_pattern". //related to design Pattern
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
-Function < Entity
-    = "https://en.wikipedia.org/wiki/Function_(mathematics)"
-implements < Artifact # Function
-    = "https://en.wikipedia.org/wiki/Implementation"
+Function < Entity;
+    = "https://en.wikipedia.org/wiki/Function_(mathematics)".
 
 /* A technology is a reusable . 
 Technologies can be classified along 2 Dimensions: 
 1.) The kind of use (Code reuse as in libraries vs executable code as 
 in a program vs both as in frameworks) 
 2.) Whether it is a part or a standalone piece of software. */
-Technology < Entity
-    = "https://www.journals.elsevier.com/information-and-software-technology/"
-Library < Technology //contains a set of reusable functions.
-    = "https://en.wikipedia.org/wiki/Library_(computing)"
-API < Library //Reusable code that facilitates the use of another technology/language. (Local API !)
-    = "https://en.wikipedia.org/wiki/Application_programming_interface"
-Framework < Technology //facilitates the realization of specific use cases most times through code generation
-    = "https://en.wikipedia.org/wiki/Software_framework"
-Plugin < Technology // as an extension to another technology
-    = "https://en.wikipedia.org/wiki/Plug-in_(computing)"
-Component < Technology // as part of a composed technology
-    = "https://en.wikipedia.org/wiki/Component-based_software_engineering#Software_component"
-Software < Technology //a technology that consists of multiple programs and is deployed locally
-    = "https://en.wikipedia.org/wiki/Software"
-SoftwareSuite < Software // a software collection that is deployed and managed together
-    = "https://en.wikipedia.org/wiki/Software_suite"
-WebService < Software  // software deployed at a server, communication via HTTP
-    = "https://en.wikipedia.org/wiki/Web_service"
-Program < Software // a software that implements only one process that is needed in distinct use cases.
-    = "https://en.wikipedia.org/wiki/Computer_program"
-IDE < Software // an environment to facilitate writing systems or technologies.
-    = "https://en.wikipedia.org/wiki/Integrated_development_environment"
-Platform < Software // a technology that has the capability to execute code
-    = "https://en.wikipedia.org/wiki/Computing_platform"
+Technology < Entity;
+    = "https://www.journals.elsevier.com/information-and-software-technology/".
+Library < Technology; //contains a set of reusable functions.
+    = "https://en.wikipedia.org/wiki/Library_(computing)".
+API < Library; //Reusable code that facilitates the use of another technology/language. (Local API !)
+    = "https://en.wikipedia.org/wiki/Application_programming_interface".
+Framework < Technology; //facilitates the realization of specific use cases most times through code generation
+    = "https://en.wikipedia.org/wiki/Software_framework".
+Plugin < Technology; // as an extension to another technology
+    = "https://en.wikipedia.org/wiki/Plug-in_(computing)".
+Component < Technology; // as part of a composed technology
+    = "https://en.wikipedia.org/wiki/Component-based_software_engineering#Software_component".
+Software < Technology; //a technology that consists of multiple programs and is deployed locally
+    = "https://en.wikipedia.org/wiki/Software".
+SoftwareSuite < Software; // a software collection that is deployed and managed together
+    = "https://en.wikipedia.org/wiki/Software_suite".
+WebService < Software;  // software deployed at a server, communication via HTTP
+    = "https://en.wikipedia.org/wiki/Web_service".
+Program < Software; // a software that implements only one process that is needed in distinct use cases.
+    = "https://en.wikipedia.org/wiki/Computer_program".
+IDE < Software; // an environment to facilitate writing systems or technologies.
+    = "https://en.wikipedia.org/wiki/Integrated_development_environment".
+Platform < Software; // a technology that has the capability to execute code
+    = "https://en.wikipedia.org/wiki/Computing_platform".
 
 /* Implementation relationships */
-implements < Technology # Function  //A technology may implement a mapping
-    = "https://en.wikipedia.org/wiki/Implementation"
-implements < Technology # Language  //A technology can process a language as input or output
-    = "https://en.wikipedia.org/wiki/Implementation"
+implements < Technology # Function;  //A technology may implement a mapping
+    = "https://en.wikipedia.org/wiki/Implementation".
+implements < Technology # Language.  //A technology can process a language as input or output
+implements < Artifact # Function. //Necessary?
 
 /* Code deployment aspects */
-managedBy < Technology # Artifact //a technology is managed by an artifact, if the artifact contains the technology's source code.
-    = "https://en.wikipedia.org/wiki/Software_repository"
-deployedAs < Technology # Artifact //In a usage scenario the technology is locally deployed as an artifact
-    = "https://en.wikipedia.org/wiki/Software_deployment"
+managedBy < Technology # Artifact; //a technology is managed by an artifact, if the artifact contains the technology's source code.
+    = "https://en.wikipedia.org/wiki/Software_repository".
+deployedAs < Technology # Artifact; //In a usage scenario the technology is locally deployed as an artifact
+    = "https://en.wikipedia.org/wiki/Software_deployment".
 
 /* Classification of systems */
-System < Entity //a set of artifacts realizing some concrete use cases
-    = "https://en.wikipedia.org/wiki/Software_system"
-Application < System // a professionally coordinated set of artifacts that are deployed locally
-    = "https://en.wikipedia.org/wiki/Application_software"
-WebApplication < System // a professionally coordinated set of artifacts that are deployed on a web server
-    = "https://en.wikipedia.org/wiki/Web_application"
-FileSystem < System  //A set of files managed by the user instead of being coordinated as program input or output.
-    = "https://en.wikipedia.org/wiki/File_system"
+System < Entity; //a set of artifacts realizing some concrete use cases
+    = "https://en.wikipedia.org/wiki/Software_system".
+Application < System; // a professionally coordinated set of artifacts that are deployed locally
+    = "https://en.wikipedia.org/wiki/Application_software".
+WebApplication < System; // a professionally coordinated set of artifacts that are deployed on a web server
+    = "https://en.wikipedia.org/wiki/Web_application".
+FileSystem < System;  //A set of files managed by the user instead of being coordinated as program input or output.
+    = "https://en.wikipedia.org/wiki/File_system".
 
 /* Ways of thinking in the context of programming that have implications on 
 language semantics, available language constructs and usage benefits */
-Paradigm < Entity 
-    = "https://en.wikipedia.org/wiki/Programming_paradigm"
-ConcurrentProgramming : Paradigm // Programming in a way that enables and manages parallel execution
-    = "https://blog.golang.org/concurrency-is-not-parallelism"
-ObjectOrientedProgramming : Paradigm // Thinking of objects and their interrelation
-    = "https://en.wikipedia.org/wiki/Object-oriented_programming"
-FunctionalProgramming : Paradigm // Programming in a way that resembles formulating mathematical functions
-    = "https://en.wikipedia.org/wiki/Functional_programming"
-RelationalProgramming : Paradigm // Enabling the representation of entities and their interrelationships.
-    = "https://en.wikipedia.org/wiki/Relational_model"
-ModularProgramming : Paradigm //Seperation of functionality implementations in modules
-    = "https://en.wikipedia.org/wiki/Modular_programming"
-AspectOrientedProgramming : Paradigm //Seperation of cross-cutting concerns
-    = "https://en.wikipedia.org/wiki/Aspect-oriented_programming"
-LogicProgramming : Paradigm //programming based on formal logic
-    = "https://en.wikipedia.org/wiki/Logic_programming"
-specializes < Paradigm # Paradigm
-    = "https://en.wikipedia.org/wiki/Programming_paradigm"
+Paradigm < Entity ;
+    = "https://en.wikipedia.org/wiki/Programming_paradigm".
+ConcurrentProgramming : Paradigm; // Programming in a way that enables and manages parallel execution
+    = "https://blog.golang.org/concurrency-is-not-parallelism".
+ObjectOrientedProgramming : Paradigm; // Thinking of objects and their interrelation
+    = "https://en.wikipedia.org/wiki/Object-oriented_programming".
+FunctionalProgramming : Paradigm; // Programming in a way that resembles formulating mathematical functions
+    = "https://en.wikipedia.org/wiki/Functional_programming".
+RelationalProgramming : Paradigm; // Enabling the representation of entities and their interrelationships.
+    = "https://en.wikipedia.org/wiki/Relational_model".
+ModularProgramming : Paradigm; //Seperation of functionality implementations in modules
+    = "https://en.wikipedia.org/wiki/Modular_programming".
+AspectOrientedProgramming : Paradigm; //Seperation of cross-cutting concerns
+    = "https://en.wikipedia.org/wiki/Aspect-oriented_programming".
+LogicProgramming : Paradigm; //programming based on formal logic
+    = "https://en.wikipedia.org/wiki/Logic_programming".
+specializes < Paradigm # Paradigm;
+    = "https://en.wikipedia.org/wiki/Programming_paradigm".
 
 /* A field of study that defines common requirements, problems, terminology and ways for technologies or 
 languages to support it. */
-ProgrammingDomain < Entity
-    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
-subdomainOf < ProgrammingDomain # ProgrammingDomain //a domain covers a subset of another domain's requirements, problems, terminology and ways for languages/technologies to support it.
-    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)"
-demonstrates < System # ProgrammingDomain //Experimental! Don't use unless you know what you're doing.
-    = "http://softlang.uni-koblenz.de/chrestomathy/"
-GeneralPurposeProgramming : ProgrammingDomain // The study on applications in general.
-    = "https://en.wikipedia.org/wiki/General-purpose_programming_language"
-MetaProgramming : ProgrammingDomain // The study on processing programs with support for language implementation 
-    = "https://en.wikipedia.org/wiki/Metaprogramming"
-DatabaseProgramming : ProgrammingDomain // The study on how to efficiently store and process data 
-    = "http://101companies.org/wiki/Database_programming"
-ReverseEngineering : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Reverse_engineering"
-QualityAssurance : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Software_quality_assurance"
-Testing : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Software_testing"
-    subdomainOf QualityAssurance
-Persistence : ProgrammingDomain //or data binding
-    = "http://101companies.org/wiki/Persistence"
-ObjectRelationalMapping : ProgrammingDomain
-    = "http://101companies.org/wiki/Object-Relational_mapping"
-    subdomainOf Persistence
-WebApplicationDevelopment : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Web_application_development"
-OfflineWebApplicationDevelopment : ProgrammingDomain
-    = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline"
-    subdomainOf WebApplicationDevelopment
-ModelDrivenEngineering : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Model-driven_engineering"
-SoftwareDocumentation : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Software_documentation"
-GraphicsProgramming : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Computer_graphics_(computer_science)"
-BusinessProgramming : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Business_software"
-EnterpriseResourcePlanning : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Enterprise_resource_planning"
-    subdomainOf BusinessProgramming
-CustomerRelationshipManagement : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Customer_relationship_management"
-    subdomainOf BusinessProgramming
-ProjectManagement : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Project_management_software"
-DocumentManagement : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Document_management_system"
-ECommerce : ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/E-commerce"
-    subdomainOf BusinessProgramming
-supports < Technology # ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Software_feature" //needs better link
-supports < Language # ProgrammingDomain
-    = "https://en.wikipedia.org/wiki/Software_feature" //needs better link
+ProgrammingDomain < Entity;
+    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
+subdomainOf < ProgrammingDomain # ProgrammingDomain; //a domain covers a subset of another domain's requirements, problems, terminology and ways for languages/technologies to support it.
+    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
+demonstrates < System # ProgrammingDomain; //Experimental! Don't use unless you know what you're doing.
+    = "http://softlang.uni-koblenz.de/chrestomathy/".
+GeneralPurposeProgramming : ProgrammingDomain; // The study on applications in general.
+    = "https://en.wikipedia.org/wiki/General-purpose_programming_language".
+MetaProgramming : ProgrammingDomain; // The study on processing programs with support for language implementation 
+    = "https://en.wikipedia.org/wiki/Metaprogramming".
+DatabaseProgramming : ProgrammingDomain; // The study on how to efficiently store and process data 
+    = "http://101companies.org/wiki/Database_programming".
+ReverseEngineering : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Reverse_engineering".
+QualityAssurance : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Software_quality_assurance".
+Testing : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Software_testing";
+    subdomainOf QualityAssurance.
+Persistence : ProgrammingDomain; //or data binding
+    = "http://101companies.org/wiki/Persistence".
+ObjectRelationalMapping : ProgrammingDomain;
+    = "http://101companies.org/wiki/Object-Relational_mapping";
+    subdomainOf Persistence.
+WebApplicationDevelopment : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Web_application_development".
+OfflineWebApplicationDevelopment : ProgrammingDomain;
+    = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline";
+    subdomainOf WebApplicationDevelopment.
+ModelDrivenEngineering : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Model-driven_engineering".
+SoftwareDocumentation : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Software_documentation".
+GraphicsProgramming : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Computer_graphics_(computer_science)".
+BusinessProgramming : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Business_software".
+EnterpriseResourcePlanning : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Enterprise_resource_planning";
+    subdomainOf BusinessProgramming.
+CustomerRelationshipManagement : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Customer_relationship_management";
+    subdomainOf BusinessProgramming.
+ProjectManagement : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Project_management_software".
+DocumentManagement : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Document_management_system".
+ECommerce : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/E-commerce";
+    subdomainOf BusinessProgramming.
+supports < Technology # ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Software_feature". //needs better link
+supports < Language # ProgrammingDomain.
 
 /* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. While a programming domain could be called a problem space, a technology space could be called a solution space. 
 
 Hint: Language dependent technology spaces can be found in the corresponding
 language's main module. */
-TechnologySpace < Entity
-    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
-subspaceOf < TechnologySpace # TechnologySpace
-    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
-BuildAutomationWare : TechnologySpace
-    = "https://en.wikipedia.org/wiki/List_of_build_automation_software"
-MDEWare : TechnologySpace
-    = "https://en.wikipedia.org/wiki/Model-driven_engineering#Tools"
-SoftwareAsAServiceWare : TechnologySpace
-    = "https://en.wikipedia.org/wiki/Software_as_a_service"
-belongsTo < Technology # TechnologySpace
-    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
-belongsTo < Language # TechnologySpace
-    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal"
+TechnologySpace < Entity;
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
+subspaceOf < TechnologySpace # TechnologySpace;
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
+BuildAutomationWare : TechnologySpace;
+    = "https://en.wikipedia.org/wiki/List_of_build_automation_software".
+MDEWare : TechnologySpace;
+    = "https://en.wikipedia.org/wiki/Model-driven_engineering#Tools".
+SoftwareAsAServiceWare : TechnologySpace;
+    = "https://en.wikipedia.org/wiki/Software_as_a_service".
+belongsTo < Technology # TechnologySpace;
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
+belongsTo < Language # TechnologySpace.
 
 /* Reusable ideal solutions. */
-AbstractProcess < Entity //Commonly known technology- and language independent processes
-    = "https://en.wikipedia.org/wiki/Abstract_process"
-Protocol < AbstractProcess // A process defined by a protocol
-    = "https://en.wikipedia.org/wiki/Communications_protocol"
-Algorithm < AbstractProcess
-    = "https://en.wikipedia.org/wiki/Algorithm"
-Construct < Entity //A common language- and technology independent artifact constellation
-    = "https://en.wikipedia.org/wiki/Construct_(philosophy)"
+AbstractProcess < Entity; //Commonly known technology- and language independent processes
+    = "https://en.wikipedia.org/wiki/Abstract_process".
+Protocol < AbstractProcess; // A process defined by a protocol
+    = "https://en.wikipedia.org/wiki/Communications_protocol".
+Algorithm < AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Algorithm".
+Construct < Entity; //A common language- and technology independent artifact constellation
+    = "https://en.wikipedia.org/wiki/Construct_(philosophy)".
 
 /* Abstract solutions an aspect of a way of thinking or field of study. */
-aspectOf < Construct # Paradigm //as in Semaphore aspectOf ConcurrentProgramming
-    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect"
-aspectOf < Construct # ProgrammingDomain //as in LocalStorage aspectOf OfflineWebApplicationDevelopment
-    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect"
-aspectOf < AbstractProcess # ProgrammingDomain
-    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect"
-aspectOf < Role # ProgrammingDomain 
-    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect"
+aspectOf < Construct # Paradigm; //as in Semaphore aspectOf ConcurrentProgramming
+    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect".
+aspectOf < Construct # ProgrammingDomain. //as in LocalStorage aspectOf OfflineWebApplicationDevelopment
+aspectOf < AbstractProcess # ProgrammingDomain.
+aspectOf < Role # ProgrammingDomain .
 
 /* Known instances of abstract solutions */
-HTTPS : Protocol 
-    = "https://en.wikipedia.org/wiki/HTTPS"
-Serialization : AbstractProcess //Save runtime values in a persistent format.
-    = "https://en.wikipedia.org/wiki/Serialization"
-    aspectOf Persistence
-Compilation : AbstractProcess //Software translation of a higher level language into a lower level language
-    = "https://de.wikipedia.org/wiki/Compiler"
-    aspectOf MetaProgramming
-Transformation : AbstractProcess // Takes input data and produces output data. Input and output are elements of a software language that is not a data type.
-    = "https://en.wikipedia.org/wiki/Data_transformation"
-Validation : AbstractProcess //Validate quality
-    = "https://en.wikipedia.org/wiki/Verification_and_validation#Categories_of_validation"
-    aspectOf QualityAssurance
-    aspectOf Testing
-Verification : AbstractProcess //Correctness Proof
-    = "https://en.wikipedia.org/wiki/Software_verification"
-    aspectOf QualityAssurance
-Rendering : AbstractProcess //synthesizing an image from some description format
-    = "https://en.wikipedia.org/wiki/Rendering_(computer_graphics)"
-    aspectOf GraphicsProgramming
-Metric : AbstractProcess
-    = "https://en.wikipedia.org/wiki/Software_metric"
-    aspectOf ReverseEngineering
-    aspectOf QualityAssurance
-CodeCoverage : AbstractProcess //specific metric
-    = "https://en.wikipedia.org/wiki/Code_coverage"
-    aspectOf Testing
-Introspection : Construct
-    = "https://en.wikipedia.org/wiki/Type_introspection"
-    aspectOf MetaProgramming
-Semaphore : Construct //A flag to control access to a resource in the context of concurrent programs.
-    = "https://en.wikipedia.org/wiki/Semaphore_(programming)"
-    aspectOf ConcurrentProgramming
-Annotation : Construct
-    = "https://en.wikipedia.org/wiki/Annotation"
-    aspectOf ObjectOrientedProgramming
+HTTPS : Protocol ;
+    = "https://en.wikipedia.org/wiki/HTTPS".
+Serialization : AbstractProcess; //Save runtime values in a persistent format.
+    = "https://en.wikipedia.org/wiki/Serialization";
+    aspectOf Persistence.
+Compilation : AbstractProcess; //Software translation of a higher level language into a lower level language
+    = "https://de.wikipedia.org/wiki/Compiler";
+    aspectOf MetaProgramming.
+Transformation : AbstractProcess; // Takes input data and produces output data. Input and output are elements of a software language that is not a data type.
+    = "https://en.wikipedia.org/wiki/Data_transformation".
+Validation : AbstractProcess; //Validate quality
+    = "https://en.wikipedia.org/wiki/Verification_and_validation#Categories_of_validation";
+    aspectOf QualityAssurance;
+    aspectOf Testing.
+Verification : AbstractProcess; //Correctness Proof
+    = "https://en.wikipedia.org/wiki/Software_verification";
+    aspectOf QualityAssurance.
+Rendering : AbstractProcess; //synthesizing an image from some description format
+    = "https://en.wikipedia.org/wiki/Rendering_(computer_graphics)";
+    aspectOf GraphicsProgramming.
+Metric : AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Software_metric";
+    aspectOf ReverseEngineering;
+    aspectOf QualityAssurance.
+CodeCoverage : AbstractProcess; //specific metric
+    = "https://en.wikipedia.org/wiki/Code_coverage";
+    aspectOf Testing.
+Introspection : Construct;
+    = "https://en.wikipedia.org/wiki/Type_introspection";
+    aspectOf MetaProgramming.
+Semaphore : Construct; //A flag to control access to a resource in the context of concurrent programs.
+    = "https://en.wikipedia.org/wiki/Semaphore_(programming)";
+    aspectOf ConcurrentProgramming.
+Annotation : Construct;
+    = "https://en.wikipedia.org/wiki/Annotation";
+    aspectOf ObjectOrientedProgramming.
 
 
 /* Part-of relationships */
-partOf < Artifact # Artifact
-    = "http://dictionary.cambridge.org/dictionary/english/part"
-partOf < Artifact # System
-    = "http://dictionary.cambridge.org/dictionary/english/part"
-partOf < Artifact # Technology
-    = "http://dictionary.cambridge.org/dictionary/english/part"
-partOf < Technology # Technology
-    = "http://dictionary.cambridge.org/dictionary/english/part"
-partOf < System # System
-    = "http://dictionary.cambridge.org/dictionary/english/part"
+partOf < Artifact # Artifact;
+    = "http://dictionary.cambridge.org/dictionary/english/part".
+partOf < Artifact # System.
+partOf < Artifact # Technology.
+partOf < Technology # Technology.
+partOf < System # System.
+
+/* A language is used in the sense that some part is a member of the language. Maybe rename to writtenIn */
+uses < System # Language;
+    = "https://en.wikipedia.org/wiki/Computer_programming".
+uses < Technology # Language.
+
+/* Re-usable forms of solutions can be used in the sense of realization. Maybe rename to realizes. */
+uses < System # DesignPattern.
+uses < System # ArchitecturalPattern.
+uses < System # AbstractProcess.
+uses < System # Construct.
+uses < Technology # DesignPattern.
+uses < Technology # ArchitecturalPattern.
+uses < Technology # AbstractProcess.
+uses < Technology # Construct.
+uses < Artifact # DesignPattern.
+uses < Artifact # ArchitecturalPattern.
+uses < Artifact # AbstractProcess.
+uses < Artifact # Construct.
+
+/* A technology or a language can facilitate the usage of ideal forms of solutions */
+facilitates < Technology # DesignPattern.
+facilitates < Technology # ArchitecturalPattern.
+facilitates < Technology # AbstractProcess.
+facilitates < Technology # Construct.
+facilitates < Language # Paradigm.
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */
-uses < System # System
-    = "https://en.wikipedia.org/wiki/Code_reuse"
-uses < System # Technology
-    = "https://en.wikipedia.org/wiki/Code_reuse"
-uses < Technology # Technology
-    = "https://en.wikipedia.org/wiki/Code_reuse"
-uses < Artifact # System
-    = "https://en.wikipedia.org/wiki/Code_reuse"
-uses < Artifact # Technology
-    = "https://en.wikipedia.org/wiki/Code_reuse"
-
-/* A language is used in the sense that some part is a member of the language. Maybe rename to writtenIn */
-uses < System # Language
-uses < Technology # Language
-
-/* Re-usable forms of solutions can be used in the sense of realization. Maybe rename to realizes. */
-uses < System # DesignPattern
-uses < System # ArchitecturalPattern
-uses < System # AbstractProcess
-uses < System # Construct
-uses < Technology # DesignPattern
-uses < Technology # ArchitecturalPattern
-uses < Technology # AbstractProcess
-uses < Technology # Construct
-uses < Artifact # DesignPattern
-uses < Artifact # ArchitecturalPattern
-uses < Artifact # AbstractProcess
-uses < Artifact # Construct
-
-/* A technology or a language can facilitate the usage of ideal forms of solutions */
-facilitates < Technology # DesignPattern
-facilitates < Technology # ArchitecturalPattern
-facilitates < Technology # AbstractProcess
-facilitates < Technology # Construct
-facilitates < Language # Paradigm
+uses < System # System;
+    = "https://en.wikipedia.org/wiki/Code_reuse".
+uses < System # Technology.
+uses < Technology # Technology.
+uses < Artifact # System.
+uses < Artifact # Technology.
 
 /* PDF file format has frequent appearence everywhere. */
-PDF : FileFormat
-    = "https://en.wikipedia.org/wiki/Portable_Document_Format"
-adobePDFSpec : Artifact
-    = "http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf"
-    elementOf PDF
-    hasRole Specification
-    manifestsAs File
-    defines PDF
+PDF : FileFormat;
+    = "https://en.wikipedia.org/wiki/Portable_Document_Format".
+adobePDFSpec : Artifact;
+    = "http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf";
+    elementOf PDF;
+    hasRole Specification;
+    manifestsAs File;
+    defines PDF.

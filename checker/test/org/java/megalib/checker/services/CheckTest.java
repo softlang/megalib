@@ -29,7 +29,7 @@ public class CheckTest {
     public void checkInstanceOfTechnology() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
 
-        String input = "/**/?t : Technology " + "?l : ProgrammingLanguage " + "?t uses ?l";
+        String input = "/**/?t : Technology. " + "?l : ProgrammingLanguage. " + "?t uses ?l.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
@@ -41,7 +41,7 @@ public class CheckTest {
     @Test
     public void checkInstanceOfLanguage() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?t : Library " + "?l : Language " + "?t uses ?l";
+        String input = "/**/?t : Library. " + "?l : Language. " + "?t uses ?l.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
@@ -54,7 +54,7 @@ public class CheckTest {
     @Test
     public void checkLinkExistence() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/t : Library " + "?l : ProgrammingLanguage " + "t uses ?l";
+        String input = "/**/t : Library. " + "?l : ProgrammingLanguage. " + "t uses ?l.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
@@ -66,7 +66,7 @@ public class CheckTest {
     @Test
     public void checkTechnologyUsesLanguage() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/t : Library\n" + "    = \"http://softlang.wikidot.com/\"";
+        String input = "/**/t : Library; = \"http://softlang.wikidot.com/\".";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
 
@@ -79,8 +79,8 @@ public class CheckTest {
     @Test
     public void checkFunctionImplementation() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?l : ProgrammingLanguage " + "f : ?l -> ?l " + "?a : Artifact " + "?a elementOf ?l "
-                + "?a hasRole MvcModel" + "?a manifestsAs File " + "f(?a)|->?a";
+        String input = "/**/?l : ProgrammingLanguage. " + "f : ?l -> ?l. " + "?a : Artifact. " + "?a elementOf ?l. "
+                       + "?a hasRole MvcModel." + "?a manifestsAs File. " + "f(?a)|->?a.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
 
@@ -92,9 +92,9 @@ public class CheckTest {
     @Test
     public void checkFunctionApplication() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?l : ProgrammingLanguage " + "f : ?l -> ?l " + "?a : Artifact " + "?a elementOf ?l "
-                + "?a hasRole MvcModel " + "?a manifestsAs File " + "?t : Library " + "?t uses ?l "
-                + "?t implements f";
+        String input = "/**/?l : ProgrammingLanguage. " + "f : ?l -> ?l. " + "?a : Artifact. " + "?a elementOf ?l. "
+                       + "?a hasRole MvcModel. " + "?a manifestsAs File. " + "?t : Library. " + "?t uses ?l. "
+                       + "?t implements f.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
@@ -105,7 +105,7 @@ public class CheckTest {
     @Test
     public void checkArtifactElementOf() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?a : Artifact " + "?a hasRole MvcModel " + "?a manifestsAs File";
+        String input = "/**/?a : Artifact. " + "?a hasRole MvcModel. " + "?a manifestsAs File.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
@@ -116,7 +116,8 @@ public class CheckTest {
     @Test
     public void checkArtifactManifestsAs() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?l : ProgrammingLanguage " + "?a : Artifact " + "?a elementOf ?l " + "?a hasRole MvcModel ";
+        String input = "/**/?l : ProgrammingLanguage. " + "?a : Artifact. " + "?a elementOf ?l. "
+                       + "?a hasRole MvcModel. ";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
@@ -127,7 +128,8 @@ public class CheckTest {
     @Test
     public void checkArtifactHasRole() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?l : ProgrammingLanguage " + "?a : Artifact " + "?a elementOf ?l " + "?a manifestsAs File";
+        String input = "/**/?l : ProgrammingLanguage. " + "?a : Artifact. " + "?a elementOf ?l. "
+                       + "?a manifestsAs File.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
@@ -138,36 +140,23 @@ public class CheckTest {
     @Test
     public void checkCyclicSubsets() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?l1 : ProgrammingLanguage " + "?l2 : ProgrammingLanguage " + "?l3 : ProgrammingLanguage "
-                + "?l1 subsetOf ?l2 " + "?l2 subsetOf ?l3 " + "?l3 subsetOf ?l2";
+        String input = "/**/?l1 : ProgrammingLanguage. " + "?l2 : ProgrammingLanguage. " + "?l3 : ProgrammingLanguage. "
+                       + "?l1 subsetOf ?l2. " + "?l2 subsetOf ?l3. " + "?l3 subsetOf ?l2.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
                    .contains("Cycles exist concerning the relationship subsetOf involving the following entities :[?l2, ?l3]"));
     }
 
     @Test
-    public void checkNotWellformedURL() throws ParserException, IOException {
-        ModelLoader ml = new ModelLoader();
-        String input = "/**/?l : ProgrammingLanguage " + "?l = \"notauri\"";
-        ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
-        assertEquals(0, ml.getTypeErrors().size());
-        assertEquals(1, c.getWarnings().size());
-        assertTrue(c.getWarnings().contains("Error at Link to 'notauri' : The URL is malformed!"));
-    }
-
-    @Test
     public void checkLinkNotWorking() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?l : ProgrammingLanguage " + "?l = \"http://www.nowebsitehere.de\"";
+        String input = "/**/?l : ProgrammingLanguage; " + " = \"http://www.nowebsitehere.de\".";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings().contains("Error at Link to 'http://www.nowebsitehere.de' : Connection failed!"));
     }

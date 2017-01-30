@@ -21,11 +21,11 @@ substitutionGroup : '[' substitution (',' substitution)* ']' ;
 
 substitution : ID 'substitutes' ID;
 
-subtypeDeclaration: ID '<' ID ';' '=' LINK '.';
+subtypeDeclaration: ID '<' ID (';' '=' LINK)* '.';
 
 instanceDeclaration: ID ':' ID (';' '=' LINK)* (';' ID ID)* '.';
 
-relationDeclaration: ID '<' ID '#' ID (';' '=' LINK)+ '.';
+relationDeclaration: ID '<' ID '#' ID (';' '=' LINK)* '.';
 
 relationInstance: ID ID ID (';' '=' LINK)* (';' ID ID)* '.';
 

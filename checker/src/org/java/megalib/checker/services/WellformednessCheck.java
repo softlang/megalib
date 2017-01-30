@@ -1,6 +1,5 @@
 package org.java.megalib.checker.services;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -306,30 +305,15 @@ public class WellformednessCheck {
     }
 
     private void checkLinkWorking(String link) {
-        if(checkURL(link)){
-            if(!nocon){
-                try{
-                    checkConnection(new URL(link), link);
-                }
-                catch(MalformedURLException e){
-                    e.printStackTrace();
-                }
+        if(!nocon){
+            try{
+                checkConnection(new URL(link), link);
             }
-        }else if(new File(link).exists())
-            return;
-        else{
-            warnings.add("The link " + link + " is not resolvable.");
+            catch(MalformedURLException e){
+                e.printStackTrace();
+            }
         }
-    }
 
-    private boolean checkURL(String link) {
-        try{
-            new URL(link);
-        }
-        catch(MalformedURLException e){
-            return false;
-        }
-        return true;
     }
 
     private void checkConnection(URL u, String link) {
