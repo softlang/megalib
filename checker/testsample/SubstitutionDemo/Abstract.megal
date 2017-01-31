@@ -1,43 +1,43 @@
 module Abstract
 
 /* Serializer */
-?PL : ProgrammingLanguage
-    facilitates ObjectOrientedProgramming
-?Serializer : Library
-    uses ?PL
-    implements ?PL
-    facilitates Serialization
+?PL : ProgrammingLanguage;
+    facilitates ObjectOrientedProgramming.
+?Serializer : Library;
+    uses ?PL;
+    implements ?PL;
+    facilitates Serialization.
 
 /* Object serialization */
-?OL : ObjectGraph
-?D : DataRepresentationLanguage
-f : ?OL -> ?D
+?OL : ObjectGraph.
+?D : DataRepresentationLanguage.
+f : ?OL -> ?D.
 
 /* conformance to data types in an OO program */
-?project : Application
-    uses ?PL
-    uses ?Serializer
-    uses Serialization
-?program : Artifact
-    elementOf ?PL
-    hasRole Schema
-    hasRole POJO
-    manifestsAs File+
-    defines ?OL
-?object : Artifact
-    elementOf ?OL
-    hasRole Value
-    manifestsAs Transient
-    conformsTo ?program
+?project : Application;
+    uses ?PL;
+    uses ?Serializer;
+    uses Serialization.
+?program : Artifact;
+    elementOf ?PL;
+    hasRole Schema;
+    hasRole POJO;
+    manifestsAs File+;
+    defines ?OL.
+?object : Artifact;
+    elementOf ?OL;
+    hasRole Value;
+    manifestsAs Transient;
+    conformsTo ?program.
 
 /* Actual serialization */
-?DS : DataRepresentationLanguage
-    subsetOf ?D
-?program defines ?DS
-?data : Artifact
-    elementOf ?DS
-    hasRole Value
-    manifestsAs File
-    correspondsTo ?object
-f(?object) |-> ?data
-?Serializer implements f
+?DS : DataRepresentationLanguage;
+    subsetOf ?D.
+?program defines ?DS.
+?data : Artifact;
+    elementOf ?DS;
+    hasRole Value;
+    manifestsAs File;
+    correspondsTo ?object.
+f(?object) |-> ?data.
+?Serializer implements f.

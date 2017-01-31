@@ -1,9 +1,11 @@
 package org.java.megalib.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -25,30 +27,34 @@ import main.antlr.techdocgrammar.MegalibParser.SubtypeDeclarationContext;
 public class ParserListener extends MegalibBaseListener {
     private MegaModel model;
     private TypeCheck typeCheck;
-    private Set<String[]> substSet;
+    private Map<String,Set<String>> substByGroup;
 
     public ParserListener(MegaModel m) {
         model = m;
         typeCheck = new TypeCheck();
-    }
-
-    @Override
-    public void enterSubstitutionGroup(SubstitutionGroupContext ctx) {
-        substSet = new HashSet<>();
+        substByGroup = new HashMap<>();
     }
 
     @Override
     public void exitSubstitutionGroup(SubstitutionGroupContext ctx) {
-        new Substitution(model).substituteGroup(substSet);
-        substSet = null;
+        model = new Substitution(model, substByGroup).substituteGroup();
+        substByGroup.clear();
     }
 
     @Override
     public void enterSubstitution(SubstitutionContext ctx) {
         String subject = ctx.getChild(0).getText();
         String object = ctx.getChild(2).getText();
-        String[] s = {subject, object};
-        substSet.add(s);
+        if(typeCheck.substitutes(subject, object, model)){
+            Set<String> set;
+            if(substByGroup.containsKey(object)){
+                set = substByGroup.get(object);
+            }else{
+                set = new HashSet<>();
+            }
+            set.add(subject);
+            substByGroup.put(object, set);
+        }
     }
 
     @Override
@@ -86,7 +92,7 @@ public class ParserListener extends MegalibBaseListener {
                 }
             } else {
                 if (typeCheck.addRelationInstance(relation, instance, object, model)) {
-                    model.addRelationInstances(relation, instance, object);
+                    model.addRelationInstance(relation, instance, object);
                 }
             }
         }
@@ -122,7 +128,7 @@ public class ParserListener extends MegalibBaseListener {
         }
         String object = it.next().getText();
         if (typeCheck.addRelationInstance(relation, subject, object, model)) {
-            model.addRelationInstances(relation, subject, object);
+            model.addRelationInstance(relation, subject, object);
         }
 
         while(it.next().getText().equals(";")){
@@ -138,7 +144,7 @@ public class ParserListener extends MegalibBaseListener {
                 }
             } else {
                 if (typeCheck.addRelationInstance(relation, subject, object, model)) {
-                    model.addRelationInstances(relation, subject, object);
+                    model.addRelationInstance(relation, subject, object);
                 }
             }
         }
@@ -224,7 +230,7 @@ public class ParserListener extends MegalibBaseListener {
                 }
             }else{
                 if(typeCheck.addRelationInstance(relation, subject, object, model)){
-                    model.addRelationInstances(relation, subject, object);
+                    model.addRelationInstance(relation, subject, object);
                 }
             }
         }

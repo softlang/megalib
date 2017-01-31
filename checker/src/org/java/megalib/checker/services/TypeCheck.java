@@ -269,9 +269,6 @@ public class TypeCheck {
     public boolean substitutes(String by, String e, MegaModel m) {
         if(!errors.isEmpty())
             return false;
-        if (!e.startsWith("?")) {
-            errors.add("Unable to substitute: " + e + " is not abstract.");
-        }
         if (!m.getInstanceOfMap().containsKey(e)) {
             errors.add("Unable to substitute : " + e + " does not exist.");
         }

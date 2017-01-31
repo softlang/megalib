@@ -28,6 +28,7 @@ public class SubstitutionTest {
         ml.loadFile("testsample/SubstitutionDemo/Technology.megal");
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(0, c.getWarnings().size());
     }
 

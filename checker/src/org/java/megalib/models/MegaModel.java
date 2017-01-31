@@ -77,7 +77,7 @@ public class MegaModel {
         return Collections.unmodifiableMap(relationInstanceMap);
     }
 
-    public void addRelationInstances(String name, String subject, String object) {
+    public void addRelationInstance(String name, String subject, String object) {
         Set<Relation> set = new HashSet<>();
         if(name.startsWith("^")){
             name = name.substring(1);
