@@ -1,0 +1,8 @@
+module Linux
+
+ShellScript : BuildLanguage
+	= "https://en.wikipedia.org/wiki/Shell_script"
+Linux : Software
+	= "https://github.com/torvalds/linux"
+	uses C
+	implements ShellScript

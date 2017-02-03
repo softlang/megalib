@@ -39,6 +39,7 @@ public class ParserListener extends MegalibBaseListener {
     public void exitSubstitutionGroup(SubstitutionGroupContext ctx) {
         model = new Substitution(model, substByGroup).substituteGroup();
         substByGroup.clear();
+        assert (substByGroup.size() == 0);
     }
 
     @Override

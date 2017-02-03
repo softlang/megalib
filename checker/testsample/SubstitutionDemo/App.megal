@@ -1,20 +1,37 @@
 module App
 
 import Technology where {
-    [myProject1 substitutes ?PLproject,
+    [myProject1 substitutes ?plproject,
      myProgram1 substitutes ?myplprogram,
      myObject11 substitutes ?myolobject,
      myObject12 substitutes ?myolobject,
      MyD1 substitutes ?D,
      MyDS1 substitutes ?DS,
-     mydata11 substitutes ?data];
+     mydata11 substitutes ?data ];
      
-    [myProject2 substitutes ?PLproject,
+    [myProject2 substitutes ?plproject,
      myProgram2 substitutes ?myplprogram,
      myObject21 substitutes ?myolobject,
      myObject22 substitutes ?myolobject,
      MyD2 substitutes ?D,
      MyDS2 substitutes ?DS,
      mydata21 substitutes ?data,
-     mydata22 substitutes ?data];
+     mydata22 substitutes ?data ]
 }
+/**/
+myProject1 = "http://softlang.wikidot.com/".
+myProgram1 = "http://softlang.wikidot.com/" .
+myObject11 = "http://softlang.wikidot.com/".
+myObject12 = "http://softlang.wikidot.com/".
+MyD1 = "http://softlang.wikidot.com/".
+MyDS1 = "http://softlang.wikidot.com/".
+mydata11 = "http://softlang.wikidot.com/".
+
+myProject2 = "http://softlang.wikidot.com/".
+myProgram2 = "http://softlang.wikidot.com/".
+myObject21 = "http://softlang.wikidot.com/".
+myObject22 = "http://softlang.wikidot.com/".
+MyD2 = "http://softlang.wikidot.com/".
+MyDS2 = "http://softlang.wikidot.com/".
+mydata21 = "http://softlang.wikidot.com/".
+mydata22 = "http://softlang.wikidot.com/".

@@ -19,7 +19,7 @@ public class MegaModel {
     private Map<String, Set<Relation>> relationDeclarationMap;
     private Map<String, Set<Relation>> relationInstanceMap;
     private Map<String,Set<Function>> functionDeclarations;
-    private Map<String, Set<Function>> functionInstances;
+    private Map<String, Set<Function>> functionApplications;
     private Map<String, Set<String>> linkMap;
 
     private Set<String> substitutedLanguages;
@@ -34,7 +34,7 @@ public class MegaModel {
         relationDeclarationMap = new HashMap<>();
         relationInstanceMap = new HashMap<>();
         functionDeclarations = new HashMap<>();
-        functionInstances = new HashMap<>();
+        functionApplications = new HashMap<>();
         linkMap = new HashMap<>();
         substitutedLanguages = new HashSet<>();
         removableAbstract = new HashSet<>();
@@ -115,17 +115,17 @@ public class MegaModel {
     }
 
     public Map<String, Set<Function>> getFunctionApplications() {
-        return Collections.unmodifiableMap(functionInstances);
+        return Collections.unmodifiableMap(functionApplications);
     }
 
     public void addFunctionApplication(String name, List<String> inputs, List<String> outputs) {
         Function app = new Function(inputs, outputs);
         Set<Function> set = new HashSet<>();
-        if (functionInstances.containsKey(name)) {
-            set = functionInstances.get(name);
+        if (functionApplications.containsKey(name)) {
+            set = functionApplications.get(name);
         }
         set.add(app);
-        functionInstances.put(name, set);
+        functionApplications.put(name, set);
     }
 
     public Map<String, String> getElementOfMap() {
@@ -216,13 +216,13 @@ public class MegaModel {
         relationInstanceMap = relmap;
 
         Map<String, Set<Function>> fAppmap = new HashMap<>();
-        for (String name : functionInstances.keySet()) {
-            Set<Function> fs = functionInstances.get(name).parallelStream()
+        for (String name : functionApplications.keySet()) {
+            Set<Function> fs = functionApplications.get(name).parallelStream()
                     .filter(f -> !f.getInputs().contains(e) && !f.getOutputs().contains(e))
                     .collect(Collectors.toSet());
             fAppmap.put(name, fs);
         }
-        functionInstances = fAppmap;
+        functionApplications = fAppmap;
     }
 
 }

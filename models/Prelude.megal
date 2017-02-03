@@ -1,4 +1,7 @@
-/* Language subtypes based on PRIMARY purpose. LaTeX could be used
+/* 
+A language is a set of syntactic entities. This not only includes
+entities having a concrete syntax but runtime data as well.
+Language subtypes based on PRIMARY purpose. LaTeX could be used
 to code up a general purpose program as well, but hopefully none does
 that. That is why it is classified as a markup language. */
 Language < Entity;
@@ -29,7 +32,7 @@ MachineLanguage < Language; // hardware instructions
     = "https://en.wikipedia.org/wiki/Machine_code".
 AssemblyLanguage < Language;
     = "https://en.wikipedia.org/wiki/Assembly_language".
-ConfigurationLanguage < Language; // configuration files, e.g. .class-files
+ConfigurationLanguage < Language; // configuration files, e.g. .classpath-files
     = "https://en.wikipedia.org/wiki/Configuration_file" .
 BuildLanguage < Language; //languages used for writing build scripts
     = "https://en.wikipedia.org/wiki/Build_automation".
@@ -41,7 +44,7 @@ KnowledgeRepresentationLanguage < Language;
     = "https://en.wikipedia.org/wiki/Category:Knowledge_representation_languages".
 DomainSpecificLanguage < Language;
     = "https://en.wikipedia.org/wiki/Domain-specific_language".
-DataType < Language; // data types of a language, e.g. Boolean
+Data < Language; // simple run time data, e.g. Booleans or Integers. Defined by a type.
     = "https://en.wikipedia.org/wiki/Data_type".
 ObjectGraph < Language; // object values in an OO Language, e.g. Java Objects.
     = "https://en.wikipedia.org/wiki/Object_graph".
@@ -207,7 +210,9 @@ Program < Software; // a software that implements only one process that is neede
     = "https://en.wikipedia.org/wiki/Computer_program".
 IDE < Software; // an environment to facilitate writing systems or technologies.
     = "https://en.wikipedia.org/wiki/Integrated_development_environment".
-Platform < Software; // a technology that has the capability to execute code
+Workbench < Software;
+    = "https://en.wikipedia.org/wiki/Language_workbench".
+Platform < Software; // a technology that can evaluate code
     = "https://en.wikipedia.org/wiki/Computing_platform".
 
 /* Implementation relationships */
@@ -259,7 +264,7 @@ ProgrammingDomain < Entity;
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
 subdomainOf < ProgrammingDomain # ProgrammingDomain; //a domain covers a subset of another domain's requirements, problems, terminology and ways for languages/technologies to support it.
     = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
-demonstrates < System # ProgrammingDomain; //Experimental! Don't use unless you know what you're doing.
+demonstrates < System # ProgrammingDomain; //A system as an exemplary solution for a field of study
     = "http://softlang.uni-koblenz.de/chrestomathy/".
 GeneralPurposeProgramming : ProgrammingDomain; // The study on applications in general.
     = "https://en.wikipedia.org/wiki/General-purpose_programming_language".
@@ -305,6 +310,8 @@ DocumentManagement : ProgrammingDomain;
 ECommerce : ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/E-commerce";
     subdomainOf BusinessProgramming.
+DistributedProgramming : ProgrammingDomain;
+	= "https://en.wikipedia.org/wiki/Distributed_computing".
 supports < Technology # ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/Software_feature". //needs better link
 supports < Language # ProgrammingDomain.
@@ -345,6 +352,8 @@ aspectOf < AbstractProcess # ProgrammingDomain.
 aspectOf < Role # ProgrammingDomain .
 
 /* Known instances of abstract solutions */
+HTTP : Protocol;
+    = "https://en.wikipedia.org/wiki/HTTP".
 HTTPS : Protocol ;
     = "https://en.wikipedia.org/wiki/HTTPS".
 Serialization : AbstractProcess; //Save runtime values in a persistent format.
@@ -396,7 +405,21 @@ uses < System # Language;
     = "https://en.wikipedia.org/wiki/Computer_programming".
 uses < Technology # Language.
 
-/* Re-usable forms of solutions can be used in the sense of realization. Maybe rename to realizes. */
+/* Re-usable forms of solutions can be used in the sense of realization. */
+realizes < System # DesignPattern.
+realizes < System # ArchitecturalPattern.
+realizes < System # AbstractProcess.
+realizes < System # Construct.
+realizes < Technology # DesignPattern.
+realizes < Technology # ArchitecturalPattern.
+realizes < Technology # AbstractProcess.
+realizes < Technology # Construct.
+realizes < Artifact # DesignPattern.
+realizes < Artifact # ArchitecturalPattern.
+realizes < Artifact # AbstractProcess.
+realizes < Artifact # Construct.
+
+/* Re-usable forms of solutions can be used */
 uses < System # DesignPattern.
 uses < System # ArchitecturalPattern.
 uses < System # AbstractProcess.
@@ -419,12 +442,12 @@ facilitates < Language # Paradigm.
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */
-uses < System # System;
+reuses < System # System;
     = "https://en.wikipedia.org/wiki/Code_reuse".
-uses < System # Technology.
-uses < Technology # Technology.
-uses < Artifact # System.
-uses < Artifact # Technology.
+reuses < System # Technology.
+reuses < Technology # Technology.
+reuses < Artifact # System.
+reuses < Artifact # Technology.
 
 /* PDF file format has frequent appearence everywhere. */
 PDF : FileFormat;

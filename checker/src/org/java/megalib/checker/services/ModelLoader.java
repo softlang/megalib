@@ -14,8 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.ANTLRErrorListener;
@@ -90,7 +88,7 @@ public class ModelLoader {
     }
 
     public List<String> loadString(String data) throws ParserException, IOException {
-        ParserListener pl = (ParserListener) parse(preprocess(data), new ParserListener(model));
+        ParserListener pl = (ParserListener) parse(data, new ParserListener(model));
         model = pl.getModel();
         typeErrors.addAll(pl.getTypeErrors());
         return typeErrors;
@@ -98,7 +96,7 @@ public class ModelLoader {
 
     private boolean loadCompleteModelFrom(String data, String abspath) {
         try {
-            resolveImports(preprocess(data), abspath);
+            resolveImports(data, abspath);
             System.out.println("Loading:");
             todos.forEach(t -> System.out.println(" " + t));
             System.out.println();
@@ -106,7 +104,7 @@ public class ModelLoader {
                 String p = todos.poll();
                 p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
                 String pdata = FileUtils.readFileToString(new File(p));
-                ParserListener pl = (ParserListener) parse(preprocess(pdata), new ParserListener(model));
+                ParserListener pl = (ParserListener) parse(pdata, new ParserListener(model));
                 model = pl.getModel();
                 typeErrors.addAll(pl.getTypeErrors());
                 if (!pl.getTypeErrors().isEmpty()) {
@@ -121,12 +119,6 @@ public class ModelLoader {
             System.err.println(e.getMessage());
             return false;
         }
-    }
-
-    private String preprocess(String data) {
-        Pattern p = Pattern.compile("    [\r|\n]+", Pattern.MULTILINE);
-        Matcher matcher = p.matcher(data);
-        return matcher.replaceAll("");
     }
 
     public MegalibBaseListener parse(String data, MegalibBaseListener listener) throws ParserException, IOException {

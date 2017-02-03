@@ -16,7 +16,7 @@ f : ?OL -> ?D.
 /* conformance to data types in an OO program */
 ?project : Application;
     uses ?PL;
-    uses ?Serializer;
+    reuses ?Serializer;
     uses Serialization.
 ?program : Artifact;
     elementOf ?PL;
