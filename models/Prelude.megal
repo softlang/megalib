@@ -278,6 +278,8 @@ ReverseEngineering : ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/Reverse_engineering".
 QualityAssurance : ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/Software_quality_assurance".
+WebBrowsing : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Web_browser".
 WebApplicationDevelopment : ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/Web_application_development".
 OfflineWebApplicationDevelopment : ProgrammingDomain;

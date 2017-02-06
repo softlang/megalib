@@ -1,0 +1,42 @@
+module CommonWebTechnology
+
+/* Common web languages */
+JavaScript : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/JavaScript";
+    supports WebApplicationDevelopment.
+
+JSON : DataRepresentationLanguage;
+    = "https://en.wikipedia.org/wiki/JSON".
+JSONSchema : SchemaLanguage;
+    = "https://en.wikipedia.org/wiki/JSON#JSON_Schema".
+
+HTML : MarkupLanguage;
+    = "https://en.wikipedia.org/wiki/HTML".
+    
+CSS : StylesheetLanguage;
+    = "https://en.wikipedia.org/wiki/Cascading_Style_Sheets".
+
+URL : ReferenceLanguage;
+    = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator".
+
+HTTPRequest : MessageLanguage;
+    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_message".
+HTTPResponse : MessageLanguage;
+    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message".
+    
+/* A web browser typically implements all of them */
+?WebBrowser : Software;
+    = "https://en.wikipedia.org/wiki/Web_browser";
+    implements HTML;
+    implements CSS;
+    implements JavaScript;
+    implements JSON;
+    implements URL;
+    implements HTTPRequest;
+    implements HTTPResponse.
+
+/* Every browser reuses a graphics engine */
+?WebGraphicsEngine : Library;
+    realizes Rendering.
+
+//TODO: Storyline
