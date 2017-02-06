@@ -51,6 +51,6 @@ WebApplicationDevelopment = "https://en.wikipedia.org/wiki/Web_application_devel
 Routing = "https://en.wikipedia.org/wiki/Routing"
 HTML = "http://dbpedia.org/page/HTML"
 */
-RubyOnRails : Framework
-    = "http://rubyonrails.org/"
-    uses Ruby
+RubyOnRails : Framework;
+    = "http://rubyonrails.org/";
+    uses Ruby.

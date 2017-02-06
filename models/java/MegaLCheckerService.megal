@@ -4,29 +4,34 @@ import java.JavaPlatform
 import java.ANTLR
 
 /* Simple facts on MegaL */
-MegaL : KnowledgeRepresentationLanguage
-    = "http://www.softlang.org/megal"
-checkerJar : Artifact
-    = ""
-    
-MegaLibChecker : Software
-    = "https://github.com/softlang/megalib/tree/master/checker"
-    uses Java
-    uses ANTLR
-    implements MegaL
-    deployedAs checkerJar
+MegaL : KnowledgeRepresentationLanguage;
+    = "http://www.softlang.org/megal".
 
-MegaLWarnings : DataType
-    = "https://github.com/softlang/megalib/tree/master/checker"
-    subsetOf Java.String
-checkModel : MegaL -> MegaLWarnings
-MegaLibChecker implements checkModel
-?warningLog : Artifact
-    elementOf MegaLWarnings
-    hasRole Log
-    manifestsAs Transient
-?megamodel : Artifact
-    elementOf MegaL
-    hasRole DescriptiveModel
-    manifestsAs File+
-checkModel(?megamodel) |-> ?warningLog
+checkerJar : Artifact;
+    = "http://www.softlang.org/megal";
+    hasRole Executable;
+    manifestsAs File;
+    elementOf Jar.
+    
+MegaLibChecker : Software;
+    = "https://github.com/softlang/megalib/tree/master/checker";
+    uses Java;
+    reuses ANTLR;
+    implements MegaL;
+    deployedAs checkerJar.
+
+MegaLWarnings : Data;
+    = "https://github.com/softlang/megalib/tree/master/checker";
+    subsetOf JVM.String;
+    ^implements MegaLibChecker.
+checkModel : MegaL -> MegaLWarnings.
+MegaLibChecker implements checkModel.
+?warningLog : Artifact;
+    elementOf MegaLWarnings;
+    hasRole Log;
+    manifestsAs Transient.
+?megamodel : Artifact;
+    elementOf MegaL;
+    hasRole DescriptiveModel;
+    manifestsAs File+.
+checkModel(?megamodel) |-> ?warningLog.

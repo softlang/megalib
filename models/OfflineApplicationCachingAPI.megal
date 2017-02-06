@@ -7,88 +7,88 @@ It might still be interesting to model it in order to be able to conceptually co
 The technology specifically realizes two constructs as part of 
 enabling offline web applications, namely an Offline Cache and the 
 capability to process online and offline events. */
-HTML5 : MarkupLanguage
-    = "https://www.w3.org/TR/html5/"
-OfflineCache : Construct
-    = "http://www.w3schools.com/html/html5_app_cache.asp"
-OnlineOfflineEvents : Construct
-    = "https://developer.mozilla.org/en/docs/Online_and_offline_events"
-OfflineApplicationCachingAPI : API
-    = "https://www.w3.org/TR/offline-webapps/"
-    uses HTML5
-    facilitates OfflineCache
-    facilitates OnlineOfflineEvents
+HTML5 : MarkupLanguage;
+    = "https://www.w3.org/TR/html5/".
+OfflineCache : Construct;
+    = "http://www.w3schools.com/html/html5_app_cache.asp".
+OnlineOfflineEvents : Construct;
+    = "https://developer.mozilla.org/en/docs/Online_and_offline_events".
+OfflineApplicationCachingAPI : API;
+    = "https://www.w3.org/TR/offline-webapps/";
+    uses HTML5;
+    facilitates OfflineCache;
+    facilitates OnlineOfflineEvents.
 
 /* A cache-manifest describes which files are supposed to be cached
 at the client-side and which have to be accessed at the server-side. */
-Cache-Manifest : ConfigurationLanguage
-    = "https://www.w3.org/TR/offline-webapps/"
-    supports OfflineWebApplicationDevelopment
-?aLanguage : DataRepresentationLanguage
-URI : ReferenceLanguage
-    = "https://www.w3.org/Addressing/"
-OfflineApplicationCachingAPI implements Cache-Manifest
-    implements URI
-?aWebApplication : WebApplication
-?aCachableFile : Artifact
-    elementOf ?aLanguage
-    manifestsAs File
-    hasRole Value
-    partOf ?aWebApplication
-?manifestFile : Artifact
-    hasRole Configuration
-    elementOf Cache-Manifest
-    manifestsAs File
-    refersTo ?aCachableFile
-?uri : Artifact
-    hasRole Reference
-    manifestsAs Transient
-    elementOf URI
-    refersTo ?aCachableFile
-?aLocalFileSystem : FileSystem
-?backupFile : Artifact
-    elementOf ?aLanguage
-    manifestsAs File
-    hasRole Value
-    correspondsTo ?aCachableFile //actually equality of content
-    partOf ?aLocalFileSystem
+Cache-Manifest : ConfigurationLanguage;
+    = "https://www.w3.org/TR/offline-webapps/";
+    supports OfflineWebApplicationDevelopment.
+?aLanguage : DataRepresentationLanguage.
+URI : ReferenceLanguage;
+    = "https://www.w3.org/Addressing/".
+OfflineApplicationCachingAPI implements Cache-Manifest;
+    implements URI.
+?aWebApplication : WebApplication.
+?aCachableFile : Artifact;
+    elementOf ?aLanguage;
+    manifestsAs File;
+    hasRole Value;
+    partOf ?aWebApplication.
+?manifestFile : Artifact;
+    hasRole Configuration;
+    elementOf Cache-Manifest;
+    manifestsAs File;
+    refersTo ?aCachableFile.
+?uri : Artifact;
+    hasRole Reference;
+    manifestsAs Transient;
+    elementOf URI;
+    refersTo ?aCachableFile.
+?aLocalFileSystem : FileSystem.
+?backupFile : Artifact;
+    elementOf ?aLanguage;
+    manifestsAs File;
+    hasRole Value;
+    correspondsTo ?aCachableFile; //actually equality of content
+    partOf ?aLocalFileSystem.
 
 /* An actual HTML5 Script has to use the manifest file in order to 
 implement the offline access. */
-?aHTML5File : Artifact
-    hasRole WebResource
-    elementOf HTML5
-    manifestsAs File
-    uses OfflineApplicationCachingAPI
+?aHTML5File : Artifact;
+    hasRole WebResource;
+    elementOf HTML5;
+    manifestsAs File;
+    reuses OfflineApplicationCachingAPI.
 
 /* Even if the user is offline, a HTTPRequest that is handled
 by the API can return a response because use of the locally
 apparent backup. */
-HTTPRequest : MessageLanguage
-    = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html"
-HTTPResponse : MessageLanguage
-    = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html"
-?offlineRequest : Artifact
-    hasRole Message
-    elementOf HTTPRequest
-    manifestsAs Transient
-?offlineResponse : Artifact
-    hasRole Message
-    elementOf HTTPResponse
-    manifestsAs Transient
-offlineAccess : Cache-Manifest # HTTPRequest # URI -> HTTPResponse
-offlineAccess(?manifestFile, ?offlineRequest,?uri) |-> ?offlineResponse
-OfflineApplicationCachingAPI implements offlineAccess
+HTTPRequest : MessageLanguage;
+    = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html".
+HTTPResponse : MessageLanguage;
+    = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html".
+?offlineRequest : Artifact;
+    hasRole Message;
+    elementOf HTTPRequest;
+    manifestsAs Transient.
+?offlineResponse : Artifact;
+    hasRole Message;
+    elementOf HTTPResponse;
+    manifestsAs Transient.
+offlineAccess : Cache-Manifest # HTTPRequest # URI -> HTTPResponse.
+offlineAccess(?manifestFile, ?offlineRequest,?uri) |-> ?offlineResponse.
+OfflineApplicationCachingAPI implements offlineAccess.
 
 /* Old browsers that had offline application caching enabled, were
 able to use such backup files since the API routes the access to the backup
 using the manifest. */
-?OACBrowser : Software
-    implements HTML5
-    implements HTTPRequest
-    implements HTTPResponse
-    supports WebApplicationDevelopment
-    supports OfflineWebApplicationDevelopment
-    uses OfflineApplicationCachingAPI
-    uses OfflineCache
-    uses OnlineOfflineEvents
+?OACBrowser : Software;
+    implements HTML5;
+    implements HTTPRequest;
+    implements HTTPResponse;
+    supports WebApplicationDevelopment;
+    supports OfflineWebApplicationDevelopment;
+    reuses OfflineApplicationCachingAPI;
+    uses OfflineCache;
+    uses OnlineOfflineEvents.

@@ -3,12 +3,12 @@ module XMI
 import XML
 
 /* XMI is an OMG standard for persisting models. */
-XMI : MarkupLanguage
-    = "https://en.wikipedia.org/wiki/XML_Metadata_Interchange"
-    subsetOf XML
-xmiSpec : Artifact
-    = "http://www.omg.org/spec/XMI/2.5.1/PDF"
-    elementOf PDF
-    hasRole Specification
-    manifestsAs File 
-    defines XMI //maybe there exists some XSD...
+XMI : MarkupLanguage;
+    = "https://en.wikipedia.org/wiki/XML_Metadata_Interchange";
+    subsetOf XML.
+xmiSpec : Artifact;
+    = "http://www.omg.org/spec/XMI/2.5.1/PDF";
+    elementOf PDF;
+    hasRole Specification;
+    manifestsAs File ;
+    defines XMI. //maybe there exists some XSD...

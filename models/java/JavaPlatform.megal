@@ -1,65 +1,92 @@
 module java.JavaPlatform
 
-/* This module describes basic parts of the Java platform */
-JavaWare : TechnologySpace
-    = "http://link.springer.com/chapter/10.1007%2F978-3-642-30561-0_6"
+/* Java Ware is the technological space related to the Java programming
+language. */
+JavaWare : TechnologySpace;
+    = "http://link.springer.com/chapter/10.1007%2F978-3-642-30561-0_6".
 
-Java : ProgrammingLanguage
-    = "http://docs.oracle.com/javase/specs/jls/se8/jls8.pdf"
-    belongsTo JavaWare
-    supports GeneralPurposeProgramming
-    facilitates ObjectOrientedProgramming
-    facilitates FunctionalProgramming
-    facilitates ConcurrentProgramming
+/* Three languages have to be considered. The Java programming language,
+which is compiled into Java byte code, which is then interpreted using
+runtime data handled by the JVM. */
+Java : ProgrammingLanguage;
+    = "http://docs.oracle.com/javase/specs/jls/se8/jls8.pdf";
+    belongsTo JavaWare;
+    supports GeneralPurposeProgramming;
+    facilitates ObjectOrientedProgramming;
+    facilitates FunctionalProgramming;
+    facilitates ConcurrentProgramming.
 
-JavaObject : ObjectGraph
-    = "https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html"
-Java.Double : DataType
-    = "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html"
-    subsetOf Java
-Java.String : DataType
-    = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html"
-    subsetOf JavaObject
+JavaByteCode : MachineLanguage;
+    = "https://en.wikipedia.org/wiki/Java_bytecode";
+    = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html";
+    belongsTo JavaWare. 
 
+JVM.Data : Data;
+    = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
+JVM.Object : ObjectGraph;
+    = "https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html";
+    subsetOf JVM.Data.
+JVM.Double : Data;
+    = "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html";
+    subsetOf JVM.Data.
+JVM.String : Data;
+    = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html";
+    subsetOf JVM.Object. //string as a wrapper for a character array
 
-JavaByteCode : InstructionSet
-    = "https://en.wikipedia.org/wiki/Java_bytecode"
-    = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html"
-    belongsTo JavaWare
+javac.compile : Java -> JavaByteCode.
+?javaFiles : Artifact;
+    elementOf Java;
+    hasRole SourceCode;
+    manifestsAs File+.
+?classFiles : Artifact;
+    elementOf JavaByteCode;
+    hasRole ByteCode;
+    manifestsAs File+.
+javac.compile(?javaFiles) |-> ?classFiles.
+//TODO: Cannot state eval, cannot express system state changes.
 
-JavaPlatform : Platform
-    = "https://www.oracle.com/de/java/technologies/java-se.html#standard"
-    uses Java
-    belongsTo JavaWare
-    supports GeneralPurposeProgramming
+/* We cover the components top down. The largest independent technology would
+be the JDK. It comes with several tools for programmers, such as the javac compiler.
+It also contains the JRE, which then contains the JVM. The JRE might be deployed
+independently. */
+JDK : Framework;
+    = "http://www.oracle.com/technetwork/java/javase/documentation/jdk8-doc-downloads-2133158.html";
+    = "http://www.oracle.com/technetwork/java/javase/tech/index.html";
+    uses Java;
+    belongsTo JavaWare;
+    supports GeneralPurposeProgramming.
+JavaC : Program;
+    = "https://en.wikipedia.org/wiki/Javac";
+    = "https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-3.html";
+    uses Java;
+    realizes Compilation;
+    partOf JDK;
+    supports MetaProgramming;
+    implements Java;
+    implements JavaByteCode;
+    implements javac.compile.
+JRE : Framework;
+    = "http://www.oracle.com/technetwork/java/javase/tech/index.html";
+    uses Java;
+    partOf JDK. //optional is implied through Framework class
+JVM : Construct;
+    = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
+JavaSEHotSpot : Software;
+    = "http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136373.html";
+    uses Java;
+    realizes JVM;
+    realizes Interpretation;
+    implements JavaByteCode;
+    implements JVM.Data;
+    implements JVM.Object;
+    implements JVM.Double;
+    implements JVM.String.
+JavaClassLibrary : Library; //component and library
+    = "https://en.wikipedia.org/wiki/Java_Class_Library";
+    partOf JRE; //non-optional part
+    uses Java.
 
-JDK : Program
-    = "http://www.oracle.com/technetwork/java/javase/documentation/jdk8-doc-downloads-2133158.html"
-    uses Java
-    belongsTo JavaWare
-
-JavaC : Program
-    = "https://en.wikipedia.org/wiki/Javac"
-    = "https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-3.html"
-    uses Java
-    uses Compilation
-    partOf JDK
-    supports MetaProgramming
-    implements Java
-    implements JavaByteCode
-    implements JavaObject
-
-compile : Java -> JavaByteCode
-JavaC implements compile
-?javaFiles : Artifact   
-    elementOf Java
-    hasRole SourceCode
-    manifestsAs File+
-?classFiles : Artifact
-    elementOf JavaByteCode
-    hasRole ByteCode
-    manifestsAs File+
-compile(?javaFiles) |-> ?classFiles
-
-// JVM
-// Java native library
+/* jar container format */
+Jar : ContainerFormat; //TODO: dialect of zip
+    = "https://en.wikipedia.org/wiki/JAR_(file_format)";
+    ^implements JRE.

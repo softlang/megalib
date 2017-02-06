@@ -6,15 +6,15 @@ import RationalRose
 /* Instead of starting with an empty EMF model
 project one may also start off by importing a class 
 diagram created via Rose. */
-EMF implements Rose.MDL
-?roseDiagram : Artifact
-    elementOf Rose.MDL
-    hasRole Schema
-    manifestsAs File
-?resultingEcore : Artifact
-    elementOf XMI.Ecore
-    hasRole MdeMetamodel
-    manifestsAs File
-importRose : Rose.MDL -> XMI.Ecore
-importRose(?roseDiagram) |-> ?resultingEcore
-EMF implements importRose
+EMF implements Rose.MDL.
+?roseDiagram : Artifact;
+    elementOf Rose.MDL;
+    hasRole Schema;
+    manifestsAs File.
+?resultingEcore : Artifact;
+    elementOf XMI.Ecore;
+    hasRole MdeMetamodel;
+    manifestsAs File.
+importRose : Rose.MDL -> XMI.Ecore.
+importRose(?roseDiagram) |-> ?resultingEcore.
+EMF implements importRose.

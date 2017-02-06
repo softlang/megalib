@@ -3,23 +3,23 @@ module C
 /* C is an imperative programming language that influenced
 C++, which extends the procedural style by object orientation
 and other paradigms. */
-C++ : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/C%2B%2B"
-C : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/C_(programming_language)"
-Objective-C : ProgrammingLanguage
-    = "https://en.wikipedia.org/wiki/Objective-C"
-C-Make : BuildLanguage
-    = "https://en.wikipedia.org/wiki/CMake"
+C++ : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/C%2B%2B".
+C : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/C_(programming_language)".
+Objective-C : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/Objective-C".
+C-Make : BuildLanguage;
+    = "https://en.wikipedia.org/wiki/CMake".
 
 /* The GNU Compiler Collection contains a set of compilers
 and a tool chain for various languages such as C++, C and others. 
 */
-GCC : Platform
-    = "https://en.wikipedia.org/wiki/GNU_Compiler_Collection"
-    implements C++
-    implements C
-    implements Objective-C
-    implements C-Make
-    uses C++
-    uses C
+GCC : Platform;
+    = "https://en.wikipedia.org/wiki/GNU_Compiler_Collection";
+    implements C++;
+    implements C;
+    implements Objective-C;
+    implements C-Make;
+    uses C++;
+    uses C.

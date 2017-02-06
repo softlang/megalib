@@ -4,15 +4,15 @@ import emf.EMFCore
 import XML
 
 /* EMF can import XSD schemas and translate them into Ecore */
-?xsdSchema : Artifact
-    elementOf XSD
-    hasRole Schema
-    manifestsAs File+
-?resultingEcore : Artifact
-    elementOf XMI.Ecore
-    hasRole MdeMetamodel
-    manifestsAs File
-    correspondsTo ?xsdSchema
-importXSD : XSD -> XMI.Ecore
-importXSD(?xsdSchema) |-> ?resultingEcore
-EMF implements importXSD
+?xsdSchema : Artifact;
+    elementOf XSD;
+    hasRole Schema;
+    manifestsAs File+.
+?resultingEcore : Artifact;
+    elementOf XMI.Ecore;
+    hasRole MdeMetamodel;
+    manifestsAs File;
+    correspondsTo ?xsdSchema.
+importXSD : XSD -> XMI.Ecore.
+importXSD(?xsdSchema) |-> ?resultingEcore.
+EMF implements importXSD.

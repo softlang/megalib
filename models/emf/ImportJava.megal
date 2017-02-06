@@ -5,21 +5,21 @@ import java.JavaPlatform
 
 /* One can import Java interfaces annotated in a specific way and
 retrieve an Ecore model. */
-Java.AnnotatedInterfaces : ProgrammingLanguage
-    = "http://www.informit.com/store/emf-eclipse-modeling-framework-9780321331885" //described in the book
-    subsetOf Java
-EMF implements Java.AnnotatedInterfaces
-?annotatedJavaFiles : Artifact
-    elementOf Java.AnnotatedInterfaces
-    hasRole SourceCode
-    hasRole Interface
-    manifestsAs File+
-    uses Annotation
-?resultingEcore : Artifact
-    elementOf XMI.Ecore
-    hasRole MdeMetamodel
-    manifestsAs File
-    correspondsTo ?annotatedJavaFiles
-importJava : Java.AnnotatedInterfaces -> XMI.Ecore
-importJava(?annotatedJavaFiles) |-> ?resultingEcore
-EMF implements importJava
+Java.AnnotatedInterfaces : ProgrammingLanguage;
+    = "http://www.informit.com/store/emf-eclipse-modeling-framework-9780321331885"; //described in the book
+    subsetOf Java.
+EMF implements Java.AnnotatedInterfaces.
+?annotatedJavaFiles : Artifact;
+    elementOf Java.AnnotatedInterfaces;
+    hasRole SourceCode;
+    hasRole Interface;
+    manifestsAs File+;
+    uses Annotation.
+?resultingEcore : Artifact;
+    elementOf XMI.Ecore;
+    hasRole MdeMetamodel;
+    manifestsAs File;
+    correspondsTo ?annotatedJavaFiles.
+importJava : Java.AnnotatedInterfaces -> XMI.Ecore.
+importJava(?annotatedJavaFiles) |-> ?resultingEcore.
+EMF implements importJava.

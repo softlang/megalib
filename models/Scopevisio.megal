@@ -10,115 +10,115 @@ management, document management and various e-commerce tasks. Tasks are implemen
 by separate components.
 The actual programming language for the online component is not mentioned
 as it actually does not matter to users. */
-?UnknownLanguage : ProgrammingLanguage
-Scopevisio : WebService
-    = "https://de.wikipedia.org/wiki/Scopevisio"
-    = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio"
-    belongsTo SoftwareAsAServiceWare
-    supports BusinessProgramming
-    supports EnterpriseResourcePlanning
-    supports CustomerRelationshipManagement
-    supports ProjectManagement
-    supports ECommerce
-    uses ServiceOrientedArchitecture
-    uses ?UnknownLanguage
+?UnknownLanguage : ProgrammingLanguage.
+Scopevisio : WebService;
+    = "https://de.wikipedia.org/wiki/Scopevisio";
+    = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio";
+    belongsTo SoftwareAsAServiceWare;
+    supports BusinessProgramming;
+    supports EnterpriseResourcePlanning;
+    supports CustomerRelationshipManagement;
+    supports ProjectManagement;
+    supports ECommerce;
+    uses ServiceOrientedArchitecture;
+    uses ?UnknownLanguage.
 
 /* A user gets a client application that can communicate with the web
 service using SOAP over the OpenScopeAPI. The communication is implemented
 using the HTTPS protocol and a requested authentication. */
-HTTPRequest : MessageLanguage
-    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods"
-HTTPResponse : MessageLanguage
-    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message"
-SOAP : MessageLanguage
-    = "https://en.wikipedia.org/wiki/SOAP"
-    = "https://www.w3.org/TR/soap/"
-    subsetOf XML
-    embeddedInto HTTPRequest
-    embeddedInto HTTPResponse
-URI : ReferenceLanguage
-    = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier"
-Authentication : Construct
-    = "https://en.wikipedia.org/wiki/Authentication"
-?L : ProgrammingLanguage
-OpenScope : API
-    = "https://openscope.de/api.html"
-    partOf Scopevisio
-    uses HTTPS
-    uses ?L //can't identify programming language yet
-    implements SOAP
-    implements HTTPRequest
-    implements HTTPResponse
-    implements URI
-    uses Authentication
-ScopevisioClient : SoftwareSuite
-    = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio"
-    uses Java
-    uses Scopevisio
-    uses OpenScope
-    uses HTTPS
-    uses SOAP
-    uses Authentication
+HTTPRequest : MessageLanguage;
+    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods".
+HTTPResponse : MessageLanguage;
+    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message".
+SOAP : MessageLanguage;
+    = "https://en.wikipedia.org/wiki/SOAP";
+    = "https://www.w3.org/TR/soap/";
+    subsetOf XML;
+    embeddedInto HTTPRequest;
+    embeddedInto HTTPResponse.
+URI : ReferenceLanguage;
+    = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier".
+Authentication : Construct;
+    = "https://en.wikipedia.org/wiki/Authentication".
+?L : ProgrammingLanguage.
+OpenScope : API;
+    = "https://openscope.de/api.html";
+    partOf Scopevisio;
+    uses HTTPS;
+    uses ?L; //can't identify programming language yet
+    implements SOAP;
+    implements HTTPRequest;
+    implements HTTPResponse;
+    implements URI;
+    uses Authentication.
+ScopevisioClient : SoftwareSuite;
+    = "https://www.scopevisio.com/help/de/Allgemein/Download_von_Scopevisio";
+    uses Java;
+    reuses Scopevisio;
+    reuses OpenScope;
+    uses HTTPS;
+    uses SOAP;
+    uses Authentication.
 
 /* When the user accesses a functionality in the client, the client sends
 a SOAP message to the corresponding service's address. The actual computation 
 is executed at the server side and the result is send back as a SOAP message */
-?httpsrequest : Artifact
-    elementOf HTTPRequest
-    hasRole Message
-    manifestsAs Transient
-?soapRequest : Artifact
-    elementOf SOAP
-    hasRole Message
-    manifestsAs Fragment
-    partOf ?httpsrequest
-?serviceAddress : Artifact
-    hasRole Reference
-    elementOf URI
-    manifestsAs Fragment
-    partOf ?soapRequest
-?productName : Artifact
-    hasRole Reference
-    elementOf URI
-    manifestsAs Fragment
-    partOf ?serviceAddress
-?serviceName : Artifact
-    hasRole Reference
-    elementOf URI
-    manifestsAs Fragment
-    partOf ?serviceAddress
-?httpResponse : Artifact
-    hasRole Message
-    elementOf HTTPResponse
-    manifestsAs Transient
-?contentResponse : Artifact
-    hasRole Message
-    elementOf SOAP
-    manifestsAs Fragment
-    partOf ?httpResponse
-communicate : HTTPRequest # URI -> HTTPResponse
-communicate(?httpsrequest, ?aServiceAddress) |-> ?httpResponse
-ScopevisioClient implements communicate
-OpenScope implements communicate
+?httpsrequest : Artifact;
+    elementOf HTTPRequest;
+    hasRole Message;
+    manifestsAs Transient.
+?soapRequest : Artifact;
+    elementOf SOAP;
+    hasRole Message;
+    manifestsAs Fragment;
+    partOf ?httpsrequest.
+?serviceAddress : Artifact;
+    hasRole Reference;
+    elementOf URI;
+    manifestsAs Fragment;
+    partOf ?soapRequest.
+?productName : Artifact;
+    hasRole Reference;
+    elementOf URI;
+    manifestsAs Fragment;
+    partOf ?serviceAddress.
+?serviceName : Artifact;
+    hasRole Reference;
+    elementOf URI;
+    manifestsAs Fragment;
+    partOf ?serviceAddress.
+?httpResponse : Artifact;
+    hasRole Message;
+    elementOf HTTPResponse;
+    manifestsAs Transient.
+?contentResponse : Artifact;
+    hasRole Message;
+    elementOf SOAP;
+    manifestsAs Fragment;
+    partOf ?httpResponse.
+communicate : HTTPRequest # URI -> HTTPResponse.
+communicate(?httpsrequest, ?serviceAddress) |-> ?httpResponse.
+ScopevisioClient implements communicate.
+OpenScope implements communicate.
 
 //TODO : This could be looked up in a client and its files.
 /* Somewhere a user has to have a configuration that states
 which services he payed for and is able to access. */
-?UnknownConfigurationLanguage : ConfigurationLanguage
-?selectedServices : Artifact
-    manifestsAs File
-    hasRole Configuration
-    elementOf ?UnknownConfigurationLanguage
-    partOf ScopevisioClient
-?scopevisio : Artifact //Archives and Folders do not have any elementOf relationship
-    elementOf PE
-    manifestsAs File
-    hasRole Executable
-ScopevisioClient deployedAs ?scopevisio
+?UnknownConfigurationLanguage : ConfigurationLanguage.
+?selectedServices : Artifact;
+    manifestsAs File;
+    hasRole Configuration;
+    elementOf ?UnknownConfigurationLanguage;
+    partOf ScopevisioClient.
+?scopevisio : Artifact; //Archives and Folders do not have any elementOf relationship
+    elementOf PE;
+    manifestsAs File;
+    hasRole Executable;
+    ^deployedAs ScopevisioClient.
 
 /* The document management service is REST based */
-?ScopevisioDMS : Component
-    uses Java
-    partOf ScopevisioClient
-    supports DocumentManagement
-    uses REST
+?ScopevisioDMS : Component;
+    uses Java;
+    partOf ScopevisioClient;
+    supports DocumentManagement;
+    uses REST.

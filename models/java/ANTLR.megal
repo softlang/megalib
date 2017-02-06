@@ -59,6 +59,6 @@ String = "https://en.wikipedia.org/wiki/String_(computer_science)"
 Boolean = "https://en.wikipedia.org/wiki/Boolean_data_type"
 True = "https://en.wikipedia.org/wiki/Boolean_data_type"
 False = "https://en.wikipedia.org/wiki/Boolean_data_type" */
-ANTLR : Framework //Classification needed
-    = "http://www.antlr.org/"
-    uses Java
+ANTLR : Framework; //Classification needed
+    = "http://www.antlr.org/";
+    uses Java.

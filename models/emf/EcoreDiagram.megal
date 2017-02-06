@@ -5,34 +5,34 @@ import UML
 
 /* EMF implements the generation of an XML-based visual
 description of an ecore model. */
-?ecoreModel : Artifact
-    elementOf XMI.Ecore
-    hasRole MdeMetamodel
-    manifestsAs File
-AIRD : FileFormat
-    = "http://www.eclipse.org/ecoretools/doc/"
-    subsetOf XMI
-?visualDescription : Artifact
-    elementOf AIRD
-    hasRole MdeMetamodel
-    manifestsAs File
-initializeDiagram : XMI.Ecore -> AIRD
-initializeDiagram(?ecoreFile) |-> ?visualDescription
-EMF implements initializeDiagram
-    implements AIRD
+?ecoreModel : Artifact;
+    elementOf XMI.Ecore;
+    hasRole MdeMetamodel;
+    manifestsAs File.
+AIRD : FileFormat;
+    = "http://www.eclipse.org/ecoretools/doc/";
+    subsetOf XMI.
+?visualDescription : Artifact;
+    elementOf AIRD;
+    hasRole MdeMetamodel;
+    manifestsAs File.
+initializeDiagram : XMI.Ecore -> AIRD.
+initializeDiagram(?ecoreFile) |-> ?visualDescription.
+EMF implements initializeDiagram;
+    implements AIRD.
 
 
 /* The visual representation corresponds to a rendered UML class
 diagram. */
-EcoreDiagram : ModelingLanguage
-    = "http://www.eclipse.org/ecoretools/doc/"
-    dialectOf UML.ClassDiagram
-?visualRepresentation : Artifact
-    elementOf EcoreDiagram
-    hasRole Diagram
-    manifestsAs Transient
-renderEcoreUML : AIRD -> EcoreDiagram
-renderEcoreUML(?visualDescription) |-> ?visualRepresentation
-EMF implements renderEcoreUML
-    uses Rendering
-    implements EcoreDiagram
+EcoreDiagram : ModelingLanguage;
+    = "http://www.eclipse.org/ecoretools/doc/";
+    dialectOf UML.ClassDiagram.
+?visualRepresentation : Artifact;
+    elementOf EcoreDiagram;
+    hasRole Diagram;
+    manifestsAs Transient.
+renderEcoreUML : AIRD -> EcoreDiagram.
+renderEcoreUML(?visualDescription) |-> ?visualRepresentation.
+EMF implements renderEcoreUML;
+    uses Rendering;
+    implements EcoreDiagram.

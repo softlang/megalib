@@ -4,121 +4,127 @@ module WebSQLDatabaseAPI
 This prescriptive model describes a technology that is outdated : https://www.w3.org/TR/webdatabase/
 It deals with how technology can support HTML5 web applications to still work, when the user is offline.
 */
-LocalStorage : Construct
-    = "http://www.w3schools.com/html/html5_webstorage.asp"
-    aspectOf OfflineWebApplicationDevelopment
-HTML5 : MarkupLanguage
-    = "https://www.w3.org/TR/html5/"
-HTML5JavaScript : ProgrammingLanguage
-    = "http://www.w3schools.com/html/html_scripts.asp"
-    embeddedInto HTML5
-?Browser : Platform
-    implements HTML5
-    implements HTML5JavaScript
-    uses LocalStorage
+LocalStorage : Construct;
+    = "http://www.w3schools.com/html/html5_webstorage.asp";
+    aspectOf OfflineWebApplicationDevelopment.
+HTML5 : MarkupLanguage;
+    = "https://www.w3.org/TR/html5/".
+HTML5JavaScript : ProgrammingLanguage;
+    = "http://www.w3schools.com/html/html_scripts.asp";
+    embeddedInto HTML5.
+?Browser : Platform;
+    implements HTML5;
+    implements HTML5JavaScript;
+    uses LocalStorage.
 
 /* The approach is to have an SQL database at the client side
 with the necessary data. .
 Synchronization with some server side has to happen as well, but
 is not further specified. */
-DatabaseAPISQL : QueryLanguage
-    = "https://www.w3.org/TR/webdatabase/#executing-sql-statements"
-    embeddedInto HTML5JavaScript
-    supports DatabaseProgramming
-SQLDatabaseAPI : API
-    = "https://www.w3.org/TR/offline-webapps/#offline"
-    = "https://www.tutorialspoint.com/html5/html5_web_sql.htm"
-    uses HTML5
-    implements DatabaseAPISQL
-    uses LocalStorage
-    supports DatabaseProgramming
-    supports OfflineWebApplicationDevelopment
-?localFileSystem : FileSystem
-?SQLImage : FileFormat
-?database1 : Artifact
-    elementOf ?SQLImage
-    hasRole Database
-    manifestsAs File
-    partOf ?localFileSystem
-?webApplication : WebApplication
-    uses HTML5
-    uses HTML5JavaScript
-    uses SQLDatabaseAPI
-    uses DatabaseAPISQL
-?website : Artifact
-    hasRole WebResource
-    manifestsAs File
-    elementOf HTML5
-    partOf ?webApplication
-?script : Artifact
-    hasRole Executable
-    manifestsAs Fragment
-    elementOf HTML5JavaScript
-    partOf ?website
+DatabaseAPISQL : QueryLanguage;
+    = "https://www.w3.org/TR/webdatabase/#executing-sql-statements";
+    embeddedInto HTML5JavaScript;
+    supports DatabaseProgramming.
+SQLDatabaseAPI : API;
+    = "https://www.w3.org/TR/offline-webapps/#offline";
+    = "https://www.tutorialspoint.com/html5/html5_web_sql.htm";
+    uses HTML5;
+    implements DatabaseAPISQL;
+    uses LocalStorage;
+    supports DatabaseProgramming;
+    supports OfflineWebApplicationDevelopment.
+?localFileSystem : FileSystem.
+?SQLImage : FileFormat.
+?database1 : Artifact;
+    elementOf ?SQLImage;
+    hasRole Database;
+    manifestsAs File;
+    partOf ?localFileSystem.
+?webApplication : WebApplication;
+    uses HTML5;
+    uses HTML5JavaScript;
+    uses DatabaseAPISQL;
+    reuses SQLDatabaseAPI.
+?website : Artifact;
+    hasRole WebResource;
+    manifestsAs File;
+    elementOf HTML5;
+    partOf ?webApplication.
+?script : Artifact;
+    hasRole Executable;
+    manifestsAs Fragment;
+    elementOf HTML5JavaScript;
+    partOf ?website.
 
-JavaScriptString : DataType
-    = "http://www.w3schools.com/js/js_strings.asp"
-    subsetOf HTML5JavaScript // or embedded?
-JavaScriptNumber : DataType
-    = "http://www.w3schools.com/js/js_numbers.asp"
-    subsetOf HTML5JavaScript
-JavaScriptObject : ObjectGraph // we don't know whether it is one class that this is conforming to or more.
-    = "http://www.w3schools.com/js/js_object_definition.asp"
-?browser implements JavaScriptObject
-openDatabase : JavaScriptString # JavaScriptString # JavaScriptString # JavaScriptNumber -> JavaScriptObject
-SQLDatabaseAPI implements openDatabase
-?databasename : Artifact
-    hasRole Value
-    manifestsAs Fragment
-    elementOf JavaScriptString
-    refersTo ?database1
-    partOf ?script
-?databaseVersion : Artifact
-    hasRole Value
-    manifestsAs Fragment
-    elementOf JavaScriptString
-    partOf ?script
-?displayName : Artifact
-    hasRole Value
-    manifestsAs Fragment
-    elementOf JavaScriptString
-    partOf ?script
-?estimatedSize : Artifact
-    hasRole Value
-    manifestsAs Fragment
-    elementOf JavaScriptNumber
-    partOf ?script
-?databaseObject : Artifact
-    hasRole Database
-    manifestsAs Transient
-    elementOf JavaScriptObject
-    represents ?database1 //??? Can we express this in another way?
-openDatabase(?databasename,?databaseVersion,?displayName,?estimatedSize) |-> ?databaseObject 
+JavaScript.Data : Data;
+    = "http://www.w3schools.com/js/js_datatypes.asp".
+JavaScript.String : Data;
+    = "http://www.w3schools.com/js/js_strings.asp";
+    subsetOf JavaScript.Data.// or embedded?
+JavaScript.Number : Data;
+    = "http://www.w3schools.com/js/js_numbers.asp";
+    subsetOf JavaScript.Data.
+JavaScript.Object : ObjectGraph; // we don't know whether it is one class that this is conforming to or more.
+    = "http://www.w3schools.com/js/js_object_definition.asp";
+    subsetOf JavaScript.Data.
+?Browser implements JavaScript.Data;
+    implements JavaScript.String;
+    implements JavaScript.Number;
+    implements JavaScript.Object.
+openDatabase : JavaScript.String # JavaScript.String # JavaScript.String # JavaScript.Number -> JavaScript.Object.
+SQLDatabaseAPI implements openDatabase.
+?databasename : Artifact;
+    hasRole Value;
+    manifestsAs Fragment;
+    elementOf JavaScript.String;
+    refersTo ?database1;
+    partOf ?script.
+?databaseVersion : Artifact;
+    hasRole Value;
+    manifestsAs Fragment;
+    elementOf JavaScript.String;
+    partOf ?script.
+?displayName : Artifact;
+    hasRole Value;
+    manifestsAs Fragment;
+    elementOf JavaScript.String;
+    partOf ?script.
+?estimatedSize : Artifact;
+    hasRole Value;
+    manifestsAs Fragment;
+    elementOf JavaScript.Number;
+    partOf ?script.
+?databaseObject : Artifact;
+    hasRole Database;
+    manifestsAs Transient;
+    elementOf JavaScript.Object;
+    represents ?database1.//??? Can we express this in another way?
+openDatabase(?databasename,?databaseVersion,?displayName,?estimatedSize) |-> ?databaseObject .
 
 //database transaction
-?adatabase2 : Artifact
-    hasRole Database
-    manifestsAs File
-    elementOf ?SQLImage
-    partOf ?localFileSystem
-?databaseObject2 : Artifact
-    hasRole Database
-    manifestsAs Transient
-    elementOf JavaScriptObject
-    represents ?database2
-?transactionObject : Artifact
-    hasRole Value
-    manifestsAs Transient
-    elementOf JavaScriptObject
-?queryObject : Artifact
-    hasRole Value
-    manifestsAs Transient
-    elementOf DatabaseAPISQL
-    partOf ?transactionObject
-?transactionResult : Artifact
-    hasRole Value
-    manifestsAs Transient
-    elementOf JavaScriptObject
-transaction : JavaScriptObject # JavaScriptObject -> JavaScriptObject # JavaScriptObject # ?SQLImage
-transaction(?databaseObject,?transactionObject) |-> (?databaseObject2,?transactionResult,?database2)
-SQLDatabaseAPI implements transaction
+?database2 : Artifact;
+    hasRole Database;
+    manifestsAs File;
+    elementOf ?SQLImage;
+    partOf ?localFileSystem.
+?databaseObject2 : Artifact;
+    hasRole Database;
+    manifestsAs Transient;
+    elementOf JavaScript.Object;
+    represents ?database2.
+?transactionObject : Artifact;
+    hasRole Value;
+    manifestsAs Transient;
+    elementOf JavaScript.Object.
+?queryObject : Artifact;
+    hasRole Value;
+    manifestsAs Transient;
+    elementOf DatabaseAPISQL;
+    partOf ?transactionObject.
+?transactionResult : Artifact;
+    hasRole Value;
+    manifestsAs Transient;
+    elementOf JavaScript.Object.
+transaction : JavaScript.Object # JavaScript.Object -> JavaScript.Object # JavaScript.Object # ?SQLImage.
+transaction(?databaseObject,?transactionObject) |-> (?databaseObject2,?transactionResult,?database2).
+SQLDatabaseAPI implements transaction.
