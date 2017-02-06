@@ -90,13 +90,13 @@ public class TypeCheck {
         if (!m.getInstanceOfMap().containsKey(object)) {
             errors.add("Error at instance of " + name + ": " + object + " is not instantiated.");
         }
-        Relation i = null;
         if(name.startsWith("^")){
             name = name.substring(1);
-            i = new Relation(object, subject);
-        }else{
-            i = new Relation(subject, object);
+            String temp = subject;
+            subject = object;
+            object = temp;
         }
+        Relation i = new Relation(subject, object);
         if (m.getRelationshipInstanceMap().containsKey(name)) {
             if (m.getRelationshipInstanceMap().get(name).contains(i)) {
                 errors.add("Error at instance of " + name + ": '" + subject + " " + name + " " + object

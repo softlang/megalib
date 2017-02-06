@@ -5,6 +5,7 @@ package org.java.megalib.checker;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.java.megalib.checker.services.WellformednessCheck;
 import org.java.megalib.checker.services.ModelLoader;
@@ -47,7 +48,7 @@ public class Main {
                     if (args.length == 1 && args[0].equals("-nocon")) {
                         checkDirectory(".", true);
                     }
-                    System.err.println("The arguments " + args + " are not valid.");
+                    System.err.println("The arguments " + Arrays.toString(args) + " are not valid.");
                 } else {
                     checkDirectory(".", false);
                 }
