@@ -46,6 +46,21 @@ pattern. */
 Role < Entity;
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)";
     = "https://en.wikipedia.org/wiki/Terminology".
+hasRole < Artifact # Role; //Relating the artifact to an existing term known in a domain
+    = "https://en.wikipedia.org/wiki/Terminology".
+
+
+/* A role may be set in the context of a domain or a technological space */
+aspectOf < Role # ProgrammingDomain .
+aspectOf < Role # TechnologySpace
+
+/* Structural parts of pattern are often referred to as participants. */
+participantOf < Role # DesignPattern;
+    = "https://en.wikipedia.org/wiki/Software_design_pattern#Structure".
+participantOf < Role # ArchitecturalPattern;
+    = "https://en.wikipedia.org/wiki/Architectural_pattern".
+
+/* Frequently appearing roles */
 Configuration : Role;   //settings statements.
     = "https://en.wikipedia.org/wiki/Configuration_file".
 BuildScript : Role; //Scripts for deploying software such as ANT or Maven files
@@ -106,17 +121,6 @@ TestCase : Role;
     = "https://en.wikipedia.org/wiki/Test_case".
 POJO : Role;
     = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object".
-hasRole < Artifact # Role; //Relating the artifact to an existing term known in a domain
-    = "https://en.wikipedia.org/wiki/Terminology".
-
-/* A role may be set in the context
-aspectOf < Role # ProgrammingDomain .
-
-/* Structural parts of pattern are often referred to as participants. */
-participantOf < Role # DesignPattern;
-    = "https://en.wikipedia.org/wiki/Software_design_pattern#Structure".
-participantOf < Role # ArchitecturalPattern;
-    = "https://en.wikipedia.org/wiki/Architectural_pattern".
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
@@ -160,6 +164,13 @@ implements < Technology # Function;  //A technology may implement a mapping
 implements < Technology # Language.  //A technology can process a language as input or output
 implements < Artifact # Function. //Necessary?
 
+/* A technology may help in a problem context */
+supports < Technology # ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Software_feature". //needs better link
+
+/* Technologies and languages may be frequently used in a technological context . */
+belongsTo < Technology # TechnologySpace.
+
 /* A technology is managed by an artifact that serves as a repository. */
 managedBy < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_repository".
@@ -181,13 +192,6 @@ UserFiles < System;  //A set of files managed by the user instead of being coord
 /* A system as an exemplary solution for a field of study */
 demonstrates < System # ProgrammingDomain; 
     = "http://softlang.uni-koblenz.de/chrestomathy/".
-
-/* A technology may help in a problem context */
-supports < Technology # ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Software_feature". //needs better link
-
-/* Technologies and languages may be frequently used in a technological context . */
-belongsTo < Technology # TechnologySpace.
 
 
 /* Part-of relationships */

@@ -71,7 +71,7 @@ dialectOf < Language # Language;
 
 /* A language's evolution is inspired by other languages */
 influencedBy < Language # Language;
-    = "http://brendangriffen.com/gow-programming-languages.html".
+    = "http://brendangriffen.com/gow-programming-languages.html". 
 
 /* A language belongs to a set of technical solutions in application scenarios */
 belongsTo < Language # TechnologySpace;
@@ -82,3 +82,11 @@ supports < Language # ProgrammingDomain.
 
 /* A language has constructs that allow programming in a certain mindset */
 facilitates < Language # Paradigm.
+
+/* A language family consists of multiple related languages.
+A language family has one ascendant and multiple descendants.
+Descendants are languages that are influenced by the ascendant.*/
+LanguageFamily < Entity
+    = "https://en.wikipedia.org/wiki/Category:Programming_language_families"
+ascendantOf < Language # LanguageFamily
+descendantOf < Language # LanguageFamily
