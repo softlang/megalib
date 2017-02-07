@@ -1,0 +1,165 @@
+module common.Concept
+
+/* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern).  */
+DesignPattern < Entity;
+    = "https://en.wikipedia.org/wiki/Software_design_pattern".
+Model-View-Controller : DesignPattern;
+    = "https://en.wikipedia.org/wiki/Model-view-controller".
+ArchitecturalPattern < Entity;
+    = "https://en.wikipedia.org/wiki/Architectural_pattern".
+Client-Server : ArchitecturalPattern;
+    = "https://de.wikipedia.org/wiki/Client-Server-Modell".
+REST : ArchitecturalPattern;
+    = "https://en.wikipedia.org/wiki/Representational_state_transfer".
+ServiceOrientedArchitecture : ArchitecturalPattern;
+    = "https://en.wikipedia.org/wiki/Service-oriented_architecture".
+    
+/* Ways of thinking in the context of programming that have implications on 
+language semantics, available language constructs and usage benefits */
+Paradigm < Entity ;
+    = "https://en.wikipedia.org/wiki/Programming_paradigm".
+ConcurrentProgramming : Paradigm; // Programming in a way that enables and manages parallel execution
+    = "https://blog.golang.org/concurrency-is-not-parallelism".
+ObjectOrientedProgramming : Paradigm; // Thinking of objects and their interrelation
+    = "https://en.wikipedia.org/wiki/Object-oriented_programming".
+FunctionalProgramming : Paradigm; // Programming in a way that resembles formulating mathematical functions
+    = "https://en.wikipedia.org/wiki/Functional_programming".
+RelationalProgramming : Paradigm; // Enabling the representation of entities and their interrelationships.
+    = "https://en.wikipedia.org/wiki/Relational_model".
+ModularProgramming : Paradigm; //Seperation of functionality implementations in modules
+    = "https://en.wikipedia.org/wiki/Modular_programming".
+AspectOrientedProgramming : Paradigm; //Seperation of cross-cutting concerns
+    = "https://en.wikipedia.org/wiki/Aspect-oriented_programming".
+LogicProgramming : Paradigm; //programming based on formal logic
+    = "https://en.wikipedia.org/wiki/Logic_programming".
+specializes < Paradigm # Paradigm;
+    = "https://en.wikipedia.org/wiki/Programming_paradigm".
+    
+/* A field of study that defines common requirements, problems, terminology and ways for technologies or 
+languages to support it. */
+ProgrammingDomain < Entity;
+    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
+subdomainOf < ProgrammingDomain # ProgrammingDomain; //a domain covers a subset of another domain's requirements, problems, terminology and ways for languages/technologies to support it.
+    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
+GeneralPurposeProgramming : ProgrammingDomain; // The study on applications in general.
+    = "https://en.wikipedia.org/wiki/General-purpose_programming_language".
+MetaProgramming : ProgrammingDomain; // The study on processing programs with support for language implementation 
+    = "https://en.wikipedia.org/wiki/Metaprogramming".
+DatabaseProgramming : ProgrammingDomain; // The study on how to efficiently store and process data 
+    = "http://101companies.org/wiki/Database_programming".
+ReverseEngineering : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Reverse_engineering".
+QualityAssurance : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Software_quality_assurance".
+WebBrowsing : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Web_browser".
+WebApplicationDevelopment : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Web_application_development".
+OfflineWebApplicationDevelopment : ProgrammingDomain;
+    = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline";
+    subdomainOf WebApplicationDevelopment.
+ModelDrivenEngineering : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Model-driven_engineering".
+SoftwareDocumentation : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Software_documentation".
+GraphicsProgramming : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Computer_graphics_(computer_science)".
+BusinessProgramming : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Business_software".
+EnterpriseResourcePlanning : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Enterprise_resource_planning";
+    subdomainOf BusinessProgramming.
+CustomerRelationshipManagement : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Customer_relationship_management";
+    subdomainOf BusinessProgramming.
+ProjectManagement : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Project_management_software".
+DocumentManagement : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Document_management_system".
+ECommerce : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/E-commerce";
+    subdomainOf BusinessProgramming.
+DistributedProgramming : ProgrammingDomain;
+	= "https://en.wikipedia.org/wiki/Distributed_computing".
+
+/* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. While a programming domain could be called a problem space, a technology space could be called a solution space. 
+
+Hint: Language dependent technology spaces can be found in the corresponding
+language's main module. */
+TechnologySpace < Entity;
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
+subspaceOf < TechnologySpace # TechnologySpace;
+    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
+BuildAutomationWare : TechnologySpace;
+    = "https://en.wikipedia.org/wiki/List_of_build_automation_software".
+MDEWare : TechnologySpace;
+    = "https://en.wikipedia.org/wiki/Model-driven_engineering#Tools".
+SoftwareAsAServiceWare : TechnologySpace;
+    = "https://en.wikipedia.org/wiki/Software_as_a_service".
+    
+/* Reusable ideal processes. */
+AbstractProcess < Entity; //Commonly known technology- and language independent processes
+    = "https://en.wikipedia.org/wiki/Abstract_process".
+Protocol < AbstractProcess; // A process defined by a protocol
+    = "https://en.wikipedia.org/wiki/Communications_protocol".
+Algorithm < AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Algorithm".
+Construct < Entity; //A common language- and technology independent artifact constellation
+    = "https://en.wikipedia.org/wiki/Construct_(philosophy)".
+
+/* Abstract solutions an aspect of a way of thinking or field of study. */
+aspectOf < Construct # Paradigm; //as in Semaphore aspectOf ConcurrentProgramming
+    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect".
+aspectOf < Construct # ProgrammingDomain. //as in LocalStorage aspectOf OfflineWebApplicationDevelopment
+aspectOf < AbstractProcess # ProgrammingDomain.
+
+/* More specific forms of reusable ideas */
+refines < AbstractProcess # AbstractProcess.
+refines < Construct # Construct.
+
+/* Known instances of abstract solutions */
+Compilation : AbstractProcess; //Software translation of a higher level language into a lower level language
+    = "https://de.wikipedia.org/wiki/Compiler";
+    aspectOf MetaProgramming.
+Interpretation : AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Interpreter_(computing)".
+Transformation : AbstractProcess; // Takes input data and produces output data. Input and output are elements of a software language that is not a data type.
+    = "https://en.wikipedia.org/wiki/Data_transformation".
+Validation : AbstractProcess; //Validate quality
+    = "https://en.wikipedia.org/wiki/Verification_and_validation#Categories_of_validation";
+    aspectOf QualityAssurance.
+Verification : AbstractProcess; //Correctness Proof
+    = "https://en.wikipedia.org/wiki/Software_verification";
+    aspectOf QualityAssurance.
+Rendering : AbstractProcess; //synthesizing an image from some description format
+    = "https://en.wikipedia.org/wiki/Rendering_(computer_graphics)";
+    aspectOf GraphicsProgramming.
+Metric : AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Software_metric";
+    aspectOf ReverseEngineering;
+    aspectOf QualityAssurance.
+CodeCoverage : AbstractProcess; //specific metric
+    = "https://en.wikipedia.org/wiki/Code_coverage";
+    aspectOf QualityAssurance.
+Testing : AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Software_testing";
+    aspectOf QualityAssurance.
+Persistence : AbstractProcess; //or data binding
+    = "http://101companies.org/wiki/Persistence".
+Serialization : AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Serialization";
+    refines Persistence.
+Mapping : AbstractProcess;
+    = "http://101companies.org/wiki/Mapping".
+ObjectRelationalMapping : AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Object-relational_mapping";
+    refines Mapping.
+Introspection : Construct;
+    = "https://en.wikipedia.org/wiki/Type_introspection";
+    aspectOf MetaProgramming.
+Semaphore : Construct; //A flag to control access to a resource in the context of concurrent programs.
+    = "https://en.wikipedia.org/wiki/Semaphore_(programming)";
+    aspectOf ConcurrentProgramming.
+Annotation : Construct;
+    = "https://en.wikipedia.org/wiki/Annotation";
+    aspectOf ObjectOrientedProgramming.

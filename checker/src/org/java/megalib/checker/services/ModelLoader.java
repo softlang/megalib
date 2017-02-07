@@ -40,11 +40,16 @@ public class ModelLoader {
     private MegaModel model;
     private List<String> typeErrors;
 
-    public ModelLoader() {
+    public ModelLoader(){
         todos = new LinkedList<>();
         model = new MegaModel();
         typeErrors = new ArrayList<>();
-        loadPrelude();
+        try{
+            loadFile("../models/Prelude.megal");
+        }catch(IOException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public MegaModel getModel() {
@@ -53,26 +58,6 @@ public class ModelLoader {
 
     public List<String> getTypeErrors() {
         return Collections.unmodifiableList(typeErrors);
-    }
-
-    private void loadPrelude() {
-        File f = null;
-        String data = "";
-        try {
-            f = new File("../models/Prelude.megal");
-            data = FileUtils.readFileToString(f);
-            typeErrors = loadString(data);
-        }
-        catch (IOException e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-            System.exit(1);
-        }
-        catch (ParserException e) {
-            System.err.println("Unable to parse Prelude. Fix syntactic errors first!");
-            System.exit(1);
-        }
-
     }
 
     public boolean loadFile(String filepath) throws IOException {
@@ -116,7 +101,7 @@ public class ModelLoader {
             return true;
         }
         catch (TypeException | IOException | ParserException e) {
-            System.err.println(e.getMessage());
+            typeErrors.add(e.getMessage());
             return false;
         }
     }

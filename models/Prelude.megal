@@ -1,63 +1,8 @@
-/* 
-A language is a set of syntactic entities. This not only includes
-entities having a concrete syntax but runtime data as well.
-Language subtypes based on PRIMARY purpose. LaTeX could be used
-to code up a general purpose program as well, but hopefully none does
-that. That is why it is classified as a markup language. */
-Language < Entity;
-    = "https://en.wikipedia.org/wiki/Computer_language".
-FileFormat < Language; // not meant to be read by humans. Optimized for file system, e.g. an SQL image, JPG etc.
-    = "https://en.wikipedia.org/wiki/File_format".
-ProgrammingLanguage < Language;  // not specific to a domain, e.g. Java
-    = "https://en.wikipedia.org/wiki/Programming_language".
-DataRepresentationLanguage < Language; // can be read by humans and represents data, e.g. JSON
-    = "https://de.wikipedia.org/wiki/Datenformat". //need better binding
-MarkupLanguage < Language;  // assists in structuring data, e.g. XML
-    = "https://en.wikipedia.org/wiki/Markup_language".
-TransformationLanguage < Language; // transformation statements, e.g. ATL
-    = "https://en.wikipedia.org/wiki/Transformation_language". // even though the text is misleading
-QueryLanguage < Language; // query statements, e.g. SQL
-    = "https://en.wikipedia.org/wiki/Query_language".
-StylesheetLanguage < Language; // expresses presentation of structured documents, e.g. CSS
-    = "https://en.wikipedia.org/wiki/Style_sheet_language".
-GrammarLanguage < Language; //define syntax of a language
-    = "https://en.wikipedia.org/wiki/Formal_grammar".
-SchemaLanguage < Language; // formulate schemas or metamodels, e.g. XSD
-    = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages".
-CommandLineLanguage < Language;  // statements that can be entered in a command line, e.g. Bash
-    = "https://en.wikipedia.org/wiki/Command-line_interface".
-ModelingLanguage < Language;  // describe or prescribe software, e.g. UML
-    = "https://en.wikipedia.org/wiki/Modeling_language".
-MachineLanguage < Language; // hardware instructions
-    = "https://en.wikipedia.org/wiki/Machine_code".
-AssemblyLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Assembly_language".
-ConfigurationLanguage < Language; // configuration files, e.g. .classpath-files
-    = "https://en.wikipedia.org/wiki/Configuration_file" .
-BuildLanguage < Language; //languages used for writing build scripts
-    = "https://en.wikipedia.org/wiki/Build_automation".
-ReferenceLanguage < Language; // express references, e.g. URI
-    = "https://en.wikipedia.org/wiki/Reference".
-MessageLanguage < Language; // structured messages, e.g. HTTP Requests
-    = "https://en.wikipedia.org/wiki/Message_passing".
-KnowledgeRepresentationLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Category:Knowledge_representation_languages".
-DomainSpecificLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Domain-specific_language".
-Data < Language; // simple run time data, e.g. Booleans or Integers. Defined by a type.
-    = "https://en.wikipedia.org/wiki/Data_type".
-ObjectGraph < Language; // object values in an OO Language, e.g. Java Objects.
-    = "https://en.wikipedia.org/wiki/Object_graph".
-Graphics < Language; //!! Experimental !! visual images consisting of pixels that inform, illustrate or entertain
-    = "https://en.wikipedia.org/wiki/Graphics".
-ContainerFormat < Language;
-    = "https://en.wikipedia.org/wiki/Digital_container_format".
-subsetOf < Language # Language;
-    = "https://en.wikipedia.org/wiki/Subset".
-embeddedInto < Language # Language;
-    = "https://wiki.haskell.org/Embedded_domain_specific_language".
-dialectOf < Language # Language;
-    = "https://en.wikipedia.org/wiki/Dialect_(computing)".
+module Prelude
+
+import common.Concept
+import common.Language
+
 
 /* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity;
@@ -99,7 +44,8 @@ terminology. They imply a commonly known purpose
 that might even be defined in terms of a design or architectural
 pattern. */
 Role < Entity;
-    = "https://en.wikipedia.org/wiki/Artifact_(software_development)".
+    = "https://en.wikipedia.org/wiki/Artifact_(software_development)";
+    = "https://en.wikipedia.org/wiki/Terminology".
 Configuration : Role;   //settings statements.
     = "https://en.wikipedia.org/wiki/Configuration_file".
 BuildScript : Role; //Scripts for deploying software such as ANT or Maven files
@@ -163,23 +109,14 @@ POJO : Role;
 hasRole < Artifact # Role; //Relating the artifact to an existing term known in a domain
     = "https://en.wikipedia.org/wiki/Terminology".
 
-/* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern). Structural parts of such pattern are often referred to as participants. */
-DesignPattern < Entity;
-    = "https://en.wikipedia.org/wiki/Software_design_pattern".
-Model-View-Controller : DesignPattern;
-    = "https://en.wikipedia.org/wiki/Model-view-controller".
-ArchitecturalPattern < Entity;
-    = "https://en.wikipedia.org/wiki/Architectural_pattern".
-Client-Server : ArchitecturalPattern;
-    = "https://de.wikipedia.org/wiki/Client-Server-Modell".
-REST : ArchitecturalPattern;
-    = "https://en.wikipedia.org/wiki/Representational_state_transfer".
-ServiceOrientedArchitecture : ArchitecturalPattern;
-    = "https://en.wikipedia.org/wiki/Service-oriented_architecture".
+/* A role may be set in the context
+aspectOf < Role # ProgrammingDomain .
+
+/* Structural parts of pattern are often referred to as participants. */
 participantOf < Role # DesignPattern;
     = "https://en.wikipedia.org/wiki/Software_design_pattern#Structure".
 participantOf < Role # ArchitecturalPattern;
-    = "https://en.wikipedia.org/wiki/Architectural_pattern". //related to design Pattern
+    = "https://en.wikipedia.org/wiki/Architectural_pattern".
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
@@ -223,184 +160,34 @@ implements < Technology # Function;  //A technology may implement a mapping
 implements < Technology # Language.  //A technology can process a language as input or output
 implements < Artifact # Function. //Necessary?
 
-/* Code deployment aspects */
-managedBy < Technology # Artifact; //a technology is managed by an artifact, if the artifact contains the technology's source code.
+/* A technology is managed by an artifact that serves as a repository. */
+managedBy < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_repository".
-deployedAs < Technology # Artifact; //In a usage scenario the technology is locally deployed as an artifact
+
+/* In a usage scenario the technology is locally deployed as an artifact. */
+deployedAs < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_deployment".
 
-/* Classification of systems */
-System < Entity; //a set of artifacts realizing some concrete use cases
+/* A set of artifacts that realizes concrete use cases. */
+System < Entity; 
     = "https://en.wikipedia.org/wiki/Software_system".
 Application < System; // a professionally coordinated set of artifacts that are deployed locally
     = "https://en.wikipedia.org/wiki/Application_software".
 WebApplication < System; // a professionally coordinated set of artifacts that are deployed on a web server
     = "https://en.wikipedia.org/wiki/Web_application".
-FileSystem < System;  //A set of files managed by the user instead of being coordinated as program input or output.
-    = "https://en.wikipedia.org/wiki/File_system".
+UserFiles < System;  //A set of files managed by the user instead of being coordinated as program input or output.
+    = "https://en.wikipedia.org/wiki/User_(computing)".
 
-/* Ways of thinking in the context of programming that have implications on 
-language semantics, available language constructs and usage benefits */
-Paradigm < Entity ;
-    = "https://en.wikipedia.org/wiki/Programming_paradigm".
-ConcurrentProgramming : Paradigm; // Programming in a way that enables and manages parallel execution
-    = "https://blog.golang.org/concurrency-is-not-parallelism".
-ObjectOrientedProgramming : Paradigm; // Thinking of objects and their interrelation
-    = "https://en.wikipedia.org/wiki/Object-oriented_programming".
-FunctionalProgramming : Paradigm; // Programming in a way that resembles formulating mathematical functions
-    = "https://en.wikipedia.org/wiki/Functional_programming".
-RelationalProgramming : Paradigm; // Enabling the representation of entities and their interrelationships.
-    = "https://en.wikipedia.org/wiki/Relational_model".
-ModularProgramming : Paradigm; //Seperation of functionality implementations in modules
-    = "https://en.wikipedia.org/wiki/Modular_programming".
-AspectOrientedProgramming : Paradigm; //Seperation of cross-cutting concerns
-    = "https://en.wikipedia.org/wiki/Aspect-oriented_programming".
-LogicProgramming : Paradigm; //programming based on formal logic
-    = "https://en.wikipedia.org/wiki/Logic_programming".
-specializes < Paradigm # Paradigm;
-    = "https://en.wikipedia.org/wiki/Programming_paradigm".
-
-/* A field of study that defines common requirements, problems, terminology and ways for technologies or 
-languages to support it. */
-ProgrammingDomain < Entity;
-    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
-subdomainOf < ProgrammingDomain # ProgrammingDomain; //a domain covers a subset of another domain's requirements, problems, terminology and ways for languages/technologies to support it.
-    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
-demonstrates < System # ProgrammingDomain; //A system as an exemplary solution for a field of study
+/* A system as an exemplary solution for a field of study */
+demonstrates < System # ProgrammingDomain; 
     = "http://softlang.uni-koblenz.de/chrestomathy/".
-GeneralPurposeProgramming : ProgrammingDomain; // The study on applications in general.
-    = "https://en.wikipedia.org/wiki/General-purpose_programming_language".
-MetaProgramming : ProgrammingDomain; // The study on processing programs with support for language implementation 
-    = "https://en.wikipedia.org/wiki/Metaprogramming".
-DatabaseProgramming : ProgrammingDomain; // The study on how to efficiently store and process data 
-    = "http://101companies.org/wiki/Database_programming".
-ReverseEngineering : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Reverse_engineering".
-QualityAssurance : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Software_quality_assurance".
-WebBrowsing : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Web_browser".
-WebApplicationDevelopment : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Web_application_development".
-OfflineWebApplicationDevelopment : ProgrammingDomain;
-    = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline";
-    subdomainOf WebApplicationDevelopment.
-ModelDrivenEngineering : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Model-driven_engineering".
-SoftwareDocumentation : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Software_documentation".
-GraphicsProgramming : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Computer_graphics_(computer_science)".
-BusinessProgramming : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Business_software".
-EnterpriseResourcePlanning : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Enterprise_resource_planning";
-    subdomainOf BusinessProgramming.
-CustomerRelationshipManagement : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Customer_relationship_management";
-    subdomainOf BusinessProgramming.
-ProjectManagement : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Project_management_software".
-DocumentManagement : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Document_management_system".
-ECommerce : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/E-commerce";
-    subdomainOf BusinessProgramming.
-DistributedProgramming : ProgrammingDomain;
-	= "https://en.wikipedia.org/wiki/Distributed_computing".
+
+/* A technology may help in a problem context */
 supports < Technology # ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/Software_feature". //needs better link
-supports < Language # ProgrammingDomain.
 
-/* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. While a programming domain could be called a problem space, a technology space could be called a solution space. 
-
-Hint: Language dependent technology spaces can be found in the corresponding
-language's main module. */
-TechnologySpace < Entity;
-    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
-subspaceOf < TechnologySpace # TechnologySpace;
-    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
-BuildAutomationWare : TechnologySpace;
-    = "https://en.wikipedia.org/wiki/List_of_build_automation_software".
-MDEWare : TechnologySpace;
-    = "https://en.wikipedia.org/wiki/Model-driven_engineering#Tools".
-SoftwareAsAServiceWare : TechnologySpace;
-    = "https://en.wikipedia.org/wiki/Software_as_a_service".
-belongsTo < Technology # TechnologySpace;
-    = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
-belongsTo < Language # TechnologySpace.
-
-/* Reusable ideal solutions. */
-AbstractProcess < Entity; //Commonly known technology- and language independent processes
-    = "https://en.wikipedia.org/wiki/Abstract_process".
-Protocol < AbstractProcess; // A process defined by a protocol
-    = "https://en.wikipedia.org/wiki/Communications_protocol".
-Algorithm < AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Algorithm".
-Construct < Entity; //A common language- and technology independent artifact constellation
-    = "https://en.wikipedia.org/wiki/Construct_(philosophy)".
-
-/* Abstract solutions an aspect of a way of thinking or field of study. */
-aspectOf < Construct # Paradigm; //as in Semaphore aspectOf ConcurrentProgramming
-    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect".
-aspectOf < Construct # ProgrammingDomain. //as in LocalStorage aspectOf OfflineWebApplicationDevelopment
-aspectOf < AbstractProcess # ProgrammingDomain.
-aspectOf < Role # ProgrammingDomain .
-
-/* More specific forms of reusable ideas */
-refines < AbstractProcess # AbstractProcess.
-refines < Construct # Construct.
-
-/* Known instances of abstract solutions */
-HTTP : Protocol;
-    = "https://en.wikipedia.org/wiki/HTTP".
-HTTPS : Protocol ;
-    = "https://en.wikipedia.org/wiki/HTTPS".
-Compilation : AbstractProcess; //Software translation of a higher level language into a lower level language
-    = "https://de.wikipedia.org/wiki/Compiler";
-    aspectOf MetaProgramming.
-Interpretation : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Interpreter_(computing)".
-Transformation : AbstractProcess; // Takes input data and produces output data. Input and output are elements of a software language that is not a data type.
-    = "https://en.wikipedia.org/wiki/Data_transformation".
-Validation : AbstractProcess; //Validate quality
-    = "https://en.wikipedia.org/wiki/Verification_and_validation#Categories_of_validation";
-    aspectOf QualityAssurance.
-Verification : AbstractProcess; //Correctness Proof
-    = "https://en.wikipedia.org/wiki/Software_verification";
-    aspectOf QualityAssurance.
-Rendering : AbstractProcess; //synthesizing an image from some description format
-    = "https://en.wikipedia.org/wiki/Rendering_(computer_graphics)";
-    aspectOf GraphicsProgramming.
-Metric : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Software_metric";
-    aspectOf ReverseEngineering;
-    aspectOf QualityAssurance.
-CodeCoverage : AbstractProcess; //specific metric
-    = "https://en.wikipedia.org/wiki/Code_coverage";
-    aspectOf QualityAssurance.
-Testing : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Software_testing";
-    aspectOf QualityAssurance.
-Persistence : AbstractProcess; //or data binding
-    = "http://101companies.org/wiki/Persistence".
-Serialization : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Serialization";
-    refines Persistence.
-Mapping : AbstractProcess;
-    = "http://101companies.org/wiki/Mapping".
-ObjectRelationalMapping : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Object-relational_mapping";
-    refines Mapping.
-Introspection : Construct;
-    = "https://en.wikipedia.org/wiki/Type_introspection";
-    aspectOf MetaProgramming.
-Semaphore : Construct; //A flag to control access to a resource in the context of concurrent programs.
-    = "https://en.wikipedia.org/wiki/Semaphore_(programming)";
-    aspectOf ConcurrentProgramming.
-Annotation : Construct;
-    = "https://en.wikipedia.org/wiki/Annotation";
-    aspectOf ObjectOrientedProgramming.
+/* Technologies and languages may be frequently used in a technological context . */
+belongsTo < Technology # TechnologySpace.
 
 
 /* Part-of relationships */
@@ -416,20 +203,6 @@ uses < System # Language;
     = "https://en.wikipedia.org/wiki/Computer_programming".
 uses < Technology # Language.
 
-/* Re-usable forms of solutions can be used in the sense of realization. */
-realizes < System # DesignPattern.
-realizes < System # ArchitecturalPattern.
-realizes < System # AbstractProcess.
-realizes < System # Construct.
-realizes < Technology # DesignPattern.
-realizes < Technology # ArchitecturalPattern.
-realizes < Technology # AbstractProcess.
-realizes < Technology # Construct.
-realizes < Artifact # DesignPattern.
-realizes < Artifact # ArchitecturalPattern.
-realizes < Artifact # AbstractProcess.
-realizes < Artifact # Construct.
-
 /* Re-usable forms of solutions can be used */
 uses < System # DesignPattern.
 uses < System # ArchitecturalPattern.
@@ -444,12 +217,25 @@ uses < Artifact # ArchitecturalPattern.
 uses < Artifact # AbstractProcess.
 uses < Artifact # Construct.
 
+/* Re-usable forms of solutions can be used in the sense of realization. */
+realizes < System # DesignPattern.
+realizes < System # ArchitecturalPattern.
+realizes < System # AbstractProcess.
+realizes < System # Construct.
+realizes < Technology # DesignPattern.
+realizes < Technology # ArchitecturalPattern.
+realizes < Technology # AbstractProcess.
+realizes < Technology # Construct.
+realizes < Artifact # DesignPattern.
+realizes < Artifact # ArchitecturalPattern.
+realizes < Artifact # AbstractProcess.
+realizes < Artifact # Construct.
+
 /* A technology or a language can facilitate the usage of ideal forms of solutions */
 facilitates < Technology # DesignPattern.
 facilitates < Technology # ArchitecturalPattern.
 facilitates < Technology # AbstractProcess.
 facilitates < Technology # Construct.
-facilitates < Language # Paradigm.
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */

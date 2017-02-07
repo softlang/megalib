@@ -23,7 +23,7 @@ import org.junit.Test;
 public class ParserListenerTest {
 
     @Test
-    public void preludeIsParsed() throws ParserException, IOException {
+    public void preludeIsParsed() {
         ModelLoader ml = new ModelLoader();
         assertEquals(0, ml.getTypeErrors().size());
     }

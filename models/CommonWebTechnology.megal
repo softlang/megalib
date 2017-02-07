@@ -19,6 +19,10 @@ CSS : StylesheetLanguage;
 URL : ReferenceLanguage;
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator".
 
+HTTP : Protocol;
+    = "https://en.wikipedia.org/wiki/HTTP".
+HTTPS : Protocol ;
+    = "https://en.wikipedia.org/wiki/HTTPS".
 HTTPRequest : MessageLanguage;
     = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_message".
 HTTPResponse : MessageLanguage;
