@@ -20,10 +20,8 @@ public class Main {
         try {
             if (validArguments(args)) {
                 File f = new File(args[1]);
-                if (!f.exists()) {
-                    System.err.println("The file '" + args[1] + "' does not exist.");
-                    return;
-                }
+                if (!f.exists())
+                    throw new Exception("The file '" + args[1] + "' does not exist.");
 
                 if (!args[1].endsWith(".megal")) {
                     if (f.isDirectory()) {
@@ -32,9 +30,8 @@ public class Main {
                         } else {
                             checkDirectory(f.getAbsolutePath(), false);
                         }
-                    } else {
-                        System.err.println("Could not recognize '" + args[1] + "' as a megamodel.");
-                    }
+                    }else
+                        throw new Exception("Could not recognize '" + args[1] + "' as a megamodel.");
                 } else {
                     if (args.length > 2 && args[2].equals("-nocon")) {
                         checkFile(f.getAbsolutePath(), true);
@@ -48,15 +45,14 @@ public class Main {
                     if (args.length == 1 && args[0].equals("-nocon")) {
                         checkDirectory(".", true);
                     }
-                    System.err.println("The arguments " + Arrays.toString(args) + " are not valid.");
+                    throw new Exception("The arguments " + Arrays.toString(args) + " are not valid.");
                 } else {
                     checkDirectory(".", false);
                 }
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Checker handled main exception : " + e.toString());
+            System.err.println("Checker handled main exception : " + e.getMessage());
         }
     }
 

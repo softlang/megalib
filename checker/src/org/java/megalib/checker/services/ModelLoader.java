@@ -40,16 +40,20 @@ public class ModelLoader {
     private MegaModel model;
     private List<String> typeErrors;
 
-    public ModelLoader(){
+    public ModelLoader(String preludePath){
         todos = new LinkedList<>();
         model = new MegaModel();
         typeErrors = new ArrayList<>();
         try{
-            loadFile("../models/Prelude.megal");
+            loadFile(preludePath);
         }catch(IOException e){
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public ModelLoader(){
+        this("../models/Prelude.megal");
     }
 
     public MegaModel getModel() {
