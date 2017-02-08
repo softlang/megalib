@@ -86,7 +86,7 @@ facilitates < Language # Paradigm.
 /* A language family consists of multiple related languages.
 A language family has one ascendant and multiple descendants.
 Descendants are languages that are influenced by the ascendant.*/
-LanguageFamily < Entity
-    = "https://en.wikipedia.org/wiki/Category:Programming_language_families"
-ascendantOf < Language # LanguageFamily
-descendantOf < Language # LanguageFamily
+LanguageFamily < Entity;
+    = "https://en.wikipedia.org/wiki/Category:Programming_language_families".
+ascendantOf < Language # LanguageFamily.
+descendantOf < Language # LanguageFamily.

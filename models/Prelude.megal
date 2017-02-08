@@ -51,8 +51,8 @@ hasRole < Artifact # Role; //Relating the artifact to an existing term known in 
 
 
 /* A role may be set in the context of a domain or a technological space */
-aspectOf < Role # ProgrammingDomain .
-aspectOf < Role # TechnologySpace
+aspectOf < Role # ProgrammingDomain.
+aspectOf < Role # TechnologySpace.
 
 /* Structural parts of pattern are often referred to as participants. */
 participantOf < Role # DesignPattern;
