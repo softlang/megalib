@@ -157,11 +157,9 @@ public class MegaModel {
     }
 
     public boolean isSubtypeOf(String subtype, String type) {
-        if (!subtypeOfMap.containsKey(subtype))
-            return false;
-        String temp = subtypeOfMap.get(subtype);
+        String temp = subtype;
         while (!temp.equals(type)) {
-            if (temp.equals("Entity"))
+            if(temp.equals("Entity") || !subtypeOfMap.containsKey(temp))
                 return false;
             temp = subtypeOfMap.get(temp);
         }
@@ -177,16 +175,14 @@ public class MegaModel {
         return false;
     }
 
-    public boolean isSubsetOf(String l1, String l2) {
-        if (!subsetOfMap.containsKey(l1))
-            return false;
-        String temp = l1;
-        while (subsetOfMap.containsKey(temp)) {
-            if (subsetOfMap.get(temp).equals(l2))
-                return true;
+    public boolean isSubsetOf(String subset, String superset) {
+        String temp = subset;
+        while(!temp.equals(superset)){
+            if(!subsetOfMap.containsKey(temp))
+                return false;
             temp = subsetOfMap.get(temp);
         }
-        return false;
+        return true;
     }
 
     public Set<String> getSubstitutedLanguages() {

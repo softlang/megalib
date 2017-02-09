@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.java.megalib.checker.services.Substitution;
+import org.java.megalib.checker.services.SubstitutionCheck;
 import org.java.megalib.checker.services.TypeCheck;
 import org.java.megalib.models.MegaModel;
 
@@ -28,34 +29,37 @@ public class ParserListener extends MegalibBaseListener {
     private MegaModel model;
     private TypeCheck typeCheck;
     private Map<String,Set<String>> substByGroup;
+    private SubstitutionCheck substCheck;
 
     public ParserListener(MegaModel m) {
         model = m;
         typeCheck = new TypeCheck();
+        substCheck = new SubstitutionCheck();
         substByGroup = new HashMap<>();
-    }
-
-    @Override
-    public void exitSubstitutionGroup(SubstitutionGroupContext ctx) {
-        model = new Substitution(model, substByGroup).substituteGroup();
-        substByGroup.clear();
-        assert (substByGroup.size() == 0);
     }
 
     @Override
     public void enterSubstitution(SubstitutionContext ctx) {
         String subject = ctx.getChild(0).getText();
         String object = ctx.getChild(2).getText();
-        if(typeCheck.substitutes(subject, object, model)){
-            Set<String> set;
-            if(substByGroup.containsKey(object)){
-                set = substByGroup.get(object);
-            }else{
-                set = new HashSet<>();
-            }
-            set.add(subject);
-            substByGroup.put(object, set);
+        Set<String> set;
+        if(substByGroup.containsKey(object)){
+            set = substByGroup.get(object);
+        }else{
+            set = new HashSet<>();
         }
+        set.add(subject);
+        substByGroup.put(object, set);
+
+    }
+
+    @Override
+    public void exitSubstitutionGroup(SubstitutionGroupContext ctx) {
+        if(substCheck.substituteGroup(substByGroup, model)){
+            model = new Substitution(model, substByGroup).substituteGroup();
+        }
+        substCheck.getErrors().forEach(e -> typeCheck.addError(e));
+        substByGroup.clear();
     }
 
     @Override

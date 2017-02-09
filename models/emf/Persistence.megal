@@ -1,0 +1,31 @@
+module emf.Persistence
+
+import emf.Core
+
+/* The EMF persistence framework allows you to persist ecore models in a subset of XMI */
+EMF.Persistence : Component;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/index.html?org/eclipse/emf/ecore/package-summary.html";
+    = "http://www.vogella.com/tutorials/EclipseEMFPersistence/article.html";
+    uses Java;
+    partOf EMFCore;
+    facilitates Serialization;
+    implements XMI.Ecore.
+
+/* A Java object can be serialized in the XMI subset for a DSL */
+?dslobjects : Artifact ;
+    elementOf ?JavaObject.DSL;
+    hasRole MdeModel;
+    manifestsAs Transient;
+    conformsTo ?javaModel.
+?dslxmimodel : Artifact;
+    elementOf ?XMI.CustomDSL;
+    hasRole MdeModel;
+    manifestsAs File;
+    conformsTo ?ecoreFile;
+    correspondsTo ?dslobjects.
+saveModel : ?JavaObject.DSL -> ?XMI.DSLs.
+EMF.Persistence implements saveModel.
+saveModel(?dslobjects) |-> ?dslxmimodel.
+loadModel : ?XMI.DSLs # Java.Ecore -> ?JavaObject.DSL.
+EMF.Persistence implements loadModel.
+loadModel(?dslxmimodel,?javaModel) |-> ?dslobjects.

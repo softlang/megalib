@@ -1,4 +1,4 @@
-module emf.EMFCore
+module emf.Core
 
 import java.JavaPlatform
 import Eclipse
@@ -34,29 +34,31 @@ EMF : Plugin;
 
 /* Its main component is EMFCore which contains Ecore's 
 metametamodel as several Java classes. */
-EMFCore : Component;
+EMF.Core : Component;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html";
     partOf EMF;
     uses Java.
-Java.Ecore : ProgrammingLanguage;
+EcoreJava : ProgrammingLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html";
     subsetOf Java.
-EMFCore implements Java.Ecore.
-?ecore.metaModel : Artifact;
+    ^implements EMFCore.
+?ecore.metametaModel : Artifact;
     partOf EMFCore;
-    elementOf Java.Ecore;
+    elementOf EcoreJava;
     hasRole Schema;
-    manifestsAs File+.
+    manifestsAs File+;
+    conformsTo ?ecore.metametaModel.
 
 /* An important component is the Generator that takes a generation
 configuration which is itself a model persisted in XMI. */
-XMI.Ecore : DataRepresentationLanguage;
+EcoreXMI : DataRepresentationLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html";
-    subsetOf XMI.
-GeneratorModel : ConfigurationLanguage;
+    subsetOf XMI;
+    ^encodedInto EcoreJava.
+GeneratorXMI : ConfigurationLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/codegen/ecore/genmodel/GenModel.html";
     subsetOf XMI.
-generateJava : GeneratorModel # XMI.Ecore -> Java.Ecore.
+generateJava : GeneratorXMI # EcoreXMI -> EcoreJava.
 EMF.CodeGenerator : Component;
     = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html";
     partOf EMF;
@@ -88,31 +90,3 @@ is different from the metamodeling set. */
     manifestsAs File;
     defines ?XMI.CustomDSL.
 generateJava(?genModel,?ecoreFile) |-> ?javaModel.
-
-/* The EMF persistence framework allows you to persist ecore models in a subset of XMI */
-EMF.Persistence : Component;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/index.html?org/eclipse/emf/ecore/package-summary.html";
-    = "http://www.vogella.com/tutorials/EclipseEMFPersistence/article.html";
-    uses Java;
-    partOf EMFCore;
-    facilitates Serialization;
-    implements XMI.Ecore.
-
-/* A Java object can be serialized in the XMI subset for a DSL */
-?dslobjects : Artifact ;
-    elementOf ?JavaObject.DSL;
-    hasRole MdeModel;
-    manifestsAs Transient;
-    conformsTo ?javaModel.
-?dslxmimodel : Artifact;
-    elementOf ?XMI.CustomDSL;
-    hasRole MdeModel;
-    manifestsAs File;
-    conformsTo ?ecoreFile;
-    correspondsTo ?dslobjects.
-saveModel : ?JavaObject.DSL -> ?XMI.DSLs.
-EMF.Persistence implements saveModel.
-saveModel(?dslobjects) |-> ?dslxmimodel.
-loadModel : ?XMI.DSLs # Java.Ecore -> ?JavaObject.DSL.
-EMF.Persistence implements loadModel.
-loadModel(?dslxmimodel,?javaModel) |-> ?dslobjects.

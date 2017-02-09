@@ -35,7 +35,11 @@ public class Substitution {
      * @return
      */
     public MegaModel substituteGroup() {
-        substByGroup.forEach((key, set) -> set.forEach(v -> model.addInstanceOf(v, model.getInstanceOfMap().get(key))));
+        substByGroup.forEach((key, set) -> set.forEach(v -> {
+            if(!model.getInstanceOfMap().containsKey(v)){
+                model.addInstanceOf(v, model.getInstanceOfMap().get(key));
+            }
+        }));
         substByGroup.keySet().forEach(k -> model.getRelationshipInstanceMap().keySet()
                                                 .forEach(rname -> substituteEntityIn(k, rname)));
 

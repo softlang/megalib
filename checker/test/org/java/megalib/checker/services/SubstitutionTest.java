@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.java.megalib.models.Function;
 import org.java.megalib.models.Relation;
@@ -33,6 +34,16 @@ public class SubstitutionTest {
         assertTrue(ml.loadFile("testsample/SubstitutionDemo/Abstract.megal"));
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        assertEquals(0, c.getWarnings().size());
+    }
+
+    @Test
+    public void testBaseTechnology() throws IOException {
+        ModelLoader ml = new ModelLoader();
+        assertTrue(ml.loadFile("testsample/SubstitutionDemo/BaseTechnology.megal"));
+        assertEquals(0, ml.getTypeErrors().size());
+        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(0, c.getWarnings().size());
     }
 
@@ -101,6 +112,18 @@ public class SubstitutionTest {
         assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("?myplprogram"));
         assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("myProgram1"));
         assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("myProgram2"));
+    }
+
+    @Test
+    public void testProgram1Relations() {
+        Relation r = new Relation("myProgram1", "File");
+        assertTrue(ml.getModel().getRelationshipInstanceMap().get("manifestsAs").contains(r));
+
+        Set<Relation> rs = ml.getModel().getRelationshipInstanceMap().get("elementOf");
+        rs = rs.parallelStream().filter(t -> t.getSubject().equals("myProgram1")).collect(Collectors.toSet());
+        assertEquals(1, rs.size());
+        r = new Relation("myProgram1", "MyPL");
+        assertTrue(ml.getModel().getRelationshipInstanceMap().get("elementOf").contains(r));
     }
 
     @Test

@@ -1,0 +1,17 @@
+module BaseTechnology
+
+/**/
+MyPL : ProgrammingLanguage;
+    = "http://www.softlang.org/".
+    
+Platformx : Software;
+    = "http://www.softlang.org/";
+    uses MyPL;
+    implements MyPL.
+
+myProgram1 : Artifact;
+    = "http://www.softlang.org/";
+    manifestsAs File;
+    hasRole SourceCode;
+    elementOf MyPL.
+    

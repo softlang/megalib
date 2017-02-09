@@ -90,3 +90,7 @@ LanguageFamily < Entity;
     = "https://en.wikipedia.org/wiki/Category:Programming_language_families".
 ascendantOf < Language # LanguageFamily.
 descendantOf < Language # LanguageFamily.
+
+///* A language can be encoded into another language */
+//encodedInto < Language # Language;
+//    = "".

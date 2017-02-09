@@ -20,7 +20,6 @@ import Technology where {
 }
 /**/
 myProject1 = "http://softlang.wikidot.com/".
-myProgram1 = "http://softlang.wikidot.com/" .
 myObject11 = "http://softlang.wikidot.com/".
 myObject12 = "http://softlang.wikidot.com/".
 MyD1 = "http://softlang.wikidot.com/".

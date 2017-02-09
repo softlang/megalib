@@ -33,9 +33,20 @@ public class CheckTest {
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        assertEquals(0, c.getWarnings().size());
+    }
+
+    @Test
+    public void checkInstanceOfTechnologyUnderspec() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+
+        String input = "/**/t : Technology;=\"http://softlang.org/\". " + "?l : ProgrammingLanguage. " + "t uses ?l.";
+        ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
+        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
-                   .contains("The entity ?t is underspecified. Please state a specific subtype of Technology."));
+                    .contains("The entity t is underspecified. Please state a specific subtype of Technology."));
     }
 
     @Test
@@ -46,9 +57,20 @@ public class CheckTest {
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
+        assertEquals(0, c.getWarnings().size());
+    }
+
+    @Test
+    public void checkInstanceOfLanguageUnderspec() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/?t : Library. " + "l : Language;=\"http://softlang.org/\";^uses ?t;^implements ?t.";
+        ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
+        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
-                   .contains("The entity ?l is underspecified. Please state a specific subtype of Language."));
+                    .contains("The entity l is underspecified. Please state a specific subtype of Language."));
     }
 
     @Test
