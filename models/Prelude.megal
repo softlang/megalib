@@ -123,6 +123,8 @@ POJO : Role;
     = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object".
 Template : Role;
     = "https://en.wikipedia.org/wiki/Template_processor".
+Wrapper : Role;
+    = "https://en.wikipedia.org/wiki/Primitive_wrapper_class".
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
