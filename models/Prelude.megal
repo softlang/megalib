@@ -121,6 +121,8 @@ TestCase : Role;
     = "https://en.wikipedia.org/wiki/Test_case".
 POJO : Role;
     = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object".
+Template : Role;
+    = "https://en.wikipedia.org/wiki/Template_processor".
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;

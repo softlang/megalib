@@ -55,6 +55,8 @@ Graphics < Language; //!! Experimental !! visual images consisting of pixels tha
     = "https://en.wikipedia.org/wiki/Graphics".
 ContainerFormat < Language; //A binary format to express containment used by archives
     = "https://en.wikipedia.org/wiki/Digital_container_format".
+TemplateLanguage < Language;
+    = "https://en.wikipedia.org/wiki/Template_processor".
 
 /* Subset according to set theory. This is only used when only a subset can be processed 
 as function input or only a subset is implemented by a technology. */

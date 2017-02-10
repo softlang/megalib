@@ -1,0 +1,64 @@
+module java.StringTemplate
+
+import java.JavaPlatform
+
+/* StringTemplate is a library written in Java by the ANTLR guy that
+supports pretty printing. */
+PrettyPrinting : AbstractProcess; 
+    = "http://101companies.org/wiki/Pretty_printing".
+TemplateProcessing : AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Template_processor".
+StringTemplate : Library;
+    = "http://www.stringtemplate.org/";
+    facilitates TemplateProcessing;
+    facilitates PrettyPrinting;
+    uses Java.
+StringTemplateLanguage : TemplateLanguage;
+    = "https://github.com/antlr/stringtemplate4/blob/master/doc/index.md#templates";
+    ^implements StringTemplate.
+    
+/* The template language is embedded into Java by wrapping it into an object */
+StringTemplateObject : ObjectGraph;
+    = "https://github.com/antlr/stringtemplate4/blob/master/src/org/stringtemplate/v4/ST.java";
+    ^implements StringTemplate;
+    subsetOf JVM.Object .
+wrap : StringTemplateLanguage -> StringTemplateObject.
+?template : Artifact;
+    elementOf StringTemplateLanguage;
+    hasRole Template;
+    manifestsAs File.
+?stObject1 : Artifact;
+    elementOf StringTemplateObject;
+    hasRole Template;
+    hasRole Wrapper;
+    manifestsAs Transient.
+wrap(?template) |-> ?stObject1.
+   
+/* The template can then be filled with concrete values through the object */
+setVar : JVM.String # JVM.String # StringTemplateObject -> StringTemplateObject.
+?variable : Artifact;
+    elementOf JVM.String;
+    manifestsAs Transient;
+    hasRole Identifier.
+?value : Artifact;
+    elementOf JVM.String;
+    manifestsAs Transient;
+    hasRole Value.
+?stObject2 : Artifact;
+    elementOf StringTemplateObject;
+    hasRole Template;
+    hasRole Wrapper;
+    manifestsAs Transient.
+setVar(?variable,?value,?stObject1) |-> ?stObject2 .
+
+/* The render function can then be used to unwrap the produced String */
+render : StringTemplateObject -> JVM.String.
+?prettyPrintedString : Artifact;
+    elementOf JVM.String;
+    manifestsAs Transient;
+    hasRole Value.
+render(?stObject2) |-> ?prettyPrintedString. 
+
+
+//TODO: Combined ANTLR and StringTemplate as noted at StringTemplate's doc
+//TODO: StringTemplate can be used with other languages
