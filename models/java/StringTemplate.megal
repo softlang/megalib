@@ -34,14 +34,15 @@ wrap : StringTemplateLanguage -> StringTemplateObject.
     manifestsAs Transient.
 wrap(?template) |-> ?stObject1.
    
-/* The template can then be filled with concrete values through the object */
+/* The template can then be filled with concrete values by calling the toString method 
+of an input object */
 setVar : JVM.String # JVM.String # StringTemplateObject -> StringTemplateObject.
 ?variable : Artifact;
     elementOf JVM.String;
     manifestsAs Transient;
     hasRole Identifier.
 ?value : Artifact;
-    elementOf JVM.String;
+    elementOf JVM.Object;
     manifestsAs Transient;
     hasRole Value.
 ?stObject2 : Artifact;
