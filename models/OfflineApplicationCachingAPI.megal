@@ -1,5 +1,7 @@
 module OfflineApplicationCachingAPI
 
+import CommonWebTechnology
+
 /* This module describes a technology to support offline Web applications.
 Note that the modeled technology is strongly discouraged by now : https://html.spec.whatwg.org/multipage/browsers.html#offline
 It might still be interesting to model it in order to be able to conceptually compare it to the new proposed Service Workers.  
@@ -7,8 +9,7 @@ It might still be interesting to model it in order to be able to conceptually co
 The technology specifically realizes two constructs as part of 
 enabling offline web applications, namely an Offline Cache and the 
 capability to process online and offline events. */
-HTML5 : MarkupLanguage;
-    = "https://www.w3.org/TR/html5/".
+
 OfflineCache : Construct;
     = "http://www.w3schools.com/html/html5_app_cache.asp".
 OnlineOfflineEvents : Construct;
@@ -24,7 +25,7 @@ at the client-side and which have to be accessed at the server-side. */
 Cache-Manifest : ConfigurationLanguage;
     = "https://www.w3.org/TR/offline-webapps/";
     supports OfflineWebApplicationDevelopment.
-?aLanguage : DataRepresentationLanguage.
+?aLanguage : DataExchangeLanguage.
 URI : ReferenceLanguage;
     = "https://www.w3.org/Addressing/".
 OfflineApplicationCachingAPI implements Cache-Manifest;
@@ -45,7 +46,7 @@ OfflineApplicationCachingAPI implements Cache-Manifest;
     manifestsAs Transient;
     elementOf URI;
     refersTo ?aCachableFile.
-?aLocalFileSystem : FileSystem.
+?aLocalFileSystem : UserFiles.
 ?backupFile : Artifact;
     elementOf ?aLanguage;
     manifestsAs File;
@@ -64,10 +65,6 @@ implement the offline access. */
 /* Even if the user is offline, a HTTPRequest that is handled
 by the API can return a response because use of the locally
 apparent backup. */
-HTTPRequest : MessageLanguage;
-    = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html".
-HTTPResponse : MessageLanguage;
-    = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html".
 ?offlineRequest : Artifact;
     hasRole Message;
     elementOf HTTPRequest;

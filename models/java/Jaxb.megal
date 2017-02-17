@@ -30,7 +30,7 @@ generation : XSD -> JAXB.Java.
 bindingCompiler implements JAXB.Java;
     implements XSD;
     implements generation.
-?XML.Subset : DataRepresentationLanguage;
+?XML.Subset : DataExchangeLanguage;
     subsetOf XML.
 ?xmlSchema : Artifact;
     elementOf XSD;

@@ -1,0 +1,52 @@
+module hadoop.Hadoop
+
+import java.JavaPlatform 
+import C
+import Linux
+
+/*
+Distributed Computing is a field of computer science that studies distributed systems. A distributed system is a model in which components located on networked computers communicate and coordinate their actions by passing messages.
+*/
+DistributedComputing : ProgrammingDomain;
+ 	= "https://en.wikipedia.org/wiki/Distributed_computing".
+DistributedFilesystem : Construct;
+	= "https://en.wikipedia.org/wiki/Clustered_file_system#Distributed_file_systems";
+	aspectOf DistributedProgramming.
+MapReduce : AbstractProcess;
+	= "https://static.googleusercontent.com/media/research.google.com/de//archive/mapreduce-osdi04.pdf";
+	aspectOf DistributedProgramming.
+/*
+Haddop is said to be a cluster computing framework in the references paper
+*/
+ClusterWare : TechnologySpace;
+	= "https://en.wikipedia.org/wiki/Computer_cluster".
+
+ClusterComputingWare : TechnologySpace;
+	= "http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf";
+	subspaceOf ClusterWare.
+
+ClusterComputing : Construct;
+ 	= "http://de.slideshare.net/bosswebtech/cluster-computing-11382951";
+ 	= "http://gridbus.csse.unimelb.edu.au/papers/ic_cluster.pdf";
+ 	aspectOf DistributedProgramming.
+
+ClusterManagementWare : TechnologySpace;
+ 	= "https://en.wikipedia.org/wiki/List_of_cluster_management_software";
+	subspaceOf ClusterWare.
+
+ClusterManagement : Construct;
+ 	= "https://en.wikipedia.org/wiki/Cluster_manager";
+ 	aspectOf DistributedProgramming.
+
+SoftwareInterface : Construct;
+	= "https://en.wikipedia.org/wiki/Interface_(computing)".
+
+/*
+Hadoop is a open source software framework
+*/
+Hadoop : Framework;
+	= "https://wiki.apache.org/hadoop";
+	uses Java;
+	belongsTo ClusterComputingWare;
+	supports DistributedComputing;
+	facilitates ClusterComputing.

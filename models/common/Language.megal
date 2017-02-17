@@ -9,16 +9,15 @@ to code up a general purpose program as well, but hopefully none does
 that. That is why it is classified as a markup language. */
 Language < Entity;
     = "https://en.wikipedia.org/wiki/Computer_language".
-FileFormat < Language; // not meant to be read by humans. Optimized for file system, e.g., an SQL image or JPG.
-    = "https://en.wikipedia.org/wiki/File_format".
 ProgrammingLanguage < Language;  // not specific to a domain, e.g., Java
     = "https://en.wikipedia.org/wiki/Programming_language".
-DataRepresentationLanguage < Language; // can be read by humans and represents data, e.g., JSON
-    = "https://de.wikipedia.org/wiki/Datenformat". //need better binding
-MarkupLanguage < Language;  // assists in structuring data, e.g., XML
-    = "https://en.wikipedia.org/wiki/Markup_language".
-TransformationLanguage < Language; // transformation statements, e.g., ATL
-    = "https://en.wikipedia.org/wiki/Transformation_language". // even though the text is misleading
+DocumentLanguage < Language; // "written, drawn, presented or recorded representation of thoughts", e.g. office files
+    = "https://en.wikipedia.org/wiki/Document". 
+DataExchangeLanguage < Language; //"Data exchange allows data to be shared between different computer programs", e.g. XML
+    = "https://en.wikipedia.org/wiki/Data_exchange".
+TransformationLanguage < Language; // statements to define transformation, e.g., ATL
+    = "https://en.wikipedia.org/wiki/Transformation_language";
+    = "https://en.wikipedia.org/wiki/Model_transformation".
 QueryLanguage < Language; // query statements, e.g., SQL
     = "https://en.wikipedia.org/wiki/Query_language".
 StylesheetLanguage < Language; // expresses presentation of structured documents, e.g., CSS
@@ -42,20 +41,21 @@ BuildLanguage < Language; //languages used for writing build scripts
 ReferenceLanguage < Language; // express references, e.g., URI
     = "https://en.wikipedia.org/wiki/Reference".
 MessageLanguage < Language; // structured messages, e.g., HTTP Requests
+    = "https://en.wikipedia.org/wiki/Request-response";
     = "https://en.wikipedia.org/wiki/Message_passing".
 KnowledgeRepresentationLanguage < Language; //represent knowledge by using structured vocabulary, e.g., OWL
     = "https://en.wikipedia.org/wiki/Category:Knowledge_representation_languages".
 DomainSpecificLanguage < Language; //The purpose is specific to the domain it is used in
     = "https://en.wikipedia.org/wiki/Domain-specific_language".
-Data < Language; // simple run time data, e.g. Booleans or Integers. Defined by a type.
-    = "https://en.wikipedia.org/wiki/Data_type".
-ObjectGraph < Language; // object values in an OO Language, e.g. Java Objects.
-    = "https://en.wikipedia.org/wiki/Object_graph".
-Graphics < Language; //!! Experimental !! visual images consisting of pixels that inform, illustrate or entertain
+ValueLanguage < Language; // simple run time data, e.g. Booleans, Integers or objects. Defined by a type.
+    = "https://en.wikipedia.org/wiki/Value_(computer_science)".
+VisualizationLanguage < Language; //!! Experimental !! visualizing data where the result informs, illustrates or entertains
     = "https://en.wikipedia.org/wiki/Graphics".
-ContainerFormat < Language; //A binary format to express containment used by archives
+ContainerLanguage < Language; //A binary format to express containment used by archives
     = "https://en.wikipedia.org/wiki/Digital_container_format".
-TemplateLanguage < Language;
+DatabaseLanguage < Language; //often binary format to manage data in, such as SQL databases or triplestores.
+    = "https://en.wikipedia.org/wiki/Database".
+TemplateLanguage < Language; //A language for writing templates 
     = "https://en.wikipedia.org/wiki/Template_processor".
 
 /* Subset according to set theory. This is only used when only a subset can be processed 
@@ -93,10 +93,11 @@ LanguageFamily < Entity;
 ascendantOf < Language # LanguageFamily.
 descendantOf < Language # LanguageFamily.
 
-/* A representation defines the format, in which a language is presented in. */
+/* Any language is based on some form of representation. Most programming languages
+are text-based but there exist others that are actually visual. */
 Representation < Entity;
-    = "https://en.wikipedia.org/wiki/File_format".
-hasRepresentation < Language # Representation. //TODO: This needs a link...
+    = "https://en.wikipedia.org/wiki/File_format". //not really a good link
+basedOn < Language # Representation. //TODO: This needs a link... 
 Text : Representation;
     = "http://www.iue.tuwien.ac.at/phd/fasching/node26.html".
 Binary : Representation;
@@ -107,8 +108,9 @@ Markup : Representation;
     = "https://en.wikipedia.org/wiki/Markup_language".
 Graph : Representation;
     = "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)".
+Object : Representation;
+    = "https://en.wikipedia.org/wiki/Object_(computer_science)".
 Tree : Representation;
     = "https://en.wikipedia.org/wiki/Tree_(graph_theory)".
-///* A language can be encoded into another language */
-//encodedInto < Language # Language;
-//    = "".
+    
+//TODO: What kind of classifiers are declarative and imperative?

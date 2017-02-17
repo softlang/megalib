@@ -1,5 +1,6 @@
 module WebSQLDatabaseAPI
 
+import CommonWebTechnology
 /*
 This prescriptive model describes a technology that is outdated : https://www.w3.org/TR/webdatabase/
 It deals with how technology can support HTML5 web applications to still work, when the user is offline.
@@ -7,14 +8,9 @@ It deals with how technology can support HTML5 web applications to still work, w
 LocalStorage : Construct;
     = "http://www.w3schools.com/html/html5_webstorage.asp";
     aspectOf OfflineWebApplicationDevelopment.
-HTML5 : MarkupLanguage;
-    = "https://www.w3.org/TR/html5/".
-HTML5JavaScript : ProgrammingLanguage;
-    = "http://www.w3schools.com/html/html_scripts.asp";
-    embeddedInto HTML5.
 ?Browser : Platform;
     implements HTML5;
-    implements HTML5JavaScript;
+    implements JavaScript;
     uses LocalStorage.
 
 /* The approach is to have an SQL database at the client side
@@ -33,8 +29,8 @@ SQLDatabaseAPI : API;
     uses LocalStorage;
     supports DatabaseProgramming;
     supports OfflineWebApplicationDevelopment.
-?localFileSystem : FileSystem.
-?SQLImage : FileFormat.
+?localFileSystem : UserFiles.
+?SQLImage : DatabaseLanguage.
 ?database1 : Artifact;
     elementOf ?SQLImage;
     hasRole Database;
@@ -56,21 +52,8 @@ SQLDatabaseAPI : API;
     elementOf HTML5JavaScript;
     partOf ?website.
 
-JavaScript.Data : Data;
-    = "http://www.w3schools.com/js/js_datatypes.asp".
-JavaScript.String : Data;
-    = "http://www.w3schools.com/js/js_strings.asp";
-    subsetOf JavaScript.Data.// or embedded?
-JavaScript.Number : Data;
-    = "http://www.w3schools.com/js/js_numbers.asp";
-    subsetOf JavaScript.Data.
-JavaScript.Object : ObjectGraph; // we don't know whether it is one class that this is conforming to or more.
-    = "http://www.w3schools.com/js/js_object_definition.asp";
-    subsetOf JavaScript.Data.
-?Browser implements JavaScript.Data;
-    implements JavaScript.String;
-    implements JavaScript.Number;
-    implements JavaScript.Object.
+
+?Browser implements JavaScript.Value.
 openDatabase : JavaScript.String # JavaScript.String # JavaScript.String # JavaScript.Number -> JavaScript.Object.
 SQLDatabaseAPI implements openDatabase.
 ?databasename : Artifact;

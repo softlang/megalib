@@ -1,0 +1,22 @@
+module hadoop.HadoopCommon
+
+import C
+import hadoop.Hadoop
+
+/*
+Hadood common parts will be described in this module
+*/
+HadoopCommon : Component;
+	="https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/CLIMiniCluster.html";
+	partOf Hadoop;
+	uses Java.
+
+NativeLibrary : Library;
+	= "https://hadoop.apache.org/docs/r1.2.1/native_libraries.html";
+	uses C;
+	partOf HadoopCommon.
+
+StartUpScript : Program;
+	= "https://github.com/apache/hadoop-common/tree/HADOOP-3628/bin";
+	partOf HadoopCommon;
+	uses ShellScript.

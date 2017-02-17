@@ -1,0 +1,97 @@
+module hadoop.HadoopMapReduce
+
+import hadoop.Hadoop
+import hadoop.HadoopYARN
+import hadoop.HadoopHDFS
+
+/*
+We are starting with Hadoop Map Reduce definitions now
+*/
+
+MapOperation : Role;
+	="https://wiki.apache.org/hadoop/HadoopMapReduce".
+ReduceFunction : Role;
+	="https://wiki.apache.org/hadoop/HadoopMapReduce".
+
+?Mapper : ObjectGraph;
+	="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Mapper";
+	subsetOf JavaObject.
+?Reducer : ObjectGraph;
+	="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Reducer";
+	subsetOf JavaObject.
+
+?InputFormat : Data;
+	= "https://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/InputFormat.html".
+?OutputFormat : Data;
+	= "https://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/OutputFormat.html".
+
+map : ?Mapper # JavaObject -> JavaObject.
+
+/*
+There exists an alternative definition
+map : Mapper # JavaObject # JavaObject # JavaObject-> JavaObject # JavaObject
+*/
+reduce : ?Reducer # JavaObject -> JavaObject.
+
+
+exMapReduce : ?Mapper # ?Reducer # ?InputFormat -> ?OutputFormat.
+
+/*
+I am not sure if this one and the reducer manifestsAs Transient or File. At runtime it will be executed. Hence it should be a transient
+*/
+?mapper : Artifact;
+	elementOf ?Mapper;
+	implements map;
+	hasRole TransformationRule;
+    hasRole MapOperation;
+	manifestsAs Transient.
+
+?reducer : Artifact;
+	elementOf ?Reducer;
+	implements reduce;
+	hasRole TransformationRule;
+    hasRole ReduceFunction;
+	manifestsAs Transient.
+
+?preState : Artifact;
+	elementOf JavaObject;
+	manifestsAs Transient; 
+	hasRole Value.
+
+?posState : Artifact;
+	elementOf JavaObject;
+	manifestsAs Transient; 
+	hasRole Value.
+
+?inputFiles : Artifact;
+	elementOf ?InputFormat;
+	manifestsAs File+;
+	hasRole Database.
+?outputFiles : Artifact;
+	elementOf ?OutputFormat;
+	manifestsAs File+;
+	hasRole Database.
+
+map(?mapper, ?preState) |-> ?posState.
+reduce(?reducer, ?preState) |-> ?posState.
+exMapReduce(?mapper, ?reducer, ?inputFiles) |-> ?outputFiles.
+
+/*
+A YARN-based system for parallel processing of large data sets. It is a module of hadoop. May we want to call this one Framework 
+instead of component
+*/
+HadoopMapReduce : Component;
+	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html";
+	partOf Hadoop;
+	uses MapReduce;
+	uses Java;
+	implements exMapReduce;
+	implements ?OutputFormat;
+	implements ?InputFormat;
+	reuses HDFS;
+	reuses HadoopYARN.
+
+HadoopMapReduceAPI : API;
+	= "https://hadoop.apache.org/docs/r2.4.1/api/org/apache/hadoop/mapreduce/package-summary.html";
+	partOf HadoopMapReduce;
+	uses Java.

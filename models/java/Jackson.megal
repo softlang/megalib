@@ -5,7 +5,7 @@ import java.JavaPlatform
 /* Jackson realizes data binding between JSON and Java objects. */
 JSONWare : TechnologySpace;
     = "http://www.json.org/".
-JSON : DataRepresentationLanguage;
+JSON : DataExchangeLanguage;
     = "https://en.wikipedia.org/wiki/JSON";
     belongsTo JSONWare.
 OJMapping : AbstractProcess;

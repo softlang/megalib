@@ -21,15 +21,16 @@ JavaByteCode : MachineLanguage;
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html";
     belongsTo JavaWare. 
 
-JVM.Data : Data;
+JVM.Value : ValueLanguage;
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
-JVM.Object : ObjectGraph;
+JVM.Object : ValueLanguage;
     = "https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html";
-    subsetOf JVM.Data.
-JVM.Double : Data;
+    basedOn Object;
+    subsetOf JVM.Value.
+JVM.Double : ValueLanguage;
     = "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html";
-    subsetOf JVM.Data.
-JVM.String : Data;
+    subsetOf JVM.Value.
+JVM.String : ValueLanguage;
     = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html";
     subsetOf JVM.Object. //string as a wrapper for a character array
 
@@ -77,16 +78,13 @@ JavaSEHotSpot : Software;
     realizes JVM;
     realizes Interpretation;
     implements JavaByteCode;
-    implements JVM.Data;
-    implements JVM.Object;
-    implements JVM.Double;
-    implements JVM.String.
+    implements JVM.Value.
 JavaClassLibrary : Library; //component and library
     = "https://en.wikipedia.org/wiki/Java_Class_Library";
     partOf JRE; //non-optional part
     uses Java.
 
 /* jar container format */
-Jar : ContainerFormat; //TODO: dialect of zip
+Jar : ContainerLanguage; //TODO: dialect of zip
     = "https://en.wikipedia.org/wiki/JAR_(file_format)";
     ^implements JRE.

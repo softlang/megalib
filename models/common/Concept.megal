@@ -96,6 +96,12 @@ MDEWare : TechnologySpace;
     = "https://en.wikipedia.org/wiki/Model-driven_engineering#Tools".
 SoftwareAsAServiceWare : TechnologySpace;
     = "https://en.wikipedia.org/wiki/Software_as_a_service".
+SQLWare : TechnologySpace;
+    = "https://en.wikipedia.org/wiki/SQL".
+XMLWare : TechnologySpace;
+    = "https://www.w3.org/XML/".
+AuxiliaryXMLware : TechnologySpace;
+    = "http://101companies.org/wiki/Auxiliary_XMLware".
     
 /* Reusable ideal processes. */
 AbstractProcess < Entity; //Commonly known technology- and language independent processes
@@ -151,6 +157,9 @@ Serialization : AbstractProcess;
     refines Persistence.
 Mapping : AbstractProcess;
     = "http://101companies.org/wiki/Mapping".
+XMLDataBinding : AbstractProcess;
+    = "https://en.wikipedia.org/wiki/XML_data_binding";
+    refines Mapping.
 ObjectRelationalMapping : AbstractProcess;
     = "https://en.wikipedia.org/wiki/Object-relational_mapping";
     refines Mapping.

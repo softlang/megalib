@@ -1,0 +1,1 @@
+java -jar ../checker/checker.jar %1 %2 %3

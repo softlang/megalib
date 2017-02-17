@@ -1,0 +1,63 @@
+module hadoop.HadoopYARN
+
+import hadoop.Hadoop
+import java.JavaPlatform 
+
+/*
+The definition of Hadoop YARN elements is beginning here
+*/
+Server : Role;
+	="https://en.wikipedia.org/wiki/Server_(computing)".
+SystemState : Role;
+	= "https://en.wikipedia.org/wiki/State_(computer_science)".
+Node : Manifestation;
+	= "https://en.wikipedia.org/wiki/Node_(networking)#Distributed_system_nodes".
+Node+ : Manifestation;
+	="https://en.wikipedia.org/wiki/Node_(networking)#Distributed_system_nodes".
+
+?inputJob : Artifact;
+	elementOf JavaByteCode;
+	manifestsAs Transient;
+	hasRole ByteCode.
+
+YarnApplicationState : ObjectGraph;
+	= "https://hadoop.apache.org/docs/r2.4.1/api/org/apache/hadoop/yarn/api/records/YarnApplicationState.html";
+	subsetOf JavaByteCode.
+
+?preClusterMap : Artifact;
+	elementOf YarnApplicationState;
+	hasRole SystemState;
+	manifestsAs Node+.
+?postClusterMap : Artifact;
+	elementOf YarnApplicationState;
+	hasRole SystemState;
+	manifestsAs Node+.
+
+/*
+YARN is taking a Java binary as input and executes it at some node in the cluster. Hence the state
+of the Yarn cluster will be changed:
+*/
+deployJobToCluster : YarnApplicationState # JavaByteCode -> YarnApplicationState.
+deployJobToCluster(?preClusterMap, ?inputJob) |-> ?postClusterMap.
+
+
+HadoopYARN : Component;
+	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-yarn/hadoop-yarn-site/YARN.html";
+	partOf Hadoop;
+	belongsTo ClusterManagementWare;
+	facilitates ClusterManagement;
+	uses Java;
+	implements YarnApplicationState;
+	implements deployJobToCluster.
+
+ResourceManager : Component;
+	= "https://github.com/apache/hadoop/tree/trunk/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager" ;
+	partOf HadoopYARN;
+	uses Java.
+NodeManagers : Component;
+	= "https://github.com/apache/hadoop/tree/trunk/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager";
+	partOf HadoopYARN;
+	uses Java.
+
+
+

@@ -15,11 +15,12 @@ MicrosoftOffice2003 : SoftwareSuite ;
 
 /* The microsoft office compatibility plugin enables a user to edit files
 written in the new XML format with Office 2003. */
-MicrosoftOfficeOpenXML : StylesheetLanguage ;
+MicrosoftOfficeOpenXML : DocumentLanguage ;
     = "https://en.wikipedia.org/wiki/Office_Open_XML";
     subsetOf XML.
-CFBF : FileFormat;
+CFBF : DocumentLanguage;
     = "https://en.wikipedia.org/wiki/Compound_File_Binary_Format";
+    basedOn Binary;
     ^implements MicrosoftOffice2003.
 
 /* It implements a conversion that transforms a file apparent in the new format

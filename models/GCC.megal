@@ -1,0 +1,13 @@
+module GCC
+
+/* The GNU Compiler Collection contains a set of compilers
+and a tool chain for various languages such as C++, C and others. 
+*/
+GCC : Platform;
+    = "https://en.wikipedia.org/wiki/GNU_Compiler_Collection";
+    implements C++;
+    implements C;
+    implements Objective-C;
+    implements C-Make;
+    uses C++;
+    uses C.

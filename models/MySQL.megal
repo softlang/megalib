@@ -7,8 +7,9 @@ import C
 /* MySQL offers a workbench to assist in editing 
 databases encoded in MySQL's specific database image 
 format. */
-MySQLImage : FileFormat;
-    = "http://dev.mysql.com/doc/refman/5.7/en/what-is-mysql.html".
+MySQLImage : DatabaseLanguage;
+    = "http://dev.mysql.com/doc/refman/5.7/en/what-is-mysql.html";
+    basedOn Binary.
 MySQL : SoftwareSuite;
     = "https://en.wikipedia.org/wiki/MySQL";
     supports DatabaseProgramming;
@@ -22,7 +23,7 @@ MySQL : SoftwareSuite;
 Create, Read, Update and Delete, where Delete is also a
 form of an update as it can be described with the same
 function. */
-?QueryOutput : DataRepresentationLanguage.
+?QueryOutput : DataExchangeLanguage.
 create : SQLDDL # MySQLImage -> MySQLImage.
 read : SQLQuery # MySQLImage -> ?QueryOutput.
 update : SQLDML # MySQLImage -> MySQLImage.

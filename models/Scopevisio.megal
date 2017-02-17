@@ -3,6 +3,7 @@ module Scopevisio
 import java.JavaPlatform
 import Windows
 import XML
+import CommonWebTechnology
 
 /* Scopevisio is a service based technology to support business programming with a focus
 on enterprise resource planning. It further supports customer relationship 
@@ -26,16 +27,6 @@ Scopevisio : WebService;
 /* A user gets a client application that can communicate with the web
 service using SOAP over the OpenScopeAPI. The communication is implemented
 using the HTTPS protocol and a requested authentication. */
-HTTPRequest : MessageLanguage;
-    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods".
-HTTPResponse : MessageLanguage;
-    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message".
-SOAP : MessageLanguage;
-    = "https://en.wikipedia.org/wiki/SOAP";
-    = "https://www.w3.org/TR/soap/";
-    subsetOf XML;
-    embeddedInto HTTPRequest;
-    embeddedInto HTTPResponse.
 URI : ReferenceLanguage;
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier".
 Authentication : Construct;

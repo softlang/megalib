@@ -94,8 +94,8 @@ public class SubstitutionTest {
 
     @Test
     public void testOLInstance() {
-        assertEquals("ObjectGraph", ml.getModel().getInstanceOfMap().get("?OL"));
-        assertEquals("ObjectGraph", ml.getModel().getInstanceOfMap().get("MyOL"));
+        assertEquals("ValueLanguage", ml.getModel().getInstanceOfMap().get("?OL"));
+        assertEquals("ValueLanguage", ml.getModel().getInstanceOfMap().get("MyOL"));
     }
 
     @Test

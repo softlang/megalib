@@ -17,7 +17,7 @@ Django implements DjangoCLI
 SQL : QueryLanguage
 DDL : SchemaLanguage
 DDL subsetOf SQL
-SQLITE3IMAGE : DataRepresentationLanguage
+SQLITE3IMAGE : DataExchangeLanguage
 ?dbsqlite3 : Artifact
 ?dbsqlite3 elementOf SQLITE3IMAGE
 ?dbsqlite3 hasRole Database

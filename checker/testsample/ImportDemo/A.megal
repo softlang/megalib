@@ -1,8 +1,10 @@
 module A 
 
 /**/
-HTML : MarkupLanguage;
-    = "https://en.wikipedia.org/wiki/HTML".
+HTML : DocumentLanguage;
+    = "https://en.wikipedia.org/wiki/HTML";
+    basedOn Text;
+    basedOn Markup.
 ?spec : Artifact;
     elementOf HTML;
     hasRole Specification;

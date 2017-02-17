@@ -7,7 +7,7 @@ import java.JavaPlatform
 /* Rational Rose supports UML Modeling. A user can create a model in a 
 visual notation and save it in the specific .mdl format. No
 schema was released for MDL, but it is supposedly a subset of XML. */
-Rose.MDL : FileFormat;
+Rose.MDL : DataExchangeLanguage;
     = "http://dl.acm.org/citation.cfm?id=579213";
     = "https://www.ibm.com/developerworks/community/forums/html/topic?id=77777777-0000-0000-0000-000013786606";
     subsetOf XML.

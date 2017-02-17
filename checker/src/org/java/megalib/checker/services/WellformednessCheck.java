@@ -52,7 +52,6 @@ public class WellformednessCheck {
         partOfCheck();
         fragmentPartOfCheck();
         partOfFragmentCheck();
-        languageDefinedOrImplemented();
         transientIsInputOrOutput();
         cyclicSubtypingChecks();
         cyclicRelationChecks("subsetOf");
@@ -187,28 +186,6 @@ public class WellformednessCheck {
                 warnings.add("The following parts of the fragment " + f + " are not fragments and are thus invalid:"
                              + diff.toString());
             }
-        }
-    }
-
-    /**
-     * Every language has to be defined or implemented.
-     */
-    private void languageDefinedOrImplemented() {
-        Set<String> languages = model.getInstanceOfMap().keySet().parallelStream()
-                                     .filter(i -> model.isInstanceOf(i, "Language") && !i.startsWith("?"))
-                                     .collect(Collectors.toSet());
-        Set<String> implementedUnionDefined = new HashSet<>();
-        if(model.getRelationshipInstanceMap().containsKey("defines")){
-            implementedUnionDefined.addAll(model.getRelationshipInstanceMap().get("defines").parallelStream()
-                                                .map(r -> r.getObject()).collect(Collectors.toSet()));
-        }
-        if(model.getRelationshipInstanceMap().containsKey("implements")){
-            implementedUnionDefined.addAll(model.getRelationshipInstanceMap().get("implements").parallelStream()
-                                                .map(r -> r.getObject()).collect(Collectors.toSet()));
-        }
-        languages.removeAll(implementedUnionDefined);
-        for(String l : languages){
-            warnings.add("State a defining artifact or an implementing technology for the language " + l + ".");
         }
     }
 

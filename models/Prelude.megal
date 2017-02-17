@@ -2,6 +2,7 @@ module Prelude
 
 import common.Concept
 import common.Language
+import common.LanguageKB
 
 
 /* Digital entities classified by relating to their language, role and manifestation. */
@@ -18,6 +19,8 @@ conformsTo < Artifact # Artifact;  // An artifact may conform to a schema
     = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 correspondsTo < Artifact # Artifact; // Two artifacts may be syntactically different, but semantically equal.
     = "http://dictionary.cambridge.org/dictionary/english/correspond".
+consistentWith < Artifact # Artifact; //Two artifacts a and b may have to be consistent such that if a changes, b has to be adapted.
+    = "https://en.wikipedia.org/wiki/Consistency".
 refersTo < Artifact # Artifact;  // Experimental! Don't use unless you know what you're doing
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier".
 represents < Artifact # Artifact; // Experimental! Don't use unless you know what you're doing
@@ -125,6 +128,10 @@ Template : Role;
     = "https://en.wikipedia.org/wiki/Template_processor".
 Wrapper : Role;
     = "https://en.wikipedia.org/wiki/Primitive_wrapper_class".
+Server : Role;
+    = "https://en.wikipedia.org/wiki/Server_(computing)".
+Client : Role;
+    = "https://en.wikipedia.org/wiki/Client_(computing)".
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
@@ -253,13 +260,3 @@ reuses < System # Technology.
 reuses < Technology # Technology.
 reuses < Artifact # System.
 reuses < Artifact # Technology.
-
-/* PDF file format has frequent appearence everywhere. */
-PDF : FileFormat;
-    = "https://en.wikipedia.org/wiki/Portable_Document_Format".
-adobePDFSpec : Artifact;
-    = "http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf";
-    elementOf PDF;
-    hasRole Specification;
-    manifestsAs File;
-    defines PDF.

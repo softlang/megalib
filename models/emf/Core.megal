@@ -40,7 +40,7 @@ EMF.Core : Component;
     uses Java.
 EcoreJava : ProgrammingLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html";
-    subsetOf Java.
+    subsetOf Java;
     ^implements EMFCore.
 ?ecore.metametaModel : Artifact;
     partOf EMFCore;
@@ -51,7 +51,7 @@ EcoreJava : ProgrammingLanguage;
 
 /* An important component is the Generator that takes a generation
 configuration which is itself a model persisted in XMI. */
-EcoreXMI : DataRepresentationLanguage;
+EcoreXMI : DataExchangeLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html";
     subsetOf XMI;
     ^encodedInto EcoreJava.

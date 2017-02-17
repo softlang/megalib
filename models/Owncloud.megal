@@ -75,17 +75,17 @@ OwnCloudClient : Software;
     uses NSIS;
     uses C-Make;
     partOf OwnCloud.
-?webServer : FileSystem;
+?webServer : UserFiles; //TODO: Not precise enough, the node uses Windows where owncloud is plugged into the filesystem?
     reuses OwnCloudServer.
-?fileSystem1 : FileSystem;
+?fileSystem1 : UserFiles;
     reuses OwnCloudClient.
-?fileSystem2 : FileSystem;
+?fileSystem2 : UserFiles;
     reuses OwnCloudClient.
 
 /* A file is uploaded in the first file system and then downloaded due to the synchronization
 process by the second client. The sharing policy states that synchronization for this file
 is enabled. */
-?l : FileFormat.
+?l : Language.
 ?file1 : Artifact;
     elementOf ?l;
     hasRole SynchronizedFile;

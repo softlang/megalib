@@ -1,0 +1,87 @@
+module common.LanguageKB
+
+import common.Language 
+
+/* PDF file format has frequent appearence everywhere. */
+PDF : DocumentLanguage;
+    = "http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf";
+    = "https://en.wikipedia.org/wiki/Portable_Document_Format".
+
+/* Meta Object Facility is an OMG standard for Model driven engineering.
+UML instantiates MOF. */
+CMOF : SchemaLanguage;
+    = "https://en.wikipedia.org/wiki/Meta-Object_Facility".
+EMOF : SchemaLanguage;
+    = "http://www.omg.org/spec/MOF/";
+    subsetOf CMOF.
+UML : ModelingLanguage;
+    = "http://www.uml.org/";
+    = "http://www.omg.org/spec/UML/2.5/";
+    = "https://en.wikipedia.org/wiki/Unified_Modeling_Language";
+    basedOn Visual;
+    supports ModelDrivenEngineering;
+    supports SoftwareDocumentation;
+    facilitates ObjectOrientedProgramming.
+UML.ClassDiagram : ModelingLanguage;
+    = "https://en.wikipedia.org/wiki/Class_diagram";
+    subsetOf UML.
+ 
+/* Structured Query Language falls apart in a set for defining schematic information, querying and updating */
+SQL : DomainSpecificLanguage;
+    = "https://en.wikipedia.org/wiki/SQL";
+    belongsTo SQLWare;
+    facilitates RelationalProgramming.
+SQLQuery : QueryLanguage;
+    = "https://en.wikipedia.org/wiki/SQL#Queries";
+    subsetOf SQL.
+SQLDDL : SchemaLanguage;
+    = "https://en.wikipedia.org/wiki/SQL#Data_definition";
+    subsetOf SQL.
+SQLDML : TransformationLanguage;
+    = "https://en.wikipedia.org/wiki/SQL#Data_manipulation";
+    subsetOf SQL.
+ 
+/* XML is a markup language invented by W3C. The specification
+is available online in an HTML version and can be viewed using
+a browser. There are multiple languages that can be used to define 
+schemas for XML. */
+XML : DataExchangeLanguage;
+    = "https://en.wikipedia.org/wiki/XML";
+    = "http://www.w3schools.com/xml/";
+    = "https://www.w3.org/XML/";
+    belongsTo XMLWare.
+XHTML : DocumentLanguage;
+    = "https://de.wikipedia.org/wiki/Extensible_Hypertext_Markup_Language";
+    subsetOf XML.
+XSD : SchemaLanguage;
+    = "https://en.wikipedia.org/wiki/XML_Schema_(W3C)";
+    = "https://www.w3.org/TR/xmlschema11-1/";
+    subsetOf XML.
+DTD : SchemaLanguage;
+    = "https://en.wikipedia.org/wiki/Document_type_definition";
+    = "http://www.w3schools.com/xml/xml_dtd_intro.asp".
+RelaxNGXML : SchemaLanguage;
+    = "https://en.wikipedia.org/wiki/RELAX_NG#XML_syntax";
+    subsetOf XML.
+RelaxNGCompact : SchemaLanguage;
+    = "https://en.wikipedia.org/wiki/RELAX_NG#Compact_syntax";
+    = "http://relaxng.org/spec-20011203.html";
+    dialectOf RelaxNGXML.
+
+/* XMI is an OMG standard for exchanging models. */
+XMI : DataExchangeLanguage;
+    = "https://en.wikipedia.org/wiki/XML_Metadata_Interchange";
+    = "http://www.omg.org/spec/XMI/2.5.1/PDF";
+    subsetOf XML.
+
+/* C is an imperative programming language that influenced
+C++, which extends the procedural style by object orientation
+and other paradigms. */
+C++ : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/C%2B%2B".
+C : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/C_(programming_language)".
+Objective-C : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/Objective-C".
+C-Make : BuildLanguage;
+    = "https://en.wikipedia.org/wiki/CMake".
