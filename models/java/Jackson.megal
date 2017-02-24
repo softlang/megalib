@@ -3,14 +3,6 @@ module java.Jackson
 import java.JavaPlatform
 
 /* Jackson realizes data binding between JSON and Java objects. */
-JSONWare : TechnologySpace;
-    = "http://www.json.org/".
-JSON : DataExchangeLanguage;
-    = "https://en.wikipedia.org/wiki/JSON";
-    belongsTo JSONWare.
-OJMapping : AbstractProcess;
-    = "http://stackoverflow.com/questions/16090464/mapping-json-data-to-java-objects";
-    refines Mapping.
 Jackson : Library;
     = "https://github.com/FasterXML";
     belongsTo JSONWare;
@@ -24,7 +16,7 @@ conform to a POJO. */
 Jackson.ObjectMapper : Library;
     = "https://github.com/FasterXML/jackson-databind/blob/master/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java";
     partOf Jackson;
-    facilitates OJMapping;
+    facilitates ObjectJsonMapping;
     facilitates Serialization;
     uses Java.
 

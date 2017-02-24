@@ -1,6 +1,6 @@
 module emf.ImportRose
 
-import emf.EMFCore
+import emf.Core
 import RationalRose
 
 /* Instead of starting with an empty EMF model
@@ -12,9 +12,9 @@ EMF implements Rose.MDL.
     hasRole Schema;
     manifestsAs File.
 ?resultingEcore : Artifact;
-    elementOf XMI.Ecore;
+    elementOf EcoreXMI;
     hasRole MdeMetamodel;
     manifestsAs File.
-importRose : Rose.MDL -> XMI.Ecore.
+importRose : Rose.MDL -> EcoreXMI.
 importRose(?roseDiagram) |-> ?resultingEcore.
 EMF implements importRose.

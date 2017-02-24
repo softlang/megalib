@@ -2,8 +2,6 @@ module emf.Core
 
 import java.JavaPlatform
 import Eclipse
-import XML
-import XMI
 
 /* 
 TODO: The story has to be cleaned up.
@@ -41,52 +39,54 @@ EMF.Core : Component;
 EcoreJava : ProgrammingLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html";
     subsetOf Java;
-    ^implements EMFCore.
-?ecore.metametaModel : Artifact;
-    partOf EMFCore;
+    ^implements EMF.Core.
+?ecoremetametaModel : Artifact;
+    partOf EMF.Core;
     elementOf EcoreJava;
     hasRole Schema;
     manifestsAs File+;
-    conformsTo ?ecore.metametaModel.
+    conformsTo ?ecoremetametaModel.
 
 /* An important component is the Generator that takes a generation
 configuration which is itself a model persisted in XMI. */
 EcoreXMI : DataExchangeLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html";
     subsetOf XMI;
-    ^encodedInto EcoreJava.
-GeneratorXMI : ConfigurationLanguage;
+    encodes EcoreJava.
+XMIGeneratorCFG : ConfigurationLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/codegen/ecore/genmodel/GenModel.html";
     subsetOf XMI.
-generateJava : GeneratorXMI # EcoreXMI -> EcoreJava.
+generateJava : XMIGeneratorCFG # EcoreXMI -> EcoreJava.
 EMF.CodeGenerator : Component;
     = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html";
     partOf EMF;
     uses Java;
-    implements GeneratorModel;
+    implements XMIGeneratorCFG;
     implements generateJava.
 
 /* While Ecore is the language for metamodels written in XMI, there are multiple existing
 languages that are subset of XMI that form DSLs. But this set to serialize models in XMI 
 is different from the metamodeling set. */
-?JavaObject.DSL : ObjectGraph;
+?DSLJVMObject : ValueLanguage;
+    basedOn Object;
+    basedOn Graph;
     subsetOf JVM.Object.
-?XMI.DSLs : DomainSpecificLanguage; //TODO: The universe holding all sets for all DSLs
+?DSLXMI : DomainSpecificLanguage; //TODO: Defined or Implemented? keep it : remove it
     subsetOf XMI.
-?XMI.CustomDSL : DomainSpecificLanguage;
-    subsetOf ?XMI.DSLs.
+?CustomDSLXMI : DomainSpecificLanguage;
+    subsetOf ?DSLXMI.
 ?genModel : Artifact;
-    elementOf GeneratorModel;
+    elementOf XMIGeneratorCFG;
     hasRole Configuration;
     manifestsAs File.
 ?javaModel : Artifact;
-    elementOf Java.Ecore;
+    elementOf EcoreJava;
     hasRole MdeMetamodel;
     manifestsAs File+;
-    defines ?JavaObject.DSL.
+    defines ?DSLJVMObject.
 ?ecoreFile : Artifact;
-    elementOf XMI.Ecore;
+    elementOf EcoreXMI;
     hasRole MdeMetamodel;
     manifestsAs File;
-    defines ?XMI.CustomDSL.
+    defines ?CustomDSLXMI.
 generateJava(?genModel,?ecoreFile) |-> ?javaModel.

@@ -1,39 +1,8 @@
 module java.JavaPlatform
 
-/* Java Ware is the technological space related to the Java programming
-language. */
-JavaWare : TechnologySpace;
-    = "http://link.springer.com/chapter/10.1007%2F978-3-642-30561-0_6".
-
-/* Three languages have to be considered. The Java programming language,
+/* The Java programming language,
 which is compiled into Java byte code, which is then interpreted using
 runtime data handled by the JVM. */
-Java : ProgrammingLanguage;
-    = "http://docs.oracle.com/javase/specs/jls/se8/jls8.pdf";
-    belongsTo JavaWare;
-    supports GeneralPurposeProgramming;
-    facilitates ObjectOrientedProgramming;
-    facilitates FunctionalProgramming;
-    facilitates ConcurrentProgramming.
-
-JavaByteCode : MachineLanguage;
-    = "https://en.wikipedia.org/wiki/Java_bytecode";
-    = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html";
-    belongsTo JavaWare. 
-
-JVM.Value : ValueLanguage;
-    = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
-JVM.Object : ValueLanguage;
-    = "https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html";
-    basedOn Object;
-    subsetOf JVM.Value.
-JVM.Double : ValueLanguage;
-    = "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html";
-    subsetOf JVM.Value.
-JVM.String : ValueLanguage;
-    = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html";
-    subsetOf JVM.Object. //string as a wrapper for a character array
-
 javac.compile : Java -> JavaByteCode.
 ?javaFiles : Artifact;
     elementOf Java;
@@ -72,6 +41,18 @@ JRE : Framework;
     partOf JDK. //optional is implied through Framework class
 JVM : Construct;
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
+JVM.Value : ValueLanguage;
+    = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
+JVM.Object : ValueLanguage;
+    = "https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html";
+    basedOn Object;
+    subsetOf JVM.Value.
+JVM.Double : ValueLanguage;
+    = "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html";
+    subsetOf JVM.Value.
+JVM.String : ValueLanguage;
+    = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html";
+    subsetOf JVM.Object. //string as a wrapper for a character array
 JavaSEHotSpot : Software;
     = "http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136373.html";
     uses Java;

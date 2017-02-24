@@ -1,7 +1,5 @@
 module RationalRose
 
-import UML
-import XML
 import java.JavaPlatform
 
 /* Rational Rose supports UML Modeling. A user can create a model in a 

@@ -1,22 +1,21 @@
 module emf.EcoreDiagram
 
-import emf.EMFCore
-import UML
+import emf.Core
 
 /* EMF implements the generation of an XML-based visual
 description of an ecore model. */
 ?ecoreModel : Artifact;
-    elementOf XMI.Ecore;
+    elementOf EcoreXMI;
     hasRole MdeMetamodel;
     manifestsAs File.
-AIRD : FileFormat;
+AIRD : DataExchangeLanguage;
     = "http://www.eclipse.org/ecoretools/doc/";
     subsetOf XMI.
 ?visualDescription : Artifact;
     elementOf AIRD;
-    hasRole MdeMetamodel;
+    hasRole MdeModel;
     manifestsAs File.
-initializeDiagram : XMI.Ecore -> AIRD.
+initializeDiagram : EcoreXMI -> AIRD.
 initializeDiagram(?ecoreFile) |-> ?visualDescription.
 EMF implements initializeDiagram;
     implements AIRD.
@@ -26,6 +25,7 @@ EMF implements initializeDiagram;
 diagram. */
 EcoreDiagram : ModelingLanguage;
     = "http://www.eclipse.org/ecoretools/doc/";
+    encodes AIRD;
     dialectOf UML.ClassDiagram.
 ?visualRepresentation : Artifact;
     elementOf EcoreDiagram;

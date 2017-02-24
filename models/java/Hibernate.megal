@@ -2,8 +2,6 @@ module java.Hibernate
 
 import java.JavaPlatform
 import java.JDBC
-import SQL
-import XML
 
 /* The framework Hibernate supports the synchronization
 between Java objects and a relational database */

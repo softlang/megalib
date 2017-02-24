@@ -99,9 +99,11 @@ SoftwareAsAServiceWare : TechnologySpace;
 SQLWare : TechnologySpace;
     = "https://en.wikipedia.org/wiki/SQL".
 XMLWare : TechnologySpace;
-    = "https://www.w3.org/XML/".
-AuxiliaryXMLware : TechnologySpace;
-    = "http://101companies.org/wiki/Auxiliary_XMLware".
+    = "https://www.w3.org/XML/". 
+JSONWare : TechnologySpace;
+    = "http://www.json.org/".
+JavaWare : TechnologySpace;
+    = "http://link.springer.com/chapter/10.1007%2F978-3-642-30561-0_6".
     
 /* Reusable ideal processes. */
 AbstractProcess < Entity; //Commonly known technology- and language independent processes
@@ -162,6 +164,9 @@ XMLDataBinding : AbstractProcess;
     refines Mapping.
 ObjectRelationalMapping : AbstractProcess;
     = "https://en.wikipedia.org/wiki/Object-relational_mapping";
+    refines Mapping.
+ObjectJsonMapping : AbstractProcess;
+    = "http://stackoverflow.com/questions/16090464/mapping-json-data-to-java-objects";
     refines Mapping.
 Introspection : Construct;
     = "https://en.wikipedia.org/wiki/Type_introspection";

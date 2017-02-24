@@ -1,7 +1,6 @@
 module emf.ImportJava
 
-import emf.EMFCore
-import java.JavaPlatform
+import emf.Core
 
 /* One can import Java interfaces annotated in a specific way and
 retrieve an Ecore model. */
@@ -16,10 +15,10 @@ EMF implements Java.AnnotatedInterfaces.
     manifestsAs File+;
     uses Annotation.
 ?resultingEcore : Artifact;
-    elementOf XMI.Ecore;
+    elementOf EcoreXMI;
     hasRole MdeMetamodel;
     manifestsAs File;
     correspondsTo ?annotatedJavaFiles.
-importJava : Java.AnnotatedInterfaces -> XMI.Ecore.
+importJava : Java.AnnotatedInterfaces -> EcoreXMI.
 importJava(?annotatedJavaFiles) |-> ?resultingEcore.
 EMF implements importJava.

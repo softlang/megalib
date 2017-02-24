@@ -85,6 +85,10 @@ supports < Language # ProgrammingDomain.
 /* A language has constructs that allow programming in a certain mindset */
 facilitates < Language # Paradigm.
 
+/* Artifacts of one language may be encoded in other languages following other 
+kinds of representation etc. */
+encodes < Language # Language. //TODO: This needs a link... 
+
 /* A language family consists of multiple related languages.
 A language family has one ascendant and multiple descendants.
 Descendants are languages that are influenced by the ascendant.*/
