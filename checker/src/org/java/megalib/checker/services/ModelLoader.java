@@ -96,15 +96,12 @@ public class ModelLoader {
                 ParserListener pl = (ParserListener) parse(pdata, new ParserListener(model));
                 model = pl.getModel();
                 typeErrors.addAll(pl.getTypeErrors());
-                if (!pl.getTypeErrors().isEmpty()) {
-                    pl.getTypeErrors().forEach(w -> System.err.println(w));
-                    throw new TypeException("Resolve critical errors first: "
-                                            + (abspath.equals("") ? " in " + abspath : ""));
-                }
+                if (!pl.getTypeErrors().isEmpty())
+                    return false;
             }
             return true;
         }
-        catch (TypeException | IOException | ParserException e) {
+        catch(IOException | ParserException e){
             typeErrors.add(e.getMessage());
             return false;
         }

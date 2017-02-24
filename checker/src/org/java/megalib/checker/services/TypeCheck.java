@@ -13,11 +13,6 @@ import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
 
-/**
- * @author heinz
- * @summary This class basically implements the type system that was previously
- *          the first phase of the wellformedness checks.
- */
 public class TypeCheck {
 
     private List<String> errors;

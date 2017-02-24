@@ -11,9 +11,7 @@ import org.java.megalib.models.MegaModel;
 import org.java.megalib.parser.ParserException;
 import org.junit.Test;
 
-/**
- * @author heinz This test class assures the correctness of further checks.
- */
+
 public class CheckTest {
 
     @Test

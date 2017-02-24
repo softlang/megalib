@@ -10,10 +10,7 @@ import java.util.Arrays;
 import org.java.megalib.checker.services.WellformednessCheck;
 import org.java.megalib.checker.services.ModelLoader;
 
-/**
- * @author mmay@uni-koblenz.de, aemmerichs@uni-koblenz.de
- * @author heinz
- */
+
 public class Main {
 
     public static void main(String[] args) {
@@ -77,19 +74,23 @@ public class Main {
 
         try{
             if(ml.loadFile(path)){
-                System.out.println("  Congratulations! There are no well-formedness issues at creation time.");
+                System.out.println("  Congratulations! There are no critical issues at creation time.");
+            }else{
+                ml.getTypeErrors().forEach(w -> System.out.println(w));
+                System.out.println("  Fix critical errors before proceeding.");
+                System.exit(1);
             }
         }catch(IOException e){
             System.err.println("Unable to load file " + path);
             return;
         }
-        if(!ml.getTypeErrors().isEmpty()){
+        if(ml.getTypeErrors().isEmpty()){
             WellformednessCheck check = new WellformednessCheck(ml.getModel(), nocon);
             if(check.getWarnings().isEmpty()){
                 System.out.println("  Congratulations! There are no warnings.");
             }else{
-                check.getWarnings().forEach(w -> System.out.println(w));
-                // System.exit(1);
+                System.out.println("  The following warnings were identified:");
+                check.getWarnings().forEach(w -> System.out.println("  -" + w));
             }
         }
     }
