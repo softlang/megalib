@@ -1,15 +1,6 @@
 module python.PythonPlatform
 
-import C
-
 /* Basic Python facts */
-Python : ProgrammingLanguage;
-    = "https://docs.python.org/2/reference/";
-    facilitates ObjectOrientedProgramming;
-    facilitates FunctionalProgramming;
-    facilitates AspectOrientedProgramming;
-    supports GeneralPurposeProgramming.
-
 PythonPlatform : SoftwareSuite;
     = "https://www.python.org/";
     uses Python;

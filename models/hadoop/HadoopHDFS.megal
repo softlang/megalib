@@ -1,0 +1,135 @@
+module hadoop.HadoopHDFS
+
+import hadoop.Hadoop
+import hadoop.HadoopYARN
+import java.JavaPlatform 
+
+/*
+Hadoop uses a specific kind of a distributed file system.
+*/
+HDFSFileSystem : Construct;
+	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/filesystem/index.html";
+	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html#NameNode_and_DataNodes";
+    refines DistributedFilesystem.
+
+/*
+Files that are stored in a HDFS cluster will be called HDFS Files. They follow a certain schema
+TODO: What is the schema?
+*/
+?HDFSFiles : Language;
+	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/FileSystemShell.html#get".
+
+/*
+A SequenceFile is a certain file format used by HDFS. In fact it is one possebible representation of a file stored in a HDFS Cluster. Another way would be to save them as plain text files on HDFS
+*/
+SequenceFile : DocumentLanguage;
+	= "https://wiki.apache.org/hadoop/SequenceFile";
+	subsetOf ?HDFSFiles. //TODO: Clarify this subset relationship
+
+/*
+A file that is saved on a computer and represents data
+*/
+?someFile : Artifact;
+	elementOf ?HDFSFiles;
+	manifestsAs File;
+	hasRole Database.
+/*
+A file that is stored on a HDFS cluster and represents data
+*/
+?someHdfFile : Artifact;
+	elementOf ?HDFSFiles;
+	manifestsAs File;
+	hasRole Database;        //TODO: Why is this always a database?
+	realizes HDFSFileSystem. //TODO: Why does this artifact realize the file system?
+/*
+The state of the HDFS cluster is composed of the stored files in it
+*/	
+?preHDFSState : Artifact;
+	elementOf ?HDFSFiles;
+	manifestsAs File+;
+	hasRole Database;	
+	realizes HDFSFileSystem.
+?postHDFSState : Artifact;
+	elementOf ?HDFSFiles;
+	manifestsAs File+;
+	hasRole Database;
+	realizes HDFSFileSystem.	
+/*
+The concrete path to a file:
+*/	
+?filePath : Artifact;
+	elementOf FilePath;
+	manifestsAs Transient;
+	hasRole Reference.
+
+/*
+The user is able to write data to the file system. This will change the state of the HDFS Cluster
+*/		
+write : ?HDFSFiles # FilePath # ?HDFSFiles -> ?HDFSFiles.
+write(?someFile, ?filePath ,?preHDFSState) |-> ?postHDFSState.
+/*
+The user is able to read from the HDFS file system. This will not change the state but return data
+*/
+read : FilePath # ?HDFSFiles -> ?HDFSFiles.
+read(?filePath ,?preHDFSState) |-> ?someFile.
+
+
+/*
+HDFS is the primary distributed storage used by Hadoop application. It is a module of hadoop. 
+*/
+HDFS : Component;
+	="https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html";
+	facilitates DistributedFilesystem;
+	partOf Hadoop;
+	uses Java;
+	reuses HadoopYARN;
+	implements ?HDFSFiles; //TODO: No, HDFS does not implement for example Java, only because there are Java files.
+	implements FilePath;
+	implements JSON;
+	implements write;
+	implements read.
+
+/*
+There exists the possebility to read files, stored on the HDFS cluster, over a Web-Interaface 
+*/
+WebHDFS : WebService;
+	= "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/WebHDFS.html";
+	partOf HDFS;
+	facilitates REST;
+	uses HTTP;
+	realizes SoftwareInterface;
+	implements read;
+	implements write;
+	uses Java.
+/*
+There exists a library coded in C that is able to communicate with Hadoop as well.
+*/
+LibHdfs : API;
+	= "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/LibHdfs.html";
+	uses C;
+	realizes SoftwareInterface;
+	partOf HDFS;
+	implements write;
+	implements read.
+/*
+A Java API can be used to read and write to the HDFS cluster as well
+*/
+HDFSApi : API;
+	= "http://hadoop.apache.org/docs/current/api/org/apache/hadoop/fs/package-summary.html";
+	implements ?HDFSFiles;
+	realizes SoftwareInterface;
+	uses Java;
+	partOf HDFS;
+	implements write;
+	implements read.
+/*
+There exists the possebility to read and write to the HDFS Cluster by using the Shell commands
+*/
+HDFSShellCommands : Program;
+	= "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html";
+	uses Java;
+	uses ShellScript;
+	realizes SoftwareInterface;
+	partOf HDFS;
+	implements write;
+	implements read.

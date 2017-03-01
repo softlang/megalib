@@ -18,11 +18,12 @@ StringTemplateLanguage : TemplateLanguage;
     ^implements StringTemplate.
     
 /* The template language is embedded into Java by wrapping it into an object */
-StringTemplateObject : ObjectGraph;
+StringTemplateObject : ValueLanguage;
     = "https://github.com/antlr/stringtemplate4/blob/master/src/org/stringtemplate/v4/ST.java";
     ^implements StringTemplate;
     subsetOf JVM.Object .
 wrap : StringTemplateLanguage -> StringTemplateObject.
+StringTemplate implements wrap.
 ?template : Artifact;
     elementOf StringTemplateLanguage;
     hasRole Template;
@@ -36,7 +37,8 @@ wrap(?template) |-> ?stObject1.
    
 /* The template can then be filled with concrete values by calling the toString method 
 of an input object */
-setVar : JVM.String # JVM.String # StringTemplateObject -> StringTemplateObject.
+setVar : JVM.String # JVM.Object # StringTemplateObject -> StringTemplateObject.
+StringTemplate implements setVar.
 ?variable : Artifact;
     elementOf JVM.String;
     manifestsAs Transient;
@@ -54,11 +56,12 @@ setVar(?variable,?value,?stObject1) |-> ?stObject2 .
 
 /* The render function can then be used to unwrap the produced String */
 render : StringTemplateObject -> JVM.String.
+StringTemplate implements render.
 ?prettyPrintedString : Artifact;
     elementOf JVM.String;
     manifestsAs Transient;
     hasRole Value.
-render(?stObject2) |-> ?prettyPrintedString. 
+render(?stObject2) |-> ?prettyPrintedString.
 
 
 //TODO: Combined ANTLR and StringTemplate as noted at StringTemplate's doc

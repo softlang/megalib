@@ -1,0 +1,31 @@
+module hadoop.HadoopCommon
+
+import hadoop.Hadoop
+
+/*
+Hadood common is the part of the Hadoop project that supports the different parts of the hadoop project like HDFS. It is coded in Java
+*/
+HadoopCommon : Component;
+	="https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/CLIMiniCluster.html";
+	partOf Hadoop;
+	uses Java.
+
+/*
+The native library is coded in C and provides faster implementation of some critical functions
+
+ToDo: Not the function but the concepts should be implemented (facilitates).
+*/
+NativeLibrary : Library;
+	= "https://hadoop.apache.org/docs/r1.2.1/native_libraries.html";
+	uses C;
+	partOf HadoopCommon;
+    facilitates Compression.
+
+/*
+Some script are in this part of hadoop to make the start up proccess easier.
+ToDo: A function that says that a parameter is an input and as a result hadoop will be started (with the regard to the configuration)
+*/
+StartUpScript : Program;
+	= "https://github.com/apache/hadoop-common/tree/HADOOP-3628/bin";
+	partOf HadoopCommon;
+	uses ShellScript.

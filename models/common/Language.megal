@@ -57,6 +57,8 @@ DatabaseLanguage < Language; //often binary format to manage data in, such as SQ
     = "https://en.wikipedia.org/wiki/Database".
 TemplateLanguage < Language; //A language for writing templates 
     = "https://en.wikipedia.org/wiki/Template_processor".
+LoggingLanguage < Language; //A language that makes activities reproducible
+    = "https://en.wikipedia.org/wiki/Logfile".
 
 /* Subset according to set theory. This is only used when only a subset can be processed 
 as function input or only a subset is implemented by a technology. */
@@ -118,3 +120,4 @@ Tree : Representation;
     = "https://en.wikipedia.org/wiki/Tree_(graph_theory)".
     
 //TODO: What kind of classifiers are declarative and imperative?
+//TODO:  conceptual, logical, and physical levels?

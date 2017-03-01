@@ -1,6 +1,7 @@
 module Prelude
 
 import common.Concept
+import common.ConceptKB
 import common.Language
 import common.LanguageKB
 
@@ -8,6 +9,8 @@ import common.LanguageKB
 /* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity;
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)".
+hasRole < Artifact # Role; //Relating the artifact to an existing term known in a domain
+    = "https://en.wikipedia.org/wiki/Terminology".
 defines < Artifact # Language; // An artifact may serve as the specification for a language, e.g., a grammar.
     = "https://en.wikipedia.org/wiki/Programming_language_specification";
     = "https://en.wikipedia.org/wiki/Syntax";
@@ -41,97 +44,6 @@ Fragment : Manifestation;  //Some fragment of a file or transient
     = "https://en.wikipedia.org/wiki/Snippet_(programming)".
 manifestsAs < Artifact # Manifestation;
     = "https://en.oxforddictionaries.com/definition/manifestation".
-
-/* Roles relate to the domain's or technological space's 
-terminology. They imply a commonly known purpose 
-that might even be defined in terms of a design or architectural
-pattern. */
-Role < Entity;
-    = "https://en.wikipedia.org/wiki/Artifact_(software_development)";
-    = "https://en.wikipedia.org/wiki/Terminology".
-hasRole < Artifact # Role; //Relating the artifact to an existing term known in a domain
-    = "https://en.wikipedia.org/wiki/Terminology".
-
-
-/* A role may be set in the context of a domain or a technological space */
-aspectOf < Role # ProgrammingDomain.
-aspectOf < Role # TechnologySpace.
-
-/* Structural parts of pattern are often referred to as participants. */
-participantOf < Role # DesignPattern;
-    = "https://en.wikipedia.org/wiki/Software_design_pattern#Structure".
-participantOf < Role # ArchitecturalPattern;
-    = "https://en.wikipedia.org/wiki/Architectural_pattern".
-
-/* Frequently appearing roles */
-Configuration : Role;   //settings statements.
-    = "https://en.wikipedia.org/wiki/Configuration_file".
-BuildScript : Role; //Scripts for deploying software such as ANT or Maven files
-    = "https://en.wikipedia.org/wiki/Software_build".
-Grammar : Role;   //syntax definition
-    = "https://en.wikipedia.org/wiki/Context-free_grammar".
-Database : Role;  //any artifact that only stores data
-    = "https://en.wikipedia.org/wiki/Database".
-Schema : Role;  //provide a schema
-    = "https://en.wikipedia.org/wiki/Database_schema".
-Query : Role;  //a search declaration to satisfy information needs of software or humans
-    = "https://en.wikipedia.org/wiki/Query_language".
-MdeModel : Role; // in the sense of MDE
-    = "https://en.wikipedia.org/wiki/Model-driven_engineering".
-MdeMetamodel : Role; // in the sense of MDE
-    = "https://en.wikipedia.org/wiki/Metamodeling".
-Diagram : Role; //a visual representation of a model
-    = "https://en.wikipedia.org/wiki/Diagram".
-MvcModel : Role; //data classes plus minor business logics
-    = "https://en.wikipedia.org/wiki/Model-view-controller".
-MvcView : Role; //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
-    = "https://en.wikipedia.org/wiki/Model-view-controller".
-MvcController : Role; //Some kind of mediator between model and view, which may execute rather complex computations
-    = "https://en.wikipedia.org/wiki/Model-view-controller".
-Value : Role; //A runtime value in the execution process of a program
-    = "https://en.wikipedia.org/wiki/Value_(computer_science)".
-Message : Role; //A message in a communication of software components
-    = "https://en.wikipedia.org/wiki/Message_passing".
-Specification : Role; //Defines some other conceptual entity in either half-formal or formal manner
-    = "https://en.wikipedia.org/wiki/Specification_(technical_standard)".
-Log : Role; //Contains runtime information that is additionally gathered.
-    = "https://en.wikipedia.org/wiki/Logfile".
-DescriptiveModel : Role;  //A model that describes existing software
-    = "http://www.businessdictionary.com/definition/descriptive-model.html".
-TransformationRule : Role; //A definition for a text- or model-transformation that declares data manipulations.
-    = "http://101companies.org/wiki/Transformation".
-Reference : Role; //links to some existing entity.
-    = "https://en.wikipedia.org/wiki/Reference".
-SourceCode : Role; // An implementation of functionality
-    = "https://en.wikipedia.org/wiki/Source_code".
-ByteCode : Role; //instructions for a software interpreter such as the JVM
-    = "https://en.wikipedia.org/wiki/Bytecode".
-Executable : Role; //Any artifact that is executed and not only used.
-    = "https://en.wikipedia.org/wiki/Executable".
-WebResource : Role; // Contains information and is deployed on a web server.
-    = "https://en.wikipedia.org/wiki/Web_resource".
-Archive : Role; //A file that has folder functionality, such as .jar or .zip
-    = "https://en.wikipedia.org/wiki/Archive_file".
-Document : Role; //An informal file that is deployed locally 
-    = "https://en.wikipedia.org/wiki/Document".
-Repository : Role; //A database that manages code artifacts and acts as a VCS
-    = "https://en.wikipedia.org/wiki/Repository_(version_control)".
-Module : Role;
-    = "https://en.wikipedia.org/wiki/Modular_programming".
-Interface : Role;
-    = "https://en.wikipedia.org/wiki/Protocol_(object-oriented_programming)". //weird
-TestCase : Role;
-    = "https://en.wikipedia.org/wiki/Test_case".
-POJO : Role;
-    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object".
-Template : Role;
-    = "https://en.wikipedia.org/wiki/Template_processor".
-Wrapper : Role;
-    = "https://en.wikipedia.org/wiki/Primitive_wrapper_class".
-Server : Role;
-    = "https://en.wikipedia.org/wiki/Server_(computing)".
-Client : Role;
-    = "https://en.wikipedia.org/wiki/Client_(computing)".
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
@@ -169,6 +81,10 @@ Workbench < Software;
 Platform < Software; // a technology that can evaluate code
     = "https://en.wikipedia.org/wiki/Computing_platform".
 
+//Node < Entity see UML deployment diagrams
+// linking via ip or mac
+// deployedAt : Artifact # Node
+
 /* Implementation relationships */
 implements < Technology # Function;  //A technology may implement a mapping
     = "https://en.wikipedia.org/wiki/Implementation".
@@ -179,8 +95,11 @@ implements < Artifact # Function. //Necessary?
 supports < Technology # ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/Software_feature". //needs better link
 
-/* Technologies and languages may be frequently used in a technological context . */
+/* Technologies and languages may be frequently used in a technological context. 
+Specifically mapping technologies can bridge to other technological spaces. */
 belongsTo < Technology # TechnologySpace.
+bridgesTo < Technology # TechnologySpace.
+
 
 /* A technology is managed by an artifact that serves as a repository. */
 managedBy < Technology # Artifact; 

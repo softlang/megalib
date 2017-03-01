@@ -38,7 +38,8 @@ JavaC : Program;
 JRE : Framework;
     = "http://www.oracle.com/technetwork/java/javase/tech/index.html";
     uses Java;
-    partOf JDK. //optional is implied through Framework class
+    partOf JDK; //optional part of is implied through Framework class
+    implements Jar.    
 JVM : Construct;
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
 JVM.Value : ValueLanguage;
@@ -64,8 +65,3 @@ JavaClassLibrary : Library; //component and library
     = "https://en.wikipedia.org/wiki/Java_Class_Library";
     partOf JRE; //non-optional part
     uses Java.
-
-/* jar container format */
-Jar : ContainerLanguage; //TODO: dialect of zip
-    = "https://en.wikipedia.org/wiki/JAR_(file_format)";
-    ^implements JRE.

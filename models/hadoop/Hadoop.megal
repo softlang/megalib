@@ -1,0 +1,11 @@
+module hadoop.Hadoop
+
+/*
+Hadoop is a open source software framework which is set up of different cluster related technologies
+*/
+Hadoop : Framework;
+	= "https://wiki.apache.org/hadoop";
+	uses Java;
+	belongsTo ClusterComputingWare;
+	supports DistributedComputing;
+	facilitates ClusterComputing.

@@ -1,12 +1,12 @@
 module java.JAXB
 
 import java.JavaPlatform
-import XML
 
 /* JAXB enables the binding of java objects to XML files */
 JAXB : Library;
     = "https://jaxb.java.net/2.2.4/docs/xjc.html";
-    belongsTo XMLWare;
+    belongsTo JavaWare;
+    bridgesTo XMLWare;
     facilitates XMLDataBinding;
     partOf JavaClassLibrary;
     uses Java.

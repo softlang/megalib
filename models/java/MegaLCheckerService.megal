@@ -20,7 +20,7 @@ MegaLibChecker : Software;
     implements MegaL;
     deployedAs checkerJar.
 
-MegaLWarnings : Data;
+MegaLWarnings : ValueLanguage;
     = "https://github.com/softlang/megalib/tree/master/checker";
     subsetOf JVM.String;
     ^implements MegaLibChecker.

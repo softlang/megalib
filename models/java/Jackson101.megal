@@ -12,7 +12,7 @@ JacksonDataBinding101 : Application;
     uses Java;
     uses JSON;
     reuses Jackson;
-    uses OJMapping.
+    uses ObjectJsonMapping.
 sampleCompany partOf JacksonDataBinding101;
     = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/inputs/sampleCompany.json".
 companyJava partOf JacksonDataBinding101;

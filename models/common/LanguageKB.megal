@@ -78,6 +78,44 @@ XMI : DataExchangeLanguage;
 JSON : DataExchangeLanguage;
     = "https://en.wikipedia.org/wiki/JSON";
     belongsTo JSONWare.
+JSONSchema : SchemaLanguage;
+    = "https://en.wikipedia.org/wiki/JSON#JSON_Schema".
+
+/* Common web languages */
+JavaScript : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/JavaScript";
+    supports WebApplicationDevelopment.
+JavaScript.Value : ValueLanguage;
+    = "http://www.w3schools.com/js/js_datatypes.asp".
+JavaScript.String : ValueLanguage;
+    = "http://www.w3schools.com/js/js_strings.asp";
+    subsetOf JavaScript.Value .// or embedded?
+JavaScript.Number : ValueLanguage;
+    = "http://www.w3schools.com/js/js_numbers.asp";
+    subsetOf JavaScript.Value .
+JavaScript.Object : ValueLanguage; // we don't know whether it is one class that this is conforming to or more.
+    = "http://www.w3schools.com/js/js_object_definition.asp";
+    subsetOf JavaScript.Value.
+HTML5 : DocumentLanguage; //TODO: vs HTML....
+    = "https://www.w3.org/TR/html5/".
+HTML5JavaScript : ProgrammingLanguage;
+    = "http://www.w3schools.com/html/html_scripts.asp";
+    subsetOf JavaScript; //TODO: why?
+    embeddedInto HTML5.
+CSS : StylesheetLanguage;
+    = "https://en.wikipedia.org/wiki/Cascading_Style_Sheets".
+URL : ReferenceLanguage;
+    = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator".
+HTTPRequest : MessageLanguage;
+    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_message".
+HTTPResponse : MessageLanguage;
+    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message".
+SOAP : MessageLanguage;
+    = "https://en.wikipedia.org/wiki/SOAP";
+    = "https://www.w3.org/TR/soap/";
+    subsetOf XML;
+    embeddedInto HTTPRequest;
+    embeddedInto HTTPResponse.
 
 /* C is an imperative programming language that influenced
 C++, which extends the procedural style by object orientation
@@ -105,3 +143,33 @@ JavaByteCode : MachineLanguage;
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html";
     encodes Java;
     belongsTo JavaWare. 
+    
+/* jar container format */
+Zip : ContainerLanguage;
+    = "https://en.wikipedia.org/wiki/Zip_(file_format)".
+Jar : ContainerLanguage; 
+    = "https://en.wikipedia.org/wiki/JAR_(file_format)";
+    dialectOf Zip.
+    
+/* The python programming language */    
+Python : ProgrammingLanguage;
+    = "https://docs.python.org/2/reference/";
+    facilitates ObjectOrientedProgramming;
+    facilitates FunctionalProgramming;
+    facilitates AspectOrientedProgramming;
+    supports GeneralPurposeProgramming.
+    
+/* Ruby is a Script language. Thus it is used for writing programs,
+but is more frequently interpreted than compiled. */
+Ruby : ProgrammingLanguage;
+    = "https://www.ruby-lang.org/en/".
+
+/* Linux' Shell script */
+ShellScript : BuildLanguage;
+	= "https://en.wikipedia.org/wiki/Shell_script".
+    
+/*
+The path to a file is called a file path
+*/	
+FilePath : ReferenceLanguage;
+	= "https://en.wikipedia.org/wiki/Path_(computing)".
