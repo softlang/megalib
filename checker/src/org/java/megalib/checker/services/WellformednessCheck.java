@@ -92,6 +92,18 @@ public class WellformednessCheck {
                                      + " does not use any language. Please state language usage.");
                     }
                 }
+                if(model.isInstanceOf(inst, "Artifact")){
+                    Set<Relation> roleSet = model.getRelationshipInstanceMap().get("hasRole");
+                    if(null == roleSet){
+                        warnings.add("Role missing for " + inst);
+                        continue;
+                    }
+                    Set<Relation> roles = roleSet.parallelStream().filter(r -> r.getSubject().equals(inst))
+                                  .collect(Collectors.toSet());
+                    if(roles.isEmpty()){
+                        warnings.add("Role missing for " + inst);
+                    }
+                }
             }
             if(model.isInstanceOf(inst, "Artifact")){
                 if(!model.getElementOfMap().containsKey(inst)){
@@ -102,20 +114,10 @@ public class WellformednessCheck {
                     warnings.add("Manifestation missing for " + inst);
                     continue;
                 }
-                Set<Relation> fset = manifestSet.parallelStream().filter(r -> r.getSubject().equals(inst))
+                Set<Relation> manifestations = manifestSet.parallelStream().filter(r -> r.getSubject().equals(inst))
                                                 .collect(Collectors.toSet());
-                if(fset.isEmpty()){
+                if(manifestations.isEmpty()){
                     warnings.add("Manifestation missing for " + inst);
-                }
-
-                Set<Relation> roleSet = model.getRelationshipInstanceMap().get("hasRole");
-                if(null == roleSet){
-                    warnings.add("Role misssing for " + inst);
-                    continue;
-                }
-                fset = roleSet.parallelStream().filter(r -> r.getSubject().equals(inst)).collect(Collectors.toSet());
-                if(fset.isEmpty()){
-                    warnings.add("Role misssing for " + inst);
                 }
             }
         }

@@ -137,7 +137,7 @@ public class ParserListenerTest {
 
     @Test
     public void addInstanceOfProgrammingLanguage() throws ParserException, IOException {
-        String input = "/**/Java : ProgrammingLanguage.";
+        String input = "/**/XYZ : ProgrammingLanguage.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
@@ -147,7 +147,7 @@ public class ParserListenerTest {
 
     @Test
     public void addInstanceOfArtifact() throws ParserException, IOException {
-        String input = "/**/Python : ProgrammingLanguage. " + "a : Artifact; " + "elementOf Python; "
+        String input = "/**/a : Artifact; " + "elementOf Python; "
                 + "hasRole MvcModel; " + "manifestsAs File.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
@@ -162,16 +162,16 @@ public class ParserListenerTest {
 
     @Test
     public void addInversePartOf() throws ParserException, IOException {
-        String input = "/**/ANTLRPython : ProgrammingLanguage. Python : ProgrammingLanguage; ^subsetOf ANTLRPython.";
+        String input = "/**/ANTLRXYZ : ProgrammingLanguage. XYZ : ProgrammingLanguage; ^subsetOf ANTLRXYZ.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
         Map<String,String> imap = ml.getModel().getInstanceOfMap();
-        assertTrue(imap.containsKey("ANTLRPython"));
-        assertTrue(imap.containsKey("Python"));
+        assertTrue(imap.containsKey("ANTLRXYZ"));
+        assertTrue(imap.containsKey("XYZ"));
         assertTrue(ml.getModel().getRelationshipInstanceMap().containsKey("subsetOf"));
         Set<Relation> rmap = ml.getModel().getRelationshipInstanceMap().get("subsetOf");
-        assertTrue(rmap.contains(new Relation("ANTLRPython", "Python")));
+        assertTrue(rmap.contains(new Relation("ANTLRXYZ", "XYZ")));
     }
 
     @Test
@@ -542,16 +542,16 @@ public class ParserListenerTest {
 
     @Test
     public void testTurtleSyntaxStepwiseFailure() throws ParserException, IOException {
-        String input = "/**/a : Artifact; " + "elementOf Java;" + "hasRole MvcModel.";
+        String input = "/**/a : Artifact; " + "elementOf XYZ;" + "hasRole MvcModel.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at instance of elementOf: Java is not instantiated.", ml.getTypeErrors().get(0));
+        assertEquals("Error at instance of elementOf: XYZ is not instantiated.", ml.getTypeErrors().get(0));
     }
 
     @Test
     public void testTurtleInstanceLink() throws ParserException, IOException {
-        String input = "/**/Java : ProgrammingLanguage;"
+        String input = "/**/XYZ : ProgrammingLanguage;"
                 + "    = \"https://en.wikipedia.org/wiki/Java_(programming_language)\".";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);

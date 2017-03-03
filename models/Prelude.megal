@@ -81,15 +81,17 @@ Workbench < Software;
 Platform < Software; // a technology that can evaluate code
     = "https://en.wikipedia.org/wiki/Computing_platform".
 
-//Node < Entity see UML deployment diagrams
-// linking via ip or mac
-// deployedAt : Artifact # Node
-
 /* Implementation relationships */
 implements < Technology # Function;  //A technology may implement a mapping
     = "https://en.wikipedia.org/wiki/Implementation".
 implements < Technology # Language.  //A technology can process a language as input or output
 implements < Artifact # Function. //Necessary?
+
+/* A technology or a language can facilitate the usage of ideal forms of solutions */
+facilitates < Technology # DesignPattern.
+facilitates < Technology # ArchitecturalPattern.
+facilitates < Technology # AbstractProcess.
+facilitates < Technology # Construct.
 
 /* A technology may help in a problem context */
 supports < Technology # ProgrammingDomain;
@@ -105,10 +107,14 @@ bridgesTo < Technology # TechnologySpace.
 managedBy < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_repository".
 
-/* In a usage scenario the technology is locally deployed as an artifact. */
+/* In a usage scenario the technology is locally deployed as an artifact at some node. */
+Node < Entity; //A computing node, that executes software and is linkable via ip or mac
+    = "https://en.wikipedia.org/wiki/Node_(networking)#Distribute".
+deployedAt < Artifact # Node; //An artifact is deployed on a node
+    = "https://en.wikipedia.org/wiki/Software_deployment".
 deployedAs < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_deployment".
-
+ 
 /* A set of artifacts that realizes concrete use cases. */
 System < Entity; 
     = "https://en.wikipedia.org/wiki/Software_system".
@@ -120,7 +126,7 @@ UserFiles < System;  //A set of files managed by the user instead of being coord
     = "https://en.wikipedia.org/wiki/User_(computing)".
 
 /* A system as an exemplary solution for a field of study */
-demonstrates < System # ProgrammingDomain; 
+demonstrates < System # ProgrammingDomain; // Experimental! Don't use unless you know what you're doing
     = "http://softlang.uni-koblenz.de/chrestomathy/".
 
 
@@ -164,12 +170,6 @@ realizes < Artifact # DesignPattern.
 realizes < Artifact # ArchitecturalPattern.
 realizes < Artifact # AbstractProcess.
 realizes < Artifact # Construct.
-
-/* A technology or a language can facilitate the usage of ideal forms of solutions */
-facilitates < Technology # DesignPattern.
-facilitates < Technology # ArchitecturalPattern.
-facilitates < Technology # AbstractProcess.
-facilitates < Technology # Construct.
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */

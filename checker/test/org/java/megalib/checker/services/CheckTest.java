@@ -146,15 +146,25 @@ public class CheckTest {
     }
 
     @Test
-    public void checkArtifactHasRole() throws ParserException, IOException {
+    public void checkAbstractArtifactHasRole() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?l : ProgrammingLanguage. " + "?a : Artifact. " + "?a elementOf ?l. "
                        + "?a manifestsAs File.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
+        assertEquals(0, c.getWarnings().size());
+    }
+
+    @Test
+    public void checkArtifactHasRole() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/?l : ProgrammingLanguage. a : Artifact; = \"http://softlang.org/\". a elementOf ?l. a manifestsAs File.";
+        ml.loadString(input);
+        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
-        assertTrue(c.getWarnings().contains("Role misssing for ?a"));
+        assertTrue(c.getWarnings().contains("Role missing for a"));
     }
 
     @Test
