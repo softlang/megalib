@@ -15,7 +15,7 @@ module WebBrowser
 /* Every browser reuses a graphics engine */
 ?WebGraphicsEngine : Library;
     partOf ?WebBrowser;
-    realizes Rendering.
+    facilitates Rendering.
 
 //TODO: further Storyline
 //- From URL to Request to Response to HTML to rendered view

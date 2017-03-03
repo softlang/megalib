@@ -10,7 +10,7 @@ Hibernate : Framework;
     uses Java;
     uses XML;
     partOf JavaClassLibrary;
-    realizes ObjectRelationalMapping;
+    facilitates ObjectRelationalMapping;
     belongsTo JavaWare;
     belongsTo SQLWare;
     reuses JDBC.

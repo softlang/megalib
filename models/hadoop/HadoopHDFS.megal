@@ -39,7 +39,6 @@ A file that is stored on a HDFS cluster and represents data
 ?someHdfFile : Artifact;
 	elementOf ?HDFSFiles;
 	manifestsAs File;
-	hasRole Database;        //TODO: Why is this always a database?
 	realizes HDFSFileSystem. //TODO: Why does this artifact realize the file system?
 /*
 The state of the HDFS cluster is composed of the stored files in it
@@ -97,7 +96,7 @@ WebHDFS : WebService;
 	partOf HDFS;
 	facilitates REST;
 	uses HTTP;
-	realizes SoftwareInterface;
+	uses SoftwareInterface;
 	implements read;
 	implements write;
 	uses Java.
@@ -107,7 +106,7 @@ There exists a library coded in C that is able to communicate with Hadoop as wel
 LibHdfs : API;
 	= "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/LibHdfs.html";
 	uses C;
-	realizes SoftwareInterface;
+	uses SoftwareInterface;
 	partOf HDFS;
 	implements write;
 	implements read.
@@ -117,7 +116,7 @@ A Java API can be used to read and write to the HDFS cluster as well
 HDFSApi : API;
 	= "http://hadoop.apache.org/docs/current/api/org/apache/hadoop/fs/package-summary.html";
 	implements ?HDFSFiles;
-	realizes SoftwareInterface;
+	uses SoftwareInterface;
 	uses Java;
 	partOf HDFS;
 	implements write;
@@ -129,7 +128,7 @@ HDFSShellCommands : Program;
 	= "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html";
 	uses Java;
 	uses ShellScript;
-	realizes SoftwareInterface;
+	uses SoftwareInterface;
 	partOf HDFS;
 	implements write;
 	implements read.

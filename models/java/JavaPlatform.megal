@@ -29,7 +29,7 @@ JavaC : Program;
     = "https://en.wikipedia.org/wiki/Javac";
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-3.html";
     uses Java;
-    realizes Compilation;
+    facilitates Compilation;
     partOf JDK;
     supports MetaProgramming;
     implements Java;
@@ -57,8 +57,8 @@ JVM.String : ValueLanguage;
 JavaSEHotSpot : Software;
     = "http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136373.html";
     uses Java;
-    realizes JVM;
-    realizes Interpretation;
+    uses JVM;
+    facilitates Interpretation;
     implements JavaByteCode;
     implements JVM.Value.
 JavaClassLibrary : Library; //component and library

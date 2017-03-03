@@ -87,7 +87,7 @@ implements < Technology # Function;  //A technology may implement a mapping
 implements < Technology # Language.  //A technology can process a language as input or output
 implements < Artifact # Function. //Necessary?
 
-/* A technology or a language can facilitate the usage of ideal forms of solutions */
+/* A technology or a language can facilitate the usage or realization of a conceptual description. */
 facilitates < Technology # DesignPattern.
 facilitates < Technology # ArchitecturalPattern.
 facilitates < Technology # AbstractProcess.
@@ -143,7 +143,9 @@ uses < System # Language;
     = "https://en.wikipedia.org/wiki/Computer_programming".
 uses < Technology # Language.
 
-/* Re-usable forms of solutions can be used */
+/* Something uses a concept, if its implementation or structure is informalle conform to the concept's 
+definition. Most times, this is synonymous to 
+realization. */
 uses < System # DesignPattern.
 uses < System # ArchitecturalPattern.
 uses < System # AbstractProcess.
@@ -156,20 +158,6 @@ uses < Artifact # DesignPattern.
 uses < Artifact # ArchitecturalPattern.
 uses < Artifact # AbstractProcess.
 uses < Artifact # Construct.
-
-/* Re-usable forms of solutions can be used in the sense of realization. */
-realizes < System # DesignPattern.
-realizes < System # ArchitecturalPattern.
-realizes < System # AbstractProcess.
-realizes < System # Construct.
-realizes < Technology # DesignPattern.
-realizes < Technology # ArchitecturalPattern.
-realizes < Technology # AbstractProcess.
-realizes < Technology # Construct.
-realizes < Artifact # DesignPattern.
-realizes < Artifact # ArchitecturalPattern.
-realizes < Artifact # AbstractProcess.
-realizes < Artifact # Construct.
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */
