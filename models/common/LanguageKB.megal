@@ -96,6 +96,7 @@ JavaScript.Number : ValueLanguage;
 JavaScript.Object : ValueLanguage; // we don't know whether it is one class that this is conforming to or more.
     = "http://www.w3schools.com/js/js_object_definition.asp";
     subsetOf JavaScript.Value.
+
 HTML5 : DocumentLanguage; //TODO: vs HTML....
     = "https://www.w3.org/TR/html5/".
 HTML5JavaScript : ProgrammingLanguage;
@@ -129,7 +130,7 @@ Objective-C : ProgrammingLanguage;
 C-Make : BuildLanguage;
     = "https://en.wikipedia.org/wiki/CMake".
 
-/* The Java programming language, its byte code representation */
+/* JVM related languages */
 Java : ProgrammingLanguage;
     = "http://docs.oracle.com/javase/specs/jls/se8/jls8.pdf";
     belongsTo JavaWare;
@@ -137,12 +138,13 @@ Java : ProgrammingLanguage;
     facilitates ObjectOrientedProgramming;
     facilitates FunctionalProgramming;
     facilitates ConcurrentProgramming.
-
 JavaByteCode : MachineLanguage;
     = "https://en.wikipedia.org/wiki/Java_bytecode";
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html";
     encodes Java;
     belongsTo JavaWare. 
+Scala : ProgrammingLanguage;
+	= "https://en.wikipedia.org/wiki/Scala_(programming_language)".
     
 /* jar container format */
 Zip : ContainerLanguage;

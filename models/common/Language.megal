@@ -97,27 +97,29 @@ ascendantOf < Language # LanguageFamily.
 descendantOf < Language # LanguageFamily.
 
 /* Artifacts of one language may be encoded in other languages following other 
-kinds of representation etc. */
-Representation < Entity;
+kinds of notation etc. */
+Notation < Entity;
     = "https://en.wikipedia.org/wiki/File_format". //not really a good link
-basedOn < Language # Representation. //TODO: This needs a link... 
-Text : Representation;
+encodedAs < Language # Notation. // !!Experimental!!
+encodes < Language # Construct. // !!Experimental!!
+Text : Notation;
     = "http://www.iue.tuwien.ac.at/phd/fasching/node26.html".
-Binary : Representation;
+Binary : Notation;
     = "http://www.iue.tuwien.ac.at/phd/fasching/node27.html".
-Visual : Representation;
+Visual : Notation;
     = "https://en.wikipedia.org/wiki/Data_visualization".
-Markup : Representation;
+Markup : Notation;
     = "https://en.wikipedia.org/wiki/Markup_language".
-Graph : Representation;
+Graph : Construct;
     = "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)".
-Object : Representation;
+Object : Construct;
     = "https://en.wikipedia.org/wiki/Object_(computer_science)".
-Tree : Representation;
+Tree : Construct;
     = "https://en.wikipedia.org/wiki/Tree_(graph_theory)".
-Expression : Representation; //Propose a language of expression not yet evaluated to values (compile-time)
+Expression : Construct; //Propose a language of expression not yet evaluated to values (compile-time)
    = "https://en.wikipedia.org/wiki/Expression_(computer_science)".
-encodes < Language # Language. //TODO: This needs a link... 
+mappableTo < Language # Language. //TODO: This needs a link... 
     
 //TODO: What kind of classifiers are declarative and imperative?
 //TODO:  conceptual, logical, and physical levels?
+//TODO: How to express that a language is only conceptual?

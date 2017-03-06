@@ -73,6 +73,10 @@ DistributedComputing : ProgrammingDomain;
  	= "https://en.wikipedia.org/wiki/Distributed_computing".
 DistributedProgramming : ProgrammingDomain;
 	= "https://en.wikipedia.org/wiki/Distributed_computing".
+MachineLearning : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Machine_learning".
+GraphProgramming : ProgrammingDomain; 
+    = "https://en.wikipedia.org/wiki/Graph_theory".
  
 /* Technological spaces */
 BuildAutomationWare : TechnologySpace;
@@ -97,15 +101,22 @@ ClusterComputingWare : TechnologySpace;
 ClusterManagementWare : TechnologySpace;
  	= "https://en.wikipedia.org/wiki/List_of_cluster_management_software";
 	subspaceOf ClusterWare.
+GraphWare : TechnologySpace;
+    = "https://en.wikipedia.org/wiki/Category:Application-specific_graphs".
 
 /* Abstract Processes */
 Compilation : AbstractProcess; //Software translation of a higher level language into a lower level language
-    = "https://de.wikipedia.org/wiki/Compiler";
+    = "https://en.wikipedia.org/wiki/Compiler";
     aspectOf MetaProgramming.
 Interpretation : AbstractProcess;
     = "https://en.wikipedia.org/wiki/Interpreter_(computing)".
 Transformation : AbstractProcess; // Takes input data and produces output data. Input and output are elements of a software language that is not a data type.
     = "https://en.wikipedia.org/wiki/Data_transformation".
+CoarseGrainedTransformation : AbstractProcess;
+	="http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf";
+    ="http://stackoverflow.com/questions/26195512/fine-grained-transformation-vs-coarse-grained-transformations".
+FineGrainedTransformation : AbstractProcess;
+    = "http://stackoverflow.com/questions/26195512/fine-grained-transformation-vs-coarse-grained-transformations".
 Validation : AbstractProcess; //Validate quality
     = "https://en.wikipedia.org/wiki/Verification_and_validation#Categories_of_validation";
     aspectOf QualityAssurance.
@@ -158,6 +169,8 @@ ClusterComputing : AbstractProcess;
  	= "http://de.slideshare.net/bosswebtech/cluster-computing-11382951";
  	= "http://gridbus.csse.unimelb.edu.au/papers/ic_cluster.pdf";
  	aspectOf DistributedProgramming.
+StreamProcessing : AbstractProcess;
+	= "https://en.wikipedia.org/wiki/Stream_processing".
 HTTP : Protocol;
     = "https://en.wikipedia.org/wiki/HTTP".
 HTTPS : Protocol ;
@@ -192,6 +205,9 @@ LocalFileSystem : Construct;
     refines FileSystem.
 ResourceManagement : Construct;
 	="https://en.wikipedia.org/wiki/Resource_management_(computing)".
+//A DataFrame is a Dataset organized into named columns. It is conceptually equivalent to a table in a relational database or a data frame in R/Python, but with richer optimizations under the hood
+DataFrame : Construct;
+	="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html".
 
 /* Frequently appearing roles that single artifacts may have. */
 Configuration : Role;   //settings statements.
@@ -274,3 +290,9 @@ ReduceOperation : Role;
     ="https://en.wikipedia.org/wiki/MapReduce#Reduce_function".
 SystemState : Role; //an artifact may represent the system state.
 	= "https://en.wikipedia.org/wiki/State_(computer_science)".
+DriverProgram : Role;
+	= "https://en.wikipedia.org/wiki/Scala_(programming_language)". //TODO: Better link
+DataStream : Role;
+	= "https://en.wikipedia.org/wiki/Data_stream".
+Worker : Role;
+	="https://en.wikipedia.org/wiki/Thread_pool".
