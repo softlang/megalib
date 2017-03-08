@@ -43,7 +43,6 @@ public class SubstitutionTest {
         assertTrue(ml.loadFile("testsample/SubstitutionDemo/BaseTechnology.megal"));
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(0, c.getWarnings().size());
     }
 
@@ -53,7 +52,6 @@ public class SubstitutionTest {
         assertTrue(ml.loadFile("testsample/SubstitutionDemo/Technology.megal"));
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(0, c.getWarnings().size());
     }
 
@@ -61,7 +59,6 @@ public class SubstitutionTest {
     public void testApp() throws IOException {
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(0, c.getWarnings().size());
     }
 

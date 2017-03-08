@@ -57,6 +57,8 @@ public class Main {
     }
 
     private static void checkDirectory(String dir, boolean nocon) {
+        if(dir.contains("common"))
+            return;
         File d = new File(dir);
         assert (d.isDirectory());
         for(File f : d.listFiles()){

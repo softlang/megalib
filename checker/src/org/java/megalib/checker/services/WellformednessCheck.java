@@ -73,6 +73,10 @@ public class WellformednessCheck {
                     warnings.add("The entity " + inst
                                  + " is underspecified. Please state a specific subtype of Language.");
                 }
+                if(map.get(inst).equals("System")){
+                    warnings.add("The entity " + inst
+                                 + " is underspecified. Please state a specific subtype of System.");
+                }
                 if(!model.getLinkMap().containsKey(inst) && !map.get(inst).equals("Function")){
                     warnings.add("The entity " + inst + " misses a Link for further reading.");
                 }

@@ -208,6 +208,14 @@ ResourceManagement : Construct;
 //A DataFrame is a Dataset organized into named columns. It is conceptually equivalent to a table in a relational database or a data frame in R/Python, but with richer optimizations under the hood
 DataFrame : Construct;
 	="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html".
+Graph : Construct;
+    = "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)".
+Object : Construct;
+    = "https://en.wikipedia.org/wiki/Object_(computer_science)".
+Tree : Construct;
+    = "https://en.wikipedia.org/wiki/Tree_(graph_theory)".
+Expression : Construct; //Propose a language of expression not yet evaluated to values (compile-time)
+   = "https://en.wikipedia.org/wiki/Expression_(computer_science)".
 
 /* Frequently appearing roles that single artifacts may have. */
 Configuration : Role;   //settings statements.

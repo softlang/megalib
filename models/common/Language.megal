@@ -110,15 +110,7 @@ Visual : Notation;
     = "https://en.wikipedia.org/wiki/Data_visualization".
 Markup : Notation;
     = "https://en.wikipedia.org/wiki/Markup_language".
-Graph : Construct;
-    = "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)".
-Object : Construct;
-    = "https://en.wikipedia.org/wiki/Object_(computer_science)".
-Tree : Construct;
-    = "https://en.wikipedia.org/wiki/Tree_(graph_theory)".
-Expression : Construct; //Propose a language of expression not yet evaluated to values (compile-time)
-   = "https://en.wikipedia.org/wiki/Expression_(computer_science)".
-mappableTo < Language # Language. //TODO: This needs a link... 
+mappedTo < Language # Language. //TODO: This needs a link... 
     
 //TODO: What kind of classifiers are declarative and imperative?
 //TODO:  conceptual, logical, and physical levels?

@@ -3,7 +3,7 @@ module BaseTechnology
 /**/
 MyPL : ProgrammingLanguage;
     = "http://www.softlang.org/";
-    basedOn Text.
+    encodedAs Text.
     
 Platformx : Software;
     = "http://www.softlang.org/";

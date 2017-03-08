@@ -68,10 +68,9 @@ EMF.CodeGenerator : Component;
 languages that are subset of XMI that form DSLs. But this set to serialize models in XMI 
 is different from the metamodeling set. */
 ?DSLJVMObject : ValueLanguage;
-    basedOn Object;
-    basedOn Graph;
+    encodes Object;
     subsetOf JVM.Object.
-?DSLXMI : DomainSpecificLanguage; //TODO: Defined or Implemented? keep it : remove it
+?DSLXMI : DomainSpecificLanguage; //TODO: Defined or Implemented? keep it or remove it
     subsetOf XMI.
 ?CustomDSLXMI : DomainSpecificLanguage;
     subsetOf ?DSLXMI.
