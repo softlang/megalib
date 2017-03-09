@@ -6,4 +6,4 @@ import C
 Linux : Software;
 	= "https://github.com/torvalds/linux";
 	uses C;
-	implements ShellScript.
+	implements Bash.

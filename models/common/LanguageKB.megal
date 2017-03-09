@@ -167,9 +167,9 @@ but is more frequently interpreted than compiled. */
 Ruby : ProgrammingLanguage;
     = "https://www.ruby-lang.org/en/".
 
-/* Linux' Shell script */
-ShellScript : BuildLanguage;
-	= "https://en.wikipedia.org/wiki/Shell_script".
+/* Linux' Shell script language */
+Bash : BuildLanguage;
+	= "https://en.wikipedia.org/wiki/Bash_(Unix_shell)".
     
 /*
 The path to a file is called a file path
