@@ -9,7 +9,7 @@ databases encoded in MySQL's specific database image
 format. */
 MySQLImage : DatabaseLanguage;
     = "http://dev.mysql.com/doc/refman/5.7/en/what-is-mysql.html";
-    basedOn Binary.
+    encodedAs Binary.
 MySQL : SoftwareSuite;
     = "https://en.wikipedia.org/wiki/MySQL";
     supports DatabaseProgramming;

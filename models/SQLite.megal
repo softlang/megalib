@@ -1,0 +1,13 @@
+module SQLite
+
+/* Primary stuff on SQLite */
+SQLiteImage : DatabaseLanguage;
+    = "http://dev.mysql.com/doc/refman/5.7/en/what-is-mysql.html";
+    encodedAs Binary.
+SQLite : Software;
+    = "https://en.wikipedia.org/wiki/SQLite";
+    supports DatabaseProgramming;
+    uses C;
+    implements SQL;
+    implements SQLiteImage;
+    belongsTo SQLWare.

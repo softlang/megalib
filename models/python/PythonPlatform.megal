@@ -11,3 +11,9 @@ CPython : Software;
     implements Python;
     uses C;
     partOf PythonPlatform.
+    
+SQLite3 : Library;
+    = "https://docs.python.org/2/library/sqlite3.html";
+    partOf PythonPlatform;
+    uses Python;
+    uses SQLite.
