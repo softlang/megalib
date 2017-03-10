@@ -21,6 +21,8 @@ generate Tree viewer
 model - view synchronization (databinding)
 model - view synchronization using item providers
 
+
+
 The eclipse modeling framework belongs to the model driven engineering
 technologies. It's an eclipse plugin implemented in Java. */
 EMF : Plugin;
@@ -32,7 +34,7 @@ EMF : Plugin;
 
 /* Its main component is EMFCore which contains Ecore's 
 metametamodel as several Java classes. */
-EMF.Core : Component;
+EMF.ECore : Component;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html";
     partOf EMF;
     uses Java.
@@ -53,15 +55,17 @@ EcoreXMI : DataExchangeLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html";
     subsetOf XMI;
     encodes EcoreJava.
-XMIGeneratorCFG : ConfigurationLanguage;
+GeneratorCfgXmi : ConfigurationLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/codegen/ecore/genmodel/GenModel.html";
     subsetOf XMI.
-generateJava : XMIGeneratorCFG # EcoreXMI -> EcoreJava.
+generateGenerator : EcoreXMI -> GeneratorCfgXmi.
+generateJava : GeneratorCfgXmi # EcoreXMI -> EcoreJava.
 EMF.CodeGenerator : Component;
     = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html";
     partOf EMF;
     uses Java;
-    implements XMIGeneratorCFG;
+    implements GeneratorCfgXmi;
+    implements generateGenerator;
     implements generateJava.
 
 /* While Ecore is the language for metamodels written in XMI, there are multiple existing
@@ -75,7 +79,7 @@ is different from the metamodeling set. */
 ?CustomDSLXMI : DomainSpecificLanguage;
     subsetOf ?DSLXMI.
 ?genModel : Artifact;
-    elementOf XMIGeneratorCFG;
+    elementOf GeneratorCfgXmi;
     hasRole Configuration;
     manifestsAs File.
 ?javaModel : Artifact;
@@ -83,9 +87,13 @@ is different from the metamodeling set. */
     hasRole MdeMetamodel;
     manifestsAs File+;
     defines ?DSLJVMObject.
-?ecoreFile : Artifact;
+?metaModel : Artifact;
     elementOf EcoreXMI;
     hasRole MdeMetamodel;
     manifestsAs File;
     defines ?CustomDSLXMI.
 generateJava(?genModel,?ecoreFile) |-> ?javaModel.
+?model : Artifact;
+    elementOf CustomDSLXMI;
+    hasRole MdeModel;
+    manifestsAs File.

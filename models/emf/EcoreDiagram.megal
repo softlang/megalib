@@ -3,7 +3,11 @@ module emf.EcoreDiagram
 import emf.Core
 
 /* EMF implements the generation of an XML-based visual
-description of an ecore model. */
+description of an ecore model.
+
+This is actually SIRIUS
+
+ */
 ?ecoreModel : Artifact;
     elementOf EcoreXMI;
     hasRole MdeMetamodel;

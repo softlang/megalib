@@ -14,3 +14,8 @@ EclipseForJava : Plugin;
     partOf Eclipse;
     uses Java;
     implements Java.
+    
+/* Eclipse core component
+ - runtime
+ - ui
+ - resources */
