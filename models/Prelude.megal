@@ -85,7 +85,6 @@ Platform < Software; // a technology that can evaluate code
 implements < Technology # Function;  //A technology may implement a mapping
     = "https://en.wikipedia.org/wiki/Implementation".
 implements < Technology # Language.  //A technology can process a language as input or output
-implements < Artifact # Function. //Necessary?
 
 /* A technology or a language can facilitate the usage or realization of a conceptual description. */
 facilitates < Technology # DesignPattern.
@@ -154,10 +153,6 @@ uses < Technology # DesignPattern.
 uses < Technology # ArchitecturalPattern.
 uses < Technology # AbstractProcess.
 uses < Technology # Construct.
-uses < Artifact # DesignPattern.
-uses < Artifact # ArchitecturalPattern.
-uses < Artifact # AbstractProcess.
-uses < Artifact # Construct.
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */
@@ -165,5 +160,3 @@ reuses < System # System;
     = "https://en.wikipedia.org/wiki/Code_reuse".
 reuses < System # Technology.
 reuses < Technology # Technology.
-reuses < Artifact # System.
-reuses < Artifact # Technology.
