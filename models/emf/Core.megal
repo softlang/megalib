@@ -8,11 +8,7 @@ TODO: The story has to be cleaned up.
 
 List of functions:
 generate empty Ecore
-Initialize Ecore Diagram File
 edit Ecore in eclipse (generated Annotation)
-generateJava from Ecore
-serialize
-deserialize
 generate instance model
 edit instance model
 model validation
@@ -20,8 +16,6 @@ copy instance model
 generate Tree viewer
 model - view synchronization (databinding)
 model - view synchronization using item providers
-
-
 
 The eclipse modeling framework belongs to the model driven engineering
 technologies. It's an eclipse plugin implemented in Java. */
