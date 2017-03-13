@@ -45,6 +45,7 @@ aspectOf < AbstractProcess # ProgrammingDomain.
 /* More specific forms of reusable ideas */
 refines < AbstractProcess # AbstractProcess.
 refines < Construct # Construct.
+refines < Paradigm # Paradigm. //As in Object-based refines Object-oriented
 
 /* Roles relate to the domain's or technological space's 
 terminology. They imply a commonly known purpose 
