@@ -1,0 +1,51 @@
+module emf.EMF
+
+/* The eclipse modeling framework belongs to the model driven engineering
+technologies. It's an eclipse plugin implemented in Java. */
+EMF : Plugin;
+    = "https://eclipse.org/modeling/emf/";
+    uses Java;
+    partOf Eclipse;
+    supports ModelDrivenEngineering;
+    belongsTo MDEWare.
+
+/* Its main component is EMFCore which contains Ecore's 
+metametamodel as several Java classes. */
+EMF.ECore : API;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html";
+    partOf EMF;
+    uses Java.
+EcoreJava : ProgrammingLanguage;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html";
+    subsetOf Java;
+    ^implements EMF.Core.
+    
+
+EcoreXMI : DataExchangeLanguage;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html";
+    subsetOf XMI;
+    encodes EcoreJava.
+GeneratorXmi : ConfigurationLanguage;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/codegen/ecore/genmodel/GenModel.html";
+    subsetOf XMI.
+    
+/* An important component is the Generator that takes a generation
+configuration which is itself a model persisted in XMI. */
+generateGeneratorXMI : EcoreXMI -> GeneratorXmi.
+generateJava : GeneratorCfgXmi # EcoreXMI -> EcoreJava.
+EMF.CodeGenerator : Component;
+    = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html";
+    partOf EMF;
+    uses Java;
+    implements GeneratorCfgXmi;
+    implements generateGenerator;
+    implements generateJava.
+    
+/* The EMF persistence framework allows you to persist ecore models in a subset of XMI */
+EMF.Persistence : Component;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/index.html?org/eclipse/emf/ecore/package-summary.html";
+    = "http://www.vogella.com/tutorials/EclipseEMFPersistence/article.html";
+    uses Java;
+    partOf EMF.Core;
+    facilitates Serialization;
+    implements EcoreXMI.

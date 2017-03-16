@@ -10,14 +10,13 @@ import emf.Runtime where {
     usagePlatform substitutes ?platform
   ]
 }
+import emf.Genmodel
+import emf.Ecore
 import emf.Core where {
-  [ fsmlMetaModel substitutes ?metaModel,
-    fsmlModel substitutes ?model,
-    fsmlGenModel substitutes ?genModel,
+  [ fsmlMetaModel substitutes ?dslMetaModel,
+    fsmlModel substitutes ?dslModel,
+    fsmlGenModel substitutes ?dslGenModel,
     .... ]
-  [ ecoreMetaModel substitutes ?metaModel,
-    fsmlMetaModel substitutes ?model,
-    ...  ]
 }
 
 DevelopRuntime = "". //?

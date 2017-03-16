@@ -1,0 +1,13 @@
+module emf.Ecore
+
+import emf.DSL where {
+  [ EcoreJVMObject substitutes ?DSLJVMObject,
+    EcoreXMI substitutes ?DSLXMI,
+    ecoreMetaModel substitutes ?dslMetaModel
+    ...
+  ]
+}
+
+ecoreMetaModel partOf EMF.Core;
+    manifestsAs File+;
+    conformsTo ecoreMetaModel.

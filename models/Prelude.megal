@@ -49,24 +49,20 @@ manifestsAs < Artifact # Manifestation;
 Function < Entity;
     = "https://en.wikipedia.org/wiki/Function_(mathematics)".
 
-/* A technology is a reusable . 
-Technologies can be classified along 2 Dimensions: 
-1.) The kind of use (Code reuse as in libraries vs executable code as 
-in a program vs both as in frameworks) 
-2.) Whether it is a part or a standalone piece of software. */
+/* A technology is a reusable .
+'third party' */
 Technology < Entity;
     = "https://www.journals.elsevier.com/information-and-software-technology/".
-Library < Technology; //contains a set of reusable functions.
+Library < Technology; //contains a set of reusable types and functions.
     = "https://en.wikipedia.org/wiki/Library_(computing)".
-API < Library; //Reusable code that facilitates the use of another technology/language. (Local API !)
+API < Library; //Reusable code that facilitates the use of another technology/language. (Local API !)-- TODO: 
     = "https://en.wikipedia.org/wiki/Application_programming_interface".
-Framework < Technology; //facilitates the realization of specific use cases most times through code generation
+Framework < Technology; //incomplete applications
     = "https://en.wikipedia.org/wiki/Software_framework".
+//AdminInterface < Technology
 Plugin < Technology; // as an extension to another technology
     = "https://en.wikipedia.org/wiki/Plug-in_(computing)".
-Component < Technology; // as part of a composed technology
-    = "https://en.wikipedia.org/wiki/Component-based_software_engineering#Software_component".
-Software < Technology; //a technology that consists of multiple programs and is deployed locally
+Software < Technology; //a technology that consists of multiple programs and is deployed locally TODO: < System?
     = "https://en.wikipedia.org/wiki/Software".
 SoftwareSuite < Software; // a software collection that is deployed and managed together
     = "https://en.wikipedia.org/wiki/Software_suite".
@@ -115,11 +111,20 @@ deployedAt < Artifact # Node; //An artifact is deployed on a node
 deployedAs < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_deployment".
  
-/* A set of artifacts that realizes concrete use cases. */
+/* Application is set up already, 
+Technology is reusable and has to be set up each time.
+Service < Application???
+BatchSystem
+InteractiveSystem
+Desktop vs Mobile vs Web 
+Distributed vs non-distributed
+Technology -> Information Technology
+ */
 System < Entity; 
     = "https://en.wikipedia.org/wiki/Software_system".
 Application < System; // a professionally coordinated set of artifacts that are deployed locally
     = "https://en.wikipedia.org/wiki/Application_software".
+//Technology < System ???
 WebApplication < System; // a professionally coordinated set of artifacts that are deployed on a web server
     = "https://en.wikipedia.org/wiki/Web_application".
 UserFiles < System;  //A set of files managed by the user instead of being coordinated as program input or output.
