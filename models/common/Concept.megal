@@ -36,16 +36,6 @@ Algorithm < AbstractProcess;
 Construct < Entity; //A common language- and technology independent artifact constellation
     = "https://en.wikipedia.org/wiki/Construct_(philosophy)".
 
-/* Abstract solutions an aspect of a way of thinking or field of study. */
-aspectOf < Construct # Paradigm; //as in Semaphore aspectOf ConcurrentProgramming
-    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect".
-aspectOf < Construct # ProgrammingDomain. //as in LocalStorage aspectOf OfflineWebApplicationDevelopment
-aspectOf < AbstractProcess # ProgrammingDomain.
-
-/* More specific forms of reusable ideas */
-refines < AbstractProcess # AbstractProcess.
-refines < Construct # Construct.
-
 /* Roles relate to the domain's or technological space's 
 terminology. They imply a commonly known purpose 
 that might even be defined in terms of a design or architectural
@@ -53,11 +43,21 @@ pattern. */
 Role < Entity;
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)";
     = "https://en.wikipedia.org/wiki/Terminology".
-
-
-/* A role may be set in the context of a domain or a technological space */
+    
+/* Concepts set in the context of broader concepts. */
+aspectOf < Construct # Paradigm; //as in Semaphore aspectOf ConcurrentProgramming
+    = "http://dictionary.cambridge.org/de/worterbuch/englisch/aspect".
+aspectOf < Construct # ProgrammingDomain. //as in LocalStorage aspectOf OfflineWebApplicationDevelopment
+aspectOf < AbstractProcess # ProgrammingDomain.
 aspectOf < Role # ProgrammingDomain.
 aspectOf < Role # TechnologySpace.
+
+/* More specific forms of reusable ideas */
+refines < AbstractProcess # AbstractProcess.
+refines < Construct # Construct.
+refines < Paradigm # Paradigm. //for example aspect-oriented programming refines object-oriented programming.
+refines < Role # Role. 
+
 
 /* Structural parts of pattern are often referred to as participants. */
 participantOf < Role # DesignPattern;

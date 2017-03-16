@@ -15,6 +15,8 @@ ServiceOrientedArchitecture : ArchitecturalPattern;
     = "https://en.wikipedia.org/wiki/Service-oriented_architecture".
 
 /* Paradigms */
+ParallelProgramming : Paradigm;
+    = "https://en.wikipedia.org/wiki/Parallel_computing".
 ConcurrentProgramming : Paradigm; // Programming in a way that enables and manages parallel execution
     = "https://blog.golang.org/concurrency-is-not-parallelism".
 ObjectOrientedProgramming : Paradigm; // Thinking of objects and their interrelation
@@ -77,6 +79,10 @@ MachineLearning : ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/Machine_learning".
 GraphProgramming : ProgrammingDomain; 
     = "https://en.wikipedia.org/wiki/Graph_theory".
+ConcurrentComputing : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Concurrent_computing".
+ParallelComputing : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Parallel_computing".
  
 /* Technological spaces */
 BuildAutomationWare : TechnologySpace;
@@ -114,9 +120,11 @@ Transformation : AbstractProcess; // Takes input data and produces output data. 
     = "https://en.wikipedia.org/wiki/Data_transformation".
 CoarseGrainedTransformation : AbstractProcess;
 	="http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf";
-    ="http://stackoverflow.com/questions/26195512/fine-grained-transformation-vs-coarse-grained-transformations".
+    ="http://stackoverflow.com/questions/26195512/fine-grained-transformation-vs-coarse-grained-transformations";
+    refines Transformation.
 FineGrainedTransformation : AbstractProcess;
-    = "http://stackoverflow.com/questions/26195512/fine-grained-transformation-vs-coarse-grained-transformations".
+    = "http://stackoverflow.com/questions/26195512/fine-grained-transformation-vs-coarse-grained-transformations";
+    refines Transformation.
 Validation : AbstractProcess; //Validate quality
     = "https://en.wikipedia.org/wiki/Verification_and_validation#Categories_of_validation";
     aspectOf QualityAssurance.
@@ -205,7 +213,7 @@ LocalFileSystem : Construct;
     refines FileSystem.
 ResourceManagement : Construct;
 	="https://en.wikipedia.org/wiki/Resource_management_(computing)".
-//A DataFrame is a Dataset organized into named columns. It is conceptually equivalent to a table in a relational database or a data frame in R/Python, but with richer optimizations under the hood
+//A DataFrame is a Dataset organized into named columns.
 DataFrame : Construct;
 	="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html".
 Graph : Construct;

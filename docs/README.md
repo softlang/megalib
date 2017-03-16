@@ -1,2 +1,1 @@
-Documents (such as slideware) for presenting the megamodels.
-
+Documents (such as slideware) for presenting the megamodels. See the project's Wiki for more information.

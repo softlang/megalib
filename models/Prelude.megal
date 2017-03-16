@@ -5,7 +5,6 @@ import common.ConceptKB
 import common.Language
 import common.LanguageKB
 
-
 /* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity;
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)".
@@ -81,7 +80,6 @@ Platform < Software; // a technology that can evaluate code
 implements < Technology # Function;  //A technology may implement a mapping
     = "https://en.wikipedia.org/wiki/Implementation".
 implements < Technology # Language.  //A technology can process a language as input or output
-implements < Artifact # Function. //Necessary?
 
 /* A technology or a language can facilitate the usage or realization of a conceptual description. */
 facilitates < Technology # DesignPattern.
@@ -103,13 +101,20 @@ bridgesTo < Technology # TechnologySpace.
 managedBy < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_repository".
 
-/* In a usage scenario the technology is locally deployed as an artifact at some node. */
-Node < Entity; //A computing node, that executes software and is linkable via ip or mac
-    = "https://en.wikipedia.org/wiki/Node_(networking)#Distribute".
-deployedAt < Artifact # Node; //An artifact is deployed on a node
-    = "https://en.wikipedia.org/wiki/Software_deployment".
+/* In a usage scenario the technology is locally deployed as an artifact.
+One might further want to specify on which physical component the artifact
+is deployed. */
 deployedAs < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_deployment".
+Node < Entity; //A computing node, that executes software and is linkable via ip or mac
+    = "https://en.wikipedia.org/wiki/Node_(networking)#Distribute".
+Hardware < Entity;
+    = "https://en.wikipedia.org/wiki/Computer_hardware".
+composedOf < Hardware # Node.
+deployedAt < Artifact # Node; //An artifact is deployed on a node
+    = "https://en.wikipedia.org/wiki/Software_deployment".
+deployedAt < Artifact # Hardware.
+
  
 /* Application is set up already, 
 Technology is reusable and has to be set up each time.
@@ -124,9 +129,12 @@ System < Entity;
     = "https://en.wikipedia.org/wiki/Software_system".
 Application < System; // a professionally coordinated set of artifacts that are deployed locally
     = "https://en.wikipedia.org/wiki/Application_software".
+<<<<<<< HEAD
 //Technology < System ???
 WebApplication < System; // a professionally coordinated set of artifacts that are deployed on a web server
     = "https://en.wikipedia.org/wiki/Web_application".
+=======
+>>>>>>> cb8e24ac032f2cf61a88e0417d17c170532580c1
 UserFiles < System;  //A set of files managed by the user instead of being coordinated as program input or output.
     = "https://en.wikipedia.org/wiki/User_(computing)".
 
@@ -159,10 +167,6 @@ uses < Technology # DesignPattern.
 uses < Technology # ArchitecturalPattern.
 uses < Technology # AbstractProcess.
 uses < Technology # Construct.
-uses < Artifact # DesignPattern.
-uses < Artifact # ArchitecturalPattern.
-uses < Artifact # AbstractProcess.
-uses < Artifact # Construct.
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */
@@ -170,5 +174,3 @@ reuses < System # System;
     = "https://en.wikipedia.org/wiki/Code_reuse".
 reuses < System # Technology.
 reuses < Technology # Technology.
-reuses < Artifact # System.
-reuses < Artifact # Technology.
