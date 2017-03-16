@@ -48,32 +48,35 @@ manifestsAs < Artifact # Manifestation;
 Function < Entity;
     = "https://en.wikipedia.org/wiki/Function_(mathematics)".
 
-/* A technology is a reusable .
-'third party' */
-Technology < Entity;
+/* A technology is reusable 'third party' Software */
+System < Entity;
+    = "https://en.wikipedia.org/wiki/Software_system".
+Technology < System;
     = "https://www.journals.elsevier.com/information-and-software-technology/".
 Library < Technology; //contains a set of reusable types and functions.
     = "https://en.wikipedia.org/wiki/Library_(computing)".
-API < Library; //Reusable code that facilitates the use of another technology/language. (Local API !)-- TODO: 
+API < Technology; //Reusable code that facilitates the use of another technology/language. (Local API !)-- TODO: 
     = "https://en.wikipedia.org/wiki/Application_programming_interface".
 Framework < Technology; //incomplete applications
     = "https://en.wikipedia.org/wiki/Software_framework".
 //AdminInterface < Technology
 Plugin < Technology; // as an extension to another technology
     = "https://en.wikipedia.org/wiki/Plug-in_(computing)".
-Software < Technology; //a technology that consists of multiple programs and is deployed locally TODO: < System?
-    = "https://en.wikipedia.org/wiki/Software".
-SoftwareSuite < Software; // a software collection that is deployed and managed together
+Application < System; //a technology that consists of multiple programs and is deployed locally TODO: < System?
+    = "https://en.wikipedia.org/wiki/Application_software".
+SoftwareSuite < Application; // a software collection that is deployed and managed together
     = "https://en.wikipedia.org/wiki/Software_suite".
-WebService < Software;  // software deployed at a server, communication via HTTP
+Service < System;
+    = "https://en.wikipedia.org/wiki/Service_(systems_architecture)".
+WebService < Service;  // software deployed at a server, communication via HTTP
     = "https://en.wikipedia.org/wiki/Web_service".
-Program < Software; // a software that implements only one process that is needed in distinct use cases.
+Program < Application; // a software that implements only one process that is needed in distinct use cases.
     = "https://en.wikipedia.org/wiki/Computer_program".
-IDE < Software; // an environment to facilitate writing systems or technologies.
+IDE < Application; // an environment to facilitate writing systems or technologies.
     = "https://en.wikipedia.org/wiki/Integrated_development_environment".
-Workbench < Software;
+Workbench < Application;
     = "https://en.wikipedia.org/wiki/Language_workbench".
-Platform < Software; // a technology that can evaluate code
+Platform < Technology; 
     = "https://en.wikipedia.org/wiki/Computing_platform".
 
 /* Implementation relationships */
@@ -125,18 +128,6 @@ Desktop vs Mobile vs Web
 Distributed vs non-distributed
 Technology -> Information Technology
  */
-System < Entity; 
-    = "https://en.wikipedia.org/wiki/Software_system".
-Application < System; // a professionally coordinated set of artifacts that are deployed locally
-    = "https://en.wikipedia.org/wiki/Application_software".
-<<<<<<< HEAD
-//Technology < System ???
-WebApplication < System; // a professionally coordinated set of artifacts that are deployed on a web server
-    = "https://en.wikipedia.org/wiki/Web_application".
-=======
->>>>>>> cb8e24ac032f2cf61a88e0417d17c170532580c1
-UserFiles < System;  //A set of files managed by the user instead of being coordinated as program input or output.
-    = "https://en.wikipedia.org/wiki/User_(computing)".
 
 /* A system as an exemplary solution for a field of study */
 demonstrates < System # ProgrammingDomain; // Experimental! Don't use unless you know what you're doing
