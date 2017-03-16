@@ -5,7 +5,6 @@ import common.ConceptKB
 import common.Language
 import common.LanguageKB
 
-
 /* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity;
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)".
@@ -106,21 +105,26 @@ bridgesTo < Technology # TechnologySpace.
 managedBy < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_repository".
 
-/* In a usage scenario the technology is locally deployed as an artifact at some node. */
-Node < Entity; //A computing node, that executes software and is linkable via ip or mac
-    = "https://en.wikipedia.org/wiki/Node_(networking)#Distribute".
-deployedAt < Artifact # Node; //An artifact is deployed on a node
-    = "https://en.wikipedia.org/wiki/Software_deployment".
+/* In a usage scenario the technology is locally deployed as an artifact.
+One might further want to specify on which physical component the artifact
+is deployed. */
 deployedAs < Technology # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_deployment".
+Node < Entity; //A computing node, that executes software and is linkable via ip or mac
+    = "https://en.wikipedia.org/wiki/Node_(networking)#Distribute".
+Hardware < Entity;
+    = "https://en.wikipedia.org/wiki/Computer_hardware".
+composedOf < Hardware # Node.
+deployedAt < Artifact # Node; //An artifact is deployed on a node
+    = "https://en.wikipedia.org/wiki/Software_deployment".
+deployedAt < Artifact # Hardware.
+
  
 /* A set of artifacts that realizes concrete use cases. */
 System < Entity; 
     = "https://en.wikipedia.org/wiki/Software_system".
 Application < System; // a professionally coordinated set of artifacts that are deployed locally
     = "https://en.wikipedia.org/wiki/Application_software".
-WebApplication < System; // a professionally coordinated set of artifacts that are deployed on a web server
-    = "https://en.wikipedia.org/wiki/Web_application".
 UserFiles < System;  //A set of files managed by the user instead of being coordinated as program input or output.
     = "https://en.wikipedia.org/wiki/User_(computing)".
 

@@ -15,6 +15,8 @@ ServiceOrientedArchitecture : ArchitecturalPattern;
     = "https://en.wikipedia.org/wiki/Service-oriented_architecture".
 
 /* Paradigms */
+ParallelProgramming : Paradigm;
+    = "https://en.wikipedia.org/wiki/Parallel_computing".
 ConcurrentProgramming : Paradigm; // Programming in a way that enables and manages parallel execution
     = "https://blog.golang.org/concurrency-is-not-parallelism".
 ObjectOrientedProgramming : Paradigm; // Thinking of objects and their interrelation
@@ -77,6 +79,10 @@ MachineLearning : ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/Machine_learning".
 GraphProgramming : ProgrammingDomain; 
     = "https://en.wikipedia.org/wiki/Graph_theory".
+ConcurrentComputing : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Concurrent_computing".
+ParallelComputing : ProgrammingDomain;
+    = "https://en.wikipedia.org/wiki/Parallel_computing".
  
 /* Technological spaces */
 BuildAutomationWare : TechnologySpace;

@@ -2,54 +2,56 @@ module common.Language
 
 import common.Concept
 
-/* A language is a set of syntactic entities. This not only includes
+/* A language is a set of digital entities. This not only includes
 entities having a concrete syntax but runtime data as well.
-Language subtypes based on PRIMARY purpose. LaTeX could be used
-to code up a general purpose program as well, but hopefully none does
-that. That is why it is classified as a markup language. */
+Language subtypes based on intended purpose. */
 Language < Entity;
     = "https://en.wikipedia.org/wiki/Computer_language".
-ProgrammingLanguage < Language;  // not specific to a domain, e.g., Java
+ProgramLanguage < Language;  // not specific to a domain, e.g., Java
     = "https://en.wikipedia.org/wiki/Programming_language".
+AssemblyCodeLanguage < Language;
+    = "https://en.wikipedia.org/wiki/Assembly_language".  
+MachineCodeLanguage < Language; // hardware instructions
+    = "https://en.wikipedia.org/wiki/Machine_code".
+CLICommandLanguage < Language;  // statements that can be entered in a command line, e.g., Bash
+    = "https://en.wikipedia.org/wiki/Command-line_interface".    
+    
 DocumentLanguage < Language; // "written, drawn, presented or recorded representation of thoughts", e.g. office files
     = "https://en.wikipedia.org/wiki/Document". 
-DataExchangeLanguage < Language; //"Data exchange allows data to be shared between different computer programs", e.g. XML
+ExchangedDataLanguage < Language; //"Data exchange allows data to be shared between different computer programs", e.g. XML
     = "https://en.wikipedia.org/wiki/Data_exchange".
+StylesheetLanguage < Language; // expresses presentation of structured documents, e.g., CSS
+    = "https://en.wikipedia.org/wiki/Style_sheet_language".    
+    
 TransformationLanguage < Language; // statements to define transformation, e.g., ATL
     = "https://en.wikipedia.org/wiki/Transformation_language";
     = "https://en.wikipedia.org/wiki/Model_transformation".
 QueryLanguage < Language; // query statements, e.g., SQL
     = "https://en.wikipedia.org/wiki/Query_language".
-StylesheetLanguage < Language; // expresses presentation of structured documents, e.g., CSS
-    = "https://en.wikipedia.org/wiki/Style_sheet_language".
+
 GrammarLanguage < Language; //define syntax of a language
     = "https://en.wikipedia.org/wiki/Formal_grammar".
 SchemaLanguage < Language; // formulate schemas or metamodels, e.g., XSD
     = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages".
-CommandLineLanguage < Language;  // statements that can be entered in a command line, e.g., Bash
-    = "https://en.wikipedia.org/wiki/Command-line_interface".
-ModelingLanguage < Language;  // describe or prescribe software, e.g., UML
+ModelLanguage < Language;  // describe or prescribe software, e.g., UML
     = "https://en.wikipedia.org/wiki/Modeling_language".
-MachineLanguage < Language; // hardware instructions
-    = "https://en.wikipedia.org/wiki/Machine_code".
-AssemblyLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Assembly_language".
+
 ConfigurationLanguage < Language; // configuration files, e.g., .classpath-files
     = "https://en.wikipedia.org/wiki/Configuration_file" .
-BuildLanguage < Language; //languages used for writing build scripts
+BuildScriptLanguage < Language; //languages used for writing build scripts
     = "https://en.wikipedia.org/wiki/Build_automation".
 ReferenceLanguage < Language; // express references, e.g., URI
     = "https://en.wikipedia.org/wiki/Reference".
 MessageLanguage < Language; // structured messages, e.g., HTTP Requests
     = "https://en.wikipedia.org/wiki/Request-response";
     = "https://en.wikipedia.org/wiki/Message_passing".
-KnowledgeRepresentationLanguage < Language; //represent knowledge by using structured vocabulary, e.g., OWL
+KnowledgeLanguage < DocumentLanguage; //represent knowledge by using structured vocabulary, e.g., OWL
     = "https://en.wikipedia.org/wiki/Category:Knowledge_representation_languages".
-DomainSpecificLanguage < Language; //The purpose is specific to the domain it is used in
-    = "https://en.wikipedia.org/wiki/Domain-specific_language".
+//TODO: DSL shall be removed later... Has to replaced somewhere... !
+//DomainSpecificLanguage < Language; //The purpose is specific to the domain it is used in
+//    = "https://en.wikipedia.org/wiki/Domain-specific_language".
 ValueLanguage < Language; // simple run time data, e.g. Booleans, Integers or objects. Defined by a type.
     = "https://en.wikipedia.org/wiki/Value_(computer_science)".
-VisualizationLanguage < Language; //!! Experimental !! visualizing data where the result informs, illustrates or entertains
     = "https://en.wikipedia.org/wiki/Graphics".
 ContainerLanguage < Language; //A binary format to express containment used by archives
     = "https://en.wikipedia.org/wiki/Digital_container_format".
@@ -57,7 +59,7 @@ DatabaseLanguage < Language; //often binary format to manage data in, such as SQ
     = "https://en.wikipedia.org/wiki/Database".
 TemplateLanguage < Language; //A language for writing templates 
     = "https://en.wikipedia.org/wiki/Template_processor".
-LoggingLanguage < Language; //A language that makes activities reproducible
+LogLanguage < DocumentLanguage; //A language that makes activities reproducible
     = "https://en.wikipedia.org/wiki/Logfile".
 
 /* Subset according to set theory. This is only used when only a subset can be processed 
@@ -112,6 +114,6 @@ Markup : Notation;
     = "https://en.wikipedia.org/wiki/Markup_language".
 mappedTo < Language # Language. //TODO: This needs a link... 
     
-//TODO: What kind of classifiers are declarative and imperative?
+//TODO: What kind of classifiers are declarative and imperative? They are paradigms according to the Wikipedia page.
 //TODO:  conceptual, logical, and physical levels?
 //TODO: How to express that a language is only conceptual?
