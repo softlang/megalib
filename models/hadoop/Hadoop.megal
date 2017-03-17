@@ -9,3 +9,10 @@ Hadoop : Framework;
 	belongsTo ClusterComputingWare;
 	supports DistributedComputing;
 	facilitates ClusterComputing.
+
+?DataNode : Node;
+	= "https://wiki.apache.org/hadoop/DataNode".
+?YarnNode : Node;
+	="https://hadoop.apache.org/docs/r2.7.3/hadoop-yarn/hadoop-yarn-site/NodeLabel.html".
+?LocalComputer : Node;
+	="http://localhost".

@@ -13,7 +13,7 @@ HadoopCommon : Component;
 /*
 The native library is coded in C and provides faster implementation of some critical functions
 
-ToDo: Not the function but the concepts should be implemented (facilitates).
+ToDo: A function that is implementing a compression should be created.
 */
 NativeLibrary : Library;
 	= "https://hadoop.apache.org/docs/r1.2.1/native_libraries.html";

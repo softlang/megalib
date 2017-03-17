@@ -3,7 +3,7 @@ module hadoop.HadoopYARN
 import hadoop.Hadoop
 import java.JavaPlatform 
 
-//TODO: Clarify the involvement of computing Nodes
+
 /*
 A developer may wants to execute a certain job, e. g. counting of elements in a file or 
 the processing of certain kind of input, on a cluster. The job is encoded in a ".jar" file. It is a strict virtual thing that is saved in the memory and hence manifests as a trasient. 
@@ -11,6 +11,7 @@ the processing of certain kind of input, on a cluster. The job is encoded in a "
 ?inputJob : Artifact;
 	elementOf Jar;
 	manifestsAs Transient;
+	deployedAt LocalComputer;
 	hasRole ByteCode.
 /*
 The current state of a YARN cluster, a set of nodes that are managed by Hadoop YARN, is internally saved in the JAVA class Yarn Application State. This class is already compiled to Java Bytecode.
@@ -25,12 +26,13 @@ After the job has been loaded and executed the cluster is in a different state (
 ?preClusterMap : Artifact;
 	elementOf YarnApplicationState;
 	hasRole SystemState;
+	deployedAt YarnNode;
 	manifestsAs Transient.
 ?postClusterMap : Artifact;
 	elementOf YarnApplicationState;
+	deployedAt YarnNode;
 	hasRole SystemState;
 	manifestsAs Transient.
-
 /*
 YARN is taking a Java binary (Jar file) as input and executes it at some node in the cluster. Hence the state of the YARN cluster will be changed after it executed it. 
 */

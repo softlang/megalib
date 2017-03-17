@@ -14,7 +14,7 @@ JacksonDataBinding101 : Application;
     reuses Jackson;
     uses ObjectJsonMapping.
 sampleCompany partOf JacksonDataBinding101;
-    = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/inputs/sampleCompany.json".
+    ~= "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/inputs/sampleCompany.json".
 companyJava partOf JacksonDataBinding101;
-    = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/src/main/java/org/softlang/company/model/Company.java".
-companyObject = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/src/test/java/org/softlang/company/tests/TestUnparsing.java". //a code snippet creating a Company object.
+    ~= "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/src/main/java/org/softlang/company/model/Company.java".
+companyObject ~= "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/src/test/java/org/softlang/company/tests/TestUnparsing.java". //a code snippet creating a Company object.

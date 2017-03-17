@@ -1,0 +1,56 @@
+module spark.SparkStreaming
+
+import spark.Spark
+
+/*
+Data streams are created by applications like kafka, flume, twitter. In fact, those applications
+emit data in a certain format previously specified and most likely indexed in a way that data will be 
+aligned to one stream.
+*/
+DataStream : DataExchangeLanguage;
+	= "https://en.wikipedia.org/wiki/Data_stream".
+
+DStream : ProgrammingLanguage;
+	= "http://spark.apache.org/docs/latest/streaming-programming-guide.html#initializing-streamingcontext";
+	subsetOf Java.
+/*
+I am not sure if this should be a construct or an abstractProcess
+*/	
+StreamProcessing : AbstractProcess;
+	= "https://en.wikipedia.org/wiki/Stream_processing".
+
+/*
+Streams will be implemented by programs like Kafka
+*/	
+?Stream: Artifact;
+	elementOf DataStream;
+	hasRole Log;
+	manifestsAs Transient.
+
+/*
+The internal representation of the input of a recieved Stream
+*/
+?dStream : Artifact;
+	elementOf DStream;
+	partOf Spark;
+	manifestsAs Transient;
+	hasRole Database.
+/*
+Input DStreams are DStreams representing the stream of input data received from streaming sources
+*/
+streamToDStream : DataStream -> DStream.
+streamToDStream(?Stream) |->?dStream.
+/*
+Transformations defined by a java programm will be performed on the Dstreams and finally saved
+*/
+dstreamToOutput : DStream # Java -> ?LocalFileFormat.
+dstreamToOutput(?dStream, ?driverProgramm) |-> ?concreteData.
+
+SparkStreaming : Component;
+	="http://spark.apache.org/docs/latest/streaming-programming-guide.html";
+	partOf Spark;
+	uses Java;
+	facilitates StreamProcessing;
+	implements streamToDStream;
+	implements DStream;
+	implements dstreamToOutput.
