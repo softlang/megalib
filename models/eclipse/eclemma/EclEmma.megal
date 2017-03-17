@@ -1,0 +1,33 @@
+module eclemma.EclEmma
+
+import java.JavaPlatform
+import eclipse.Eclipse
+
+/* EclEmma is an eclipse plugin which offers the functionality
+to compute code coverage. */
+EclEmma : Plugin;
+    = "http://www.eclemma.org/";
+    partOf Eclipse;
+    uses Java;
+    implements Java;
+    uses CodeCoverage;
+    supports QualityAssurance.
+
+/* In a concrete use case, you would have some Java source code
+and some Java test code as input. EclEmma then offers a function
+which then computes the code coverage. */
+?sourceFiles : Artifact;
+    elementOf Java;
+    hasRole SourceCode;
+    manifestsAs File+.
+?testFiles : Artifact;
+    elementOf Java;
+    hasRole TestCase;
+    manifestsAs File+.
+?coverage : Artifact;
+    elementOf JVMDouble;
+    hasRole Value;
+    manifestsAs Transient.
+computeCoverage : Java # Java -> JVMDouble.
+computeCoverage(?sourceFiles,?testFiles) |-> ?coverage.
+EclEmma implements computeCoverage.

@@ -1,6 +1,6 @@
 module ruby.RubyPlatform
 
-
+/* basics */
 RubyPlatform : Software;
     = "https://github.com/ruby/ruby";
     uses Ruby;

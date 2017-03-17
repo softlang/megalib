@@ -1,0 +1,74 @@
+module django.DBSchema
+
+import python.PythonPlatform
+
+/* Starting Django Framework module
+Python : ProgrammingLanguage
+PythonObject : ObjectGraph
+Django uses Python
+MVC : DesignPattern
+Django facilitates MVC
+?MyWebApp : WebApplication
+?MyWebApp uses MVC
+HTML : MarkupLanguage
+DjangoCLI : CommandLineLanguage
+DjangoCLI subsetOf Python
+Django implements DjangoCLI
+SQL : QueryLanguage
+DDL : SchemaLanguage
+DDL subsetOf SQL
+SQLITE3IMAGE : DataExchangeLanguage
+?dbsqlite3 : Artifact
+?dbsqlite3 elementOf SQLITE3IMAGE
+?dbsqlite3 hasRole Database
+?dbsqlite3 manifestsAs File
+?dbsqlite3 partOf ?MyWebApp
+?models.py : Artifact
+?models.py elementOf Python
+?models.py hasRole MvcModel
+?models.py manifestsAs File
+?models.py partOf ?MyWebApp
+?models.py correspondsTo ?dbsqlite3
+?pythonObject : Artifact
+?pythonObject elementOf PythonObject
+?pythonObject hasRole Value
+?pythonObject manifestsAs Transient
+?pythonObject conformsTo ?models.py
+DatabaseManagement : Role
+?manage.py : Artifact
+?manage.py elementOf Python
+?manage.py hasRole DatabaseManagement
+?manage.py manifestsAs File
+?manage.py partOf ?MyWebApp
+schemaRequest : SQLITE3IMAGE -> DDL
+?manage.py implements schemaRequest
+?dbSchema : Artifact
+?dbSchema elementOf DDL
+?dbSchema hasRole Schema
+?dbSchema manifestsAs Transient
+schemaRequest(?dbsqlite3) |-> ?dbSchema
+Command : Role
+?schemaRequCmd : Artifact
+?schemaRequCmd elementOf DjangoCLI
+?schemaRequCmd hasRole Command
+?schemaRequCmd manifestsAs Transient
+evalSchemaRequ : DjangoCLI -> DDL
+Django implements evalSchemaRequ
+evalSchemaRequ(?schemaRequCmd) |-> ?dbSchema
+Python = "https://docs.python.org/2/reference/"
+PythonObject = "https://docs.python.org/2/reference/"
+Database = "https://en.wikipedia.org/wiki/Database"
+MVC = "https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller"
+HTML = "http://www.w3schools.com/html/"
+DjangoCLI = "http://docs.django-cms.org/en/release-3.3.x/reference/cli.html"
+SQL = "http://dbpedia.org/page/SQL"
+DDL = "http://dbpedia.org/page/Data_definition_language"
+SQLITE3IMAGE = "https://docs.python.org/2/library/sqlite3.html"
+String = "https://en.wikipedia.org/wiki/String_(computer_science)"
+DatabaseManagement = "https://en.wikipedia.org/wiki/Database"
+Command = "https://en.wikipedia.org/wiki/Command-line_interface"
+*/
+Django : Framework;
+    = "https://www.djangoproject.com/";
+    supports WebApplicationDevelopment;
+    uses Python.

@@ -1,0 +1,20 @@
+module jackson.101companies.Jackson
+
+import jackson.Jackson where{
+    [sampleCompany substitutes ?jsonFile,
+    companyJava substitutes ?javaClass,
+    companyObject substitutes ?model]
+}
+
+/* The 101 implementation uses Jackson */
+JacksonDataBinding101 : Application;
+    = "https://github.com/101companies/101simplejava/tree/master/contributions/javaJacksonDataBinding";
+    uses Java;
+    uses JSON;
+    reuses Jackson;
+    uses ObjectJsonMapping.
+sampleCompany partOf JacksonDataBinding101;
+    = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/inputs/sampleCompany.json".
+companyJava partOf JacksonDataBinding101;
+    = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/src/main/java/org/softlang/company/model/Company.java".
+companyObject = "https://github.com/101companies/101simplejava/blob/master/contributions/javaJacksonDataBinding/src/test/java/org/softlang/company/tests/TestUnparsing.java". //a code snippet creating a Company object.

@@ -111,6 +111,10 @@ GraphWare : TechnologySpace;
     = "https://en.wikipedia.org/wiki/Category:Application-specific_graphs".
 
 /* Abstract Processes */
+PrettyPrinting : AbstractProcess; 
+    = "http://101companies.org/wiki/Pretty_printing".
+TemplateProcessing : AbstractProcess;
+    = "https://en.wikipedia.org/wiki/Template_processor".
 Compilation : AbstractProcess; //Software translation of a higher level language into a lower level language
     = "https://en.wikipedia.org/wiki/Compiler";
     aspectOf MetaProgramming.

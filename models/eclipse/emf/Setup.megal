@@ -1,0 +1,26 @@
+module eclipse.emf.Runtime
+
+/* 
+Basics on references?
+
+- Create EMF project 
+
+Where are plugins, where are schemas like 
+genmodel of genmodel etc.?
+genmodel of ecore?
+describe platform://resource/my_dir
+
+imports in devruntime only
+
+install into host repository (platform)
+*/
+?runtime : System.
+?platform : Artifact;
+    manifestsAs Folder;
+    partOf ?runtime.
+?workspace : Artifact;
+    manifestsAs Folder;
+    partOf ?runtime.
+    
+
+

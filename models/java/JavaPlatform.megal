@@ -1,20 +1,5 @@
 module java.JavaPlatform
 
-/* The Java programming language,
-which is compiled into Java byte code, which is then interpreted using
-runtime data handled by the JVM. */
-javac.compile : Java -> JavaByteCode.
-?javaFiles : Artifact;
-    elementOf Java;
-    hasRole SourceCode;
-    manifestsAs File+.
-?classFiles : Artifact;
-    elementOf JavaByteCode;
-    hasRole ByteCode;
-    manifestsAs File+.
-javac.compile(?javaFiles) |-> ?classFiles.
-//TODO: Cannot state eval, cannot express system state changes.
-
 /* We cover the components top down. The largest independent technology would
 be the JDK. It comes with several tools for programmers, such as the javac compiler.
 It also contains the JRE, which then contains the JVM. The JRE might be deployed
@@ -29,12 +14,11 @@ JavaC : Program;
     = "https://en.wikipedia.org/wiki/Javac";
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-3.html";
     uses Java;
-    facilitates Compilation;
+    uses Compilation;
     partOf JDK;
     supports MetaProgramming;
     implements Java;
-    implements JavaByteCode;
-    implements javac.compile.
+    implements JavaByteCode.
 JRE : Framework;
     = "http://www.oracle.com/technetwork/java/javase/tech/index.html";
     uses Java;
@@ -42,26 +26,42 @@ JRE : Framework;
     implements Jar.    
 JVM : Construct;
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
-JVM.Value : ValueLanguage;
+JVMValue : ValueLanguage;
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
-JVM.Object : ValueLanguage;
+JVMObject : ValueLanguage;
     = "https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html";
-    basedOn Object;
-    subsetOf JVM.Value.
-JVM.Double : ValueLanguage;
+    encodes Object;
+    subsetOf JVMValue.
+JVMDouble : ValueLanguage;
     = "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html";
-    subsetOf JVM.Value.
-JVM.String : ValueLanguage;
+    subsetOf JVMValue.
+JVMString : ValueLanguage;
     = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html";
-    subsetOf JVM.Object. //string as a wrapper for a character array
-JavaSEHotSpot : Software;
+    subsetOf JVMObject. //string as a wrapper for a character array
+JavaSEHotSpot : Application;
     = "http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136373.html";
     uses Java;
     uses JVM;
-    facilitates Interpretation;
+    uses Interpretation;
     implements JavaByteCode;
-    implements JVM.Value.
+    implements JVMValue.
 JavaClassLibrary : Library; //component and library
     = "https://en.wikipedia.org/wiki/Java_Class_Library";
     partOf JRE; //non-optional part
     uses Java.
+    
+/* The Java programming language,
+which is compiled into Java byte code, which is then interpreted using
+runtime data handled by the JVM. */
+compileJava : Java -> JavaByteCode.
+JavaC implements compileJava.
+?javaFiles : Artifact;
+    elementOf Java;
+    hasRole SourceCode;
+    manifestsAs File+.
+?classFiles : Artifact;
+    elementOf JavaByteCode;
+    hasRole ByteCode;
+    manifestsAs File+.
+compileJava(?javaFiles) |-> ?classFiles.
+//TODO: Cannot state eval, cannot express system state changes.

@@ -1,0 +1,54 @@
+module jackson.Jackson
+
+import java.JavaPlatform
+
+/* Jackson realizes data binding between JSON and Java objects. */
+Jackson : Library;
+    = "https://github.com/FasterXML";
+    belongsTo JSONWare;
+    uses Java;
+    implements JSON.
+
+/* Specifically the object mapper component implements the 
+serialization of java objects into JSON and the deserialization
+of a JSON String into Java object. The java object here has to 
+conform to a POJO. */
+Jackson.ObjectMapper : Library;
+    = "https://github.com/FasterXML/jackson-databind/blob/master/src/main/java/com/fasterxml/jackson/databind/ObjectMapper.java";
+    partOf Jackson;
+    facilitates ObjectJsonMapping;
+    facilitates Serialization;
+    uses Java.
+
+
+/* To serialize an object Jackson needs to take the object
+as input and return JSON as output. 
+Writing is based on an introspection of the object's class.  */
+writeValue : JVMObject -> JSON.
+Jackson.ObjectMapper implements writeValue;
+    uses Introspection.
+
+/* To deserialize JSON into an object Jackson needs to know
+the class that the output object should be instance of so
+it can write the values into the object using introspection again. */
+readValue : JSON # Java -> JVMObject.
+Jackson.ObjectMapper implements readValue.
+
+/* A concrete scenario for (de-) serialization thus needs a POJO, a Java object
+and a JSON String. */
+?javaClass : Artifact;
+    elementOf Java;
+    hasRole POJO;
+    manifestsAs File.
+?model : Artifact;
+    elementOf JVMObject;
+    hasRole Value;
+    manifestsAs Transient;
+    conformsTo ?javaClass.
+?jsonFile : Artifact ;
+    elementOf JSON;
+    hasRole Value;
+    manifestsAs File;
+    correspondsTo ?model.
+readValue(?jsonFile, ?javaClass) |-> ?model.
+writeValue(?model) |-> ?jsonFile.

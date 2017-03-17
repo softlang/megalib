@@ -1,0 +1,9 @@
+module linux.Linux
+
+import C
+
+/* Linux implements its own language for shell scripts. */
+Linux : Software;
+	= "https://github.com/torvalds/linux";
+	uses C;
+	implements Bash.

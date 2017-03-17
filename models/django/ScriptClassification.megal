@@ -1,0 +1,51 @@
+module django.ScriptClassification
+
+/* 
+?awebapp : WebApplication
+?awebapp uses Python
+?awebapp uses Django
+
+Initialization : Role
+Administration : Role
+ModelViewController : DesignPattern
+MvcModel participantOf ModelViewController
+MvcView participantOf ModelViewController
+MvcController participantOf ModelViewController
+TestSuite : Role
+Router : Role
+
+?init.py : Artifact<Python,Configuration,File>
+?init.py partOf ?awebapp
+
+?manage.py : Artifact<Python,Administration,File>
+?manage.py partOf ?awebapp
+
+FileSystemLanguage < Language
+?FolderLanguage : FileSystemLanguage
+Package : Role
+?apackage : Artifact<?FolderLanguage,Package,Folder> //FolderLanguage feels weird
+?apackage partOf ?awebapp
+
+?apackage.init.py : Artifact<Python, Initialization, File>
+?apackage.init.py partOf ?apackage
+
+?admin.py : Artifact<Python,Configuration,File>
+?admin.py partOf ?apackage
+
+?models.py : Artifact<Python,MvcModel,File>
+?models.py partOf ?apackage
+
+?tests.py : Artifact<Python, TestSuite,File>
+?tests.py partOf ?apackage
+
+?views.py : Artifact<Python, MvcView, File> // Every view cares about rendering content (see render function)
+?views.py partOf ?apackage
+
+?settings.py : Artifact<Python,Configuration,File>
+?settings.py partOf ?awebapp
+*/
+?Python : ProgrammingLanguage.
+Django : Framework;
+    = "https://www.djangoproject.com/";
+    supports WebApplicationDevelopment;
+    uses ?Python.

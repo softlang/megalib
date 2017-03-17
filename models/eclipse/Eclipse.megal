@@ -1,0 +1,22 @@
+module eclipse.Eclipse
+
+import java.JavaPlatform
+
+/* The Eclipse IDE can be used for programming in various programming languages.
+It further has several language support tools.  
+
+TODO:
+ - runtime
+ - ui
+ - resources*/
+Eclipse : IDE;
+    = "https://www.eclipse.org/";
+    uses Java.
+
+/* The most famous and standard plugin for Eclipse is the Java IDE. */
+EclipseForJava : Plugin;
+    = "https://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/neon2";
+    partOf Eclipse;
+    reuses JavaSEHotSpot;
+    uses Java;
+    implements Java.

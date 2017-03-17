@@ -1,9 +1,0 @@
-module DotNet
-
-/* This module is supposed to cover DotNet technology. */
-DotNETFramework : Framework;
-    = "https://en.wikipedia.org/wiki/.NET_Framework";
-    implements C#;
-    uses C#;
-    uses C;
-    uses C++.

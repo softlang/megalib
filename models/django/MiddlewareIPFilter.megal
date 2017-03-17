@@ -1,0 +1,51 @@
+module django.MiddlewareIPFilter
+
+/* 
+Django : Framework
+WebApplicationDevelopment : ProgrammingDomain
+Django supports WebApplicationDevelopment
+Python : ProgrammingLanguage
+PythonObject : ObjectLanguage
+Django uses Python
+
+Django.Middleware : Framework
+Django.Middleware partOf Django
+Django.Middleware uses Python
+Middleware : TechnologySpace
+Django.Middleware belongsTo Middleware
+?MyWebApp : WebApplication
+IPFilter : Artifact<Python,Configuration,File>
+IPFilter partOf ?MyWebApp
+IPFilter uses Django.Middleware
+
+CommunicationLanguage < Language   // better name?
+HTTPRequest : CommunicationLanguage
+PythonException : ObjectLanguage
+PythonException subsetOf PythonObject
+checkRequest : HTTPRequest -> PythonException
+IPFilter implements checkRequest
+
+
+?RequestWithBlockedIP : Artifact<HTTPRequest,Message,Transient>
+?RequestWithNotBlockedIP : Artifact<HTTPRequest,Message,Transient>
+?PermissionDenied : Artifact<PythonException,Value,Transient>
+?None : Artifact<PythonException,Value,Transient>
+checkRequest(?RequestWithBlockedIP) |-> ?PermissionDenied
+checkRequest(?RequestWithNotBlockedIP) |-> ?None
+
+
+IPFilter = "http://stackoverflow.com/documentation/django/1721/middleware#t=201608290816363596378"
+
+Python = "https://docs.python.org/2/reference/"
+PythonObject = "https://docs.python.org/2/reference/"
+Middleware = "https://en.wikipedia.org/wiki/Middleware"
+Django.Middleware = "https://docs.djangoproject.com/es/1.10/topics/http/middleware/"
+PythonException = "https://docs.python.org/3/tutorial/errors.html"
+HTTPRequest = "https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5"
+WebApplicationDevelopment = "https://en.wikipedia.org/wiki/Web_application" //better link needed
+*/
+?Python : ProgrammingLanguage.
+Django : Framework;
+    = "https://www.djangoproject.com/";
+    supports WebApplicationDevelopment;
+    uses ?Python.

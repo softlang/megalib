@@ -85,17 +85,18 @@ JSONSchema : SchemaLanguage;
 JavaScript : ProgrammingLanguage;
     = "https://en.wikipedia.org/wiki/JavaScript";
     supports WebApplicationDevelopment.
-JavaScript.Value : ValueLanguage;
+// TODO: Maybe we shouldn't talk about such Values here, since Values always depend heavily on technology.
+JavaScriptValue : ValueLanguage;
     = "http://www.w3schools.com/js/js_datatypes.asp".
-JavaScript.String : ValueLanguage;
+JavaScriptString : ValueLanguage;
     = "http://www.w3schools.com/js/js_strings.asp";
-    subsetOf JavaScript.Value .// or embedded?
-JavaScript.Number : ValueLanguage;
+    subsetOf JavaScriptValue .// or embedded?
+JavaScriptNumber : ValueLanguage;
     = "http://www.w3schools.com/js/js_numbers.asp";
-    subsetOf JavaScript.Value .
-JavaScript.Object : ValueLanguage; // we don't know whether it is one class that this is conforming to or more.
+    subsetOf JavaScriptValue .
+JavaScriptObject : ValueLanguage; // we don't know whether it is one class that this is conforming to or more.
     = "http://www.w3schools.com/js/js_object_definition.asp";
-    subsetOf JavaScript.Value.
+    subsetOf JavaScriptValue.
 
 HTML5 : DocumentLanguage; //TODO: vs HTML....
     = "https://www.w3.org/TR/html5/".
@@ -125,9 +126,9 @@ C++ : ProgrammingLanguage;
     = "https://en.wikipedia.org/wiki/C%2B%2B".
 C : ProgrammingLanguage;
     = "https://en.wikipedia.org/wiki/C_(programming_language)".
-Objective-C : ProgrammingLanguage;
+ObjectiveC : ProgrammingLanguage;
     = "https://en.wikipedia.org/wiki/Objective-C".
-C-Make : BuildScriptLanguage;
+CMake : BuildScriptLanguage;
     = "https://en.wikipedia.org/wiki/CMake".
 
 /* JVM related languages */

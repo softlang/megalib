@@ -1,0 +1,17 @@
+module eclipse.emf.ImportXSD
+
+import eclipse.emf.Core
+
+/* EMF can import XSD schemas and translate them into Ecore */
+?xsdSchema : Artifact;
+    elementOf XSD;
+    hasRole Schema;
+    manifestsAs File+.
+?resultingEcore : Artifact;
+    elementOf EcoreXMI;
+    hasRole MdeMetamodel;
+    manifestsAs File;
+    correspondsTo ?xsdSchema.
+importXSD : XSD -> EcoreXMI.
+importXSD(?xsdSchema) |-> ?resultingEcore.
+EMF implements importXSD.

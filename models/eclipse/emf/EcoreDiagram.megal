@@ -1,0 +1,42 @@
+module eclipse.emf.EcoreDiagram
+
+import eclipse.emf.Core
+
+/* EMF implements the generation of an XML-based visual
+description of an ecore model.
+
+This is actually SIRIUS
+
+ */
+?ecoreModel : Artifact;
+    elementOf EcoreXMI;
+    hasRole MdeMetamodel;
+    manifestsAs File.
+AIRD : DataExchangeLanguage;
+    = "http://www.eclipse.org/ecoretools/doc/";
+    subsetOf XMI.
+?visualDescription : Artifact;
+    elementOf AIRD;
+    hasRole MdeModel;
+    manifestsAs File.
+initializeDiagram : EcoreXMI -> AIRD.
+initializeDiagram(?ecoreFile) |-> ?visualDescription.
+EMF implements initializeDiagram;
+    implements AIRD.
+
+
+/* The visual representation corresponds to a rendered UML class
+diagram. */
+EcoreDiagram : ModelingLanguage;
+    = "http://www.eclipse.org/ecoretools/doc/";
+    encodes AIRD;
+    dialectOf UML.ClassDiagram.
+?visualRepresentation : Artifact;
+    elementOf EcoreDiagram;
+    hasRole Diagram;
+    manifestsAs Transient.
+renderEcoreUML : AIRD -> EcoreDiagram.
+renderEcoreUML(?visualDescription) |-> ?visualRepresentation.
+EMF implements renderEcoreUML;
+    uses Rendering;
+    implements EcoreDiagram.

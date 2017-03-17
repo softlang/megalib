@@ -10,13 +10,13 @@ A Mapper is a class in the hadoop framework. Subclasses of it have the purpose t
 */
 Mapper : ValueLanguage;
 	="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Mapper";
-	subsetOf JVM.Object.
+	subsetOf JVMObject.
 /*
 A Reducer is a class in the hadoop framework. Subclasses of it have the purpose to implement a reduce operation. The developer will create such a subclass
 */
 Reducer : ValueLanguage;
 	="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Reducer";
-	subsetOf JVM.Object.
+	subsetOf JVMObject.
 
 /*
 The input format represents the data that should be processed by the framework. They are stored in
@@ -30,11 +30,11 @@ classes that inherit from Input or Output format.
 /*
 The map function takes the mapper object and the current state of Hadoop (Context, key, ..) and returns a differen state that manifests in changed java objects.
 */
-map : Mapper # JVM.Object -> JVM.Object.
+map : Mapper # JVMObject -> JVMObject.
 /*
 The reduce function will take the output of the map function, that is stored by changing java objects and executes the implemented Reducer . Finally the result of the reducer function will be saved.
 */
-reduce : Reducer # JVM.Object -> JVM.Object.
+reduce : Reducer # JVMObject -> JVMObject.
 
 /*
 Hadoop MapReduce is taking a Mapper implementation as input as well as a Reducer. Those two operations will be executed on the input that is represented by a subclass of InputFormat, the result will be saved in a class of the type "outputFormat".
@@ -77,7 +77,7 @@ The input files are containing the data that should be processed. They will be l
 The input files will be loaded during runtime into java classes. Those classes are during runtime java objects. They will load their data from the input/output files which could be the representation of a database or filesystem (or ..). 
 */
 ?preState : Artifact;
-	elementOf JVM.Object;
+	elementOf JVMObject;
 	manifestsAs Transient; 
 	hasRole Value.
 
@@ -85,11 +85,11 @@ The input files will be loaded during runtime into java classes. Those classes a
 The output of the Hadoop MapReduce operation is internally represented by java objects. After the execution finished those values will be persisted in some output format that is described by the coresponding subclass of OutputFormat. The transformation will internally be handled by the hadoop framework. More precisely by the exMapReduce function.
 */
 ?posMapState : Artifact;
-	elementOf JVM.Object;
+	elementOf JVMObject;
 	manifestsAs Transient; 
 	hasRole Value.
 ?posReduceState : Artifact;
-	elementOf JVM.Object;
+	elementOf JVMObject;
 	manifestsAs Transient; 
 	hasRole Value.
 /*

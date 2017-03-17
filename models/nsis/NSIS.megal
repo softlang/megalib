@@ -1,0 +1,29 @@
+module nsis.NSIS
+
+import windows.Windows
+
+/* NSIS is a scripting language for build automation. The compiler
+makensis translates it into the Portable Executable (PE) format, which
+can then be interpreted by the Windows OS. */
+NSIS : BuildLanguage;
+    = "https://en.wikipedia.org/wiki/Nullsoft_Scriptable_Install_System";
+    belongsTo BuildAutomationWare.
+makensis : Platform;
+    = "https://en.wikipedia.org/wiki/Nullsoft_Scriptable_Install_System#Concepts";
+    belongsTo BuildAutomationWare;
+    implements NSIS;
+    uses Compilation;
+    uses C.
+
+/* makensis implements the compilation function. */
+compileNSIS : NSIS -> PE.
+makensis implements compileNSIS.
+?script : Artifact;
+    elementOf NSIS;
+    manifestsAs File;
+    hasRole BuildScript.
+?pefile : Artifact;
+    elementOf PE;
+    manifestsAs File;
+    hasRole Executable.
+compileNSIS(?script) |-> ?pefile.

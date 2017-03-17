@@ -1,0 +1,36 @@
+module antlr.megalchecker.MegaLCheckerService
+
+import antlr.ANTLR
+
+/* Simple facts on MegaL */
+MegaL : KnowledgeRepresentationLanguage;
+    = "http://www.softlang.org/megal".
+
+checkerJar : Artifact;
+    = "http://www.softlang.org/megal";
+    hasRole Executable;
+    manifestsAs File;
+    elementOf Jar.
+    
+MegaLibChecker : Application;
+    = "https://github.com/softlang/megalib/tree/master/checker";
+    uses Java;
+    reuses ANTLR;
+    implements MegaL;
+    deployedAs checkerJar.
+
+MegaLWarnings : ValueLanguage;
+    = "https://github.com/softlang/megalib/tree/master/checker";
+    subsetOf JVMString;
+    ^implements MegaLibChecker.
+checkModel : MegaL -> MegaLWarnings.
+MegaLibChecker implements checkModel.
+?warningLog : Artifact;
+    elementOf MegaLWarnings;
+    hasRole Log;
+    manifestsAs Transient.
+?megamodel : Artifact;
+    elementOf MegaL;
+    hasRole DescriptiveModel;
+    manifestsAs File+.
+checkModel(?megamodel) |-> ?warningLog.

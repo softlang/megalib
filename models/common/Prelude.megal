@@ -115,7 +115,7 @@ managedBy < Technology # Artifact;
 /* In a usage scenario the technology is locally deployed as an artifact.
 One might further want to specify on which physical component the artifact
 is deployed. */
-deployedAs < Technology # Artifact; 
+deployedAs < System # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_deployment".
 Node < Entity; //A computing node, that executes software and is linkable via ip or mac
     = "https://en.wikipedia.org/wiki/Node_(networking)#Distribute".
