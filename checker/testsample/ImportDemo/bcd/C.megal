@@ -4,6 +4,6 @@ import bcd.B
 import A
 /* */
 ?a1 : Artifact;
-    elementOf HTML;
+    elementOf HTML5;
     hasRole WebResource;
     manifestsAs Transient.

@@ -53,7 +53,7 @@ public class ModelLoader {
     }
 
     public ModelLoader(){
-        this("../models/Prelude.megal");
+        this("../models/common/Prelude.megal");
     }
 
     public MegaModel getModel() {

@@ -7,24 +7,25 @@ entities having a concrete syntax but runtime data as well.
 Language subtypes based on intended purpose. */
 Language < Entity;
     = "https://en.wikipedia.org/wiki/Computer_language".
-
-ProgramLanguage < Language;  // not specific to a domain, e.g., Java
+ProgrammingLanguage < Language;  // a language to write programs with
     = "https://en.wikipedia.org/wiki/Programming_language".
-AssemblyCodeLanguage < Language;
+AssemblyLanguage < Language;
     = "https://en.wikipedia.org/wiki/Assembly_language".  
-MachineCodeLanguage < Language; // hardware instructions
+MachineLanguage < Language; // hardware instructions
     = "https://en.wikipedia.org/wiki/Machine_code".
-CLICommandLanguage < Language;  // statements that can be entered in a command line, e.g., Bash
+CommandLineLanguage < Language;  // statements to call programs, e.g., in Bash
     = "https://en.wikipedia.org/wiki/Command-line_interface".    
 
-DocumentLanguage < Language; // "written, drawn, presented or recorded representation of thoughts", e.g. office files
+DocumentLanguage < Language; // "written, drawn, presented or recorded representation of thoughts", e.g. office files, presentations, diagrams with no formal semantics.
     = "https://en.wikipedia.org/wiki/Document". 
-KnowledgeLanguage < Language; //represent knowledge by using structured vocabulary, e.g., OWL
+KnowledgeRepresentationLanguage < Language; //represent knowledge by using structured vocabulary, e.g., OWL
     = "https://en.wikipedia.org/wiki/Category:Knowledge_representation_languages".
-ExchangedDataLanguage < Language; //"Data exchange allows data to be shared between different computer programs", e.g. XML
+DataExchangeLanguage < Language; //"Data exchange allows data to be shared between different computer programs", e.g. XML
     = "https://en.wikipedia.org/wiki/Data_exchange".
 StylesheetLanguage < Language; // expresses presentation of structured documents, e.g., CSS
     = "https://en.wikipedia.org/wiki/Style_sheet_language".    
+DatabaseManagementLanguage < Language;
+    = "https://en.wikipedia.org/wiki/Create,_read,_update_and_delete".
     
 TransformationLanguage < Language; // statements to define transformation, e.g., ATL
     = "https://en.wikipedia.org/wiki/Transformation_language";
@@ -56,7 +57,6 @@ MessageLanguage < Language; // structured messages, e.g., HTTP Requests
 //    = "https://en.wikipedia.org/wiki/Domain-specific_language".
 ValueLanguage < Language; // simple run time data, e.g. Booleans, Integers or objects. Defined by a type.
     = "https://en.wikipedia.org/wiki/Value_(computer_science)".
-    = "https://en.wikipedia.org/wiki/Graphics".
 ContainerLanguage < Language; //A binary format to express containment used by archives
     = "https://en.wikipedia.org/wiki/Digital_container_format".
 DatabaseLanguage < Language; //often binary format to manage data in, such as SQL databases or triplestores.

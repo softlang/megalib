@@ -25,7 +25,9 @@ public class SubstitutionTest {
     @Before
     public void setUp() throws IOException {
         ml = new ModelLoader();
-        assertTrue(ml.loadFile("testsample/SubstitutionDemo/App.megal"));
+        ml.loadFile("testsample/SubstitutionDemo/App.megal");
+        ml.getTypeErrors().forEach(w -> System.out.println(w));
+        assertTrue(ml.getTypeErrors().isEmpty());
     }
 
     @Test

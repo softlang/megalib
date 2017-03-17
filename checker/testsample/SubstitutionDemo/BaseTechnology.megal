@@ -5,7 +5,7 @@ MyPL : ProgrammingLanguage;
     = "http://www.softlang.org/";
     encodedAs Text.
     
-Platformx : Software;
+Platformx : Platform;
     = "http://www.softlang.org/";
     uses MyPL;
     implements MyPL.

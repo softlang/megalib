@@ -1,4 +1,4 @@
-module Prelude
+module common.Prelude
 
 import common.Concept
 import common.ConceptKB
@@ -23,9 +23,9 @@ correspondsTo < Artifact # Artifact; // Two artifacts may be syntactically diffe
     = "http://dictionary.cambridge.org/dictionary/english/correspond".
 consistentWith < Artifact # Artifact; //Two artifacts a and b may have to be consistent such that if a changes, b has to be adapted.
     = "https://en.wikipedia.org/wiki/Consistency".
-refersTo < Artifact # Artifact;  // Experimental! Don't use unless you know what you're doing
+refersTo < Artifact # Artifact;  // Experimental! 
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier".
-represents < Artifact # Artifact; // Experimental! Don't use unless you know what you're doing
+represents < Artifact # Artifact; // Experimental! 
     = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 
 /* Manifestation types of artifacts, where most are self-explanatory */
@@ -48,7 +48,15 @@ manifestsAs < Artifact # Manifestation;
 Function < Entity;
     = "https://en.wikipedia.org/wiki/Function_(mathematics)".
 
-/* A technology is reusable 'third party' Software */
+/* A technology is reusable 'third party' Software 
+Application is set up already, 
+Technology is reusable and has to be set up each time.
+Service < Application???
+BatchSystem
+InteractiveSystem
+Desktop vs Mobile vs Web 
+Distributed vs non-distributed
+Technology -> Information Technology*/
 System < Entity;
     = "https://en.wikipedia.org/wiki/Software_system".
 Technology < System;
@@ -80,9 +88,9 @@ Platform < Technology;
     = "https://en.wikipedia.org/wiki/Computing_platform".
 
 /* Implementation relationships */
-implements < Technology # Function;  //A technology may implement a mapping
+implements < System # Function;  //A software system may implement a mapping
     = "https://en.wikipedia.org/wiki/Implementation".
-implements < Technology # Language.  //A technology can process a language as input or output
+implements < System # Language.  //A software system can process a language as input or output
 
 /* A technology or a language can facilitate the usage or realization of a conceptual description. */
 facilitates < Technology # DesignPattern.
@@ -90,8 +98,8 @@ facilitates < Technology # ArchitecturalPattern.
 facilitates < Technology # AbstractProcess.
 facilitates < Technology # Construct.
 
-/* A technology may help in a problem context */
-supports < Technology # ProgrammingDomain;
+/* A software system may help in a problem context */
+supports < System # ProgrammingDomain;
     = "https://en.wikipedia.org/wiki/Software_feature". //needs better link
 
 /* Technologies and languages may be frequently used in a technological context. 
@@ -118,34 +126,16 @@ deployedAt < Artifact # Node; //An artifact is deployed on a node
     = "https://en.wikipedia.org/wiki/Software_deployment".
 deployedAt < Artifact # Hardware.
 
- 
-/* Application is set up already, 
-Technology is reusable and has to be set up each time.
-Service < Application???
-BatchSystem
-InteractiveSystem
-Desktop vs Mobile vs Web 
-Distributed vs non-distributed
-Technology -> Information Technology
- */
-
-/* A system as an exemplary solution for a field of study */
-demonstrates < System # ProgrammingDomain; // Experimental! Don't use unless you know what you're doing
-    = "http://softlang.uni-koblenz.de/chrestomathy/".
-
 
 /* Part-of relationships */
 partOf < Artifact # Artifact;
     = "http://dictionary.cambridge.org/dictionary/english/part".
 partOf < Artifact # System.
-partOf < Artifact # Technology.
-partOf < Technology # Technology.
 partOf < System # System.
 
-/* A language is used in the sense that some part is a member of the language. Maybe rename to writtenIn */
+/* A language is used in the sense that some part is a member of the language. */
 uses < System # Language;
     = "https://en.wikipedia.org/wiki/Computer_programming".
-uses < Technology # Language.
 
 /* Something uses a concept, if its implementation or structure is informalle conform to the concept's 
 definition. Most times, this is synonymous to 
@@ -154,14 +144,8 @@ uses < System # DesignPattern.
 uses < System # ArchitecturalPattern.
 uses < System # AbstractProcess.
 uses < System # Construct.
-uses < Technology # DesignPattern.
-uses < Technology # ArchitecturalPattern.
-uses < Technology # AbstractProcess.
-uses < Technology # Construct.
 
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */
 reuses < System # System;
     = "https://en.wikipedia.org/wiki/Code_reuse".
-reuses < System # Technology.
-reuses < Technology # Technology.

@@ -14,7 +14,7 @@ CMOF : SchemaLanguage;
 EMOF : SchemaLanguage;
     = "http://www.omg.org/spec/MOF/";
     subsetOf CMOF.
-UML : ModelingLanguage;
+UML : SoftwareDesignLanguage;
     = "http://www.uml.org/";
     = "http://www.omg.org/spec/UML/2.5/";
     = "https://en.wikipedia.org/wiki/Unified_Modeling_Language";
@@ -22,12 +22,12 @@ UML : ModelingLanguage;
     supports ModelDrivenEngineering;
     supports SoftwareDocumentation;
     facilitates ObjectOrientedProgramming.
-UML.ClassDiagram : ModelingLanguage;
+UML.ClassDiagram : SoftwareDesignLanguage;
     = "https://en.wikipedia.org/wiki/Class_diagram";
     subsetOf UML.
  
 /* Structured Query Language falls apart in a set for defining schematic information, querying and updating */
-SQL : DomainSpecificLanguage;
+SQL : DatabaseManagementLanguage;
     = "https://en.wikipedia.org/wiki/SQL";
     belongsTo SQLWare;
     facilitates RelationalProgramming.
@@ -127,7 +127,7 @@ C : ProgrammingLanguage;
     = "https://en.wikipedia.org/wiki/C_(programming_language)".
 Objective-C : ProgrammingLanguage;
     = "https://en.wikipedia.org/wiki/Objective-C".
-C-Make : BuildLanguage;
+C-Make : BuildScriptLanguage;
     = "https://en.wikipedia.org/wiki/CMake".
 
 /* JVM related languages */
@@ -168,7 +168,7 @@ Ruby : ProgrammingLanguage;
     = "https://www.ruby-lang.org/en/".
 
 /* Linux' Shell script language */
-Bash : BuildLanguage;
+Bash : CommandLineLanguage;
 	= "https://en.wikipedia.org/wiki/Bash_(Unix_shell)".
     
 /*

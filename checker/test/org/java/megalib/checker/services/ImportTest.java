@@ -21,6 +21,7 @@ public class ImportTest {
 
     @Test
     public void testNoTypeErrors() {
+        ml.getTypeErrors().forEach(w -> System.out.println(w));
         assertEquals(0, ml.getTypeErrors().size());
     }
 
@@ -32,9 +33,9 @@ public class ImportTest {
 
     @Test
     public void testContent() {
+        assertTrue(ml.getModel().isInstanceOf("?spec", "Artifact"));
         assertTrue(ml.getModel().isInstanceOf("?a1", "Artifact"));
         assertTrue(ml.getModel().isInstanceOf("?a2", "Artifact"));
-        assertTrue(ml.getModel().isInstanceOf("HTML", "Language"));
         assertTrue(ml.getModel().isInstanceOf("f", "Function"));
     }
 

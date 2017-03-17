@@ -25,6 +25,7 @@ public class ParserListenerTest {
     @Test
     public void preludeIsParsed() {
         ModelLoader ml = new ModelLoader();
+        ml.getTypeErrors().forEach(w -> System.out.println(w));
         assertEquals(0, ml.getTypeErrors().size());
     }
 

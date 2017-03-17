@@ -3,6 +3,6 @@ module bcd.d.D
 import bcd.C 
 
 /* */
-f : HTML -> HTML.
+f : HTML5 -> HTML5.
 f(?a1) |-> ?a2.
-?spec implements f.
+?program implements f.

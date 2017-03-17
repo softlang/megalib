@@ -1,12 +1,10 @@
 module A 
 
 /**/
-HTML : DocumentLanguage;
-    = "https://en.wikipedia.org/wiki/HTML";
-    encodedAs Text;
-    encodedAs Markup.
+?program : Program.
 ?spec : Artifact;
-    elementOf HTML;
+    partOf ?program;
+    elementOf HTML5;
     hasRole Specification;
     manifestsAs File;
-    defines HTML.
+    defines HTML5.
