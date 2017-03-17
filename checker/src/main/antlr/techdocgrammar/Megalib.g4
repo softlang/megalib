@@ -1,17 +1,16 @@
 grammar Megalib;
 
 //Head of the construct, containing entity or function
-declaration: module? (imports)* group+ EOF;
+declaration: module (imports)* block+ EOF;
 
-group: BLOCKCOMMENT statement+;
+block: BLOCKCOMMENT statement+;
 
-statement:	 subtypeDeclaration
-			   | instanceDeclaration
+statement:	subtypeDeclaration
+         | instanceDeclaration
 			   | relationDeclaration
 			   | relationInstance
 			   | functionDeclaration
-			   | functionInstance
-			   | link ;
+			   | functionInstance ;
 
 module: 'module' ID;
 
@@ -19,21 +18,23 @@ imports: 'import' ID ('where' '{' substitutionGroup (';' substitutionGroup)* '}'
 
 substitutionGroup : '[' substitution (',' substitution)* ']' ;
 
-substitution : ID 'substitutes' ID;
+substitution : ID '/' ID;
 
-subtypeDeclaration: ID '<' ID (';' '=' LINK)* '.';
+relationDeclaration: ID '<' ID '#' ID (';' link)* '.';
 
-instanceDeclaration: ID ':' ID (';' '=' LINK)* (';' ID ID)* '.';
+subtypeDeclaration: ID '<' ID (';' link)* '.';
 
-relationDeclaration: ID '<' ID '#' ID (';' '=' LINK)* '.';
+instanceDeclaration: ID ':' ID (';' link)* (';' relationship)* '.';
 
-relationInstance: ID ID ID (';' '=' LINK)* (';' ID ID)* '.';
+relationInstance: ID (link | relationship) (';' (link | relationship))* '.';
+
+relationship: ID ID;
+
+link: ('~=' | '=') LINK;
 
 functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* '.';
 
 functionInstance: ID '(' ID (',' ID)* ')' '|->' (ID | ('(' ID (',' ID)* ')')) '.';
-
-link: ID '=' LINK (';' '=' LINK)* (';' ID ID)* '.';
 
 ID: ('?'|'^')? WORD ('.' WORD)*;
 WORD: ([a-zA-Z0-9+#\-])+;

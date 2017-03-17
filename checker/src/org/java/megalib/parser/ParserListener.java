@@ -219,7 +219,7 @@ public class ParserListener extends MegalibBaseListener {
     public void enterLink(LinkContext context) {
         Iterator<ParseTree> it = context.children.iterator();
         String subject = it.next().getText();
-        it.next(); // skip =
+        String symbol = it.next().getText(); // skip =
         String link = it.next().getText();
         link = link.substring(1, link.length() - 1);
         if(typeCheck.addLink(subject, link, model)){
