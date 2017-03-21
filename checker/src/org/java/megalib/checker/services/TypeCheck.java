@@ -83,11 +83,16 @@ public class TypeCheck {
     public boolean addRelationInstance(String name, String subject, String object, MegaModel m) {
         if(!errors.isEmpty())
             return false;
+
+        if(name.equals("=") || name.equals("~="))
+            return addLink(subject, object.replaceAll("\"", ""), m);
+
         if (!m.getInstanceOfMap().containsKey(subject)) {
-            errors.add("Error at instance of " + name + ": " + subject + " is not instantiated.");
+            errors.add("Error at relationship '" + name + "': " + subject + " is not instantiated.");
         }
+
         if (!m.getInstanceOfMap().containsKey(object)) {
-            errors.add("Error at instance of " + name + ": " + object + " is not instantiated.");
+            errors.add("Error at relationship '" + name + "': " + object + " is not instantiated.");
         }
         if(name.startsWith("^")){
             name = name.substring(1);
@@ -96,9 +101,9 @@ public class TypeCheck {
             object = temp;
         }
         Relation i = new Relation(subject, object);
-        if (m.getRelationshipInstanceMap().containsKey(name)) {
-            if (m.getRelationshipInstanceMap().get(name).contains(i)) {
-                errors.add("Error at instance of " + name + ": '" + subject + " " + name + " " + object
+        if (m.getRelationships().containsKey(name)) {
+            if (m.getRelationships().get(name).contains(i)) {
+                errors.add("Error: '" + subject + " " + name + " " + object
                            + "' already exists.");
             }
         }
@@ -239,28 +244,37 @@ public class TypeCheck {
         return errors.isEmpty();
     }
 
-    public boolean addLink(String entity, String link, MegaModel m) {
+    public boolean addLink(String subject, String link, MegaModel m) {
         if(!errors.isEmpty())
             return false;
-        if(!(m.getInstanceOfMap().containsKey(entity) || m.getSubtypesMap().containsKey(entity)
-                || m.getRelationshipDeclarationMap().containsKey(entity))){
-            errors.add("Error at linking " + entity + ". Declaration is missing.");
+        if(!(m.getInstanceOfMap().containsKey(subject) || m.getSubtypesMap().containsKey(subject)
+             || m.getRelationshipDeclarationMap().containsKey(subject))){
+            errors.add("Error at linking " + subject + ". Declaration/Instantiation is missing.");
         }
-        try{
-            new URL(link);
-        }catch(MalformedURLException e){
-            if(!new File(link).exists()){
-                errors.add("Error at linking " + entity + ". The link '" + link + "' cannot be resolved.");
+        if(link.startsWith("file://")){
+            if(!new File(link.substring(7)).exists()){
+                errors.add("Error at linking " + subject + ". The link '" + link
+                           + "' does not point to an existing file.");
                 return false;
             }
+        }else if(link.startsWith("http")){
+            try{
+                new URL(link);
+            }catch(MalformedURLException e){
+                errors.add("Error at linking " + subject + ". '" + link + "' is not a well-formed URL.");
+            }
+        }else{
+            errors.add("Error at linking " + subject + ". '" + link + "' is not accepted.");
         }
 
-        Set<String> links = new HashSet<>();
-        if (m.getLinkMap().containsKey(entity)) {
-            links = m.getLinkMap().get(entity);
+        Set<Relation> dlinks = m.getRelationships().get("=");
+        Set<Relation> blinks = m.getRelationships().get("~=");
+        if(dlinks != null && dlinks.contains(new Relation(subject, link))){
+            errors.add("Error at linking " + subject + " to " + link
+                       + ". This informative link has already been assigned");
         }
-        if (links.contains(link)) {
-            errors.add("Error at linking " + entity + " to " + link + ". This link has already been assigned");
+        if(blinks != null && blinks.contains(new Relation(subject, link))){
+            errors.add("Error at linking " + subject + " to " + link + ". This binding has already been assigned");
         }
         return errors.isEmpty();
     }

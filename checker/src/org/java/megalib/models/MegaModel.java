@@ -20,7 +20,6 @@ public class MegaModel {
     private Map<String, Set<Relation>> relationInstanceMap;
     private Map<String,Set<Function>> functionDeclarations;
     private Map<String, Set<Function>> functionApplications;
-    private Map<String, Set<String>> linkMap;
 
     private Set<String> substitutedLanguages;
 
@@ -35,7 +34,6 @@ public class MegaModel {
         relationInstanceMap = new HashMap<>();
         functionDeclarations = new HashMap<>();
         functionApplications = new HashMap<>();
-        linkMap = new HashMap<>();
         substitutedLanguages = new HashSet<>();
         removableAbstract = new HashSet<>();
     }
@@ -73,28 +71,24 @@ public class MegaModel {
         relationDeclarationMap.put(name, set);
     }
 
-    public Map<String, Set<Relation>> getRelationshipInstanceMap() {
+    public Map<String, Set<Relation>> getRelationships() {
         return Collections.unmodifiableMap(relationInstanceMap);
     }
 
     public void addRelationInstance(String name, String subject, String object) {
         Set<Relation> set = new HashSet<>();
-        if(name.startsWith("^")){
-            name = name.substring(1);
-            String temp = subject;
-            subject = object;
-            object = temp;
-        }
         if (relationInstanceMap.containsKey(name)) {
             set = relationInstanceMap.get(name);
+        }
+        if(name.equals("~=") || name.equals("=")){
+            object = object.replaceAll("\"", "");
         }
         Relation i = new Relation(subject, object);
         if (name.equals("elementOf")) {
             elementOfMap.put(subject, object);
-        } else
-            if (name.equals("subsetOf")) {
-                subsetOfMap.put(subject, object);
-            }
+        }else if(name.equals("subsetOf")){
+            subsetOfMap.put(subject, object);
+        }
         set.add(i);
         relationInstanceMap.put(name, set);
     }
@@ -130,19 +124,6 @@ public class MegaModel {
 
     public Map<String, String> getElementOfMap() {
         return Collections.unmodifiableMap(elementOfMap);
-    }
-
-    public Map<String, Set<String>> getLinkMap() {
-        return Collections.unmodifiableMap(linkMap);
-    }
-
-    public void addLink(String entity, String link) {
-        Set<String> links = new HashSet<>();
-        if (linkMap.containsKey(entity)) {
-            links = linkMap.get(entity);
-        }
-        links.add(link);
-        linkMap.put(entity, links);
     }
 
     public Map<String, String> getSubsetOfMap() {
@@ -199,7 +180,6 @@ public class MegaModel {
         instanceOfMap.remove(e);
         elementOfMap.remove(e);
         subsetOfMap.remove(e);
-        linkMap.remove(e);
 
         Map<String, Set<Relation>> relmap = new HashMap<>();
         for (String name : relationInstanceMap.keySet()) {

@@ -10,7 +10,7 @@ statement:	subtypeDeclaration
 			   | relationDeclaration
 			   | relationInstance
 			   | functionDeclaration
-			   | functionInstance ;
+			   | functionApplication ;
 
 module: 'module' ID;
 
@@ -34,11 +34,11 @@ link: ('~=' | '=') LINK;
 
 functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* '.';
 
-functionInstance: ID '(' ID (',' ID)* ')' '|->' (ID | ('(' ID (',' ID)* ')')) '.';
+functionApplication: ID '(' ID (',' ID)* ')' '|->' (ID | ('(' ID (',' ID)* ')')) '.';
 
 ID: ('?'|'^')? WORD ('.' WORD)*;
 WORD: ([a-zA-Z0-9+#\-])+;
-LINK: '"' (~[ \t\f\n\r])+ '"' ;
+LINK: '"' (~[ \t\f\n\r"])+ '"' ;
 BLOCKCOMMENT: '/*' .*? '*/';
 LINECOMMENT: '//' (~[\n\r])* -> skip;
 WS: (' '|'\f'|'\n'|'\r'|'\t') -> skip;

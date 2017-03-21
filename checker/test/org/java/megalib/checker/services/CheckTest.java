@@ -26,7 +26,6 @@ public class CheckTest {
     @Test
     public void checkInstanceOfTechnology() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-
         String input = "/**/?t : Technology. " + "?l : ProgrammingLanguage. " + "?t uses ?l.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
@@ -37,14 +36,12 @@ public class CheckTest {
     @Test
     public void checkInstanceOfTechnologyUnderspec() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-
         String input = "/**/t : Technology;=\"http://softlang.org/\". " + "?l : ProgrammingLanguage. " + "t uses ?l.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(1, c.getWarnings().size());
-        assertTrue(c.getWarnings()
-                    .contains("The entity t is underspecified. Please state a specific subtype of Technology."));
+        assertEquals("State a specific subtype of Technology for t.", c.getWarnings().get(0));
     }
 
     @Test
@@ -68,7 +65,7 @@ public class CheckTest {
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
-                    .contains("The entity l is underspecified. Please state a specific subtype of Language."));
+                    .contains("State a specific subtype of Language for l."));
     }
 
     @Test
@@ -80,7 +77,7 @@ public class CheckTest {
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
 
         assertEquals(1, c.getWarnings().size());
-        assertTrue(c.getWarnings().contains("The entity t misses a Link for further reading."));
+        assertEquals("Link missing for entity t.", c.getWarnings().get(0));
     }
 
     @Test
@@ -92,8 +89,7 @@ public class CheckTest {
 
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
-        assertTrue(c.getWarnings()
-                   .contains("The technology t does not use any language. Please state language usage."));
+        assertEquals("State a used language for t", c.getWarnings().get(0));
     }
 
     @Test
@@ -105,6 +101,7 @@ public class CheckTest {
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
 
         assertEquals(0, ml.getTypeErrors().size());
+        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings().contains("The function f is not implemented. Please state what implements it."));
     }
@@ -159,12 +156,13 @@ public class CheckTest {
     @Test
     public void checkArtifactHasRole() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?l : ProgrammingLanguage. a : Artifact; = \"http://softlang.org/\". a elementOf ?l. a manifestsAs File.";
+        String input = "/**/?l : ProgrammingLanguage. a : Artifact; ~= \"http://softlang.org/\". a elementOf ?l. a manifestsAs File.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
+        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
-        assertTrue(c.getWarnings().contains("Role missing for a"));
+        assertEquals("Role missing for a.", c.getWarnings().get(0));
     }
 
     @Test
@@ -175,6 +173,7 @@ public class CheckTest {
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
+        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
                    .contains("Cycles exist concerning the relationship subsetOf involving the following entities :[?l2, ?l3]"));

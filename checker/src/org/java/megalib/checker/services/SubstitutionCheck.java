@@ -47,10 +47,10 @@ public class SubstitutionCheck {
             // manifestations have to be equal, but because of file+, identifier
             // containment is enough
             if(m.isInstanceOf(by, "Artifact")){
-                String manifestBy = m.getRelationshipInstanceMap().get("manifestsAs").parallelStream()
+                String manifestBy = m.getRelationships().get("manifestsAs").parallelStream()
                                      .filter(r -> r.getSubject().equals(by)).map(r -> r.getObject())
                                      .collect(Collectors.toList()).get(0);
-                String manifeste = m.getRelationshipInstanceMap().get("manifestsAs").parallelStream()
+                String manifeste = m.getRelationships().get("manifestsAs").parallelStream()
                                     .filter(r -> r.getSubject().equals(e)).map(r -> r.getObject())
                                     .collect(Collectors.toList()).get(0);
                 if(!manifeste.contains(manifestBy)){

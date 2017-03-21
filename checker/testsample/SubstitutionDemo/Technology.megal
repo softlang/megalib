@@ -2,12 +2,12 @@ module Technology
 
 import BaseTechnology
 import Abstract where {
-    [ MySerializer substitutes ?Serializer,
-    MyPL substitutes ?PL, //?PL cannot be substituted more than once in this case!
-    ?plproject substitutes ?project,
-    ?myplprogram substitutes ?program,
-    ?myolobject substitutes ?object, 
-    MyOL substitutes ?OL ]
+    [ MySerializer / ?Serializer,
+    MyPL / ?PL, //?PL cannot be substituted more than once in this case!
+    ?plproject / ?project,
+    ?myplprogram / ?program,
+    ?myolobject / ?object, 
+    MyOL / ?OL ]
 }
 /**/
 MySerializer = "http://www.softlang.org/";

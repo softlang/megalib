@@ -61,6 +61,7 @@ public class SubstitutionTest {
     public void testApp() throws IOException {
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(0, c.getWarnings().size());
     }
 
@@ -72,16 +73,16 @@ public class SubstitutionTest {
 
     @Test
     public void testSerializerRel() {
-        assertTrue(ml.getModel().getRelationshipInstanceMap().get("uses").contains(new Relation("?Serializer", "?PL")));
-        assertFalse(ml.getModel().getRelationshipInstanceMap().get("uses")
+        assertTrue(ml.getModel().getRelationships().get("uses").contains(new Relation("?Serializer", "?PL")));
+        assertFalse(ml.getModel().getRelationships().get("uses")
                       .contains(new Relation("?Serializer", "MyPL")));
-        assertTrue(ml.getModel().getRelationshipInstanceMap().get("uses")
+        assertTrue(ml.getModel().getRelationships().get("uses")
                      .contains(new Relation("MySerializer", "MyPL")));
-        assertFalse(ml.getModel().getRelationshipInstanceMap().get("uses")
+        assertFalse(ml.getModel().getRelationships().get("uses")
                       .contains(new Relation("MySerializer", "?PL")));
-        assertTrue(ml.getModel().getRelationshipInstanceMap().get("implements")
+        assertTrue(ml.getModel().getRelationships().get("implements")
                      .contains(new Relation("?Serializer", "?PL")));
-        assertTrue(ml.getModel().getRelationshipInstanceMap().get("implements")
+        assertTrue(ml.getModel().getRelationships().get("implements")
                      .contains(new Relation("MySerializer", "MyPL")));
     }
 
@@ -116,13 +117,13 @@ public class SubstitutionTest {
     @Test
     public void testProgram1Relations() {
         Relation r = new Relation("myProgram1", "File");
-        assertTrue(ml.getModel().getRelationshipInstanceMap().get("manifestsAs").contains(r));
+        assertTrue(ml.getModel().getRelationships().get("manifestsAs").contains(r));
 
-        Set<Relation> rs = ml.getModel().getRelationshipInstanceMap().get("elementOf");
+        Set<Relation> rs = ml.getModel().getRelationships().get("elementOf");
         rs = rs.parallelStream().filter(t -> t.getSubject().equals("myProgram1")).collect(Collectors.toSet());
         assertEquals(1, rs.size());
         r = new Relation("myProgram1", "MyPL");
-        assertTrue(ml.getModel().getRelationshipInstanceMap().get("elementOf").contains(r));
+        assertTrue(ml.getModel().getRelationships().get("elementOf").contains(r));
     }
 
     @Test

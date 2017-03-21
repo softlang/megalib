@@ -1,5 +1,6 @@
 package org.java.megalib.checker.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,73 +65,75 @@ public class WellformednessCheck {
 
     private void instanceChecks() {
         Map<String,String> map = model.getInstanceOfMap();
-        for(String inst : map.keySet()){
-            if(!inst.startsWith("?")){
-                if(map.get(inst).equals("Technology")){
-                    warnings.add("The entity " + inst
-                                 + " is underspecified. Please state a specific subtype of Technology.");
-                }
-                if(map.get(inst).equals("Language")){
-                    warnings.add("The entity " + inst
-                                 + " is underspecified. Please state a specific subtype of Language.");
-                }
-                if(map.get(inst).equals("System")){
-                    warnings.add("The entity " + inst
-                                 + " is underspecified. Please state a specific subtype of System.");
-                }
-                if(!model.getLinkMap().containsKey(inst) && !map.get(inst).equals("Function")){
-                    warnings.add("The entity " + inst + " misses a Link for further reading.");
-                }
-                if(model.isInstanceOf(inst, "Technology")){
-                    Set<Relation> usesSet = model.getRelationshipInstanceMap().get("uses");
-                    if(null == usesSet){
-                        warnings.add("The technology " + inst
-                                     + " does not use any language. Please state language usage.");
-                        continue;
-                    }
-                    Set<Relation> fset = usesSet.parallelStream()
-                                                .filter(r -> r.getSubject().equals(inst)
-                                                             && model.isInstanceOf(r.getObject(), "Language"))
-                                                .collect(Collectors.toSet());
-                    if(fset.isEmpty()){
-                        warnings.add("The technology " + inst
-                                     + " does not use any language. Please state language usage.");
-                    }
-                }
-                if(model.isInstanceOf(inst, "Artifact")){
-                    Set<Relation> roleSet = model.getRelationshipInstanceMap().get("hasRole");
-                    if(null == roleSet){
-                        warnings.add("Role missing for " + inst);
-                        continue;
-                    }
-                    Set<Relation> roles = roleSet.parallelStream().filter(r -> r.getSubject().equals(inst))
-                                  .collect(Collectors.toSet());
-                    if(roles.isEmpty()){
-                        warnings.add("Role missing for " + inst);
-                    }
-                }
+        map.keySet().stream().filter(e -> !e.startsWith("?")).forEach(e -> concreteInstanceChecks(e));
+        map.keySet().stream().filter(e -> model.isInstanceOf(e, "Artifact")).forEach(e -> {
+            if(!model.getElementOfMap().containsKey(e)){
+                warnings.add("Language missing for artifact " + e);
             }
-            if(model.isInstanceOf(inst, "Artifact")){
-                if(!model.getElementOfMap().containsKey(inst)){
-                    warnings.add("Language missing for artifact " + inst);
-                }
-                Set<Relation> manifestSet = model.getRelationshipInstanceMap().get("manifestsAs");
-                if(null == manifestSet){
-                    warnings.add("Manifestation missing for " + inst);
-                    continue;
-                }
-                Set<Relation> manifestations = manifestSet.parallelStream().filter(r -> r.getSubject().equals(inst))
-                                                .collect(Collectors.toSet());
-                if(manifestations.isEmpty()){
-                    warnings.add("Manifestation missing for " + inst);
-                }
+            if(!model.getRelationships().containsKey("manifestsAs")
+               || model.getRelationships().get("manifestsAs").parallelStream()
+                       .noneMatch(r -> r.getSubject().equals(e))){
+                warnings.add("Manifestation missing for " + e);
+            }
+        });
+    }
+
+    private void concreteInstanceChecks(String e) {
+        Map<String,String> map = model.getInstanceOfMap();
+        if(map.get(e).equals("Technology")){
+            warnings.add("State a specific subtype of Technology for " + e + ".");
+        }
+        if(model.isInstanceOf(e, "Technology")){
+            Optional<Set<Relation>> o = Optional.ofNullable(model.getRelationships().get("uses"))
+                    .filter(set -> set.parallelStream()
+                                      .anyMatch(r -> r.getSubject().equals(e)
+                                                      && model.isInstanceOf(r.getObject(), "Language")));
+            if(!o.isPresent()){
+                warnings.add("State a used language for " + e);
+            }
+        }
+        if(map.get(e).equals("Language")){
+            warnings.add("State a specific subtype of Language for " + e + ".");
+        }
+        if(map.get(e).equals("System")){
+            warnings.add("State a specific subtype of System for " + e + ".");
+        }
+
+        if(model.isInstanceOf(e, "Artifact")){
+            Optional<Set<Relation>> o = Optional.ofNullable(model.getRelationships().get("hasRole"))
+                    .filter(set -> set.parallelStream().anyMatch(r -> r.getSubject().equals(e)));
+            if(!o.isPresent()){
+                warnings.add("Role missing for " + e + ".");
+            }
+
+            long bindcount = Optional.ofNullable(model.getRelationships().get("~="))
+                                     .map(set -> set.parallelStream().filter(r -> r.getSubject().equals(e)).count())
+                                     .orElse(Integer.toUnsignedLong(0));
+            if(bindcount < 1){
+                warnings.add("Binding missing for Artifact " + e + ".");
+            }
+            if(bindcount > 1){
+                warnings.add("More than 1 binding for Artifact " + e + ".");
+            }
+        }else{
+            Optional<Set<Relation>> o = Optional.ofNullable(model.getRelationships().get("="))
+                                                .filter(set -> set.parallelStream()
+                                                                  .anyMatch(r -> r.getSubject().equals(e)
+                                                                                 || model.isInstanceOf(e, "Function")));
+            if(!o.isPresent()){
+                warnings.add("Link missing for entity " + e + ".");
+            }
+            o = Optional.ofNullable(model.getRelationships().get("~="))
+                        .filter(set -> set.parallelStream().anyMatch(r -> r.getSubject().equals(e)));
+            if(o.isPresent()){
+                warnings.add("Do not bind entities other than artifacts. See " + e + ".");
             }
         }
     }
 
     private void subtypeChecks() {
         model.getSubtypesMap().forEach((k, v) -> {
-            if(!model.getLinkMap().containsKey(k)){
+            if(model.getRelationships().get("=").parallelStream().noneMatch(r -> r.getSubject().equals(k))){
                 warnings.add("Link missing for subtype " + k);
             }
         });
@@ -140,9 +144,9 @@ public class WellformednessCheck {
      * part-hood relationship.
      */
     private void partOfCheck() {
-        if(!model.getRelationshipInstanceMap().containsKey("partOf"))
+        if(!model.getRelationships().containsKey("partOf"))
             return;
-        Set<Relation> partOfs = model.getRelationshipInstanceMap().get("partOf");
+        Set<Relation> partOfs = model.getRelationships().get("partOf");
         Set<String> subjects = new HashSet<>();
         for(Relation p : partOfs){
             if(!subjects.contains(p.getSubject())){
@@ -159,13 +163,13 @@ public class WellformednessCheck {
      * that is not a fragment.
      */
     private void fragmentPartOfCheck() {
-        if(!model.getRelationshipInstanceMap().containsKey("manifestsAs"))
+        if(!model.getRelationships().containsKey("manifestsAs"))
             return;
-        List<String> fragments = model.getRelationshipInstanceMap().get("manifestsAs").parallelStream()
+        List<String> fragments = model.getRelationships().get("manifestsAs").parallelStream()
                                       .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
                                       .collect(Collectors.toList());
         for(String f : fragments){
-            if(model.getRelationshipInstanceMap().get("partOf").parallelStream()
+            if(model.getRelationships().get("partOf").parallelStream()
                     .noneMatch(r -> r.getSubject().equals(f))){
                 warnings.add("Composite missing for fragment " + f);
             }
@@ -176,13 +180,13 @@ public class WellformednessCheck {
      * All composite fragments do not have any part that is not a fragment.
      */
     private void partOfFragmentCheck() {
-        if(!model.getRelationshipInstanceMap().containsKey("manifestsAs"))
+        if(!model.getRelationships().containsKey("manifestsAs"))
             return;
-        Set<String> fset = model.getRelationshipInstanceMap().get("manifestsAs").parallelStream()
+        Set<String> fset = model.getRelationships().get("manifestsAs").parallelStream()
                                 .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
                                 .collect(Collectors.toSet());
         for(String f : fset){
-            Set<String> parts = model.getRelationshipInstanceMap().get("partOf").parallelStream()
+            Set<String> parts = model.getRelationships().get("partOf").parallelStream()
                                      .filter(r -> r.getObject().equals(f)).map(r -> r.getSubject())
                                      .collect(Collectors.toSet());
             Set<String> diff = new HashSet<>();
@@ -196,10 +200,10 @@ public class WellformednessCheck {
     }
 
     private void transientIsInputOrOutput() {
-        if(!model.getRelationshipInstanceMap().containsKey("manifestsAs"))
+        if(!model.getRelationships().containsKey("manifestsAs"))
             return;
 
-        Set<String> tset = model.getRelationshipInstanceMap().get("manifestsAs").parallelStream()
+        Set<String> tset = model.getRelationships().get("manifestsAs").parallelStream()
                                 .filter(r -> r.getObject().equals("Transient") && !isPart(r.getSubject()))
                                 .map(r -> r.getSubject()).collect(Collectors.toSet());
         Set<String> iovalues = new HashSet<>();
@@ -217,9 +221,9 @@ public class WellformednessCheck {
     }
 
     private boolean isPart(String t) {
-        if(!model.getRelationshipInstanceMap().containsKey("partOf"))
+        if(!model.getRelationships().containsKey("partOf"))
             return false;
-        Set<Relation> partOfs = model.getRelationshipInstanceMap().get("partOf");
+        Set<Relation> partOfs = model.getRelationships().get("partOf");
         return !partOfs.parallelStream().noneMatch(r -> r.getSubject().equals(t));
     }
 
@@ -244,9 +248,9 @@ public class WellformednessCheck {
     }
 
     private void cyclicRelationChecks(String name) {
-        if(!model.getRelationshipInstanceMap().containsKey(name))
+        if(!model.getRelationships().containsKey(name))
             return;
-        Set<Relation> rels = model.getRelationshipInstanceMap().get(name);
+        Set<Relation> rels = model.getRelationships().get(name);
         Set<String> subjects;
         Set<String> objects;
 
@@ -271,7 +275,7 @@ public class WellformednessCheck {
 
     private void checkFunction(String name) {
         // check implements existence
-        Set<Relation> implementsSet = model.getRelationshipInstanceMap().get("implements");
+        Set<Relation> implementsSet = model.getRelationships().get("implements");
         if(null == implementsSet){
             warnings.add("The function " + name + " is not implemented. Please state what implements it.");
         }else{
@@ -288,19 +292,27 @@ public class WellformednessCheck {
     }
 
     private void checkLinks() {
-        Map<String,Set<String>> links = model.getLinkMap();
-        links.values().parallelStream().forEach(linkset -> linkset.forEach(l -> checkLinkWorking(l)));
+        Set<Relation> links = model.getRelationships().get("=");
+        if(model.getRelationships().containsKey("~=")){
+            links.addAll(model.getRelationships().get("~="));
+        }
+        links.parallelStream().forEach(r -> checkLinkWorking(r.getObject()));
     }
 
     private void checkLinkWorking(String link) {
-        if(!nocon){
-            try{
-                checkConnection(new URL(link), link);
-            }catch(MalformedURLException e){
-                e.printStackTrace();
+        if(link.startsWith("file://")){
+            if(!new File(link.substring(7)).exists()){
+                warnings.add("Cannot link to '" + link + "' : The file does not exist!");
+            }
+        }else{
+            if(!nocon){
+                try{
+                    checkConnection(new URL(link), link);
+                }catch(MalformedURLException e){
+                    e.printStackTrace();
+                }
             }
         }
-
     }
 
     private void checkConnection(URL u, String link) {

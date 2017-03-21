@@ -11,7 +11,7 @@ Platformx : Platform;
     implements MyPL.
 
 myProgram1 : Artifact;
-    = "http://www.softlang.org/";
+    ~= "http://www.softlang.org/";
     manifestsAs File;
     hasRole SourceCode;
     elementOf MyPL.

@@ -77,6 +77,7 @@ public class ModelLoader {
     }
 
     public List<String> loadString(String data) throws ParserException, IOException {
+        data = "module Test " + data;
         ParserListener pl = (ParserListener) parse(data, new ParserListener(model));
         model = pl.getModel();
         typeErrors.addAll(pl.getTypeErrors());

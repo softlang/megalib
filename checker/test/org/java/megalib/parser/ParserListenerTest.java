@@ -156,9 +156,9 @@ public class ParserListenerTest {
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
         assertTrue(imap.containsKey("a"));
         assertEquals("Artifact", imap.get("a"));
-        assertTrue(ml.getModel().getRelationshipInstanceMap().get("elementOf").contains(new Relation("a", "Python")));
-        assertTrue(ml.getModel().getRelationshipInstanceMap().get("hasRole").contains(new Relation("a", "MvcModel")));
-        assertTrue(ml.getModel().getRelationshipInstanceMap().get("manifestsAs").contains(new Relation("a", "File")));
+        assertTrue(ml.getModel().getRelationships().get("elementOf").contains(new Relation("a", "Python")));
+        assertTrue(ml.getModel().getRelationships().get("hasRole").contains(new Relation("a", "MvcModel")));
+        assertTrue(ml.getModel().getRelationships().get("manifestsAs").contains(new Relation("a", "File")));
     }
 
     @Test
@@ -170,8 +170,8 @@ public class ParserListenerTest {
         Map<String,String> imap = ml.getModel().getInstanceOfMap();
         assertTrue(imap.containsKey("ANTLRXYZ"));
         assertTrue(imap.containsKey("XYZ"));
-        assertTrue(ml.getModel().getRelationshipInstanceMap().containsKey("subsetOf"));
-        Set<Relation> rmap = ml.getModel().getRelationshipInstanceMap().get("subsetOf");
+        assertTrue(ml.getModel().getRelationships().containsKey("subsetOf"));
+        Set<Relation> rmap = ml.getModel().getRelationships().get("subsetOf");
         assertTrue(rmap.contains(new Relation("ANTLRXYZ", "XYZ")));
     }
 
@@ -241,12 +241,12 @@ public class ParserListenerTest {
         String input = "/**/a : ProgrammingLanguage. " + "b : ProgrammingLanguage. a subsetOf b. a subsetOf b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
+        Map<String, Set<Relation>> actual = ml.getModel().getRelationships();
 
         assertTrue(actual.containsKey("subsetOf"));
         assertTrue(actual.get("subsetOf").contains(new Relation("a", "b")));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at instance of subsetOf: 'a subsetOf b' already exists."));
+        assertTrue(ml.getTypeErrors().contains("Error: 'a subsetOf b' already exists."));
     }
 
     @Test
@@ -254,7 +254,7 @@ public class ParserListenerTest {
         String input = "/**/a : Framework. b : ProgrammingLanguage. a subsetOf b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
+        Map<String, Set<Relation>> actual = ml.getModel().getRelationships();
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
@@ -267,7 +267,7 @@ public class ParserListenerTest {
         String input = "/**/a : Framework. b : ProgrammingLanguage. b subsetOf a.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
+        Map<String, Set<Relation>> actual = ml.getModel().getRelationships();
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
@@ -281,7 +281,7 @@ public class ParserListenerTest {
                 + "b : ProgrammingLanguage. " + "a subsetOf b. ";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
+        Map<String, Set<Relation>> actual = ml.getModel().getRelationships();
 
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
@@ -295,11 +295,12 @@ public class ParserListenerTest {
         String input = "/**/b : ProgrammingLanguage. " + "a subsetOf b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
+        Map<String, Set<Relation>> actual = ml.getModel().getRelationships();
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at instance of subsetOf: a is not instantiated."));
+        ml.getTypeErrors().forEach(w -> System.out.println(w));
+        assertTrue(ml.getTypeErrors().contains("Error at relationship 'subsetOf': a is not instantiated."));
     }
 
     @Test
@@ -307,11 +308,11 @@ public class ParserListenerTest {
         String input = "/**/a : ProgrammingLanguage. " + "a subsetOf b.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
-        Map<String, Set<Relation>> actual = ml.getModel().getRelationshipInstanceMap();
+        Map<String, Set<Relation>> actual = ml.getModel().getRelationships();
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at instance of subsetOf: b is not instantiated."));
+        assertTrue(ml.getTypeErrors().contains("Error at relationship 'subsetOf': b is not instantiated."));
     }
 
     @Test
@@ -547,7 +548,7 @@ public class ParserListenerTest {
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at instance of elementOf: XYZ is not instantiated.", ml.getTypeErrors().get(0));
+        assertEquals("Error at relationship 'elementOf': XYZ is not instantiated.", ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -582,6 +583,24 @@ public class ParserListenerTest {
         String input = "/**/?l : ProgrammingLanguage; " + "= \"notauri\".";
         ml.loadString(input);
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at linking ?l. The link 'notauri' cannot be resolved.", ml.getTypeErrors().get(0));
+        assertEquals("Error at linking ?l. 'notauri' is not accepted.", ml.getTypeErrors().get(0));
+    }
+
+    @Test
+    public void checkInvalidFilePath() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/a : Artifact;" + "= \"file://notapath\".";
+        ml.loadString(input);
+        assertEquals(1, ml.getTypeErrors().size());
+        assertEquals("Error at linking a. The link 'file://notapath' does not point to an existing file.",
+                     ml.getTypeErrors().get(0));
+    }
+
+    @Test
+    public void checkValidFilePath() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/a : Artifact;" + "= \"file://checker.jar\".";
+        ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
     }
 }

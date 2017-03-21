@@ -40,7 +40,7 @@ public class Substitution {
                 model.addInstanceOf(v, model.getInstanceOfMap().get(key));
             }
         }));
-        substByGroup.keySet().forEach(k -> model.getRelationshipInstanceMap().keySet()
+        substByGroup.keySet().forEach(k -> model.getRelationships().keySet()
                                                 .forEach(rname -> substituteEntityIn(k, rname)));
 
         model.getFunctionDeclarations().entrySet().parallelStream()
@@ -59,9 +59,9 @@ public class Substitution {
     }
 
     private void substituteEntityIn(String substituted, String rname) {
-        Set<Relation> sstream = model.getRelationshipInstanceMap().get(rname).parallelStream()
+        Set<Relation> sstream = model.getRelationships().get(rname).parallelStream()
                                      .filter(r -> r.getSubject().equals(substituted)).collect(Collectors.toSet());
-        Set<Relation> ostream = model.getRelationshipInstanceMap().get(rname).parallelStream()
+        Set<Relation> ostream = model.getRelationships().get(rname).parallelStream()
                                      .filter(r -> r.getObject().equals(substituted)).collect(Collectors.toSet());
         for(Relation r : sstream){
             if(substByGroup.containsKey(r.getObject())){

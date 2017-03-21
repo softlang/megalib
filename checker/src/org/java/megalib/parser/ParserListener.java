@@ -15,10 +15,9 @@ import org.java.megalib.checker.services.TypeCheck;
 import org.java.megalib.models.MegaModel;
 
 import main.antlr.techdocgrammar.MegalibBaseListener;
+import main.antlr.techdocgrammar.MegalibParser.FunctionApplicationContext;
 import main.antlr.techdocgrammar.MegalibParser.FunctionDeclarationContext;
-import main.antlr.techdocgrammar.MegalibParser.FunctionInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.InstanceDeclarationContext;
-import main.antlr.techdocgrammar.MegalibParser.LinkContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.SubstitutionContext;
@@ -40,16 +39,16 @@ public class ParserListener extends MegalibBaseListener {
 
     @Override
     public void enterSubstitution(SubstitutionContext ctx) {
-        String subject = ctx.getChild(0).getText();
-        String object = ctx.getChild(2).getText();
+        String s = ctx.getChild(0).getText();
+        String o = ctx.getChild(2).getText();
         Set<String> set;
-        if(substByGroup.containsKey(object)){
-            set = substByGroup.get(object);
+        if(substByGroup.containsKey(o)){
+            set = substByGroup.get(o);
         }else{
             set = new HashSet<>();
         }
-        set.add(subject);
-        substByGroup.put(object, set);
+        set.add(s);
+        substByGroup.put(o, set);
 
     }
 
@@ -64,16 +63,20 @@ public class ParserListener extends MegalibBaseListener {
 
     @Override
     public void enterSubtypeDeclaration(SubtypeDeclarationContext context) {
-        String derivedType = context.getChild(0).getText();
-        String superType = context.getChild(2).getText();
-        if (typeCheck.addSubtypeOf(derivedType, superType, model)) {
-            model.addSubtypeOf(derivedType, superType);
+        Iterator<ParseTree> it = context.children.iterator();
+        String sub = it.next().getText();
+        it.next(); // skip '<'
+        String t = it.next().getText();
+        if (typeCheck.addSubtypeOf(sub, t, model)) {
+            model.addSubtypeOf(sub, t);
         }
-        if(context.getChildCount() > 4){
-            String link = context.getChild(5).getText();
-            if(typeCheck.addLink(derivedType, link.substring(1, link.length() - 1), model)){
-                model.addLink(derivedType, link.substring(1, link.length() - 1));
-
+        while(it.next().getText().equals(";")){
+            ParseTree r = it.next();
+            assert (r.getChildCount() == 2);
+            String p = r.getChild(0).getText();
+            String l = r.getChild(1).getText();
+            if(typeCheck.addRelationInstance(p, sub, l, model)){
+                model.addRelationInstance(p, sub, l);
             }
         }
     }
@@ -81,44 +84,49 @@ public class ParserListener extends MegalibBaseListener {
     @Override
     public void enterInstanceDeclaration(InstanceDeclarationContext context) {
         Iterator<ParseTree> it = context.children.iterator();
-        String instance = it.next().getText();
+        String s = it.next().getText();
         it.next(); // skip colon
-        String type = it.next().getText();
-        if (typeCheck.addInstanceOf(instance, type, model)) {
-            model.addInstanceOf(instance, type);
+        String t = it.next().getText();
+        if(typeCheck.addInstanceOf(s, t, model)){
+            model.addInstanceOf(s, t);
         }
         while(it.next().getText().equals(";")){
-            String relation = it.next().getText();
-            String object = it.next().getText();
-            if (relation.equals("=")) {
-                String link = object.substring(1, object.length() - 1);
-                if (typeCheck.addLink(instance, link, model)) {
-                    model.addLink(instance, link);
+            ParseTree r = it.next();
+            assert (r.getChildCount() == 2);
+            String p = r.getChild(0).getText();
+            String o = r.getChild(1).getText();
+            if(p.startsWith("^")){
+                p = p.substring(1);
+                if(typeCheck.addRelationInstance(p, o, s, model)){
+                    model.addRelationInstance(p, o, s);
                 }
-            } else {
-                if (typeCheck.addRelationInstance(relation, instance, object, model)) {
-                    model.addRelationInstance(relation, instance, object);
+            }else{
+                if(typeCheck.addRelationInstance(p, s, o, model)){
+                    model.addRelationInstance(p, s, o);
                 }
             }
+
         }
     }
 
     @Override
     public void enterRelationDeclaration(RelationDeclarationContext context) {
         Iterator<ParseTree> it = context.children.iterator();
-        String relation = it.next().getText();
+        String r = it.next().getText();
         it.next(); // skip <
-        String type1 = it.next().getText();
+        String t1 = it.next().getText();
         it.next(); // skip #
-        String type2 = it.next().getText();
-        if (typeCheck.addRelationDeclaration(relation, type1, type2, model)) {
-            model.addRelationDeclaration(relation, type1, type2);
+        String t2 = it.next().getText();
+        if (typeCheck.addRelationDeclaration(r, t1, t2, model)) {
+            model.addRelationDeclaration(r, t1, t2);
         }
         while(it.next().getText().equals(";")){
-            it.next(); // skip =
-            String link = it.next().getText();
-            if(typeCheck.addLink(relation, link.substring(1, link.length() - 1), model)){
-                model.addLink(relation, link.substring(1, link.length() - 1));
+            ParseTree rule = it.next();
+            assert (rule.getChildCount() == 2);
+            String sym = rule.getChild(0).getText();
+            String l = rule.getChild(1).getText();
+            if(typeCheck.addRelationInstance(sym, r, l, model)){
+                model.addRelationInstance(sym, r, l);
             }
         }
     }
@@ -126,30 +134,34 @@ public class ParserListener extends MegalibBaseListener {
     @Override
     public void enterRelationInstance(RelationInstanceContext context) {
         Iterator<ParseTree> it = context.children.iterator();
-        String subject = it.next().getText();
-        String relation = it.next().getText();
-        if(relation.startsWith("^")){
-            relation = relation.substring(1);
-        }
-        String object = it.next().getText();
-        if (typeCheck.addRelationInstance(relation, subject, object, model)) {
-            model.addRelationInstance(relation, subject, object);
-        }
-
-        while(it.next().getText().equals(";")){
-            relation = it.next().getText();
-            if(relation.startsWith("^")){
-                relation = relation.substring(1);
+        String s = it.next().getText();
+        ParseTree rule = it.next();
+        assert (rule.getChildCount() == 2);
+        String p = rule.getChild(0).getText();
+        String o = rule.getChild(1).getText();
+        if(p.startsWith("^")){
+            p = p.substring(1);
+            if(typeCheck.addRelationInstance(p, o, s, model)){
+                model.addRelationInstance(p, o, s);
             }
-            object = it.next().getText();
-            if (relation.equals("=")) {
-                String link = object.substring(1, object.length() - 1);
-                if (typeCheck.addLink(subject, link, model)) {
-                    model.addLink(subject, link);
+        }else{
+            if(typeCheck.addRelationInstance(p, s, o, model)){
+                model.addRelationInstance(p, s, o);
+            }
+        }
+        while(it.next().getText().equals(";")){
+            rule = it.next();
+            assert (rule.getChildCount() == 2);
+            p = rule.getChild(0).getText();
+            o = rule.getChild(1).getText();
+            if(p.startsWith("^")){
+                p = p.substring(1);
+                if(typeCheck.addRelationInstance(p, o, s, model)){
+                    model.addRelationInstance(p, o, s);
                 }
-            } else {
-                if (typeCheck.addRelationInstance(relation, subject, object, model)) {
-                    model.addRelationInstance(relation, subject, object);
+            }else{
+                if(typeCheck.addRelationInstance(p, s, o, model)){
+                    model.addRelationInstance(p, s, o);
                 }
             }
         }
@@ -184,7 +196,7 @@ public class ParserListener extends MegalibBaseListener {
     }
 
     @Override
-    public void enterFunctionInstance(FunctionInstanceContext context) {
+    public void enterFunctionApplication(FunctionApplicationContext context) {
         String functionName = context.getChild(0).getText();
         List<String> outputs = new ArrayList<>();
         List<String> inputs = new ArrayList<>();
@@ -212,32 +224,6 @@ public class ParserListener extends MegalibBaseListener {
 
         if (typeCheck.addFunctionApplication(functionName, inputs, outputs, model)) {
             model.addFunctionApplication(functionName, inputs, outputs);
-        }
-    }
-
-    @Override
-    public void enterLink(LinkContext context) {
-        Iterator<ParseTree> it = context.children.iterator();
-        String subject = it.next().getText();
-        String symbol = it.next().getText(); // skip =
-        String link = it.next().getText();
-        link = link.substring(1, link.length() - 1);
-        if(typeCheck.addLink(subject, link, model)){
-            model.addLink(subject, link);
-        }
-        while(it.next().getText().equals(";")){
-            String relation = it.next().getText();
-            String object = it.next().getText();
-            if(relation.equals("=")){
-                link = object.substring(1, object.length() - 1);
-                if(typeCheck.addLink(subject, link, model)){
-                    model.addLink(subject, link);
-                }
-            }else{
-                if(typeCheck.addRelationInstance(relation, subject, object, model)){
-                    model.addRelationInstance(relation, subject, object);
-                }
-            }
         }
     }
 
