@@ -101,7 +101,6 @@ public class CheckTest {
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
 
         assertEquals(0, ml.getTypeErrors().size());
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings().contains("The function f is not implemented. Please state what implements it."));
     }
@@ -160,7 +159,6 @@ public class CheckTest {
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
         assertEquals("Role missing for a.", c.getWarnings().get(0));
     }
@@ -173,7 +171,6 @@ public class CheckTest {
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
                    .contains("Cycles exist concerning the relationship subsetOf involving the following entities :[?l2, ?l3]"));

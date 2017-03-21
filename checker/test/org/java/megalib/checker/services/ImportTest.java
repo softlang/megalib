@@ -21,7 +21,6 @@ public class ImportTest {
 
     @Test
     public void testNoTypeErrors() {
-        ml.getTypeErrors().forEach(w -> System.out.println(w));
         assertEquals(0, ml.getTypeErrors().size());
     }
 

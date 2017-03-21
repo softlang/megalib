@@ -26,7 +26,6 @@ public class SubstitutionTest {
     public void setUp() throws IOException {
         ml = new ModelLoader();
         ml.loadFile("testsample/SubstitutionDemo/App.megal");
-        ml.getTypeErrors().forEach(w -> System.out.println(w));
         assertTrue(ml.getTypeErrors().isEmpty());
     }
 
@@ -61,7 +60,6 @@ public class SubstitutionTest {
     public void testApp() throws IOException {
         assertEquals(0, ml.getTypeErrors().size());
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(0, c.getWarnings().size());
     }
 

@@ -25,7 +25,6 @@ public class ParserListenerTest {
     @Test
     public void preludeIsParsed() {
         ModelLoader ml = new ModelLoader();
-        ml.getTypeErrors().forEach(w -> System.out.println(w));
         assertEquals(0, ml.getTypeErrors().size());
     }
 
@@ -299,7 +298,6 @@ public class ParserListenerTest {
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
-        ml.getTypeErrors().forEach(w -> System.out.println(w));
         assertTrue(ml.getTypeErrors().contains("Error at relationship 'subsetOf': a is not instantiated."));
     }
 
