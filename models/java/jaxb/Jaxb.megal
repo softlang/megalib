@@ -3,7 +3,7 @@ module java.jaxb.JAXB
 import java.JavaPlatform
 
 /* JAXB enables the binding of java objects to XML files */
-JAXB : Library;
+JAXB : Framework;
     = "https://jaxb.java.net/2.2.4/docs/xjc.html";
     belongsTo JavaWare;
     bridgesTo XMLWare;
@@ -13,7 +13,7 @@ JAXB : Library;
 
 /* The main components are a binding compiler
 and the serialization framework */
-bindingCompiler : Component;
+BindingCompiler : Technology;
     = "https://jaxb.java.net/2.2.4/docs/xjc.html";
     partOf JAXB;
     uses Java;
@@ -27,7 +27,7 @@ JAXB.Java : ProgrammingLanguage;
     = "https://java.net/projects/jaxb/sources/v2/show/jaxb-ri/codemodel/codemodel/src/main/java/com/sun/codemodel?rev=b820664ec9079ef731d1581c27d90b543704e92c";
     subsetOf Java.
 generation : XSD -> JAXB.Java.
-bindingCompiler implements JAXB.Java;
+BindingCompiler implements JAXB.Java;
     implements XSD;
     implements generation.
 ?XML.Subset : DataExchangeLanguage;
@@ -41,7 +41,7 @@ bindingCompiler implements JAXB.Java;
     elementOf JAXB.Java;
     manifestsAs File+;
     hasRole Schema;
-    uses Annotation;
+    //uses Annotation;
     correspondsTo ?xmlSchema.
 generation(?xmlSchema) |-> ?javaModel.
 
@@ -50,7 +50,7 @@ serialization and deserialization between
 Java objects and XML documents. */
 unmarshall : XML -> JVMObject.
 marshall : JVMObject -> XML.
-bindingFramework : Component;
+BindingFramework : Framework;
     = "https://docs.oracle.com/javaee/5/api/javax/xml/bind/package-summary.html";
     partOf JAXB;
     uses Java;

@@ -1,7 +1,7 @@
 module ruby.RubyPlatform
 
 /* basics */
-RubyPlatform : Software;
+RubyPlatform : Platform;
     = "https://github.com/ruby/ruby";
     uses Ruby;
     uses C;

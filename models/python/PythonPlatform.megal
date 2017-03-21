@@ -6,7 +6,7 @@ PythonPlatform : SoftwareSuite;
     uses Python;
     uses C.
     
-CPython : Software;
+CPython : Interpreter;
     = "https://en.wikipedia.org/wiki/CPython";
     implements Python;
     uses C;
@@ -16,4 +16,4 @@ SQLite3 : Library;
     = "https://docs.python.org/2/library/sqlite3.html";
     partOf PythonPlatform;
     uses Python;
-    uses SQLite.
+    implements SQL.

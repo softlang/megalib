@@ -5,7 +5,7 @@ import windows.Windows
 /* NSIS is a scripting language for build automation. The compiler
 makensis translates it into the Portable Executable (PE) format, which
 can then be interpreted by the Windows OS. */
-NSIS : BuildLanguage;
+NSIS : BuildScriptLanguage;
     = "https://en.wikipedia.org/wiki/Nullsoft_Scriptable_Install_System";
     belongsTo BuildAutomationWare.
 makensis : Platform;

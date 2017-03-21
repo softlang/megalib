@@ -35,7 +35,7 @@ SQLDatabaseAPI : API;
     hasRole Database;
     manifestsAs File;
     partOf ?localFileSystem.
-?webApplication : WebApplication;
+?webApplication : Application;
     uses HTML5;
     uses HTML5JavaScript;
     uses DatabaseAPISQL;
@@ -52,34 +52,34 @@ SQLDatabaseAPI : API;
     partOf ?website.
 
 
-?Browser implements JavaScript.Value.
-openDatabase : JavaScript.String # JavaScript.String # JavaScript.String # JavaScript.Number -> JavaScript.Object.
+?Browser implements JavaScriptValue.
+openDatabase : JavaScriptString # JavaScriptString # JavaScriptString # JavaScriptNumber -> JavaScriptObject.
 SQLDatabaseAPI implements openDatabase.
 ?databasename : Artifact;
     hasRole Value;
     manifestsAs Fragment;
-    elementOf JavaScript.String;
+    elementOf JavaScriptString;
     refersTo ?database1;
     partOf ?script.
 ?databaseVersion : Artifact;
     hasRole Value;
     manifestsAs Fragment;
-    elementOf JavaScript.String;
+    elementOf JavaScriptString;
     partOf ?script.
 ?displayName : Artifact;
     hasRole Value;
     manifestsAs Fragment;
-    elementOf JavaScript.String;
+    elementOf JavaScriptString;
     partOf ?script.
 ?estimatedSize : Artifact;
     hasRole Value;
     manifestsAs Fragment;
-    elementOf JavaScript.Number;
+    elementOf JavaScriptNumber;
     partOf ?script.
 ?databaseObject : Artifact;
     hasRole Database;
     manifestsAs Transient;
-    elementOf JavaScript.Object;
+    elementOf JavaScriptObject;
     represents ?database1.//??? Can we express this in another way?
 openDatabase(?databasename,?databaseVersion,?displayName,?estimatedSize) |-> ?databaseObject .
 
@@ -92,12 +92,12 @@ openDatabase(?databasename,?databaseVersion,?displayName,?estimatedSize) |-> ?da
 ?databaseObject2 : Artifact;
     hasRole Database;
     manifestsAs Transient;
-    elementOf JavaScript.Object;
+    elementOf JavaScriptObject;
     represents ?database2.
 ?transactionObject : Artifact;
     hasRole Value;
     manifestsAs Transient;
-    elementOf JavaScript.Object.
+    elementOf JavaScriptObject.
 ?queryObject : Artifact;
     hasRole Value;
     manifestsAs Transient;
@@ -106,7 +106,7 @@ openDatabase(?databasename,?databaseVersion,?displayName,?estimatedSize) |-> ?da
 ?transactionResult : Artifact;
     hasRole Value;
     manifestsAs Transient;
-    elementOf JavaScript.Object.
-transaction : JavaScript.Object # JavaScript.Object -> JavaScript.Object # JavaScript.Object # ?SQLImage.
+    elementOf JavaScriptObject.
+transaction : JavaScriptObject # JavaScriptObject -> JavaScriptObject # JavaScriptObject # ?SQLImage.
 transaction(?databaseObject,?transactionObject) |-> (?databaseObject2,?transactionResult,?database2).
 SQLDatabaseAPI implements transaction.

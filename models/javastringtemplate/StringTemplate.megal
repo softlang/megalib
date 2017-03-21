@@ -51,10 +51,10 @@ StringTemplate implements setVar.
 setVar(?variable,?value,?stObject1) |-> ?stObject2 .
 
 /* The render function can then be used to unwrap the produced String */
-render : StringTemplateObject -> JVM.String.
+render : StringTemplateObject -> JVMString.
 StringTemplate implements render.
 ?prettyPrintedString : Artifact;
-    elementOf JVM.String;
+    elementOf JVMString;
     manifestsAs Transient;
     hasRole Value.
 render(?stObject2) |-> ?prettyPrintedString.

@@ -5,8 +5,6 @@ import nsis.NSIS
 /* Owncloud enables the synchronization of files across multiple clients.
 It further supports conflict detection, simple version control and IOScheduling to handle the 
 synchronization. A policy states which files are supposed to synchronized. */
-URL : ReferenceLanguage;
-    = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator".
 FileSynchronization : AbstractProcess;
     = "https://en.wikipedia.org/wiki/File_synchronization".
 SynchronizedFile : Role;
@@ -17,7 +15,7 @@ VersionControl : AbstractProcess;
     = "https://en.wikipedia.org/wiki/Version_control".
 IOScheduling : AbstractProcess;
     = "https://en.wikipedia.org/wiki/I/O_scheduling".
-OwnCloud : Software;
+OwnCloud : Application;
     = "https://en.wikipedia.org/wiki/OwnCloud";
     = "https://en.wikipedia.org/wiki/Comparison_of_file_synchronization_software";
     uses FileSynchronization;
@@ -28,58 +26,48 @@ OwnCloud : Software;
 
 /* OwnCloud uses various languages. The program is written mostly in C++, C, Objective-C, 
 Perl and some bits of PHP. For the deployment process, NSIS and C-Make are used. */   
-Perl : ProgrammingLanguage;
-    = "https://en.wikipedia.org/wiki/Perl".
-PerlInterpreter : Platform;
-    = "https://en.wikipedia.org/wiki/Perl#Implementation";
-    implements Perl;
-    uses C.
-PHP : ProgrammingLanguage;
-    = "https://en.wikipedia.org/wiki/PHP".
 OwncloudPolicyLanguage : ConfigurationLanguage;
     = "https://github.com/owncloud/core/blob/5ce66c4d5f9a895bec41f56f7cc96661eec00ae6/config/config.sample.php";
     subsetOf PHP.
-PHPInterpreter : Platform;
-    = "https://secure.php.net/docs.php";
-    = "https://en.wikipedia.org/wiki/PHP";
-    implements PHP;
-    uses C.
 OwnCloud uses C++;
     uses C;
-    uses Objective-C;
+    uses ObjectiveC;
     uses Perl;
     uses NSIS;
-    uses C-Make;
+    uses CMake;
     implements OwncloudPolicyLanguage.
 
 /* The server communicates with the connected filesystems using the client software. In this
 use case we have two clients and one server involved. */
 OwnCloud uses Client-Server.
-OwnCloudServer : Software;
+OwnCloudServer : Application;
     = "https://github.com/owncloud/core";
     partOf OwnCloud;
     uses C++;
     uses C;
-    uses Objective-C;
+    uses ObjectiveC;
     uses Perl;
     uses NSIS;
-    uses C-Make;
+    uses CMake;
     implements OwncloudPolicyLanguage.
-OwnCloudClient : Software;
+OwnCloudClient : Application;
     = "https://de.wikipedia.org/wiki/OwnCloud#Sync-Clients";
     uses C++;
     uses C;
-    uses Objective-C;
+    uses ObjectiveC;
     uses Perl;
     uses NSIS;
-    uses C-Make;
+    uses CMake;
     partOf OwnCloud.
-?webServer : UserFiles; //TODO: Not precise enough, the node uses Windows where owncloud is plugged into the filesystem?
-    reuses OwnCloudServer.
-?fileSystem1 : UserFiles;
-    reuses OwnCloudClient.
-?fileSystem2 : UserFiles;
-    reuses OwnCloudClient.
+?webServer : Node. //TODO: Not precise enough, the node uses Windows where owncloud is plugged into the filesystem?
+?serverAppFiles : Artifact;
+    elementOf C++;
+    manifestsAs File+;
+    hasRole Executable;
+    ^deployedAs OwnCloudServer;
+    deployedAt ?webServer.
+?userFiles1 : UserFiles.
+?userFiles2 : UserFiles.
 
 /* A file is uploaded in the first file system and then downloaded due to the synchronization
 process by the second client. The sharing policy states that synchronization for this file
@@ -89,29 +77,29 @@ is enabled. */
     elementOf ?l;
     hasRole SynchronizedFile;
     manifestsAs File;
-    partOf ?fileSystem1.
+    partOf ?userFiles1.
 ?file2 : Artifact;
     elementOf ?l;
     hasRole SynchronizedFile;
     manifestsAs File;
-    partOf ?fileSystem2;
+    partOf ?userFiles2;
     correspondsTo ?file1.  // equality
 ?sharingAllowedPolicy : Artifact;
     elementOf OwncloudPolicyLanguage;
     hasRole Configuration;
     manifestsAs File;
-    partOf ?webServer.
+    deployedAt ?webServer.
 share : URL # OwncloudPolicyLanguage # ?l -> ?l.
 OwnCloud implements share.
 ?serverurl1 : Artifact;
     elementOf URL;
     hasRole Reference;
     manifestsAs Fragment;
-    partOf ?fileSystem1. //don't know where
+    partOf ?userFiles1. //don't know where
 ?serverurl2 : Artifact;
     elementOf URL;
     hasRole Reference;
     manifestsAs Fragment;
-    partOf ?fileSystem2;
+    partOf ?userFiles2;
     correspondsTo ?serverurl1.
 share(?serverurl1,?sharingAllowedPolicy,?file1) |-> ?file2.

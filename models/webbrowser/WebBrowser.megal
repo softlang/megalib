@@ -2,7 +2,7 @@ module webbrowser.WebBrowser
 
 
 /* A web browser typically implements all of them */
-?WebBrowser : Software;
+?WebBrowser : Application;
     = "https://en.wikipedia.org/wiki/Web_browser";
     implements HTML5;
     implements CSS;

@@ -77,15 +77,13 @@ loadObject(?config, ?database1,?query) |-> ?object1.
 changes */
 modifyObject : JVMObject -> JVMObject.
 commit : HibernateCFG # JVMObject # ?JDBCDatabaseFormat -> ?JDBCDatabaseFormat.
+?project : System;
+    uses Java;
+    implements modifyObject.
 ?object2 : Artifact;
     elementOf JVMObject;
     hasRole Value;
     manifestsAs Transient.
-?modifyingClass : Artifact;
-    elementOf Java;
-    hasRole SourceCode;
-    manifestsAs File;
-    implements modifyObject.
 Hibernate implements commit.
 modifyObject(?object1) |-> ?object2.
 commit(?config,?object2,?database1) |-> ?database2.

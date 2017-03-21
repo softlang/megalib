@@ -7,10 +7,10 @@ Rose.MDL : DataExchangeLanguage;
     = "http://dl.acm.org/citation.cfm?id=579213";
     = "https://www.ibm.com/developerworks/community/forums/html/topic?id=77777777-0000-0000-0000-000013786606";
     subsetOf XML.
-Rose.UML : ModelingLanguage;
+Rose.UML : SoftwareDesignLanguage;
     = "http://dl.acm.org/citation.cfm?id=579213";
     subsetOf UML.
-RationalRose : Software;
+RationalRose : Application;
     = "http://www-03.ibm.com/software/products/en/enterprise";
     = "http://dl.acm.org/citation.cfm?id=579213";
     uses Java;
@@ -23,7 +23,7 @@ RationalRose : Software;
 and then saved in the RoseMDL format.
 Rose does presumably not support the full set of UML diagrams.
 We could not find evidence for it supporting edge classes. */
-?Rose.UML.ClassDiagram : ModelingLanguage;
+?Rose.UML.ClassDiagram : SoftwareDesignLanguage;
     subsetOf Rose.UML.
 ?umlClassDiagram : Artifact;
     elementOf ?Rose.UML.ClassDiagram;

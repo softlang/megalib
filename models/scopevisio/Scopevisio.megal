@@ -1,6 +1,6 @@
 module scopevisio.Scopevisio
 
-import Windows
+import windows.Windows
 
 /* Scopevisio is a service based technology to support business programming with a focus
 on enterprise resource planning. It further supports customer relationship 
@@ -105,7 +105,7 @@ which services he payed for and is able to access. */
     ^deployedAs ScopevisioClient.
 
 /* The document management service is REST based */
-?ScopevisioDMS : Component;
+?ScopevisioDMS : Service;
     uses Java;
     partOf ScopevisioClient;
     supports DocumentManagement;

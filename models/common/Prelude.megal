@@ -59,6 +59,8 @@ Distributed vs non-distributed
 Technology -> Information Technology*/
 System < Entity;
     = "https://en.wikipedia.org/wiki/Software_system".
+UserFiles < System; //A loose collection of files
+    = "https://en.wikipedia.org/wiki/Computer_file".
 Technology < System;
     = "https://www.journals.elsevier.com/information-and-software-technology/".
 Library < Technology; //contains a set of reusable types and functions.
@@ -70,6 +72,8 @@ Framework < Technology; //incomplete applications
 //AdminInterface < Technology
 Plugin < Technology; // as an extension to another technology
     = "https://en.wikipedia.org/wiki/Plug-in_(computing)".
+Workspace < System;
+    = "https://en.wikipedia.org/wiki/Workspace#Technology_and_software".//Consists of artifacts a developer is working on
 Application < System; //a technology that consists of multiple programs and is deployed locally TODO: < System?
     = "https://en.wikipedia.org/wiki/Application_software".
 SoftwareSuite < Application; // a software collection that is deployed and managed together
@@ -86,6 +90,10 @@ Workbench < Application;
     = "https://en.wikipedia.org/wiki/Language_workbench".
 Platform < Technology; 
     = "https://en.wikipedia.org/wiki/Computing_platform".
+Interpreter < Technology;
+    = "https://en.wikipedia.org/wiki/Language_interpretation".
+OperatingSystem < Technology;
+    = "https://en.wikipedia.org/wiki/Operating_system".
 
 /* Implementation relationships */
 implements < System # Function;  //A software system may implement a mapping
@@ -104,8 +112,8 @@ supports < System # ProgrammingDomain;
 
 /* Technologies and languages may be frequently used in a technological context. 
 Specifically mapping technologies can bridge to other technological spaces. */
-belongsTo < Technology # TechnologySpace.
-bridgesTo < Technology # TechnologySpace.
+belongsTo < System # TechnologySpace.
+bridgesTo < System # TechnologySpace.
 
 
 /* A technology is managed by an artifact that serves as a repository. */

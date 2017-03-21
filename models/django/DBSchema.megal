@@ -1,7 +1,5 @@
 module django.DBSchema
 
-import python.PythonPlatform
-
 /* Starting Django Framework module
 Python : ProgrammingLanguage
 PythonObject : ObjectGraph

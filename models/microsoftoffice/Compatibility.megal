@@ -1,7 +1,5 @@
 module microsoftoffice.Compatibility
 
-import C
-import XML
 
 /* The old office suite Microsoft Office 2003 written in C++ is occasionally still in use.
 It still uses the deprecated binary format for persisting office documents. */
@@ -20,7 +18,7 @@ MicrosoftOfficeOpenXML : DocumentLanguage ;
     subsetOf XML.
 CFBF : DocumentLanguage;
     = "https://en.wikipedia.org/wiki/Compound_File_Binary_Format";
-    basedOn Binary;
+    encodedAs Binary;
     ^implements MicrosoftOffice2003.
 
 /* It implements a conversion that transforms a file apparent in the new format
@@ -35,7 +33,7 @@ MicrosoftOfficeCompatibility : Plugin;
 
 /* Most parts of the actual XSD schemas for the new office format are available online. */
 MicrosoftOfficeOpenXMLSchema : Artifact;
-    = "https://msdn.microsoft.com/en-us/library/dd979954(v=office.12).aspx";
+    ~= "https://msdn.microsoft.com/en-us/library/dd979954(v=office.12).aspx";
     elementOf XSD;
     hasRole Schema;
     manifestsAs File+;

@@ -104,6 +104,8 @@ HTML5JavaScript : ProgrammingLanguage;
     = "http://www.w3schools.com/html/html_scripts.asp";
     subsetOf JavaScript; //TODO: why?
     embeddedInto HTML5.
+PHP : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/PHP".
 CSS : StylesheetLanguage;
     = "https://en.wikipedia.org/wiki/Cascading_Style_Sheets".
 URL : ReferenceLanguage;
@@ -168,6 +170,10 @@ but is more frequently interpreted than compiled. */
 Ruby : ProgrammingLanguage;
     = "https://www.ruby-lang.org/en/".
 
+/* Perl */
+Perl : ProgrammingLanguage;
+    = "https://en.wikipedia.org/wiki/Perl".
+    
 /* Linux' Shell script language */
 Bash : CommandLineLanguage;
 	= "https://en.wikipedia.org/wiki/Bash_(Unix_shell)".

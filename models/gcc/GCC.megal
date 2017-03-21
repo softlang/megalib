@@ -7,7 +7,7 @@ GCC : Platform;
     = "https://en.wikipedia.org/wiki/GNU_Compiler_Collection";
     implements C++;
     implements C;
-    implements Objective-C;
-    implements C-Make;
+    implements ObjectiveC;
+    implements CMake;
     uses C++;
     uses C.

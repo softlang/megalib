@@ -16,13 +16,13 @@ Nashorn : Platform;
 /* In a use case an application may have some java class
 that contains the embedded JavaScript job. */
 ?javaApp : Application;
-    uses Java.
+    uses Java;
+    reuses Nashorn.
 ?javaCode : Artifact;
     partOf ?javaApp;
     elementOf Java;
     hasRole Executable;
-    manifestsAs File;
-    reuses Nashorn.
+    manifestsAs File.
 ?demoScript : Artifact;
     partOf ?javaCode;
     elementOf Nashorn.JavaScript;

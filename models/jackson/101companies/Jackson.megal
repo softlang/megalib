@@ -1,9 +1,9 @@
 module jackson.101companies.Jackson
 
 import jackson.Jackson where{
-    [sampleCompany substitutes ?jsonFile,
-    companyJava substitutes ?javaClass,
-    companyObject substitutes ?model]
+    [sampleCompany / ?jsonFile,
+    companyJava / ?javaClass,
+    companyObject / ?model]
 }
 
 /* The 101 implementation uses Jackson */

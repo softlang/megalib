@@ -95,9 +95,6 @@ public class WellformednessCheck {
         if(map.get(e).equals("Language")){
             warnings.add("State a specific subtype of Language for " + e + ".");
         }
-        if(map.get(e).equals("System")){
-            warnings.add("State a specific subtype of System for " + e + ".");
-        }
 
         if(model.isInstanceOf(e, "Artifact")){
             Optional<Set<Relation>> o = Optional.ofNullable(model.getRelationships().get("hasRole"))

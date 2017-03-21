@@ -30,7 +30,7 @@ MySQLWorkBench : IDE;
     reuses MySQL;
     uses C++;
     uses C#;
-    uses Objective-C;
+    uses ObjectiveC;
     implements SQLDDL;
     implements create;
     implements SQLQuery;
