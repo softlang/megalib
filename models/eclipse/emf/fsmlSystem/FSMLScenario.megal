@@ -12,10 +12,12 @@ import emf.Runtime where {
 }
 import emf.Genmodel
 import emf.Ecore
-import emf.Core where {
+import emf.DSL where {
   [ fsmlMetaModel substitutes ?dslMetaModel,
     fsmlModel substitutes ?dslModel,
     fsmlGenModel substitutes ?dslGenModel,
+    fsmlUI substitutes ?dslui,
+    fsmlEditor substitutes ?dslEditor
     .... ]
 }
 

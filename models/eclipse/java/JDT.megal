@@ -1,0 +1,19 @@
+module eclipse.java.JDT
+
+?platform :: ?
+
+import eclipse.Editor where {
+    [javaEditor / ?editor 
+     javaUI / ?ui ]
+}
+
+/* The most famous and standard plugin for Eclipse is the Java IDE. */
+JDT : Plugin;
+    = "https://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/neon2";
+    partOf Eclipse;
+    reuses JavaSEHotSpot;
+    uses Java;
+    implements Java.
+
+javaEditor ~= "?platform::org.eclipse.jdt/org/eclipse/jdt/JavaEditor.java";
+    partOf JDT.

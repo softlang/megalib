@@ -65,6 +65,9 @@ TemplateLanguage < Language; //A language for writing templates
     = "https://en.wikipedia.org/wiki/Template_processor".
 LogLanguage < DocumentLanguage; //A language that makes activities reproducible
     = "https://en.wikipedia.org/wiki/Logfile".
+GraphicsLanguage < Language;
+    = "".
+
 
 /* Subset according to set theory. This is only used when only a subset can be processed 
 as function input or only a subset is implemented by a technology. */

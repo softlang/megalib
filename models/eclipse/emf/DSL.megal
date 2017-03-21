@@ -2,6 +2,16 @@ module eclipse.emf.DSL
 
 import eclipse.emf.EMF
 
+import eclipse.Editor where {
+    [ ?dslui / ?ui,
+    ?dsleditor / ?editor ]
+}
+?DevPlatform : Platform
+?DevWorkspace : System
+?RunPlatform : Platform //deployed devworkspace
+?RunWorkspace : System
+
+
 /* While Ecore is the language for metamodels written in XMI, there are multiple existing
 languages that are subset of XMI that form DSLs. But this set to serialize models in XMI 
 is different from the metamodeling set. */
@@ -11,24 +21,29 @@ is different from the metamodeling set. */
 ?DSLXMI : DomainSpecificLanguage; //TODO: Defined or Implemented? keep it or remove it
     subsetOf XMI.
 ?dslGenModel : Artifact;
+    partOf ?DevWorkspace;
     elementOf GeneratorXMI;
     hasRole Configuration;
     manifestsAs File.
 ?dslJavaModel : Artifact;
+    partOf ?DevWorkspace;
     elementOf EcoreJava;
     hasRole MdeMetamodel;
     manifestsAs File+;
     defines ?DSLJVMObjects.
 ?dslMetaModel : Artifact;
+    partOf ?DevWorkspace;
     elementOf EcoreXMI;
     hasRole MdeMetamodel;
     manifestsAs File;
     defines ?DSLXMI.
 ?dslModel : Artifact;
+    partOf ?RunWorkspace;
     elementOf ?DSLXMI;
     hasRole MdeModel;
     manifestsAs File.
 ?dslJVMobject : Artifact;
+    partOf ?RunWorkspace;
     elementOf ?DSLJVMObjects;
     manifestsAs Transient;
     hasRole MdeModel.
@@ -41,3 +56,7 @@ saveDSLModel(?dslJVMobject) |-> ?dslModel.
 loadDSLModel : ?DSLXMI # EcoreJava -> ?DSLJVMObject.
 EMF.Persistence implements loadDSLModel.
 loadDSLModel(?dslModel,?dslJavaModel) |-> ?dslJVMobject.
+
+/* Editor generation */
+generateEditor : GeneratorXMI -> EmfEditorJava .
+generateEditor(?dslGenModel) |-> ?dsleditor .
