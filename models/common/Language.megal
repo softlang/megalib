@@ -4,33 +4,34 @@ import common.Concept
 
 /* A language is a set of digital entities. This not only includes
 entities having a concrete syntax but runtime data as well.
-Language subtypes based on intended purpose. */
+See the Megalib-Wiki for explanations. */
 Language < Entity;
-    = "https://en.wikipedia.org/wiki/Computer_language".
-ProgrammingLanguage < Language;  // a language to write programs with
+    = "https://en.wikipedia.org/wiki/Computer_language";
+    = "https://github.com/softlang/megalib/wiki/Language-Classification/".
+ProgrammingLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Programming_language".
 AssemblyLanguage < Language;
     = "https://en.wikipedia.org/wiki/Assembly_language".  
-MachineLanguage < Language; // hardware instructions
-    = "https://en.wikipedia.org/wiki/Machine_code".
-CommandLineLanguage < Language;  // statements to call programs, e.g., in Bash
+MachineLanguage < Language;
+    = "https://en.wikipedia.org/wiki/Machine_code". 
+CommandLineLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Command-line_interface".    
 
-DocumentLanguage < Language; // "written, drawn, presented or recorded representation of thoughts", e.g. office files, presentations, diagrams with no formal semantics.
+DocumentLanguage < Language;
     = "https://en.wikipedia.org/wiki/Document". 
-KnowledgeRepresentationLanguage < Language; //represent knowledge by using structured vocabulary, e.g., OWL
+KnowledgeRepresentationLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Category:Knowledge_representation_languages".
-DataExchangeLanguage < Language; //"Data exchange allows data to be shared between different computer programs", e.g. XML
+DataExchangeLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Data_exchange".
-StylesheetLanguage < Language; // expresses presentation of structured documents, e.g., CSS
+StylesheetLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Style_sheet_language".    
 DatabaseManagementLanguage < Language;
     = "https://en.wikipedia.org/wiki/Create,_read,_update_and_delete".
     
-TransformationLanguage < Language; // statements to define transformation, e.g., ATL
+TransformationLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Transformation_language";
     = "https://en.wikipedia.org/wiki/Model_transformation".
-QueryLanguage < Language; // query statements, e.g., SQL
+QueryLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Query_language".
 
 GrammarLanguage < Language; //define syntax of a language
@@ -38,32 +39,29 @@ GrammarLanguage < Language; //define syntax of a language
 SchemaLanguage < Language; // formulate schemas or metamodels, e.g., XSD
     = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages".
 
-SoftwareDesignLanguage < Language;  // describe or prescribe software, e.g., UML
+SoftwareDesignLanguage < Language;  
     = "https://en.wikipedia.org/wiki/Modeling_language".
 
-ConfigurationLanguage < Language; // configuration files, e.g., .classpath-files
+ConfigurationLanguage < Language;
     = "https://en.wikipedia.org/wiki/Configuration_file" .
-BuildScriptLanguage < Language; //languages used for writing build scripts
+BuildScriptLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Build_automation".
 
-ReferenceLanguage < Language; // express references, e.g., URI
+ReferenceLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Reference".
 
-MessageLanguage < Language; // structured messages, e.g., HTTP Requests
+MessageLanguage < Language;
     = "https://en.wikipedia.org/wiki/Request-response";
     = "https://en.wikipedia.org/wiki/Message_passing".
-//TODO: DSL shall be removed later... Has to replaced somewhere... !
-//DomainSpecificLanguage < Language; //The purpose is specific to the domain it is used in
-//    = "https://en.wikipedia.org/wiki/Domain-specific_language".
-ValueLanguage < Language; // simple run time data, e.g. Booleans, Integers or objects. Defined by a type.
+ValueLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Value_(computer_science)".
-ContainerLanguage < Language; //A binary format to express containment used by archives
+ContainerLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Digital_container_format".
-DatabaseLanguage < Language; //often binary format to manage data in, such as SQL databases or triplestores.
+DatabaseLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Database".
-TemplateLanguage < Language; //A language for writing templates 
+TemplateLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Template_processor".
-LogLanguage < DocumentLanguage; //A language that makes activities reproducible
+LogLanguage < DocumentLanguage;
     = "https://en.wikipedia.org/wiki/Logfile".
 GraphicsLanguage < Language;
     = "https://en.wikipedia.org/wiki/Graphics".
