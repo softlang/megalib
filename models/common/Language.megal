@@ -13,7 +13,7 @@ ProgrammingLanguage < Language;
 AssemblyLanguage < Language;
     = "https://en.wikipedia.org/wiki/Assembly_language".  
 MachineLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Machine_code". 
+    = "https://en.wikipedia.org/wiki/Machine_code".
 CommandLineLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Command-line_interface".    
 
@@ -34,9 +34,9 @@ TransformationLanguage < Language;
 QueryLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Query_language".
 
-GrammarLanguage < Language; //define syntax of a language
+GrammarLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Formal_grammar".
-SchemaLanguage < Language; // formulate schemas or metamodels, e.g., XSD
+SchemaLanguage < Language; 
     = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages".
 
 SoftwareDesignLanguage < Language;  
