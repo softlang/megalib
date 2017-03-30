@@ -38,6 +38,9 @@ JVMDouble : ValueLanguage;
 JVMString : ValueLanguage;
     = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html";
     subsetOf JVMObject. //string as a wrapper for a character array
+JVMList : ValueLanguage;
+    = "";
+    subsetOf JVMObject.
 JavaSEHotSpot : Application;
     = "http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136373.html";
     uses Java;

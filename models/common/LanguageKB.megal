@@ -50,6 +50,9 @@ XML : DataExchangeLanguage;
     = "http://www.w3schools.com/xml/";
     = "https://www.w3.org/XML/";
     belongsTo XMLWare.
+YAML : DataExchangeLanguage;
+    = "https://en.wikipedia.org/wiki/YAML";
+    influencedBy XML.
 XHTML : DocumentLanguage;
     = "https://de.wikipedia.org/wiki/Extensible_Hypertext_Markup_Language";
     subsetOf XML.
