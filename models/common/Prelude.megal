@@ -8,20 +8,20 @@ import common.LanguageKB
 /* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity;
     = "https://en.wikipedia.org/wiki/Artifact_(software_development)".
-hasRole < Artifact # Role; //Relating the artifact to an existing term known in a domain
+hasRole < Artifact # Role; 
     = "https://en.wikipedia.org/wiki/Terminology".
-defines < Artifact # Language; // An artifact may serve as the specification for a language, e.g., a grammar.
+defines < Artifact # Language; 
     = "https://en.wikipedia.org/wiki/Programming_language_specification";
     = "https://en.wikipedia.org/wiki/Syntax";
     = "https://en.wikipedia.org/wiki/Data_model".
-elementOf < Artifact # Language; // Every artifact is a member of a language
+elementOf < Artifact # Language; 
     = "https://en.wikipedia.org/wiki/Element_(mathematics)".
-conformsTo < Artifact # Artifact;  // An artifact may conform to a schema 
+conformsTo < Artifact # Artifact;  
     = "http://link.springer.com/article/10.1007%2Fs10270-006-0017-9";
     = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
-correspondsTo < Artifact # Artifact; // Two artifacts may be syntactically different, but semantically equal.
+correspondsTo < Artifact # Artifact; 
     = "http://dictionary.cambridge.org/dictionary/english/correspond".
-consistentWith < Artifact # Artifact; //Two artifacts a and b may have to be consistent such that if a changes, b has to be adapted.
+consistentWith < Artifact # Artifact; changes, b has to be adapted.
     = "https://en.wikipedia.org/wiki/Consistency".
 refersTo < Artifact # Artifact;  // Experimental! 
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier".
@@ -31,15 +31,15 @@ represents < Artifact # Artifact; // Experimental!
 /* Manifestation types of artifacts, where most are self-explanatory */
 Manifestation < Entity;
     = "https://en.oxforddictionaries.com/definition/manifestation".
-File : Manifestation; // a single file
+File : Manifestation; 
     = "https://en.wikipedia.org/wiki/Computer_file".
-File+ : Manifestation; // a set of files
+File+ : Manifestation; 
     = "https://en.wikipedia.org/wiki/Computer_file".
-Folder : Manifestation; //a folder
+Folder : Manifestation; 
     = "https://en.wikipedia.org/wiki/Directory_(computing)".
-Transient : Manifestation; //Temporary available values
+Transient : Manifestation; 
     = "https://en.wikipedia.org/wiki/Transient_(computer_programming)".
-Fragment : Manifestation;  //Some fragment of a file or transient
+Fragment : Manifestation;  
     = "https://en.wikipedia.org/wiki/Snippet_(programming)".
 manifestsAs < Artifact # Manifestation;
     = "https://en.oxforddictionaries.com/definition/manifestation".
@@ -48,57 +48,39 @@ manifestsAs < Artifact # Manifestation;
 Function < Entity;
     = "https://en.wikipedia.org/wiki/Function_(mathematics)".
 
-/* A technology is reusable 'third party' Software 
-Application is set up already, 
-Technology is reusable and has to be set up each time.
-Service < Application???
-BatchSystem
-InteractiveSystem
-Desktop vs Mobile vs Web 
-Distributed vs non-distributed
-Technology -> Information Technology*/
+/* A technology is reusable 'third party' Software */
 System < Entity;
     = "https://en.wikipedia.org/wiki/Software_system".
-UserFiles < System; //A loose collection of files
-    = "https://en.wikipedia.org/wiki/Computer_file".
 Technology < System;
+    = "https://en.wikipedia.org/wiki/Information_technology";
     = "https://www.journals.elsevier.com/information-and-software-technology/".
-Library < Technology; //contains a set of reusable types and functions.
+Library < Technology; 
     = "https://en.wikipedia.org/wiki/Library_(computing)".
-API < Technology; //Reusable code that facilitates the use of another technology/language. (Local API !)-- TODO: 
+API < Technology; 
     = "https://en.wikipedia.org/wiki/Application_programming_interface".
-Framework < Technology; //incomplete applications
+Framework < Technology; 
     = "https://en.wikipedia.org/wiki/Software_framework".
-//AdminInterface < Technology
-Plugin < Technology; // as an extension to another technology
+Plugin < Technology; 
     = "https://en.wikipedia.org/wiki/Plug-in_(computing)".
-Workspace < System;
-    = "https://en.wikipedia.org/wiki/Workspace#Technology_and_software".//Consists of artifacts a developer is working on
-Application < System; //a technology that consists of multiple programs and is deployed locally TODO: < System?
+Application < Technology; 
     = "https://en.wikipedia.org/wiki/Application_software".
-SoftwareSuite < Application; // a software collection that is deployed and managed together
-    = "https://en.wikipedia.org/wiki/Software_suite".
-Service < System;
+Service < Technology;
     = "https://en.wikipedia.org/wiki/Service_(systems_architecture)".
-WebService < Service;  // software deployed at a server, communication via HTTP
-    = "https://en.wikipedia.org/wiki/Web_service".
-Program < Application; // a software that implements only one process that is needed in distinct use cases.
-    = "https://en.wikipedia.org/wiki/Computer_program".
+Platform < Technology; 
+    = "https://en.wikipedia.org/wiki/Computing_platform".
 IDE < Application; // an environment to facilitate writing systems or technologies.
     = "https://en.wikipedia.org/wiki/Integrated_development_environment".
 Workbench < Application;
     = "https://en.wikipedia.org/wiki/Language_workbench".
-Platform < Technology; 
-    = "https://en.wikipedia.org/wiki/Computing_platform".
-Interpreter < Technology;
+Interpreter < Application;
     = "https://en.wikipedia.org/wiki/Language_interpretation".
-OperatingSystem < Technology;
+OperatingSystem < Platform;
     = "https://en.wikipedia.org/wiki/Operating_system".
 
 /* Implementation relationships */
-implements < System # Function;  //A software system may implement a mapping
+implements < System # Function;  
     = "https://en.wikipedia.org/wiki/Implementation".
-implements < System # Language.  //A software system can process a language as input or output
+implements < System # Language.  
 
 /* A technology or a language can facilitate the usage or realization of a conceptual description. */
 facilitates < Technology # DesignPattern.
@@ -125,12 +107,12 @@ One might further want to specify on which physical component the artifact
 is deployed. */
 deployedAs < System # Artifact; 
     = "https://en.wikipedia.org/wiki/Software_deployment".
-Node < Entity; //A computing node, that executes software and is linkable via ip or mac
+Node < Entity; 
     = "https://en.wikipedia.org/wiki/Node_(networking)#Distribute".
 Hardware < Entity;
     = "https://en.wikipedia.org/wiki/Computer_hardware".
 composedOf < Hardware # Node.
-deployedAt < Artifact # Node; //An artifact is deployed on a node
+deployedAt < Artifact # Node; 
     = "https://en.wikipedia.org/wiki/Software_deployment".
 deployedAt < Artifact # Hardware.
 
