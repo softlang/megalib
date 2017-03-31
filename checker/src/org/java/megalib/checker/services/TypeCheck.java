@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.java.megalib.models.Function;
@@ -27,6 +28,14 @@ public class TypeCheck {
 
     public List<String> getErrors() {
         return Collections.unmodifiableList(errors);
+    }
+
+    public boolean addNamespace(String name, String link, MegaModel m) {
+        if(!errors.isEmpty())
+            return false;
+        Optional<String> o = Optional.ofNullable(m.getNamespace(name));
+        o.ifPresent(l -> errors.add("Error at namespace " + name + "::<" + link + ">: Already defined namespace."));
+        return errors.isEmpty();
     }
 
     public boolean addSubtypeOf(String subtype, String type, MegaModel m) {
@@ -58,6 +67,9 @@ public class TypeCheck {
         }
         if (m.getInstanceOfMap().containsKey(instance)) {
             errors.add("Error at " + instance + ": Multiple types cannot be assigned to the same instance.");
+        }else if(m.getInstanceOfMap().keySet().parallelStream()
+            .anyMatch(i -> i.toLowerCase().equals(instance.toLowerCase()))){
+            errors.add("Error at "+ instance+ ": This ID is already given to another instance, possible with a different capitalization.");
         }
         return errors.isEmpty();
     }

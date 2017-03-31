@@ -10,7 +10,8 @@ statement:	subtypeDeclaration
 			   | relationDeclaration
 			   | relationInstance
 			   | functionDeclaration
-			   | functionApplication ;
+			   | functionApplication 
+			   | namespace;
 
 module: 'module' ID;
 
@@ -31,6 +32,8 @@ relationInstance: ID (link | relationship) (';' (link | relationship))* '.';
 relationship: ID ID;
 
 link: ('~=' | '=') LINK;
+
+namespace: WORD '::' LINK;
 
 functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* '.';
 

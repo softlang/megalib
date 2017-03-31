@@ -451,8 +451,8 @@ public class ParserListenerTest {
     @Test
     public void addFunctionApplicationDuplicate() throws ParserException, IOException {
         String input = "/**/l : ProgrammingLanguage. " + "f : l # l # l -> l # l. " + "a : Artifact. "
-                + "a elementOf l. " + "b : Artifact. " + "b elementOf l. " + "c : Artifact. " + "c elementOf l. "
-                + "f(a,b,c)|->(b,a). " + "f(a,b,c)|->(b,a).";
+                       + "a elementOf l. " + "b : Artifact. " + "b elementOf l. " + "d : Artifact. " + "d elementOf l. "
+                       + "f(a,b,d)|->(b,a). " + "f(a,b,d)|->(b,a).";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
@@ -460,7 +460,7 @@ public class ParserListenerTest {
         assertEquals(1, actual.get("f").size());
         assertEquals(1, ml.getTypeErrors().size());
         assertTrue(ml.getTypeErrors()
-                   .contains("Error at application of f with inputs [a, b, c] and outputs [b, a]: It already exists."));
+                     .contains("Error at application of f with inputs [a, b, d] and outputs [b, a]: It already exists."));
 
     }
 
@@ -587,7 +587,7 @@ public class ParserListenerTest {
     @Test
     public void checkInvalidFilePath() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/a : Artifact;" + "= \"file://notapath\".";
+        String input = "/**/a : Artifact;" + "~= \"file://notapath\".";
         ml.loadString(input);
         assertEquals(1, ml.getTypeErrors().size());
         assertEquals("Error at linking a. The link 'file://notapath' does not point to an existing file.",
@@ -597,7 +597,23 @@ public class ParserListenerTest {
     @Test
     public void checkValidFilePath() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/a : Artifact;" + "= \"file://checker.jar\".";
+        String input = "/**/a : Artifact;" + "~= \"file://checker.jar\".";
+        ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
+    }
+
+    @Test
+    public void checkNameSpaceURL() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/sl :: <http://softlang.org>. a : Artifact;" + "~= \"sl::course:techmodels\".";
+        ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
+    }
+
+    @Test
+    public void checkNameSpaceFilepath() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/modelsxy :: \"file://../models\". a : Artifact;" + "~= \"models::common/Prelude.megal\".";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
     }

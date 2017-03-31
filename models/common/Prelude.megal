@@ -21,7 +21,7 @@ conformsTo < Artifact # Artifact;
     = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 correspondsTo < Artifact # Artifact; 
     = "http://dictionary.cambridge.org/dictionary/english/correspond".
-consistentWith < Artifact # Artifact; changes, b has to be adapted.
+consistentWith < Artifact # Artifact; 
     = "https://en.wikipedia.org/wiki/Consistency".
 refersTo < Artifact # Artifact;  // Experimental! 
     = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier".

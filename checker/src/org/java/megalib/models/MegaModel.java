@@ -21,6 +21,7 @@ public class MegaModel {
     private Map<String,Set<Function>> functionDeclarations;
     private Map<String, Set<Function>> functionApplications;
 
+    private Map<String,String> namespaceMap;
     private Set<String> substitutedLanguages;
 
     private Set<String> removableAbstract;
@@ -36,6 +37,7 @@ public class MegaModel {
         functionApplications = new HashMap<>();
         substitutedLanguages = new HashSet<>();
         removableAbstract = new HashSet<>();
+        namespaceMap = new HashMap<>();
     }
 
     public Map<String, String> getSubtypesMap() {
@@ -122,12 +124,8 @@ public class MegaModel {
         functionApplications.put(name, set);
     }
 
-    public Map<String, String> getElementOfMap() {
+    public Map<String,String> getElementOfMap() {
         return Collections.unmodifiableMap(elementOfMap);
-    }
-
-    public Map<String, String> getSubsetOfMap() {
-        return Collections.unmodifiableMap(subsetOfMap);
     }
 
     public boolean isInstanceOf(String entity, String type) {
@@ -199,6 +197,14 @@ public class MegaModel {
             fAppmap.put(name, fs);
         }
         functionApplications = fAppmap;
+    }
+
+    public void addNamespace(String name, String link) {
+        namespaceMap.put(name, link);
+    }
+
+    public String getNamespace(String name) {
+        return namespaceMap.get(name);
     }
 
 }
