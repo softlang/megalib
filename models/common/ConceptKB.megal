@@ -195,9 +195,6 @@ Semaphore : Construct; //A flag to control access to a resource in the context o
 Annotation : Construct;
     = "https://en.wikipedia.org/wiki/Annotation";
     aspectOf ObjectOrientedProgramming.
-DistributedFilesystem : Construct;
-	= "https://en.wikipedia.org/wiki/Clustered_file_system#Distributed_file_systems";
-	aspectOf DistributedProgramming.
 SoftwareInterface : Construct;
 	= "https://en.wikipedia.org/wiki/Interface_(computing)".
 Cluster : Construct;
@@ -207,15 +204,7 @@ Cluster : Construct;
 ClusterManager : Construct;
  	= "https://en.wikipedia.org/wiki/Cluster_manager";
  	aspectOf DistributedProgramming.
-FileSystem : Construct;
-	= "https://en.wikipedia.org/wiki/File_system".
-DistributedFileSystem : Construct;
-	="https://en.wikipedia.org/wiki/Distributed_data_store";
-    refines FileSystem.
-LocalFileSystem : Construct;
-    = "https://en.wikipedia.org/wiki/File_system";
-    refines FileSystem.
-ResourceManagement : Construct;
+ResourceManagement : Construct; 
 	="https://en.wikipedia.org/wiki/Resource_management_(computing)".
 //A DataFrame is a Dataset organized into named columns.
 DataFrame : Construct;

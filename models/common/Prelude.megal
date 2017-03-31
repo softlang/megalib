@@ -48,7 +48,7 @@ manifestsAs < Artifact # Manifestation;
 Function < Entity;
     = "https://en.wikipedia.org/wiki/Function_(mathematics)".
 
-/* A technology is reusable 'third party' Software */
+/* A technology is reusable 'third party' Software. See Wiki */
 System < Entity;
     = "https://en.wikipedia.org/wiki/Software_system".
 Technology < System;
@@ -68,12 +68,15 @@ Service < Technology;
     = "https://en.wikipedia.org/wiki/Service_(systems_architecture)".
 Platform < Technology; 
     = "https://en.wikipedia.org/wiki/Computing_platform".
+
 IDE < Application; // an environment to facilitate writing systems or technologies.
     = "https://en.wikipedia.org/wiki/Integrated_development_environment".
-Workbench < Application;
+LanguageWorkbench < Application;
     = "https://en.wikipedia.org/wiki/Language_workbench".
 Interpreter < Application;
     = "https://en.wikipedia.org/wiki/Language_interpretation".
+FileSystem < Application;
+    = "https://en.wikipedia.org/wiki/File_system".
 OperatingSystem < Platform;
     = "https://en.wikipedia.org/wiki/Operating_system".
 

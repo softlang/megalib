@@ -34,7 +34,8 @@ Protocol < AbstractProcess; // A process defined by a protocol
 Algorithm < AbstractProcess;
     = "https://en.wikipedia.org/wiki/Algorithm".
 Construct < Entity; //A common language- and technology independent artifact constellation
-    = "https://en.wikipedia.org/wiki/Construct_(philosophy)".
+    = "https://en.wikipedia.org/wiki/Language_construct";
+    = "https://en.wikipedia.org/wiki/Category:Programming_constructs".
 
 /* Roles relate to the domain's or technological space's 
 terminology. They imply a commonly known purpose 
