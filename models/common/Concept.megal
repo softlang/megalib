@@ -1,23 +1,25 @@
 module common.Concept
 
+import common.Namespaces
+
 /* Common structural solutions for reappearing issues on the code level (Design pattern) or the component level (architectural pattern).  */
 DesignPattern < Entity;
-    = "https://en.wikipedia.org/wiki/Software_design_pattern".
+    = "wikipedia::Software_design_pattern".
 ArchitecturalPattern < Entity;
-    = "https://en.wikipedia.org/wiki/Architectural_pattern".
+    = "wikipedia::Architectural_pattern".
 
 /* Ways of thinking in the context of programming that have implications on 
 language semantics, available language constructs and usage benefits */
 Paradigm < Entity ;
-    = "https://en.wikipedia.org/wiki/Programming_paradigm".
+    = "wikipedia::Programming_paradigm".
 
 
 /* A field of study that defines common requirements, problems, terminology and ways for technologies or 
 languages to support it. */
 ProgrammingDomain < Entity;
-    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
+    = "wikipedia::Domain_(software_engineering)".
 subdomainOf < ProgrammingDomain # ProgrammingDomain; //a domain covers a subset of another domain's requirements, problems, terminology and ways for languages/technologies to support it.
-    = "https://en.wikipedia.org/wiki/Domain_(software_engineering)".
+    = "wikipedia::Domain_(software_engineering)".
 
 
 /* A space supporting application scenarios that contains software languages, programming tools such as IDEs, technologies, knowledge corpora, conferences and communities. While a programming domain could be called a problem space, a technology space could be called a solution space.  */
@@ -28,22 +30,22 @@ subspaceOf < TechnologySpace # TechnologySpace;
     
 /* Reusable ideal processes. */
 AbstractProcess < Entity; //Commonly known technology- and language independent processes
-    = "https://en.wikipedia.org/wiki/Abstract_process".
+    = "wikipedia::Abstract_process".
 Protocol < AbstractProcess; // A process defined by a protocol
-    = "https://en.wikipedia.org/wiki/Communications_protocol".
+    = "wikipedia::Communications_protocol".
 Algorithm < AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Algorithm".
+    = "wikipedia::Algorithm".
 Construct < Entity; //A common language- and technology independent artifact constellation
-    = "https://en.wikipedia.org/wiki/Language_construct";
-    = "https://en.wikipedia.org/wiki/Category:Programming_constructs".
+    = "wikipedia::Language_construct";
+    = "wikipedia::Category:Programming_constructs".
 
 /* Roles relate to the domain's or technological space's 
 terminology. They imply a commonly known purpose 
 that might even be defined in terms of a design or architectural
 pattern. */
 Role < Entity;
-    = "https://en.wikipedia.org/wiki/Artifact_(software_development)";
-    = "https://en.wikipedia.org/wiki/Terminology".
+    = "wikipedia::Artifact_(software_development)";
+    = "wikipedia::Terminology".
     
 /* Concepts set in the context of broader concepts. */
 aspectOf < Construct # Paradigm; //as in Semaphore aspectOf ConcurrentProgramming
@@ -62,6 +64,6 @@ refines < Role # Role.
 
 /* Structural parts of pattern are often referred to as participants. */
 participantOf < Role # DesignPattern;
-    = "https://en.wikipedia.org/wiki/Software_design_pattern#Structure".
+    = "wikipedia::Software_design_pattern#Structure".
 participantOf < Role # ArchitecturalPattern;
-    = "https://en.wikipedia.org/wiki/Architectural_pattern".
+    = "wikipedia::Architectural_pattern".

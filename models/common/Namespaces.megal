@@ -1,0 +1,8 @@
+module common.Namespaces
+
+/* This module contains a list of common namespaces. */
+wikipedia :: "https://en.wikipedia.org/wiki".
+w3school :: "http://www.w3schools.com".
+researchgate :: "https://www.researchgate.net/publication".
+w3c :: "https://www.w3.org".
+oracledocs :: "https://docs.oracle.com/".

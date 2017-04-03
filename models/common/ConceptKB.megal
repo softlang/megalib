@@ -4,95 +4,95 @@ import common.Concept
 
 /* Design pattern */
 Model-View-Controller : DesignPattern;
-    = "https://en.wikipedia.org/wiki/Model-view-controller".
+    = "wikipedia::Model-view-controller".
 
 /* Architectural pattern */
 Client-Server : ArchitecturalPattern;
     = "https://de.wikipedia.org/wiki/Client-Server-Modell".
 REST : ArchitecturalPattern;
-    = "https://en.wikipedia.org/wiki/Representational_state_transfer".
+    = "wikipedia::Representational_state_transfer".
 ServiceOrientedArchitecture : ArchitecturalPattern;
-    = "https://en.wikipedia.org/wiki/Service-oriented_architecture".
+    = "wikipedia::Service-oriented_architecture".
 
 /* Paradigms */
 ParallelProgramming : Paradigm;
-    = "https://en.wikipedia.org/wiki/Parallel_computing".
+    = "wikipedia::Parallel_computing".
 ConcurrentProgramming : Paradigm; // Programming in a way that enables and manages parallel execution
     = "https://blog.golang.org/concurrency-is-not-parallelism".
 ObjectOrientedProgramming : Paradigm; // Thinking of objects and their interrelation
-    = "https://en.wikipedia.org/wiki/Object-oriented_programming".
+    = "wikipedia::Object-oriented_programming".
 FunctionalProgramming : Paradigm; // Programming in a way that resembles formulating mathematical functions
-    = "https://en.wikipedia.org/wiki/Functional_programming".
+    = "wikipedia::Functional_programming".
 RelationalProgramming : Paradigm; // Enabling the representation of entities and their interrelationships.
-    = "https://en.wikipedia.org/wiki/Relational_model".
+    = "wikipedia::Relational_model".
 ModularProgramming : Paradigm; //Seperation of functionality implementations in modules
-    = "https://en.wikipedia.org/wiki/Modular_programming".
+    = "wikipedia::Modular_programming".
 AspectOrientedProgramming : Paradigm; //Seperation of cross-cutting concerns
-    = "https://en.wikipedia.org/wiki/Aspect-oriented_programming".
+    = "wikipedia::Aspect-oriented_programming".
 LogicProgramming : Paradigm; //programming based on formal logic
-    = "https://en.wikipedia.org/wiki/Logic_programming".
+    = "wikipedia::Logic_programming".
 
 /* Programming Domains */
 GeneralPurposeProgramming : ProgrammingDomain; // The study on applications in general.
-    = "https://en.wikipedia.org/wiki/General-purpose_programming_language".
+    = "wikipedia::General-purpose_programming_language".
 MetaProgramming : ProgrammingDomain; // The study on processing programs with support for language implementation 
-    = "https://en.wikipedia.org/wiki/Metaprogramming".
+    = "wikipedia::Metaprogramming".
 DatabaseProgramming : ProgrammingDomain; // The study on how to efficiently store and process data 
     = "http://101companies.org/wiki/Database_programming".
 ReverseEngineering : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Reverse_engineering".
+    = "wikipedia::Reverse_engineering".
 QualityAssurance : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Software_quality_assurance".
+    = "wikipedia::Software_quality_assurance".
 WebBrowsing : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Web_browser".
+    = "wikipedia::Web_browser".
 WebApplicationDevelopment : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Web_application_development".
+    = "wikipedia::Web_application_development".
 OfflineWebApplicationDevelopment : ProgrammingDomain;
     = "https://developer.mozilla.org/en-US/Apps/Fundamentals/Offline";
     subdomainOf WebApplicationDevelopment.
 ModelDrivenEngineering : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Model-driven_engineering".
+    = "wikipedia::Model-driven_engineering".
 SoftwareDocumentation : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Software_documentation".
+    = "wikipedia::Software_documentation".
 GraphicsProgramming : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Computer_graphics_(computer_science)".
+    = "wikipedia::Computer_graphics_(computer_science)".
 BusinessProgramming : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Business_software".
+    = "wikipedia::Business_software".
 EnterpriseResourcePlanning : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Enterprise_resource_planning";
+    = "wikipedia::Enterprise_resource_planning";
     subdomainOf BusinessProgramming.
 CustomerRelationshipManagement : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Customer_relationship_management";
+    = "wikipedia::Customer_relationship_management";
     subdomainOf BusinessProgramming.
 ProjectManagement : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Project_management_software".
+    = "wikipedia::Project_management_software".
 DocumentManagement : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Document_management_system".
+    = "wikipedia::Document_management_system".
 ECommerce : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/E-commerce";
+    = "wikipedia::E-commerce";
     subdomainOf BusinessProgramming.
 DistributedComputing : ProgrammingDomain;
- 	= "https://en.wikipedia.org/wiki/Distributed_computing".
+ 	= "wikipedia::Distributed_computing".
 DistributedProgramming : ProgrammingDomain;
-	= "https://en.wikipedia.org/wiki/Distributed_computing".
+	= "wikipedia::Distributed_computing".
 MachineLearning : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Machine_learning".
+    = "wikipedia::Machine_learning".
 GraphProgramming : ProgrammingDomain; 
-    = "https://en.wikipedia.org/wiki/Graph_theory".
+    = "wikipedia::Graph_theory".
 ConcurrentComputing : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Concurrent_computing".
+    = "wikipedia::Concurrent_computing".
 ParallelComputing : ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Parallel_computing".
+    = "wikipedia::Parallel_computing".
  
 /* Technological spaces */
 BuildAutomationWare : TechnologySpace;
-    = "https://en.wikipedia.org/wiki/List_of_build_automation_software".
+    = "wikipedia::List_of_build_automation_software".
 MDEWare : TechnologySpace;
-    = "https://en.wikipedia.org/wiki/Model-driven_engineering#Tools".
+    = "wikipedia::Model-driven_engineering#Tools".
 SoftwareAsAServiceWare : TechnologySpace;
-    = "https://en.wikipedia.org/wiki/Software_as_a_service".
+    = "wikipedia::Software_as_a_service".
 SQLWare : TechnologySpace;
-    = "https://en.wikipedia.org/wiki/SQL".
+    = "wikipedia::SQL".
 XMLWare : TechnologySpace;
     = "https://www.w3.org/XML/". 
 JSONWare : TechnologySpace;
@@ -100,28 +100,28 @@ JSONWare : TechnologySpace;
 JavaWare : TechnologySpace;
     = "http://link.springer.com/chapter/10.1007%2F978-3-642-30561-0_6".
 ClusterWare : TechnologySpace;
-	= "https://en.wikipedia.org/wiki/Computer_cluster".
+	= "wikipedia::Computer_cluster".
 ClusterComputingWare : TechnologySpace;
 	= "http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf";
 	subspaceOf ClusterWare.
 ClusterManagementWare : TechnologySpace;
- 	= "https://en.wikipedia.org/wiki/List_of_cluster_management_software";
+ 	= "wikipedia::List_of_cluster_management_software";
 	subspaceOf ClusterWare.
 GraphWare : TechnologySpace;
-    = "https://en.wikipedia.org/wiki/Category:Application-specific_graphs".
+    = "wikipedia::Category:Application-specific_graphs".
 
 /* Abstract Processes */
 PrettyPrinting : AbstractProcess; 
     = "http://101companies.org/wiki/Pretty_printing".
 TemplateProcessing : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Template_processor".
+    = "wikipedia::Template_processor".
 Compilation : AbstractProcess; //Software translation of a higher level language into a lower level language
-    = "https://en.wikipedia.org/wiki/Compiler";
+    = "wikipedia::Compiler";
     aspectOf MetaProgramming.
 Interpretation : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Interpreter_(computing)".
+    = "wikipedia::Interpreter_(computing)".
 Transformation : AbstractProcess; // Takes input data and produces output data. Input and output are elements of a software language that is not a data type.
-    = "https://en.wikipedia.org/wiki/Data_transformation".
+    = "wikipedia::Data_transformation".
 CoarseGrainedTransformation : AbstractProcess;
 	="http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf";
     ="http://stackoverflow.com/questions/26195512/fine-grained-transformation-vs-coarse-grained-transformations";
@@ -130,178 +130,178 @@ FineGrainedTransformation : AbstractProcess;
     = "http://stackoverflow.com/questions/26195512/fine-grained-transformation-vs-coarse-grained-transformations";
     refines Transformation.
 Validation : AbstractProcess; //Validate quality
-    = "https://en.wikipedia.org/wiki/Verification_and_validation#Categories_of_validation";
+    = "wikipedia::Verification_and_validation#Categories_of_validation";
     aspectOf QualityAssurance.
 Verification : AbstractProcess; //Correctness Proof
-    = "https://en.wikipedia.org/wiki/Software_verification";
+    = "wikipedia::Software_verification";
     aspectOf QualityAssurance.
 Rendering : AbstractProcess; //synthesizing an image from some description format
-    = "https://en.wikipedia.org/wiki/Rendering_(computer_graphics)";
+    = "wikipedia::Rendering_(computer_graphics)";
     aspectOf GraphicsProgramming.
 Metric : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Software_metric";
+    = "wikipedia::Software_metric";
     aspectOf ReverseEngineering;
     aspectOf QualityAssurance.
 CodeCoverage : AbstractProcess; //specific metric
-    = "https://en.wikipedia.org/wiki/Code_coverage";
+    = "wikipedia::Code_coverage";
     aspectOf QualityAssurance.
 Testing : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Software_testing";
+    = "wikipedia::Software_testing";
     aspectOf QualityAssurance.
 Persistence : AbstractProcess; //or data binding
     = "http://101companies.org/wiki/Persistence".
 Serialization : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Serialization";
+    = "wikipedia::Serialization";
     refines Persistence.
 Mapping : AbstractProcess;
     = "http://101companies.org/wiki/Mapping".
 XMLDataBinding : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/XML_data_binding";
+    = "wikipedia::XML_data_binding";
     refines Mapping.
 ObjectRelationalMapping : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Object-relational_mapping";
+    = "wikipedia::Object-relational_mapping";
     refines Mapping.
 ObjectJsonMapping : AbstractProcess;
     = "http://stackoverflow.com/questions/16090464/mapping-json-data-to-java-objects";
     refines Mapping.
 Compression : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Data_compression".
+    = "wikipedia::Data_compression".
 MapReduce : AbstractProcess;
 	= "https://static.googleusercontent.com/media/research.google.com/de//archive/mapreduce-osdi04.pdf";
 	aspectOf DistributedProgramming.
 Logging : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Logfile".
+    = "wikipedia::Logfile".
 Introspection : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Type_introspection";
+    = "wikipedia::Type_introspection";
     aspectOf MetaProgramming.
 Reflection : AbstractProcess;
-    = "https://en.wikipedia.org/wiki/Reflection_(computer_programming)";
+    = "wikipedia::Reflection_(computer_programming)";
     aspectOf MetaProgramming.
 ClusterComputing : AbstractProcess;
  	= "http://de.slideshare.net/bosswebtech/cluster-computing-11382951";
  	= "http://gridbus.csse.unimelb.edu.au/papers/ic_cluster.pdf";
  	aspectOf DistributedProgramming.
 StreamProcessing : AbstractProcess;
-	= "https://en.wikipedia.org/wiki/Stream_processing".
+	= "wikipedia::Stream_processing".
 HTTP : Protocol;
-    = "https://en.wikipedia.org/wiki/HTTP".
+    = "wikipedia::HTTP".
 HTTPS : Protocol ;
-    = "https://en.wikipedia.org/wiki/HTTPS".
+    = "wikipedia::HTTPS".
     
 /* Known constructs that imply a certain setup and purpose of up to multiple involved artifacts */
 Semaphore : Construct; //A flag to control access to a resource in the context of concurrent programs.
-    = "https://en.wikipedia.org/wiki/Semaphore_(programming)";
+    = "wikipedia::Semaphore_(programming)";
     aspectOf ConcurrentProgramming.
 Annotation : Construct;
-    = "https://en.wikipedia.org/wiki/Annotation";
+    = "wikipedia::Annotation";
     aspectOf ObjectOrientedProgramming.
 SoftwareInterface : Construct;
-	= "https://en.wikipedia.org/wiki/Interface_(computing)".
+	= "wikipedia::Interface_(computing)".
 Cluster : Construct;
  	= "http://de.slideshare.net/bosswebtech/cluster-computing-11382951";
  	= "http://gridbus.csse.unimelb.edu.au/papers/ic_cluster.pdf";
  	aspectOf DistributedProgramming.
 ClusterManager : Construct;
- 	= "https://en.wikipedia.org/wiki/Cluster_manager";
+ 	= "wikipedia::Cluster_manager";
  	aspectOf DistributedProgramming.
 ResourceManagement : Construct; 
-	="https://en.wikipedia.org/wiki/Resource_management_(computing)".
+	="wikipedia::Resource_management_(computing)".
 //A DataFrame is a Dataset organized into named columns.
 DataFrame : Construct;
 	="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html".
 Graph : Construct;
-    = "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)".
+    = "wikipedia::Graph_(discrete_mathematics)".
 Object : Construct;
-    = "https://en.wikipedia.org/wiki/Object_(computer_science)".
+    = "wikipedia::Object_(computer_science)".
 Tree : Construct;
-    = "https://en.wikipedia.org/wiki/Tree_(graph_theory)".
+    = "wikipedia::Tree_(graph_theory)".
 Expression : Construct; //Propose a language of expression not yet evaluated to values (compile-time)
-   = "https://en.wikipedia.org/wiki/Expression_(computer_science)".
+   = "wikipedia::Expression_(computer_science)".
 
 /* Frequently appearing roles that single artifacts may have. */
 Configuration : Role;   //settings statements.
-    = "https://en.wikipedia.org/wiki/Configuration_file".
+    = "wikipedia::Configuration_file".
 BuildScript : Role; //Scripts for deploying software such as ANT or Maven files
-    = "https://en.wikipedia.org/wiki/Software_build".
+    = "wikipedia::Software_build".
 Grammar : Role;   //syntax definition
-    = "https://en.wikipedia.org/wiki/Context-free_grammar".
+    = "wikipedia::Context-free_grammar".
 Database : Role;  //any artifact that only stores data
-    = "https://en.wikipedia.org/wiki/Database".
+    = "wikipedia::Database".
 Schema : Role;  //provide a schema
-    = "https://en.wikipedia.org/wiki/Database_schema".
+    = "wikipedia::Database_schema".
 Query : Role;  //a search declaration to satisfy information needs of software or humans
-    = "https://en.wikipedia.org/wiki/Query_language".
+    = "wikipedia::Query_language".
 MdeModel : Role; // in the sense of MDE
-    = "https://en.wikipedia.org/wiki/Model-driven_engineering".
+    = "wikipedia::Model-driven_engineering".
 MdeMetamodel : Role; // in the sense of MDE
-    = "https://en.wikipedia.org/wiki/Metamodeling".
+    = "wikipedia::Metamodeling".
 Diagram : Role; //a visual representation of a model
-    = "https://en.wikipedia.org/wiki/Diagram".
+    = "wikipedia::Diagram".
 MvcModel : Role; //data classes plus minor business logics
-    = "https://en.wikipedia.org/wiki/Model-view-controller".
+    = "wikipedia::Model-view-controller".
 MvcView : Role; //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
-    = "https://en.wikipedia.org/wiki/Model-view-controller".
+    = "wikipedia::Model-view-controller".
 MvcController : Role; //Some kind of mediator between model and view, which may execute rather complex computations
-    = "https://en.wikipedia.org/wiki/Model-view-controller".
+    = "wikipedia::Model-view-controller".
 Value : Role; //A runtime value in the execution process of a program
-    = "https://en.wikipedia.org/wiki/Value_(computer_science)".
+    = "wikipedia::Value_(computer_science)".
 Message : Role; //A message in a communication of software components
-    = "https://en.wikipedia.org/wiki/Message_passing".
+    = "wikipedia::Message_passing".
 Specification : Role; //Defines some other conceptual entity in either half-formal or formal manner
-    = "https://en.wikipedia.org/wiki/Specification_(technical_standard)".
+    = "wikipedia::Specification_(technical_standard)".
 Log : Role; //Contains runtime information that is additionally gathered.
-    = "https://en.wikipedia.org/wiki/Logfile".
+    = "wikipedia::Logfile".
 DescriptiveModel : Role;  //A model that describes existing software
     = "http://www.businessdictionary.com/definition/descriptive-model.html".
 TransformationRule : Role; //A definition for a text- or model-transformation that declares data manipulations.
     = "http://101companies.org/wiki/Transformation".
 Reference : Role; //links to some existing entity.
-    = "https://en.wikipedia.org/wiki/Reference".
+    = "wikipedia::Reference".
 SourceCode : Role; // An implementation of functionality
-    = "https://en.wikipedia.org/wiki/Source_code".
+    = "wikipedia::Source_code".
 ByteCode : Role; //instructions for a software interpreter such as the JVM
-    = "https://en.wikipedia.org/wiki/Bytecode".
+    = "wikipedia::Bytecode".
 Executable : Role; //Any artifact that is executed and not only used.
-    = "https://en.wikipedia.org/wiki/Executable".
+    = "wikipedia::Executable".
 WebResource : Role; // Contains information and is deployed on a web server.
-    = "https://en.wikipedia.org/wiki/Web_resource".
+    = "wikipedia::Web_resource".
 Archive : Role; //A file that has folder functionality, such as .jar or .zip
-    = "https://en.wikipedia.org/wiki/Archive_file".
+    = "wikipedia::Archive_file".
 Document : Role; //An informal file that is deployed locally 
-    = "https://en.wikipedia.org/wiki/Document".
+    = "wikipedia::Document".
 Repository : Role; //A database that manages code artifacts and acts as a VCS
-    = "https://en.wikipedia.org/wiki/Repository_(version_control)".
+    = "wikipedia::Repository_(version_control)".
 Module : Role;
-    = "https://en.wikipedia.org/wiki/Modular_programming".
+    = "wikipedia::Modular_programming".
 Interface : Role;
-    = "https://en.wikipedia.org/wiki/Protocol_(object-oriented_programming)". //weird
+    = "wikipedia::Protocol_(object-oriented_programming)". //weird
 TestCase : Role;
-    = "https://en.wikipedia.org/wiki/Test_case".
+    = "wikipedia::Test_case".
 POJO : Role;
-    = "https://en.wikipedia.org/wiki/Plain_Old_Java_Object".
+    = "wikipedia::Plain_Old_Java_Object".
 Template : Role;
-    = "https://en.wikipedia.org/wiki/Template_processor".
+    = "wikipedia::Template_processor".
 Wrapper : Role;
-    = "https://en.wikipedia.org/wiki/Primitive_wrapper_class".
+    = "wikipedia::Primitive_wrapper_class".
 Server : Role;
-    = "https://en.wikipedia.org/wiki/Server_(computing)".
+    = "wikipedia::Server_(computing)".
 Client : Role;
-    = "https://en.wikipedia.org/wiki/Client_(computing)".
+    = "wikipedia::Client_(computing)".
 Identifier : Role;
-    = "https://en.wikipedia.org/wiki/Identifier".
+    = "wikipedia::Identifier".
 TransactionLog : Role;
-    = "https://en.wikipedia.org/wiki/Transaction_log".
+    = "wikipedia::Transaction_log".
 MapOperation : Role;
 	="https://wiki.apache.org/hadoop/HadoopMapReduce";
-    ="https://en.wikipedia.org/wiki/MapReduce#Map_function".
+    ="wikipedia::MapReduce#Map_function".
 ReduceOperation : Role;
 	="https://wiki.apache.org/hadoop/HadoopMapReduce";
-    ="https://en.wikipedia.org/wiki/MapReduce#Reduce_function".
+    ="wikipedia::MapReduce#Reduce_function".
 SystemState : Role; //an artifact may represent the system state.
-	= "https://en.wikipedia.org/wiki/State_(computer_science)".
+	= "wikipedia::State_(computer_science)".
 DriverProgram : Role;
-	= "https://en.wikipedia.org/wiki/Scala_(programming_language)". //TODO: Better link
+	= "wikipedia::Scala_(programming_language)". //TODO: Better link
 DataStream : Role;
-	= "https://en.wikipedia.org/wiki/Data_stream".
+	= "wikipedia::Data_stream".
 Worker : Role;
-	="https://en.wikipedia.org/wiki/Thread_pool".
+	="wikipedia::Thread_pool".

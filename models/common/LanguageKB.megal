@@ -5,40 +5,40 @@ import common.Language
 /* PDF file format has frequent appearence everywhere. */
 PDF : DocumentLanguage;
     = "http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf";
-    = "https://en.wikipedia.org/wiki/Portable_Document_Format".
+    = "wikipedia::Portable_Document_Format".
 
 /* Meta Object Facility is an OMG standard for Model driven engineering.
 UML instantiates MOF. */
 CMOF : SchemaLanguage;
-    = "https://en.wikipedia.org/wiki/Meta-Object_Facility".
+    = "wikipedia::Meta-Object_Facility".
 EMOF : SchemaLanguage;
     = "http://www.omg.org/spec/MOF/";
     subsetOf CMOF.
 UML : SoftwareDesignLanguage;
     = "http://www.uml.org/";
     = "http://www.omg.org/spec/UML/2.5/";
-    = "https://en.wikipedia.org/wiki/Unified_Modeling_Language";
+    = "wikipedia::Unified_Modeling_Language";
     encodedAs Visual;
     supports ModelDrivenEngineering;
     supports SoftwareDocumentation;
     facilitates ObjectOrientedProgramming.
 UML.ClassDiagram : SoftwareDesignLanguage;
-    = "https://en.wikipedia.org/wiki/Class_diagram";
+    = "wikipedia::Class_diagram";
     subsetOf UML.
  
 /* Structured Query Language falls apart in a set for defining schematic information, querying and updating */
 SQL : DatabaseManagementLanguage;
-    = "https://en.wikipedia.org/wiki/SQL";
+    = "wikipedia::SQL";
     belongsTo SQLWare;
     facilitates RelationalProgramming.
 SQLQuery : QueryLanguage;
-    = "https://en.wikipedia.org/wiki/SQL#Queries";
+    = "wikipedia::SQL#Queries";
     subsetOf SQL.
 SQLDDL : SchemaLanguage;
-    = "https://en.wikipedia.org/wiki/SQL#Data_definition";
+    = "wikipedia::SQL#Data_definition";
     subsetOf SQL.
 SQLDML : TransformationLanguage;
-    = "https://en.wikipedia.org/wiki/SQL#Data_manipulation";
+    = "wikipedia::SQL#Data_manipulation";
     subsetOf SQL.
  
 /* XML is a markup language invented by W3C. The specification
@@ -46,47 +46,47 @@ is available online in an HTML version and can be viewed using
 a browser. There are multiple languages that can be used to define 
 schemas for XML. */
 XML : DataExchangeLanguage;
-    = "https://en.wikipedia.org/wiki/XML";
+    = "wikipedia::XML";
     = "http://www.w3schools.com/xml/";
     = "https://www.w3.org/XML/";
     belongsTo XMLWare.
 YAML : DataExchangeLanguage;
-    = "https://en.wikipedia.org/wiki/YAML";
+    = "wikipedia::YAML";
     influencedBy XML.
 XHTML : DocumentLanguage;
     = "https://de.wikipedia.org/wiki/Extensible_Hypertext_Markup_Language";
     subsetOf XML.
 XSD : SchemaLanguage;
-    = "https://en.wikipedia.org/wiki/XML_Schema_(W3C)";
+    = "wikipedia::XML_Schema_(W3C)";
     = "https://www.w3.org/TR/xmlschema11-1/";
     subsetOf XML.
 DTD : SchemaLanguage;
-    = "https://en.wikipedia.org/wiki/Document_type_definition";
+    = "wikipedia::Document_type_definition";
     = "http://www.w3schools.com/xml/xml_dtd_intro.asp".
 RelaxNGXML : SchemaLanguage;
-    = "https://en.wikipedia.org/wiki/RELAX_NG#XML_syntax";
+    = "wikipedia::RELAX_NG#XML_syntax";
     subsetOf XML.
 RelaxNGCompact : SchemaLanguage;
-    = "https://en.wikipedia.org/wiki/RELAX_NG#Compact_syntax";
+    = "wikipedia::RELAX_NG#Compact_syntax";
     = "http://relaxng.org/spec-20011203.html";
     dialectOf RelaxNGXML.
 
 /* XMI is an OMG standard for exchanging models. */
 XMI : DataExchangeLanguage;
-    = "https://en.wikipedia.org/wiki/XML_Metadata_Interchange";
+    = "wikipedia::XML_Metadata_Interchange";
     = "http://www.omg.org/spec/XMI/2.5.1/PDF";
     subsetOf XML.
 
 /* JSON exchange format */
 JSON : DataExchangeLanguage;
-    = "https://en.wikipedia.org/wiki/JSON";
+    = "wikipedia::JSON";
     belongsTo JSONWare.
 JSONSchema : SchemaLanguage;
-    = "https://en.wikipedia.org/wiki/JSON#JSON_Schema".
+    = "wikipedia::JSON#JSON_Schema".
 
 /* Common web languages */
 JavaScript : ProgrammingLanguage;
-    = "https://en.wikipedia.org/wiki/JavaScript";
+    = "wikipedia::JavaScript";
     supports WebApplicationDevelopment.
 // TODO: Maybe we shouldn't talk about such Values here, since Values always depend heavily on technology.
 JavaScriptValue : ValueLanguage;
@@ -108,17 +108,17 @@ HTML5JavaScript : ProgrammingLanguage;
     subsetOf JavaScript; //TODO: why?
     embeddedInto HTML5.
 PHP : ProgrammingLanguage;
-    = "https://en.wikipedia.org/wiki/PHP".
+    = "wikipedia::PHP".
 CSS : StylesheetLanguage;
-    = "https://en.wikipedia.org/wiki/Cascading_Style_Sheets".
+    = "wikipedia::Cascading_Style_Sheets".
 URL : ReferenceLanguage;
-    = "https://en.wikipedia.org/wiki/Uniform_Resource_Locator".
+    = "wikipedia::Uniform_Resource_Locator".
 HTTPRequest : MessageLanguage;
-    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_message".
+    = "wikipedia::Hypertext_Transfer_Protocol#Request_message".
 HTTPResponse : MessageLanguage;
-    = "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Response_message".
+    = "wikipedia::Hypertext_Transfer_Protocol#Response_message".
 SOAP : MessageLanguage;
-    = "https://en.wikipedia.org/wiki/SOAP";
+    = "wikipedia::SOAP";
     = "https://www.w3.org/TR/soap/";
     subsetOf XML;
     embeddedInto HTTPRequest;
@@ -128,13 +128,13 @@ SOAP : MessageLanguage;
 C++, which extends the procedural style by object orientation
 and other paradigms. */
 C++ : ProgrammingLanguage;
-    = "https://en.wikipedia.org/wiki/C%2B%2B".
+    = "wikipedia::C%2B%2B".
 C : ProgrammingLanguage;
-    = "https://en.wikipedia.org/wiki/C_(programming_language)".
+    = "wikipedia::C_(programming_language)".
 ObjectiveC : ProgrammingLanguage;
-    = "https://en.wikipedia.org/wiki/Objective-C".
+    = "wikipedia::Objective-C".
 CMake : BuildScriptLanguage;
-    = "https://en.wikipedia.org/wiki/CMake".
+    = "wikipedia::CMake".
 
 /* JVM related languages */
 Java : ProgrammingLanguage;
@@ -145,19 +145,19 @@ Java : ProgrammingLanguage;
     facilitates FunctionalProgramming;
     facilitates ConcurrentProgramming.
 JavaByteCode : MachineLanguage;
-    = "https://en.wikipedia.org/wiki/Java_bytecode";
+    = "wikipedia::Java_bytecode";
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/index.html";
     belongsTo JavaWare. 
 Scala : ProgrammingLanguage;
-	= "https://en.wikipedia.org/wiki/Scala_(programming_language)".
+	= "wikipedia::Scala_(programming_language)".
 C# : ProgrammingLanguage;
-    = "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)".
+    = "wikipedia::C_Sharp_(programming_language)".
     
 /* jar container format */
 Zip : ContainerLanguage;
-    = "https://en.wikipedia.org/wiki/Zip_(file_format)".
+    = "wikipedia::Zip_(file_format)".
 Jar : ContainerLanguage; 
-    = "https://en.wikipedia.org/wiki/JAR_(file_format)";
+    = "wikipedia::JAR_(file_format)";
     dialectOf Zip.
     
 /* The python programming language */    
@@ -175,14 +175,14 @@ Ruby : ProgrammingLanguage;
 
 /* Perl */
 Perl : ProgrammingLanguage;
-    = "https://en.wikipedia.org/wiki/Perl".
+    = "wikipedia::Perl".
     
 /* Linux' Shell script language */
 Bash : CommandLineLanguage;
-	= "https://en.wikipedia.org/wiki/Bash_(Unix_shell)".
+	= "wikipedia::Bash_(Unix_shell)".
     
 /*
 The path to a file is called a file path
 */	
 FilePath : ReferenceLanguage;
-	= "https://en.wikipedia.org/wiki/Path_(computing)".
+	= "wikipedia::Path_(computing)".

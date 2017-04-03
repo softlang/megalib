@@ -6,71 +6,71 @@ import common.Concept
 entities having a concrete syntax but runtime data as well.
 See the Megalib-Wiki for explanations. */
 Language < Entity;
-    = "https://en.wikipedia.org/wiki/Computer_language";
+    = "wikipedia::Computer_language";
     = "https://github.com/softlang/megalib/wiki/Language-Classification/".
 ProgrammingLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Programming_language".
+    = "wikipedia::Programming_language".
 AssemblyLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Assembly_language".  
+    = "wikipedia::Assembly_language".  
 MachineLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Machine_code".
+    = "wikipedia::Machine_code".
 CommandLineLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Command-line_interface".    
+    = "wikipedia::Command-line_interface".    
 
 DocumentLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Document". 
+    = "wikipedia::Document". 
 KnowledgeRepresentationLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Category:Knowledge_representation_languages".
+    = "wikipedia::Category:Knowledge_representation_languages".
 DataExchangeLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Data_exchange".
+    = "wikipedia::Data_exchange".
 StylesheetLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Style_sheet_language".    
+    = "wikipedia::Style_sheet_language".    
 DatabaseManagementLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Create,_read,_update_and_delete".
+    = "wikipedia::Create,_read,_update_and_delete".
     
 TransformationLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Transformation_language";
-    = "https://en.wikipedia.org/wiki/Model_transformation".
+    = "wikipedia::Transformation_language";
+    = "wikipedia::Model_transformation".
 QueryLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Query_language".
+    = "wikipedia::Query_language".
 
 GrammarLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Formal_grammar".
+    = "wikipedia::Formal_grammar".
 SchemaLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Category:Data_modeling_languages".
+    = "wikipedia::Category:Data_modeling_languages".
 
 SoftwareDesignLanguage < Language;  
-    = "https://en.wikipedia.org/wiki/Modeling_language".
+    = "wikipedia::Modeling_language".
 
 ConfigurationLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Configuration_file" .
+    = "wikipedia::Configuration_file" .
 BuildScriptLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Build_automation".
+    = "wikipedia::Build_automation".
 
 ReferenceLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Reference".
+    = "wikipedia::Reference".
 
 MessageLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Request-response";
-    = "https://en.wikipedia.org/wiki/Message_passing".
+    = "wikipedia::Request-response";
+    = "wikipedia::Message_passing".
 ValueLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Value_(computer_science)".
+    = "wikipedia::Value_(computer_science)".
 ContainerLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Digital_container_format".
+    = "wikipedia::Digital_container_format".
 DatabaseLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Database".
+    = "wikipedia::Database".
 TemplateLanguage < Language; 
-    = "https://en.wikipedia.org/wiki/Template_processor".
+    = "wikipedia::Template_processor".
 LogLanguage < DocumentLanguage;
-    = "https://en.wikipedia.org/wiki/Logfile".
+    = "wikipedia::Logfile".
 GraphicsLanguage < Language;
-    = "https://en.wikipedia.org/wiki/Graphics".
+    = "wikipedia::Graphics".
 
 
 /* Subset according to set theory. This is only used when only a subset can be processed 
 as function input or only a subset is implemented by a technology. */
 subsetOf < Language # Language;
-    = "https://en.wikipedia.org/wiki/Subset".
+    = "wikipedia::Subset".
     
 /* One language may be embedded into another. */
 embeddedInto < Language # Language;
@@ -78,7 +78,7 @@ embeddedInto < Language # Language;
 
 /* A language may be a small variation of another language */
 dialectOf < Language # Language;
-    = "https://en.wikipedia.org/wiki/Dialect_(computing)".
+    = "wikipedia::Dialect_(computing)".
 
 /* A language's evolution is inspired by other languages */
 influencedBy < Language # Language;
@@ -99,14 +99,14 @@ facilitates < Language # Paradigm.
 A language family has one ascendant and multiple descendants.
 Descendants are languages that are influenced by the ascendant.*/
 LanguageFamily < Entity;
-    = "https://en.wikipedia.org/wiki/Category:Programming_language_families".
+    = "wikipedia::Category:Programming_language_families".
 ascendantOf < Language # LanguageFamily.
 descendantOf < Language # LanguageFamily.
 
 /* Artifacts of one language may be encoded in other languages following other 
 kinds of notation etc. */
 Notation < Entity;
-    = "https://en.wikipedia.org/wiki/File_format". //not really a good link
+    = "wikipedia::File_format". //not really a good link
 encodedAs < Language # Notation. // !!Experimental!!
 encodes < Language # Construct. // !!Experimental!!
 Text : Notation;
@@ -114,9 +114,9 @@ Text : Notation;
 Binary : Notation;
     = "http://www.iue.tuwien.ac.at/phd/fasching/node27.html".
 Visual : Notation;
-    = "https://en.wikipedia.org/wiki/Data_visualization".
+    = "wikipedia::Data_visualization".
 Markup : Notation;
-    = "https://en.wikipedia.org/wiki/Markup_language".
+    = "wikipedia::Markup_language".
 mappedTo < Language # Language. //TODO: This needs a link... 
     
 //TODO: What kind of classifiers are declarative and imperative? They are paradigms according to the Wikipedia page.

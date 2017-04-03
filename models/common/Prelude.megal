@@ -7,24 +7,24 @@ import common.LanguageKB
 
 /* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity;
-    = "https://en.wikipedia.org/wiki/Artifact_(software_development)".
+    = "wikipedia::Artifact_(software_development)".
 hasRole < Artifact # Role; 
-    = "https://en.wikipedia.org/wiki/Terminology".
+    = "wikipedia::Terminology".
 defines < Artifact # Language; 
-    = "https://en.wikipedia.org/wiki/Programming_language_specification";
-    = "https://en.wikipedia.org/wiki/Syntax";
-    = "https://en.wikipedia.org/wiki/Data_model".
+    = "wikipedia::Programming_language_specification";
+    = "wikipedia::Syntax";
+    = "wikipedia::Data_model".
 elementOf < Artifact # Language; 
-    = "https://en.wikipedia.org/wiki/Element_(mathematics)".
+    = "wikipedia::Element_(mathematics)".
 conformsTo < Artifact # Artifact;  
     = "http://link.springer.com/article/10.1007%2Fs10270-006-0017-9";
     = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 correspondsTo < Artifact # Artifact; 
     = "http://dictionary.cambridge.org/dictionary/english/correspond".
 consistentWith < Artifact # Artifact; 
-    = "https://en.wikipedia.org/wiki/Consistency".
+    = "wikipedia::Consistency".
 refersTo < Artifact # Artifact;  // Experimental! 
-    = "https://en.wikipedia.org/wiki/Uniform_Resource_Identifier".
+    = "wikipedia::Uniform_Resource_Identifier".
 represents < Artifact # Artifact; // Experimental! 
     = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 
@@ -32,57 +32,57 @@ represents < Artifact # Artifact; // Experimental!
 Manifestation < Entity;
     = "https://en.oxforddictionaries.com/definition/manifestation".
 File : Manifestation; 
-    = "https://en.wikipedia.org/wiki/Computer_file".
+    = "wikipedia::Computer_file".
 File+ : Manifestation; 
-    = "https://en.wikipedia.org/wiki/Computer_file".
+    = "wikipedia::Computer_file".
 Folder : Manifestation; 
-    = "https://en.wikipedia.org/wiki/Directory_(computing)".
+    = "wikipedia::Directory_(computing)".
 Transient : Manifestation; 
-    = "https://en.wikipedia.org/wiki/Transient_(computer_programming)".
+    = "wikipedia::Transient_(computer_programming)".
 Fragment : Manifestation;  
-    = "https://en.wikipedia.org/wiki/Snippet_(programming)".
+    = "wikipedia::Snippet_(programming)".
 manifestsAs < Artifact # Manifestation;
     = "https://en.oxforddictionaries.com/definition/manifestation".
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
-    = "https://en.wikipedia.org/wiki/Function_(mathematics)".
+    = "wikipedia::Function_(mathematics)".
 
 /* A technology is reusable 'third party' Software. See Wiki */
 System < Entity;
-    = "https://en.wikipedia.org/wiki/Software_system".
+    = "wikipedia::Software_system".
 Technology < System;
-    = "https://en.wikipedia.org/wiki/Information_technology";
+    = "wikipedia::Information_technology";
     = "https://www.journals.elsevier.com/information-and-software-technology/".
 Library < Technology; 
-    = "https://en.wikipedia.org/wiki/Library_(computing)".
+    = "wikipedia::Library_(computing)".
 API < Technology; 
-    = "https://en.wikipedia.org/wiki/Application_programming_interface".
+    = "wikipedia::Application_programming_interface".
 Framework < Technology; 
-    = "https://en.wikipedia.org/wiki/Software_framework".
+    = "wikipedia::Software_framework".
 Plugin < Technology; 
-    = "https://en.wikipedia.org/wiki/Plug-in_(computing)".
+    = "wikipedia::Plug-in_(computing)".
 Application < Technology; 
-    = "https://en.wikipedia.org/wiki/Application_software".
+    = "wikipedia::Application_software".
 Service < Technology;
-    = "https://en.wikipedia.org/wiki/Service_(systems_architecture)".
+    = "wikipedia::Service_(systems_architecture)".
 Platform < Technology; 
-    = "https://en.wikipedia.org/wiki/Computing_platform".
+    = "wikipedia::Computing_platform".
 
 IDE < Application; // an environment to facilitate writing systems or technologies.
-    = "https://en.wikipedia.org/wiki/Integrated_development_environment".
+    = "wikipedia::Integrated_development_environment".
 LanguageWorkbench < Application;
-    = "https://en.wikipedia.org/wiki/Language_workbench".
+    = "wikipedia::Language_workbench".
 Interpreter < Application;
-    = "https://en.wikipedia.org/wiki/Language_interpretation".
+    = "wikipedia::Language_interpretation".
 FileSystem < Application;
-    = "https://en.wikipedia.org/wiki/File_system".
+    = "wikipedia::File_system".
 OperatingSystem < Platform;
-    = "https://en.wikipedia.org/wiki/Operating_system".
+    = "wikipedia::Operating_system".
 
 /* Implementation relationships */
 implements < System # Function;  
-    = "https://en.wikipedia.org/wiki/Implementation".
+    = "wikipedia::Implementation".
 implements < System # Language.  
 
 /* A technology or a language can facilitate the usage or realization of a conceptual description. */
@@ -93,7 +93,7 @@ facilitates < Technology # Construct.
 
 /* A software system may help in a problem context */
 supports < System # ProgrammingDomain;
-    = "https://en.wikipedia.org/wiki/Software_feature". //needs better link
+    = "wikipedia::Software_feature". //needs better link
 
 /* Technologies and languages may be frequently used in a technological context. 
 Specifically mapping technologies can bridge to other technological spaces. */
@@ -103,20 +103,20 @@ bridgesTo < System # TechnologySpace.
 
 /* A technology is managed by an artifact that serves as a repository. */
 managedBy < Technology # Artifact; 
-    = "https://en.wikipedia.org/wiki/Software_repository".
+    = "wikipedia::Software_repository".
 
 /* In a usage scenario the technology is locally deployed as an artifact.
 One might further want to specify on which physical component the artifact
 is deployed. */
 deployedAs < System # Artifact; 
-    = "https://en.wikipedia.org/wiki/Software_deployment".
+    = "wikipedia::Software_deployment".
 Node < Entity; 
-    = "https://en.wikipedia.org/wiki/Node_(networking)#Distribute".
+    = "wikipedia::Node_(networking)#Distribute".
 Hardware < Entity;
-    = "https://en.wikipedia.org/wiki/Computer_hardware".
+    = "wikipedia::Computer_hardware".
 composedOf < Hardware # Node.
 deployedAt < Artifact # Node; 
-    = "https://en.wikipedia.org/wiki/Software_deployment".
+    = "wikipedia::Software_deployment".
 deployedAt < Artifact # Hardware.
 
 
@@ -128,7 +128,7 @@ partOf < System # System.
 
 /* A language is used in the sense that some part is a member of the language. */
 uses < System # Language;
-    = "https://en.wikipedia.org/wiki/Computer_programming".
+    = "wikipedia::Computer_programming".
 
 /* Something uses a concept, if its implementation or structure is informalle conform to the concept's 
 definition. Most times, this is synonymous to 
@@ -141,4 +141,4 @@ uses < System # Construct.
 /* Systems, technologies and artifacts can be reused. There is always a reference from the using
 entity to the used entity. Maybe rename to reuses */
 reuses < System # System;
-    = "https://en.wikipedia.org/wiki/Code_reuse".
+    = "wikipedia::Code_reuse".

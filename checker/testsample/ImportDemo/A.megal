@@ -1,7 +1,7 @@
 module A 
 
 /**/
-?program : Program.
+?program : Application.
 ?spec : Artifact;
     partOf ?program;
     elementOf HTML5;

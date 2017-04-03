@@ -18,6 +18,7 @@ import main.antlr.techdocgrammar.MegalibBaseListener;
 import main.antlr.techdocgrammar.MegalibParser.FunctionApplicationContext;
 import main.antlr.techdocgrammar.MegalibParser.FunctionDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.InstanceDeclarationContext;
+import main.antlr.techdocgrammar.MegalibParser.NamespaceContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
 import main.antlr.techdocgrammar.MegalibParser.SubstitutionContext;
@@ -61,15 +62,13 @@ public class ParserListener extends MegalibBaseListener {
         substByGroup.clear();
     }
 
-    /*
-     * @Override public void enterNamespace(NamespaceContext ctx) {
-     * System.out.println(ctx.getChild(0).getText() + ctx.getChild(1).getText()
-     * + ctx.getChild(2).getText());
-     * if(typeCheck.addNamespace(ctx.getChild(0).getText(),
-     * ctx.getChild(3).getText(), model)){
-     * model.addNamespace(ctx.getChild(0).getText(), ctx.getChild(3).getText());
-     * } }
-     */
+    @Override
+    public void enterNamespace(NamespaceContext ctx) {
+        if(typeCheck.addNamespace(ctx.getChild(0).getText(), ctx.getChild(2).getText().replaceAll("\"", ""), model)){
+            model.addNamespace(ctx.getChild(0).getText(), ctx.getChild(2).getText().replaceAll("\"", ""));
+        }
+    }
+
     @Override
     public void enterSubtypeDeclaration(SubtypeDeclarationContext context) {
         Iterator<ParseTree> it = context.children.iterator();

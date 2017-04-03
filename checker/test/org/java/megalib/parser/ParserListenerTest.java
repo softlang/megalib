@@ -605,15 +605,17 @@ public class ParserListenerTest {
     @Test
     public void checkNameSpaceURL() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/sl :: <http://softlang.org>. a : Artifact;" + "~= \"sl::course:techmodels\".";
+        String input = "/**/sl :: \"http://softlang.org\". a : Artifact;" + "~= \"sl::course:techmodels\".";
         ml.loadString(input);
+        assertEquals("http://softlang.org", ml.getModel().getNamespace("sl"));
         assertEquals(0, ml.getTypeErrors().size());
     }
 
     @Test
     public void checkNameSpaceFilepath() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/modelsxy :: \"file://../models\". a : Artifact;" + "~= \"models::common/Prelude.megal\".";
+        String input = "/**/models :: \"file://../models\". a : Artifact;"
+                       + "~= \"models::common/Prelude.megal\".";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
     }

@@ -263,6 +263,16 @@ public class TypeCheck {
              || m.getRelationshipDeclarationMap().containsKey(subject))){
             errors.add("Error at linking " + subject + ". Declaration/Instantiation is missing.");
         }
+        if(link.contains("::")){
+            String ns = link.split("::")[0];
+            Optional<String> o = Optional.ofNullable(m.getNamespace(ns));
+            if(o.isPresent()){
+                link = o.get() + "/" + link.split("::")[1];
+            }else{
+                errors.add("Error at linking " + subject + ". Namespace '" + ns + "' does not exist.");
+            };
+
+        }
         if(link.startsWith("file://")){
             if(!new File(link.substring(7)).exists()){
                 errors.add("Error at linking " + subject + ". The link '" + link

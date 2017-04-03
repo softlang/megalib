@@ -31,9 +31,9 @@ relationInstance: ID (link | relationship) (';' (link | relationship))* '.';
 
 relationship: ID ID;
 
-link: ('~=' | '=') LINK;
+link: ('~=' | '=') LINK ;
 
-namespace: WORD '::' LINK;
+namespace: ID '::' LINK '.';
 
 functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* '.';
 
