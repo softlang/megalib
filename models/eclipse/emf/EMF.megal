@@ -31,8 +31,8 @@ GeneratorXmi : ConfigurationLanguage;
     
 /* An important component is the Generator that takes a generation
 configuration which is itself a model persisted in XMI. */
-generateGeneratorXMI : EcoreXMI -> GeneratorXmi.
-generateJava : GeneratorCfgXmi # EcoreXMI -> EcoreJava.
+generateDslJavaModel : GeneratorCfgXmi # EcoreXMI -> DSLJava # PluginXML # DSLProperties.
+generateDslJavaModel : GeneratorCfgXmi # EcoreXMI # EcoreJava -> EcoreJava. //TODO: EcoreJava or Java?
 EMF.CodeGenerator : Component;
     = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html";
     partOf EMF;

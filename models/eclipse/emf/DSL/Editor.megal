@@ -1,0 +1,10 @@
+module eclipse.emf.dsl.editor
+
+import eclipse.Editor where {
+    [ ?dslui / ?ui,
+    ?dsleditor / ?editor ]
+}
+
+/* Editor generation */
+generateEditor : GeneratorXMI -> EmfEditorJava .
+generateEditor(?dslGenModel) |-> ?dsleditor .
