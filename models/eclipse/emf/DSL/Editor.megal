@@ -1,9 +1,19 @@
-module eclipse.emf.dsl.editor
+module eclipse.emf.dsl.Editor
 
+import eclipse.emf.dsl.Edit
 import eclipse.Editor where {
     [ ?dslui / ?ui,
     ?dsleditor / ?editor ]
 }
+/* Plugin overview*/
+?DSLEditorPlugin : Plugin;
+    reuses ?DSLEditPlugin;
+    reuses EMFEditUIPlugin;
+    reuses EclipseUIIDEPlugin.
+?dsleditor : Artifact; //TODO: The implementation is not part of the jar, but the managing code.
+    elementOf Java;
+    manifestsAs File+;
+    hasRole Editor.
 
 /* Editor generation */
 generateEditor : GeneratorXMI -> EmfEditorJava .

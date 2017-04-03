@@ -10,7 +10,7 @@ JDK : Framework;
     uses Java;
     belongsTo JavaWare;
     supports GeneralPurposeProgramming.
-JavaC : Program;
+JavaC : Compiler;
     = "https://en.wikipedia.org/wiki/Javac";
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-3.html";
     uses Java;
@@ -39,7 +39,7 @@ JVMString : ValueLanguage;
     = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html";
     subsetOf JVMObject. //string as a wrapper for a character array
 JVMList : ValueLanguage;
-    = "";
+    = "https://docs.oracle.com/javase/8/docs/api/java/util/List.html";
     subsetOf JVMObject.
 JavaSEHotSpot : Application;
     = "http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136373.html";

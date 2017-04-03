@@ -1,0 +1,8 @@
+module eclipse.emf.fsml.Editor
+
+import eclipse.emf.dsl.Editor where {
+    [fsmlUI / ?dslui,
+    fsmlEditor / ?dslEditor]
+}
+fsmlUI ~= "".
+fsmlEditor ~= "".

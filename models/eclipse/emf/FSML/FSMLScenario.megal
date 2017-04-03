@@ -1,5 +1,6 @@
 module emf.fsmlSystem.FSMLScenario
 
+/*
 import emf.Runtime where {
   [ DevelopRuntime / Runtime,
     developWorkspace / ?workspace,
@@ -10,17 +11,7 @@ import emf.Runtime where {
     usagePlatform / ?platform
   ]
 }
-import emf.Genmodel
-import emf.Ecore
-import emf.DSL where {
-  [ fsmlMetaModel / ?dslMetaModel,
-    fsmlModel / ?dslModel,
-    fsmlGenModel / ?dslGenModel,
-    fsmlUI / ?dslui,
-    fsmlEditor / ?dslEditor
-    .... ]
-}
-
+*/
 DevelopRuntime = "". //?
 developWorkspace = "".
 developPlatform = "".
@@ -28,11 +19,3 @@ developPlatform = "".
 UsageRuntime = "". //?
 usageWorkspace = "".
 usagePlatform = "".
-
-fsmlMetaModel = "";
-  partOf developWorkspace.
-fsmlModel = "";
-  partOf usageWorkspace.
-  
-ecoreMetaModel = "";
-  partOf developPlatform.

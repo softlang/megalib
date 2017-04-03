@@ -1,9 +1,9 @@
-module eclipse.Core
+module eclipse.Editor
 
-import eclipse.Eclipse
+import eclipse.Core
 
 /* The whole user interface */
-?ui : Workbench; //consists of editors and views
+?ui : Workbench. //consists of editors and views
 
 /* Java-based implementation of an editor. */
 ?editor : Artifact; 

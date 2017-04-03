@@ -73,6 +73,8 @@ IDE < Application; // an environment to facilitate writing systems or technologi
     = "wikipedia::Integrated_development_environment".
 LanguageWorkbench < Application;
     = "wikipedia::Language_workbench".
+Compiler < Application;
+    = "wikipedia::Compiler".
 Interpreter < Application;
     = "wikipedia::Language_interpretation".
 FileSystem < Application;

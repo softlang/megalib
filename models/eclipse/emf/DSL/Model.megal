@@ -3,17 +3,19 @@ module eclipse.emf.dsl.Model
 import eclipse.emf.EMF
 import java.Javaplatform
 
-/* While Ecore is the language for metamodels written in XMI, there are multiple existing
-languages that are subset of XMI that form DSLs. But this set to serialize models in XMI 
-is different from the metamodeling set. */
+/* Plugin overview*/
+?dslmodelpluginjar : Artifact;
+    elementOf Jar;
+    manifestsAs File;
+    partOf ?DevWorkspace.
 ?DSLModelPlugin : Plugin;
     reuses EclipseCoreRuntimePlugin;
     reuses EcoreModelPlugin;
     deployedAs ?dslmodelpluginjar.
-?dslmodelpluginjar : Artifact;
-    elementOf Jar;
-    manifestsAs File;
-    partOf DevWorkspace.
+
+/* While Ecore is the language for metamodels written in XMI, there are multiple existing
+languages that are subset of XMI that form DSLs. But this set to serialize models in XMI 
+is different from the metamodeling set. */
 ?DSLJVMObjects : ValueLanguage;
     encodes Object;
     subsetOf JVMObject.

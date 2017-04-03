@@ -1,0 +1,21 @@
+module eclipse.emf.fsml.Model
+
+import emf.dsl.Model where {
+  [ FSMLModelPlugin / ?DSLModelPlugin,
+    fsmlModelPluginJar / ?dslmodelpluginjar,
+    FSMLJVMObjects / ?DSLJVMObjects,
+    FSMLXMI / ?DSLXMI,
+    fsmlGenModel / ?dslGenModel,
+    fsmlJavaModel / ?dslJavaModel,
+    fsmlMetaModel / ?dslMetaModel,
+    fsmlModel / ?dslModel,
+    fsmlJVMObject / ?dslJVMobject
+  ]
+}
+
+fsmlMetaModel = "";
+  partOf developWorkspace.
+fsmlModel = "";
+  partOf usageWorkspace.
+ecoreMetaModel = "";
+  partOf developPlatform.
