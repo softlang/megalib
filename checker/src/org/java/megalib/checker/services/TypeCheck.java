@@ -267,7 +267,7 @@ public class TypeCheck {
             String ns = link.split("::")[0];
             Optional<String> o = Optional.ofNullable(m.getNamespace(ns));
             if(o.isPresent()){
-                link = o.get() + "/" + link.split("::")[1];
+                link = link.replace(ns + "::", o.get() + "/");
             }else{
                 errors.add("Error at linking " + subject + ". Namespace '" + ns + "' does not exist.");
             };

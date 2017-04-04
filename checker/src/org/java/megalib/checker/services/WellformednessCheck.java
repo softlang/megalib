@@ -299,8 +299,7 @@ public class WellformednessCheck {
     private void checkLinkWorking(String link) {
         if(link.contains("::")){
             String ns = link.split("::")[0];
-            String fulllink = model.getNamespace(ns);
-            link = fulllink + "/" + link.split("::")[1];
+            link = link.replace(ns + "::", model.getNamespace(ns) + "/");
         }
         if(link.startsWith("file://")){
             if(!new File(link.substring(7)).exists()){
