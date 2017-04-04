@@ -149,12 +149,15 @@ public class ModelLoader {
         // Fill the import map
         while (!toProcess.isEmpty()) {
             String p = toProcess.iterator().next();
-            p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
-            String pdata = FileUtils.readFileToString(new File(p));
+            String pdata = FileUtils.readFileToString(new File(root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/")
+                                                               + ".megal"));
             l = (ImportListener) parse(pdata, new ImportListener());
+            if(!p.equals(l.getName()))
+                throw new ParserException("Error : Identified wrong capitalization in 'import " + p + "'");
             imports.addAll(l.getImports());
             processed.add(l.getName());
-            toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
+            toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject())
+                              .collect(Collectors.toSet()));
             toProcess.removeAll(processed);
         }
         // order import map in a set-based approach

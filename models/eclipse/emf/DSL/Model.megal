@@ -1,7 +1,7 @@
 module eclipse.emf.dsl.Model
 
 import eclipse.emf.EMF
-import java.Javaplatform
+import java.JavaPlatform
 
 /* Plugin overview*/
 ?dslmodelpluginjar : Artifact;
