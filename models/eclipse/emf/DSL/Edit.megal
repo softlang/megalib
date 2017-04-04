@@ -8,7 +8,12 @@ import eclipse.emf.dsl.Model
   manifestsAs File.
 ?DSLEditPlugin : Plugin;
   reuses ?DSLModelPlugin;
-  reuses EMFEditPlugin.
+  reuses EmfEdit.
   
 /* Functionality */
-generateEditor : GeneratorXMI -> EmfEditJava .
+generateEdit : GeneratorXmi -> EmfEditJava .
+EMF.CodeGenerator implements generateEdit.
+?dslEditCode : Artifact;
+    elementOf EmfEditJava;
+    manifestsAs File+.
+generateEdit(?dslGenModel) |-> ?dslEditCode .

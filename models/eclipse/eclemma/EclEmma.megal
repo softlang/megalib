@@ -1,7 +1,7 @@
-module eclemma.EclEmma
+module eclipse.eclemma.EclEmma
 
 import java.JavaPlatform
-import eclipse.Eclipse
+import eclipse.Core
 
 /* EclEmma is an eclipse plugin which offers the functionality
 to compute code coverage. */

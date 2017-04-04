@@ -17,20 +17,20 @@ defines < Artifact # Language;
 elementOf < Artifact # Language; 
     = "wikipedia::Element_(mathematics)".
 conformsTo < Artifact # Artifact;  
-    = "http://link.springer.com/article/10.1007%2Fs10270-006-0017-9";
-    = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
+    = "springerLink::10.1007%2Fs10270-006-0017-9"; //Matters of Metamodeling
+    = "researchgate::243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 correspondsTo < Artifact # Artifact; 
-    = "http://dictionary.cambridge.org/dictionary/english/correspond".
+    = "oxfordDict::correspond".
 consistentWith < Artifact # Artifact; 
     = "wikipedia::Consistency".
 refersTo < Artifact # Artifact;  // Experimental! 
     = "wikipedia::Uniform_Resource_Identifier".
 represents < Artifact # Artifact; // Experimental! 
-    = "https://www.researchgate.net/publication/243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
+    = "researchgate::243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 
 /* Manifestation types of artifacts, where most are self-explanatory */
 Manifestation < Entity;
-    = "https://en.oxforddictionaries.com/definition/manifestation".
+    = "oxfordDict::manifestation".
 File : Manifestation; 
     = "wikipedia::Computer_file".
 File+ : Manifestation; 
@@ -42,7 +42,7 @@ Transient : Manifestation;
 Fragment : Manifestation;  
     = "wikipedia::Snippet_(programming)".
 manifestsAs < Artifact # Manifestation;
-    = "https://en.oxforddictionaries.com/definition/manifestation".
+    = "oxfordDict::manifestation".
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
@@ -53,7 +53,7 @@ System < Entity;
     = "wikipedia::Software_system".
 Technology < System;
     = "wikipedia::Information_technology";
-    = "https://www.journals.elsevier.com/information-and-software-technology/".
+    = "elsevierJournal::information-and-software-technology/".
 Library < Technology; 
     = "wikipedia::Library_(computing)".
 API < Technology; 
@@ -124,7 +124,7 @@ deployedAt < Artifact # Hardware.
 
 /* Part-of relationships */
 partOf < Artifact # Artifact;
-    = "http://dictionary.cambridge.org/dictionary/english/part".
+    = "oxfordDict::part".
 partOf < Artifact # System.
 partOf < System # System.
 

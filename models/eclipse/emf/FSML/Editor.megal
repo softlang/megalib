@@ -1,8 +1,10 @@
 module eclipse.emf.fsml.Editor
 
 import eclipse.emf.dsl.Editor where {
-    [fsmlUI / ?dslui,
-    fsmlEditor / ?dslEditor]
+    [FsmlUI / ?DslUi,
+    fsmlEditorCode / ?dslEditorCode]
 }
-fsmlUI ~= "".
-fsmlEditor ~= "".
+/* FSML implementation */
+FsmlUI = "http://softlang.wikidot.com/";
+    uses Java.
+fsmlEditorCode ~= "http://softlang.wikidot.com/".

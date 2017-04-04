@@ -1,8 +1,17 @@
 module common.Namespaces
 
-/* This module contains a list of common namespaces. */
+/* Common namespaces */
 wikipedia :: "https://en.wikipedia.org/wiki".
+oxfordDict :: "https://en.oxforddictionaries.com/definition".
+
+/* Organization namespaces */
 w3school :: "http://www.w3schools.com".
-researchgate :: "https://www.researchgate.net/publication".
 w3c :: "https://www.w3.org".
 oracledocs :: "https://docs.oracle.com/".
+
+/* Research namespaces */
+researchgate :: "https://www.researchgate.net/publication".
+elsevierJournal :: "https://www.journals.elsevier.com".
+springerLink :: "http://link.springer.com/article".
+ieeexplore :: "http://ieeexplore.ieee.org".
+acm :: "http://dl.acm.org".

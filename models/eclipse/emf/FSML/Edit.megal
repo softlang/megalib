@@ -1,2 +1,5 @@
 module eclipse.emf.fsml.Edit
 
+/* FSML Edit */
+FsmlEdit : Plugin;
+    reuses EmfEdit.

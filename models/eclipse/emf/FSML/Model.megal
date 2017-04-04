@@ -13,9 +13,9 @@ import emf.dsl.Model where {
   ]
 }
 
-fsmlMetaModel = "";
+fsmlMetaModel = "http://www.softlang.org/";
   partOf developWorkspace.
-fsmlModel = "";
+fsmlModel = "http://www.softlang.org/";
   partOf usageWorkspace.
-ecoreMetaModel = "";
+ecoreMetaModel = "http://www.softlang.org/";
   partOf developPlatform.

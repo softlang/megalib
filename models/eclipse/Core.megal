@@ -7,14 +7,35 @@ import java.JavaPlatform
 It further has several language support tools.  
 
 TODO:
- - runtime vs platform
  - resources*/
 eclipse :: "http://www.eclipse.org" .
+eclipseHelp :: "http://help.eclipse.org/neon/index.jsp".
 Eclipse : IDE;
     = "eclipse::";
-    = "wikipedia::Eclipse_(Software)";
+    = "eclipseHelp::";
+    = "wikipedia::Eclipse_(software)";
     uses Java.
-
-?Runtime : System.
-?Platform : Platform.
-?Workspace : System.
+EclipseCoreRuntime : Plugin;
+    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2Fpackage-summary.html";
+    uses Java;
+    partOf Eclipse.
+EclipseUiIde : Plugin;
+    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fui%2Fide%2Fpackage-summary.html";
+    uses Java;
+    partOf Eclipse.
+/* The whole user interface */
+?Ui : LanguageWorkbench; //consists of editors and views
+    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-2.htm&cp=0_2_1".
+/* Java-based implementation of an editor. */
+?editor : Plugin;
+    = "http://www.vogella.com/tutorials/EclipseEditors/article.html".
+?editorCode : Artifact; //TODO: The implementation is not part of the jar, but the managing code.
+    elementOf Java;
+    manifestsAs File;
+    partOf ?Ui. //?
+    
+/* Development vs Runtime System */
+?DevelopmentPlatform : Platform.
+?DevelopmentWorkspace : System.
+?RuntimePlatform : Platform.
+?RuntimeWorkspace : System.

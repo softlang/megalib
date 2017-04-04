@@ -7,56 +7,58 @@ import java.JavaPlatform
 ?dslmodelpluginjar : Artifact;
     elementOf Jar;
     manifestsAs File;
-    partOf ?DevWorkspace.
+    partOf ?DevelopmentWorkspace.
 ?DSLModelPlugin : Plugin;
-    reuses EclipseCoreRuntimePlugin;
-    reuses EcoreModelPlugin;
+    reuses EclipseCoreRuntime;
+    reuses EMF.ECore;
     deployedAs ?dslmodelpluginjar.
 
 /* While Ecore is the language for metamodels written in XMI, there are multiple existing
 languages that are subset of XMI that form DSLs. But this set to serialize models in XMI 
 is different from the metamodeling set. */
-?DSLJVMObjects : ValueLanguage;
-    encodes Object;
+?DslJvmObjects : ValueLanguage;
     subsetOf JVMObject.
-?DSLXMI : DomainSpecificLanguage; //TODO: Defined or Implemented? keep it or remove it
+?DslXmi : DataExchangeLanguage; //TODO: Defined or Implemented? keep it or remove it
     subsetOf XMI.
 ?dslGenModel : Artifact;
-    partOf ?DevWorkspace;
-    elementOf GeneratorXMI;
+    partOf ?DevelopmentWorkspace;
+    elementOf GeneratorXmi;
     hasRole Configuration;
     manifestsAs File.
 ?dslJavaModel : Artifact;
-    partOf ?DevWorkspace;
+    partOf ?DevelopmentWorkspace;
     elementOf EcoreJava;
     hasRole MdeMetamodel;
     manifestsAs File+;
-    defines ?DSLJVMObjects.
+    defines ?DslJvmObjects.
 ?dslMetaModel : Artifact;
-    partOf ?DevWorkspace;
+    partOf ?DevelopmentWorkspace;
     elementOf EcoreXMI;
     hasRole MdeMetamodel;
     manifestsAs File;
-    defines ?DSLXMI.
+    defines ?DslXmi.
+generateJava(?dslGenModel,?dslMetaModel) |-> ?dslJavaModel.
+
+/* Object and XMI */
 ?dslModel : Artifact;
-    partOf ?RunWorkspace;
-    elementOf ?DSLXMI;
+    partOf ?RuntimeWorkspace;
+    elementOf ?DslXmi;
     hasRole MdeModel;
     manifestsAs File.
-?dslJVMobject : Artifact;
-    partOf ?RunWorkspace;
-    elementOf ?DSLJVMObjects;
+?dslJvmObject : Artifact;
+    partOf ?RuntimeWorkspace;
+    elementOf ?DslJvmObjects;
     manifestsAs Transient;
-    hasRole MdeModel.
-generateDslJava(?dslGenModel,?dslMetaModel) |-> ?dslJava.
+    hasRole MdeModel;
+    correspondsTo ?dslModel.
 
 /* Generic XMI Persistence */ 
-saveDSLModel : ?DSLJVMObject -> ?DSLXMI.
+saveDSLModel : ?DslJvmObjects -> ?DslXmi.
 EMF.Persistence implements saveDSLModel.
-saveDSLModel(?dslJVMobject) |-> ?dslModel.
-loadDSLModel : ?DSLXMI # EcoreJava -> ?DSLJVMObject.
+saveDSLModel(?dslJvmObject) |-> ?dslModel.
+loadDSLModel : ?DslXmi # EcoreJava -> ?DslJvmObjects.
 EMF.Persistence implements loadDSLModel.
-loadDSLModel(?dslModel,?dslJavaModel) |-> ?dslJVMobject.
+loadDSLModel(?dslModel,?dslJavaModel) |-> ?dslJvmObject.
 
 //TODO: Validation
 //@generated NOT: added fragments that are just copied when repeating generateJava. This goes for model, edit and editor.

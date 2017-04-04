@@ -1,0 +1,11 @@
+module eclipse.emf.ecore.Model
+
+import eclipse.emf.dsl.Model where {
+  [ EcoreJvmObject / ?DSLJVMObject,
+    EcoreXmi / ?DSLXMI,
+    ecoreMetaModel / ?dslMetaModel
+  ]
+}
+/* TODO: Ecore Bootstrapping */
+EcoreWorkspace : System;
+    = "".
