@@ -305,3 +305,5 @@ DataStream : Role;
 	= "wikipedia::Data_stream".
 Worker : Role;
 	="wikipedia::Thread_pool".
+Plugin : Role;
+    = "wikipedia::Plug-in_(computing)".

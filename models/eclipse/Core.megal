@@ -2,12 +2,11 @@ module eclipse.Core
 
 import java.JavaPlatform
 
+import eclipse.CustomPlatform where {
+    [EclipsePlatform / ?DevelopmentPlatform]
+}
 
-/* The Eclipse IDE can be used for programming in various programming languages.
-It further has several language support tools.  
-
-TODO:
- - resources*/
+/* The Eclipse IDE can be used for programming in various programming languages. */
 eclipse :: "http://www.eclipse.org" .
 eclipseHelp :: "http://help.eclipse.org/neon/index.jsp".
 Eclipse : IDE;
@@ -15,17 +14,21 @@ Eclipse : IDE;
     = "eclipseHelp::";
     = "wikipedia::Eclipse_(software)";
     uses Java.
+OSGi : ArchitecturalPattern;
+    ^uses Eclipse.
+EclipsePlatform partOf Eclipse.
 EclipseCoreRuntime : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2Fpackage-summary.html";
     uses Java;
-    partOf Eclipse.
+    partOf EclipsePlatform.
+
+/* The whole user interface */
+?Ui : LanguageWorkbench; //consists of editors and views
+    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-2.htm&cp=0_2_1".
 EclipseUiIde : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fui%2Fide%2Fpackage-summary.html";
     uses Java;
     partOf Eclipse.
-/* The whole user interface */
-?Ui : LanguageWorkbench; //consists of editors and views
-    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-2.htm&cp=0_2_1".
 /* Java-based implementation of an editor. */
 ?editor : Plugin;
     = "http://www.vogella.com/tutorials/EclipseEditors/article.html".
@@ -34,8 +37,3 @@ EclipseUiIde : Plugin;
     manifestsAs File;
     partOf ?Ui. //?
     
-/* Development vs Runtime System */
-?DevelopmentPlatform : Platform.
-?DevelopmentWorkspace : System.
-?RuntimePlatform : Platform.
-?RuntimeWorkspace : System.

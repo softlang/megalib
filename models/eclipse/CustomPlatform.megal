@@ -1,0 +1,23 @@
+module eclipse.CustomPlatform
+
+import java.JavaPlatform
+
+/* Development vs Runtime System */
+?DevelopmentPlatform : Platform.
+?DevelopmentWorkspace : Workspace.
+?CustomPluginProject : Project;
+    partOf DevelopmentWorkspace;
+    reuses ?DevelopmentPlatform.
+?CustomPluginJar : Artifact;
+    elementOf Jar;
+    manifestsAs File;
+    hasRole Plugin;
+    hasRole Archive.
+?RuntimePlatform : Platform.
+?CustomPlugin : Plugin;
+    partOf ?RuntimePlatform;
+    deployedAs ?CustomPluginJar.
+?RuntimeWorkspace : System;
+    reuses ?RuntimePlatform.
+
+//buildPlugin : PluginProject # Manifest # PluginXML -> PluginJar , basically capture registration and build
