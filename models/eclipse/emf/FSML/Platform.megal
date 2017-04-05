@@ -1,0 +1,15 @@
+module eclipse.emf.fsml.Platform
+
+import eclipse.CustomPlatform where{
+    [
+    EMFPlatform / ?DevelopmentPlatform,
+    FSMLPluginWorkspace / ?DevelopmentWorkspace,
+    FSMLPluginProject / ?CustomPluginProject,
+    FSMLPluginJar / ?CustomPluginJar,
+    FSMLPlugin / ?CustomPlugin,
+    FSMLPlatform / ?RuntimePlatform,
+    FSMLWorkspace / ?RuntimeWorkspace,
+    ]
+}
+//Must result in EMFPlugin partOf EMFPlatform
+//TODO: We must somehow visualize or pretty print the result, else it is not readable.

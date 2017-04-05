@@ -5,7 +5,7 @@ import eclipse.Core
 /* The eclipse modeling framework belongs to the model driven engineering
 technologies. It's an eclipse plugin implemented in Java. */
 emfJavaDoc :: "http://download.eclipse.org/modeling/emf/emf/javadoc/2.8.0/org/eclipse/emf/".
-EMF : Plugin;
+EMF : Platform;
     = "https://eclipse.org/modeling/emf/";
     = "emfJavaDoc::common/EMFPlugin.html";
     uses Java;

@@ -3,11 +3,12 @@ module eclipse.CustomPlatform
 import java.JavaPlatform
 
 /* Development vs Runtime System */
-?DevelopmentPlatform : Platform.
-?DevelopmentWorkspace : Workspace.
-?CustomPluginProject : Project;
-    partOf DevelopmentWorkspace;
+?DevelopmentPlatform : Platform;
+    ^partOf EclipsePlatform.
+?DevelopmentWorkspace : Workspace;
     reuses ?DevelopmentPlatform.
+?CustomPluginProject : Project;
+    partOf ?DevelopmentWorkspace.
 ?CustomPluginJar : Artifact;
     elementOf Jar;
     manifestsAs File;

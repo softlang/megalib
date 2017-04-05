@@ -199,6 +199,11 @@ public class MegaModel {
         functionApplications = fAppmap;
     }
 
+    public Set<String> getLinks(String name) {
+        return relationInstanceMap.get("=").parallelStream().map(r -> r.getSubject()).filter(s -> s.equals(name))
+                                  .collect(Collectors.toSet());
+    }
+
     public void addNamespace(String name, String link) {
         namespaceMap.put(name, link);
     }
