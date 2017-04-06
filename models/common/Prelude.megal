@@ -81,6 +81,8 @@ FileSystem < Application;
     = "wikipedia::File_system".
 OperatingSystem < Platform;
     = "wikipedia::Operating_system".
+ParserGenerator < Framework;
+    = "wikipedia::Category:Parser_generators".
 
 /* Implementation relationships */
 implements < System # Function;  
