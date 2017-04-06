@@ -3,12 +3,14 @@ module eclipse.emf.dsl.Edit
 import eclipse.emf.dsl.Model
 
 /* TODO: Plugin overview auslesen. */
-?dslEditPluginJar : Artifact;
+?dslEditJar : Artifact;
   elementOf Jar;
   manifestsAs File.
-?DSLEditPlugin : Plugin;
+?DSLEdit : Plugin;
   reuses ?DSLModelPlugin;
-  reuses EmfEdit.
+  reuses EMF.EditPlugin;
+  reuses EclipseCoreRuntimePlugin;
+  deployedAs ?dslEditJar.
   
 /* Functionality */
 generateEdit : GeneratorXmi -> EmfEditJava .

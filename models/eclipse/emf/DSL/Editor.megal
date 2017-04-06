@@ -7,9 +7,12 @@ import eclipse.Core where {
 }
 /* Plugin overview*/
 ?DslEditor : Plugin;
-    reuses ?DSLEditPlugin;
+    reuses ?DslEdit;
+    reuses EmfEcoreXmi;
     reuses EmfEditUi;
-    reuses EclipseUiIde.
+    reuses EclipseUiIde;
+    reuses EclipseCoreRuntime;
+    reuses EclipseCoreResources.
 
 ?dslEditorCode elementOf EmfEditorJava.
 

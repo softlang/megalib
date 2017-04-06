@@ -69,10 +69,10 @@ EmfEditorJava : ProgrammingLanguage;
     subsetOf Java.
 
 /* The EMF persistence framework allows you to persist ecore models in a subset of XMI */
-EMF.Persistence : Plugin;
+EmfEcoreXmi : Plugin;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/index.html?org/eclipse/emf/ecore/package-summary.html";
     = "http://www.vogella.com/tutorials/EclipseEMFPersistence/article.html";
     uses Java;
     partOf EMF.ECore;
-    facilitates Serialization;
+    facilitates Persistence;
     implements EcoreXMI.
