@@ -1,0 +1,37 @@
+module opengl.VertexShadingScenario
+
+import opengl.PipelinePrimitiveProcessing where {
+	[ ?vertexBuffer / ?vertices,
+	  ?normalBuffer / ?vertices,
+	  ?uvBuffer / ?vertices
+	]
+}
+
+
+// consists of multiple shader codes for different shading stages
+?shaderProgram : Artifact;
+	elementOf ?ShaderBinaryLanguage;
+    manifestsAs Transient.
+compileGLSL : GLSL -> ?ShaderBinaryLanguage
+compileGLSL(?shaderFiles) |-> ?shaderProgram //TODO Welche Technology implementiert
+	// TODO Beziehung zu shaderFiles
+	
+	
+// the code to execute on the VertexProcessor / GPU
+?shaderCode : Artifact;
+    elementOf ?ShaderBinaryLanguage;
+    manifestsAs Transient;
+	hasRole Shader; // TODO Beziehung geerbt?
+	partOf ?shaderProgram.
+	
+// TODO invariance in execution (same input = same output) => optimization in execution
+?glVertexID : Artifact;
+  ...
+?glIstanceID : Artifact;  
+
+
+?glPosition : Artifact;
+    partOf ?vertexBuffer
+    
+?glPointSize : Artifact //TODO: partOf ??
+?glClipDistance : Artifact//TODO: partOf ??

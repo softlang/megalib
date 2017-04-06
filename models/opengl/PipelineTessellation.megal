@@ -1,0 +1,40 @@
+module opengl.PipelineTessellation
+
+import opengl.Pipeline
+	
+
+
+/* generate new vertices between the incoming vertices. */
+tessellation : GlslVec4Array -> GlslVec4Array.
+?verticesIn : Artifact;
+	elementOf GlslVec4Array;
+	hasRole Value.
+?verticesOut : Artifact;
+	elementOf GlslVec4Array;
+	hasRole Value.
+tessellation(?verticesIn) |-> ?verticesOut.
+
+
+
+// combine multiple vertices to a "Patch", eg. a triangle, line or point
+PrimitiveAssembly : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Primitive_Assembly";
+	^uses OpenGLPipeline.
+
+
+// generate new vertices based on values from TessellationControlShader
+PrimitiveGeneration : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Tessellation#Tessellation_primitive_generation";
+	^uses OpenGLPipeline.
+
+	
+// receives a patch and is invoked for every vertex in it. Defines how the tessellation will be done.
+TessellationControlShader : AbstractProcess; //TODO als Funktion
+	= "https://www.khronos.org/opengl/wiki/Tessellation_Control_Shader";
+	^uses OpenGLPipeline.
+
+	
+// receives the generated vertices from PrimitiveGeneration and compute the position and other information for them.
+TessellationEvaluationShader : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Tessellation_Evaluation_Shader";
+	^uses OpenGLPipeline.

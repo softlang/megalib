@@ -1,0 +1,91 @@
+module opengl.PipelineVertexProcessing
+
+import opengl.Pipeline
+
+
+
+/* 
+	Draw Dispatch
+*/
+ParameterSet : Role.
+Draw : ValueLanguage.
+drawDispatch : Draw -> Draw. //TODO genauer nachschauen
+?drawCallIn : Artifact;
+	elementOf Draw;
+	hasRole ParameterSet. //TODO define
+?drawCallOut : Artifact;
+	elementOf Draw;
+	hasRole ParameterSet.
+drawDispatch(?drawCallIn) |-> ?drawCallOut.
+	
+
+// extract all vertex IDs from the parameter set
+ConditionalRendering : AbstractProcess;
+	^uses OpenGLPipeline.
+
+	
+// load vertex information from buffers
+DrawDispatching : AbstractProcess;
+	^uses OpenGLPipeline.
+	
+	
+
+
+/* gets a parameter set, containing vertices array and their attributes and array ranges. */
+vertexProcessing : Draw -> GlslVec4.
+?drawCall : Artifact;
+	elementOf Draw; //TODO define
+	hasRole ParameterSet. //TODO define
+?vertex : Artifact;
+	elementOf GlslVec4;
+	hasRole Value.
+vertexProcessing(?drawCall) |-> ?vertex.
+	
+	
+// TODO weitere Artefakte als Artifact definieren (Eingabebuffer, o.ä.)
+// TODO Komponenten definieren (uses VertexInvocation) -> Funktion definieren
+	
+
+// extract all vertex IDs from the parameter set
+VertexInvocation : AbstractProcess;
+	^uses OpenGLPipeline.
+/*	Draw -> gl_VertexID.
+?drawCall : Artifact;
+	elementOf DrawCall;
+	hasRole ParameterSet.
+?vertexID : Artifact;
+	elementOf uint;
+	hasRole Value.
+VertexInvocation(?drawCall) |-> ?vertexID. */
+
+// load vertex information from buffers
+VertexAssembly : AbstractProcess;
+	^uses OpenGLPipeline.
+/*	VertexID -> Vertex.
+?vertexID : Artifact;
+	elementOf uint;
+	hasRole Value.
+?vertex : Artifact;
+	elementOf Vertex;
+	hasRole ParameterSet;
+VertexAssembly(?vertexID) |-> ?vertex.
+
+ compute values (e.g. position) and write them to the output values */
+?OpenGLApp : Application;
+    reuses OpenGLPipeline.
+Shader : Role.
+?shaderFiles : Artifact;
+    elementOf GLSL;
+    manifestsAs File+;
+    hasRole Shader.
+
+//TODO Funktion definieren. (Vertex Shader)	
+
+//	Vertex -> Vertex.
+//?vertexIn : Artifact;
+//	elementOf Vertex;
+//	hasRole ParameterSet;
+//?vertexOut : Artifact;
+//	elementOf Vertex;
+//	hasRole ParameterSet;
+//VertexShader(?vertexIn) |-> ?vertexOut.*/

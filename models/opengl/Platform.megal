@@ -1,0 +1,86 @@
+module opengl.Platform
+
+/*
+glDrawElements : Vertex -> Fragment;
+	//glDrawElements implements Rendering.
+*/
+
+OpenGL : Framework;
+	= "https://www.opengl.org/";
+    supports ConcurrentComputing.
+	//uses MachineLanguage.
+	
+
+// Builds a bridge to the driver implementation of OpenGL
+GLEW : Library;
+	= "http://glew.sourceforge.net/";
+	uses C;
+	reuses OpenGL.
+
+
+// Processing unit
+GPU : Hardware;
+	= "https://en.wikipedia.org/wiki/Graphics_processing_unit".
+
+
+/* The OpenGL Shader Language */
+ShaderLanguage < Language .
+GLSL : ShaderLanguage; //TODO: Component?
+	= "https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.40.pdf";
+	supports GraphicsProgramming;
+	facilitates ConcurrentProgramming;
+	encodedAs Text;
+    ^implements OpenGL.
+	
+	
+/*
+	ValueLanguage
+
+	Basic types
+*/
+GlslInt : ValueLanguage; // 32 Bit integer
+	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Scalars";
+    ^implements OpenGL.
+
+GlslUint : ValueLanguage; // 32 Bit unsigned integer
+	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Scalars";
+    ^implements OpenGL.
+
+GlslFloat : ValueLanguage; // 32 Bit floating point value
+	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Scalars";
+    ^implements OpenGL.
+
+GlslBool : ValueLanguage; // 8 Bit boolean
+	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Scalars";
+    ^implements OpenGL.
+
+	
+/* Arrays */
+GlslArray : ValueLanguage;
+	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Arrays";
+    ^implements OpenGL.
+
+	
+GlslVec4 : ValueLanguage; // 4 component float value (vector)
+	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Vectors";
+	subsetOf GlslArray.
+
+GlslVec4Array : ValueLanguage; // GlslArray of vec4
+	subsetOf GlslArray.
+	
+
+/* Texture - Contains additional information and provides optimized functions compared to GlslArrays */
+// 1D GlslArray of values.
+GlslTexture1D : ValueLanguage;
+	= "https://www.khronos.org/opengl/wiki/Texture";
+	subsetOf GlslArray.
+	
+// 2D GlslArray of values.
+GlslTexture2D : ValueLanguage;
+	= "https://www.khronos.org/opengl/wiki/Texture";
+	subsetOf GlslArray.
+
+// 3D GlslArray of values.
+GlslTexture3D : ValueLanguage;
+	= "https://www.khronos.org/opengl/wiki/Texture";
+	subsetOf GlslArray.

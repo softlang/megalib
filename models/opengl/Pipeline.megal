@@ -1,0 +1,60 @@
+module opengl.Pipeline
+
+import opengl.Platform
+
+
+/* The OpenGL pipeline processes primitives, namely points, lines and triangles defined by vertices (points in space). As a result it rasterizes the primitives and returns shaded pixel values. */
+glDrawElements : GlslVec4Array -> GlslTexture2D.
+	//= "https://solarianprogrammer.com/2013/05/13/opengl-101-drawing-primitives/".
+?vertexList : Artifact;
+	elementOf GlslVec4Array;
+	hasRole Value.
+?image : Artifact;
+	elementOf GlslTexture2D;
+	hasRole Value.
+glDrawElements(?vertexList) |-> ?image.
+
+/* The Pipeline has multiple fixed function processes and programmable stages. The function of these processes and stages are specified later. Here we look at the general process. */
+OpenGLPipeline : Technology;
+	= "https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview";
+	facilitates Rendering.
+
+	
+/* If a Compute Shader is linked, it's executed in this stage. It's NOT part of the regular render pipeline. */
+DrawProcessing : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Compute_Shader";
+	^uses OpenGLPipeline;
+	aspectOf GeneralPurposeProgramming.
+
+/* Start of rendering pipeline. Execute Vertex Shader. */	
+VertexProcessing : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Vertex_Processing";
+	^uses OpenGLPipeline.
+
+/* Execute Tessellation Shader */
+Tessellation : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Tessellation";
+	^uses OpenGLPipeline.
+
+/* Execute Geometry Shader */
+PrimitiveProcessing : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Geometry_Shader";
+	= "https://www.khronos.org/opengl/wiki/Vertex_Post-Processing";
+	= "https://www.khronos.org/opengl/wiki/Primitive_Assembly";
+	^uses OpenGLPipeline.
+
+/* Execute rasterization process */
+Resterization : AbstractProcess;
+	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=433";
+	^uses OpenGLPipeline.
+
+/* Execute Fragment Shader */
+FragmentProcessing : AbstractProcess;
+	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=455";
+	^uses OpenGLPipeline.
+
+/* Process fragments by executing blending processes and write the final value to the pixel */
+PixelProcessing : AbstractProcess;
+	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=466";
+	^uses OpenGLPipeline.
+	

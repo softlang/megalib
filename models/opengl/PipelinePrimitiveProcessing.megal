@@ -1,0 +1,63 @@
+module opengl.PipelinePrimitiveProcessing
+
+import opengl.Pipeline
+	
+	
+
+/* generate new vertices between the incoming vertices. */
+Primitive : ValueLanguage;
+	subsetOf GlslVec4Array.
+PrimitiveArray : ValueLanguage;
+	subsetOf GlslVec4Array.
+	
+primitiveProcessing : GlslVec4Array -> PrimitiveArray.
+?vertices : Artifact;
+	elementOf GlslVec4Array;
+	hasRole Value.
+?primitives : Artifact;
+	elementOf PrimitiveArray;
+	hasRole Value.
+primitiveProcessing(?vertices) |-> ?primitives.
+
+
+
+// combine multiple vertices to a "Patch", eg. a triangle, line or point
+PrimitiveAssembly : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Primitive_Assembly";
+	^uses OpenGLPipeline.
+
+
+// calls the geometry shader multiple times to process one primitive more than once
+PrimitiveInstancing : AbstractProcess;
+	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=408";
+	^uses OpenGLPipeline.
+	
+	
+// receives a primitive and generates new primitives
+GeometryShader : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Geometry_Shader";
+	^uses OpenGLPipeline.
+
+	
+// gather vertex attributes
+FlatShading : AbstractProcess;
+	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=424";
+	^uses OpenGLPipeline.
+
+
+// TODO
+PerspectiveDivision : AbstractProcess;
+	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=428";
+	^uses OpenGLPipeline.
+	
+
+// TODO
+ControlViewport : AbstractProcess;
+	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=429";
+	^uses OpenGLPipeline.
+
+
+// clip primitives at view frustum
+PrimitiveClipping : AbstractProcess;
+	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=426";
+	^uses OpenGLPipeline.
