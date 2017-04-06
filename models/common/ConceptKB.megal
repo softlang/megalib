@@ -5,6 +5,8 @@ import common.Concept
 /* Design pattern */
 Model-View-Controller : DesignPattern;
     = "wikipedia::Model-view-controller".
+ObserverPattern : DesignPattern;
+    = "wikipedia::Observer_pattern".
 
 /* Architectural pattern */
 Client-Server : ArchitecturalPattern;
@@ -238,11 +240,20 @@ MdeMetamodel : Role; // in the sense of MDE
 Diagram : Role; //a visual representation of a model
     = "wikipedia::Diagram".
 MvcModel : Role; //data classes plus minor business logics
-    = "wikipedia::Model-view-controller".
+    = "wikipedia::Model-view-controller";
+    participantOf Model-View-Controller.
 MvcView : Role; //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
-    = "wikipedia::Model-view-controller".
+    = "wikipedia::Model-view-controller";
+    participantOf Model-View-Controller.
 MvcController : Role; //Some kind of mediator between model and view, which may execute rather complex computations
-    = "wikipedia::Model-view-controller".
+    = "wikipedia::Model-view-controller";
+    participantOf Model-View-Controller.
+Observer : Role;
+    = "wikipedia::Observer_pattern";
+    participantOf ObserverPattern.
+Subject : Role;
+    = "wikipedia::Observer_pattern";
+    participantOf ObserverPattern.
 Value : Role; //A runtime value in the execution process of a program
     = "wikipedia::Value_(computer_science)".
 Message : Role; //A message in a communication of software components
