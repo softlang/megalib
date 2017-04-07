@@ -18,7 +18,7 @@ import java.JavaPlatform
 languages that are subset of XMI that form DSLs. But this set to serialize models in XMI 
 is different from the metamodeling set. */
 ?DslJvmObjects : ValueLanguage;
-    subsetOf JVMObject.
+    subsetOf ?EcoreJvmObjects.
 ?DslXmi : DataExchangeLanguage; //TODO: Defined or Implemented? keep it or remove it
     subsetOf XMI.
 ?dslGenModel : Artifact;

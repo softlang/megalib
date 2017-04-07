@@ -20,3 +20,6 @@ import eclipse.Core where {
 generateEditor : GeneratorXmi -> EmfEditorJava .
 EMF.CodeGenerator implements generateEditor.
 generateEditor(?dslGenModel) |-> ?dslEditorCode .
+
+
+//TODO: Relate to JFace

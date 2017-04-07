@@ -23,6 +23,9 @@ EcoreJava : ProgrammingLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html";
     subsetOf Java;
     ^implements EMF.ECore.
+EcoreJVMObjects : ValueLanguage; //EObjects etc.
+    = "";
+    subsetOf JVMObjects.
 ecoreMetaModel partOf EMF.Core;
     manifestsAs File+;
     conformsTo ecoreMetaModel.

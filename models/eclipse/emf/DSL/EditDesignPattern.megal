@@ -1,0 +1,128 @@
+
+/* To be added to ConceptKB */
+AdapterPattern : DesignPattern;
+    = "wikipedia::Adapter_pattern".
+AdapterClient : Role;
+    = "wikipedia::Adapter_pattern";
+    participantOf AdapterPattern.
+Adapter : Role;
+    = "wikipedia::Adapter_pattern";
+    participantOf AdapterPattern.
+Adaptee : Role;
+    = "wikipedia::Adapter_pattern";
+    participantOf AdapterPattern.
+    
+AbstractFactoryPattern : DesignPattern;
+    = "wikipedia::Abstract_factory_pattern".
+AbstractFactory : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+AbstractProduct : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+ConcreteFactory : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+ConcreteProduct : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+    
+CommandPattern : DesignPattern;
+    = "wikipedia::Command_pattern".
+AbstractCommand : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+ConcreteCommand : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+CommandCaller : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+CommandReceiver : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+    
+/* To facilitate the implementation of editors for an EMF model,
+many design patterns are in use. Actually we could say that there is a 
+variant of the MVC Design Pattern at the plugin stage. The view is 
+actually tightly coupled with Eclipse's JFace that provides an API
+for Eclipse views. More of this is discussed in Editor.megal */
+?DslModelPlugin hasRole MvcModel.
+?DslEdit hasRole MvcController.
+?DslEditor hasRole MvcView.
+
+/* The Adapter pattern is present in the EMF implementation and is 
+presumably hard to grasp. http://www.eclipse.org/forums/index.php?t=msg&th=129825/ 
+We reverse engineered the design and came to the following identification
+of participants.
+First we can identify the abstract classes for important roles. */
+AdapterClientInterface : Artifact; ???
+    elementOf Java;
+    hasRole AdapterClient;
+    manifestsAs File.
+AdapterInterface : Artifact;
+    = "org.eclipse.emf.common.notify.Adapter";
+    elementOf Java;
+    hasRole Interface;
+    hasRole AbstractAdapter;
+    manifestsAs File;
+    partOf EmfCorePlugin.
+AdapteeInterface : Artifact;
+    = "org.eclipse.emf.common.util.EList"; //This would rather be EObject
+    elementOf Java;
+    hasRole Interface;
+    hasRole AbstractAdaptee;
+    manifestsAs File;
+    partOf EmfCorePlugin.
+AdapterImpl : Artifact;
+    = "org.eclipse.emf.common.notify.impl"
+    hasRole AbstractAdapter;
+    hasRole Implementation;
+    implements AdapterInterface.
+
+/* For every model class in the model, there exists an item provider.
+This item provider is actually complicated with about 3000+ LoC and 
+many design patterns in use besides the Adapter and MVC pattern. */
+?DslItemProvider : Artifact;
+    hasRole Adapter;
+    hasRole MvcController;
+    hasRole Observer;   //Pure guess
+    hasRole ObserverSubject. //Verified this one
+?dslJvmObject hasRole Adaptee;
+    hasRole MvcModel.
+?dslEditor hasRole AdapterClient;
+    hasRole MvcView.
+
+/* Actually the next thing is mentioned here: http://help.eclipse.org/neon/index.jsp?topic=%2Forg.eclipse.emf.doc%2Freferences%2Foverview%2FEMF.html&cp=21_0_0
+This is what makes it hard to get. This one single class has many jobs at once. 
+When something is read, the adapter actually implements interfaces to retrieve content and label information
+When the editor writes something, the adapter implements interfaces to create and "push" commands to 
+edit the model through the AdapterFactory.
+TODO: Don't know how to model this stuff yet. This actually has to be clarified through a scenario
+where we actually relate to the runtime objects. 
+Maybe we should rather push towards a scenario where we show what happens when you edit the model 
+in the editor plus how the editor gets its information first.
+ */
+
+    
+/* We discuss evidence for an Observer Pattern next. */
+?DslEObject hasRole ObserverSubject;
+?ItemProviderAdapter hasRole ObserverObject;
+
+
+/* The Command Pattern is also used to redo and undo operations */
+ItemProviderAdapter hasRole CommandCaller
+
+
+
+AbstractFactoryPattern
+
+AbstractFactory 
+AbstractProduct
+
+Template Method design pattern
+
+
+
+
+
