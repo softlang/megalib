@@ -25,6 +25,7 @@ EclipseCoreRuntime : Plugin;
 /* The whole user interface */
 ?Ui : LanguageWorkbench; //consists of editors and views
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-2.htm&cp=0_2_1".
+
 EclipseUiIde : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fui%2Fide%2Fpackage-summary.html";
     uses Java;
@@ -36,4 +37,5 @@ EclipseUiIde : Plugin;
     elementOf Java;
     manifestsAs File;
     partOf ?Ui. //?
-    
+/* TODO: How is a plugin registered and what do you have to do to start a new 
+platform? */    

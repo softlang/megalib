@@ -7,6 +7,12 @@ Model-View-Controller : DesignPattern;
     = "wikipedia::Model-view-controller".
 ObserverPattern : DesignPattern;
     = "wikipedia::Observer_pattern".
+AdapterPattern : DesignPattern;
+    = "wikipedia::Adapter_pattern".
+AbstractFactoryPattern : DesignPattern;
+    = "wikipedia::Abstract_factory_pattern".
+CommandPattern : DesignPattern;
+    = "wikipedia::Command_pattern".
 
 /* Architectural pattern */
 Client-Server : ArchitecturalPattern;
@@ -254,6 +260,43 @@ Observer : Role;
 Subject : Role;
     = "wikipedia::Observer_pattern";
     participantOf ObserverPattern.
+AdapterClient : Role;
+    = "wikipedia::Adapter_pattern";
+    participantOf AdapterPattern.
+Adapter : Role;
+    = "wikipedia::Adapter_pattern";
+    participantOf AdapterPattern.
+Adaptee : Role;
+    = "wikipedia::Adapter_pattern";
+    participantOf AdapterPattern.
+    
+
+AbstractFactory : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+AbstractProduct : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+ConcreteFactory : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+ConcreteProduct : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+    
+
+AbstractCommand : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+ConcreteCommand : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+CommandCaller : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+CommandReceiver : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
 Value : Role; //A runtime value in the execution process of a program
     = "wikipedia::Value_(computer_science)".
 Message : Role; //A message in a communication of software components

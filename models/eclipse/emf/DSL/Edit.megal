@@ -2,7 +2,8 @@ module eclipse.emf.dsl.Edit
 
 import eclipse.emf.dsl.Model
 
-/* TODO: Plugin overview auslesen. */
+/* The edit plugin is the bridge between model and editor 
+(and eclipse?) */
 ?dslEditJar : Artifact;
   elementOf Jar;
   manifestsAs File.
@@ -17,5 +18,7 @@ generateEdit : GeneratorXmi -> EmfEditJava .
 EMF.CodeGenerator implements generateEdit.
 ?dslEditCode : Artifact;
     elementOf EmfEditJava;
-    manifestsAs File+.
+    manifestsAs File+;
+    partOf ?dslEditJar.
 generateEdit(?dslGenModel) |-> ?dslEditCode .
+

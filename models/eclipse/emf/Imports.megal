@@ -36,11 +36,14 @@ EMF implements importJava.
     correspondsTo ?xsdSchema.
 importXSD : XSD -> EcoreXMI.
 importXSD(?xsdSchema) |-> ?resultingEcore.
+exportXSD : EcoreXMI -> XSD .
+exportXSD(?resultingEcore) |-> ?xsdSchema.
 EMF implements importXSD.
 
 /* Instead of starting with an empty EMF model
 project one may also start off by importing a class 
-diagram created via Rose. */
+diagram created via Rose.
+EMF was actually bootstrapped from Rose. */
 EMF implements Rose.MDL.
 ?roseDiagram : Artifact;
     elementOf Rose.MDL;
@@ -52,4 +55,10 @@ EMF implements Rose.MDL.
     manifestsAs File.
 importRose : Rose.MDL -> EcoreXMI.
 importRose(?roseDiagram) |-> ?resultingEcore.
+exportRose : EcoreXMI -> RoseMdl .
+exportRose(?resultingEcore) |-> ?roseDiagram. 
 EMF implements importRose.
+
+/* By right clicking on your genmodel and clicking on "export model",
+you select a target language. */
+EMF implements export
