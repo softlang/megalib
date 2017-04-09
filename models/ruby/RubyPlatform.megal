@@ -1,8 +1,20 @@
 module ruby.RubyPlatform
 
-/* basics */
-RubyPlatform : Platform;
+/* Basics */
+RubyPlatform : Software;
     = "https://github.com/ruby/ruby";
     uses Ruby;
     uses C;
-    implements Ruby.
+    implements Ruby;
+    belongsTo RubyWare.
+
+RubyStandardLibrary : Library;
+    partOf RubyPlatform;
+    uses Ruby;
+    belongsTo RubyWare.
+    
+/* TODO: Languages explained*/
+RubyObjects : ValueLanguage;
+    encodes Object.
+RubyCommandLineParameterLanguage : CommandLineLanguage;
+    ^implements RubyPlatform.
