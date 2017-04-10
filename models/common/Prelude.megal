@@ -64,6 +64,8 @@ Plugin < Technology;
     = "wikipedia::Plug-in_(computing)".
 Application < Technology; 
     = "wikipedia::Application_software".
+SoftwareSuite < Technology;
+    = "wikipedia::Software_suite".
 Service < Technology;
     = "wikipedia::Service_(systems_architecture)".
 Platform < Technology; 
