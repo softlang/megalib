@@ -1,4 +1,4 @@
-module eclipse.emf.Emf
+module eclipse.emf.Core
 
 import eclipse.Core 
 
@@ -11,7 +11,10 @@ Emf : Platform;
     uses Java;
     partOf Eclipse;
     supports ModelDrivenEngineering;
-    belongsTo MDEWare.
+    belongsTo MDEWare;
+    belongsTo JavaWare;
+    bridgesTo XMLWare;
+    bridgesTo UMLWare.
 
 /* Its main component is EmfCore which contains Ecore's 
 metametamodel as several Java classes. */

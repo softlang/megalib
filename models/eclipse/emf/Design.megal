@@ -1,12 +1,25 @@
+module eclipse.emf.Design
+
+import eclipse.emf.dsl.Editor
+
+
+/* This model explains the essential design patterns
+used. At a very upper level we have an MVC design pattern.
+The view is tightly coupled with Eclipse's JFace that provides an API
+for Eclipse views, i.e., JFace. More of this is discussed in Editor.megal */
+Emf uses Model-View-Controller.
+?DslModelPlugin hasRole MvcModel.
+?DslEditPlugin hasRole MvcController.
+?DslEditorPlugin hasRole MvcView;
+    reuses JFace.
+
+
 /* The Adapter pattern is present in the EMF implementation and is 
 presumably hard to grasp. http://www.eclipse.org/forums/index.php?t=msg&th=129825/ 
 We reverse engineered the design and came to the following identification
 of participants.
 First we can identify the abstract classes for important roles. */
-AdapterClientInterface : Artifact; ???
-    elementOf Java;
-    hasRole AdapterClient;
-    manifestsAs File.
+?DslEditorCode hasRole AdapterClient. //One accesses the adapters through the factory??
 AdapterInterface : Artifact;
     = "org.eclipse.emf.common.notify.Adapter";
     elementOf Java;
@@ -14,22 +27,17 @@ AdapterInterface : Artifact;
     hasRole AbstractAdapter;
     manifestsAs File;
     partOf EmfCorePlugin.
-AdapteeInterface : Artifact;
-    = "org.eclipse.emf.common.util.EList"; //This would rather be EObject
+Notifier : Artifact;
+    = "org.eclipse.emf.common.notify.Notifier"; //This would rather be EObject
     elementOf Java;
     hasRole Interface;
     hasRole AbstractAdaptee;
     manifestsAs File;
     partOf EmfCorePlugin.
-AdapterImpl : Artifact;
-    = "org.eclipse.emf.common.notify.impl"
-    hasRole AbstractAdapter;
-    hasRole Implementation;
-    implements AdapterInterface.
 
 /* For every model class in the model, there exists an item provider.
-This item provider is actually complicated with about 3000+ LoC and 
-many design patterns in use besides the Adapter and MVC pattern. */
+The item provider implementations for each model class extend 
+the class ItemProviderAdapter that is actually complicated with about 3000+ LoC. */
 ?DslItemProvider : Artifact;
     hasRole Adapter;
     hasRole MvcController;
@@ -40,15 +48,11 @@ many design patterns in use besides the Adapter and MVC pattern. */
 ?dslEditor hasRole AdapterClient;
     hasRole MvcView.
 
-/* Actually the next thing is mentioned here: http://help.eclipse.org/neon/index.jsp?topic=%2Forg.eclipse.emf.doc%2Freferences%2Foverview%2FEMF.html&cp=21_0_0
+/* Actually the next thing is shown here: http://help.eclipse.org/neon/topic/org.eclipse.emf.doc/references/overview/images/EMF.Edit/image007.gif
 This is what makes it hard to get. This one single class has many jobs at once. 
 When something is read, the adapter actually implements interfaces to retrieve content and label information
 When the editor writes something, the adapter implements interfaces to create and "push" commands to 
 edit the model through the AdapterFactory.
-TODO: Don't know how to model this stuff yet. This actually has to be clarified through a scenario
-where we actually relate to the runtime objects. 
-Maybe we should rather push towards a scenario where we show what happens when you edit the model 
-in the editor plus how the editor gets its information first.
  */
 
     

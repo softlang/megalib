@@ -97,6 +97,8 @@ BuildAutomationWare : TechnologySpace;
     = "wikipedia::List_of_build_automation_software".
 MDEWare : TechnologySpace;
     = "wikipedia::Model-driven_engineering#Tools".
+UMLWare : TechnologySpace;
+    = "wikipedia::List_of_Unified_Modeling_Language_tools".
 SoftwareAsAServiceWare : TechnologySpace;
     = "wikipedia::Software_as_a_service".
 SQLWare : TechnologySpace;
@@ -107,6 +109,8 @@ JSONWare : TechnologySpace;
     = "http://www.json.org/".
 JavaWare : TechnologySpace;
     = "http://link.springer.com/chapter/10.1007%2F978-3-642-30561-0_6".
+RubyWare : TechnologySpace;
+    = "wikipedia::Ruby_(programming_language)".
 ClusterWare : TechnologySpace;
 	= "wikipedia::Computer_cluster".
 ClusterComputingWare : TechnologySpace;

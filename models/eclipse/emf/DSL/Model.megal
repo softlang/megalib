@@ -44,6 +44,7 @@ generateJava(?dslGenModel,?dslMetaModel) |-> ?dslJavaModel.
 ?dslModel : Artifact;
     partOf ?RuntimeWorkspace;
     elementOf ?DslXmi;
+    conformsTo ?dslMetaModel;
     hasRole MdeModel;
     manifestsAs File.
 ?dslJvmObject : Artifact;
@@ -91,7 +92,14 @@ DiagnosticChain : ValueLanguage;
     manifestsAs Transient.
 validation : ?DslJvmObjects # DiagnosticChain -> EBoolean # DiagnosticChain.
 validation(?dslJvmObject,?diagnosticChain0) |-> (?eBooleanResult,?diagnosticChain1).
-validation ^implements ?DslModelPlugin.
+?DslModelPlugin implements validation.
 
 
-//@generated NOT: added fragments that are just copied when repeating generateJava. This goes for model, edit and editor.
+Resource : ValueLanguage;
+    = "org.eclipse.emf.ecore.resource.Resource".
+?dslResource : Artifact;
+    elementOf Resource;
+    manifestsAs Transient;
+    hasRole Reference.
+getEObject : Resource -> ?DslJvmObjects.
+Emf.Ecore implements getEObject.

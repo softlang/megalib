@@ -85,6 +85,10 @@ OperatingSystem < Platform;
     = "wikipedia::Operating_system".
 ParserGenerator < Framework;
     = "wikipedia::Category:Parser_generators".
+    
+/* Relationship of system components to components of architectural pattern 
+Any system that has such a role is a part of a larger system that uses the pattern*/
+hasRole < System # Role.
 
 /* Implementation relationships */
 implements < System # Function;  

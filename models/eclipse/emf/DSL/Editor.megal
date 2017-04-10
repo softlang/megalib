@@ -21,12 +21,4 @@ generateEditor : GeneratorXmi -> EmfEditorJava .
 EMF.CodeGenerator implements generateEditor.
 generateEditor(?dslGenModel) |-> ?dslEditorCode .
 
-/* There is a variant of the MVC Design Pattern at the plugin stage. The view is 
-actually tightly coupled with Eclipse's JFace that provides an API
-for Eclipse views. More of this is discussed in Editor.megal */
-?DslModelPlugin hasRole MvcModel.
-?DslEdit hasRole MvcController.
-?DslEditor hasRole MvcView.
-    reuses JFace.
-
 //TODO: Relate to JFace
