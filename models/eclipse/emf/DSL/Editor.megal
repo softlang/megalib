@@ -22,3 +22,6 @@ EMF.CodeGenerator implements generateEditor.
 generateEditor(?dslGenModel) |-> ?dslEditorCode .
 
 //TODO: Relate to JFace
+TreeViewer
+TableViewer
+ListViewer

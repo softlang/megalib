@@ -4,7 +4,11 @@ import eclipse.emf.EMF
 import RationalRose
 
 /* One can import Java interfaces annotated in a specific way and
-retrieve an Ecore model. */
+retrieve an Ecore model.
+
+TODO: Import Java Interfaces gives you an ecore file
+Next step: Check out the generated code. Is it identical or equal?
+ */
 Java.AnnotatedInterfaces : ProgrammingLanguage;
     = "http://www.informit.com/store/emf-eclipse-modeling-framework-9780321331885"; //described in the book
     subsetOf Java.
@@ -38,7 +42,8 @@ importXSD : XSD -> EcoreXMI.
 importXSD(?xsdSchema) |-> ?resultingEcore.
 exportXSD : EcoreXMI -> XSD .
 exportXSD(?resultingEcore) |-> ?xsdSchema.
-EMF implements importXSD.
+EMF implements importXSD;
+    implements exportXSD.
 
 /* Instead of starting with an empty EMF model
 project one may also start off by importing a class 
@@ -57,8 +62,9 @@ importRose : Rose.MDL -> EcoreXMI.
 importRose(?roseDiagram) |-> ?resultingEcore.
 exportRose : EcoreXMI -> RoseMdl .
 exportRose(?resultingEcore) |-> ?roseDiagram. 
-EMF implements importRose.
+EMF implements importRose;
+    implements exportRose.
 
 /* By right clicking on your genmodel and clicking on "export model",
 you select a target language. */
-EMF implements export
+
