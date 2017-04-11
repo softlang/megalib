@@ -12,7 +12,10 @@ import eclipse.emf.dsl.Model
   reuses EMF.EditPlugin;
   reuses EclipseCoreRuntimePlugin;
   deployedAs ?dslEditJar.
-  
+EmfEditJava : ProgrammingLanguage;
+    = "http://www.softlang.org/"; //TODO
+    subsetOf Java.  
+    
 /* Functionality */
 generateEdit : GeneratorXmi -> EmfEditJava .
 EMF.CodeGenerator implements generateEdit.
@@ -21,4 +24,3 @@ EMF.CodeGenerator implements generateEdit.
     manifestsAs File+;
     partOf ?dslEditJar.
 generateEdit(?dslGenModel) |-> ?dslEditCode .
-

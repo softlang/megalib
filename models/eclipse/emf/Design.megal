@@ -3,11 +3,21 @@ module eclipse.emf.Design
 import eclipse.emf.dsl.Editor
 
 
-/* This model explains the essential design patterns
-used. At a very upper level we have an MVC design pattern.
-The view is tightly coupled with Eclipse's JFace that provides an API
-for Eclipse views, i.e., JFace. More of this is discussed in Editor.megal */
-Emf uses Model-View-Controller.
+/* First let's see what design patterns are actually used
+in the generated code. We found evidence for the following 
+usages. Most interestingly we were able to find all the evidence 
+in the 3k+ LoC class "ItemProviderAdapter".  */
+EMF uses Model-View-Controller;
+    uses AdapterPattern;
+    uses ObserverPattern;
+    uses CommandPattern;
+    uses AbstractFactoryPattern;
+    uses TemplateMethodPattern.
+
+
+/* Well first from an abstract perspective, it is already 
+clear that for any generated set of plugins the relation to MVC
+can be identified. */
 ?DslModelPlugin hasRole MvcModel.
 ?DslEditPlugin hasRole MvcController.
 ?DslEditorPlugin hasRole MvcView;
@@ -16,8 +26,6 @@ Emf uses Model-View-Controller.
 
 /* The Adapter pattern is present in the EMF implementation and is 
 presumably hard to grasp. http://www.eclipse.org/forums/index.php?t=msg&th=129825/ 
-We reverse engineered the design and came to the following identification
-of participants.
 First we can identify the abstract classes for important roles. */
 ?DslEditorCode hasRole AdapterClient. //One accesses the adapters through the factory??
 AdapterInterface : Artifact;
@@ -43,7 +51,7 @@ the class ItemProviderAdapter that is actually complicated with about 3000+ LoC.
     hasRole MvcController;
     hasRole Observer;   //Pure guess
     hasRole ObserverSubject. //Verified this one
-?dslJvmObject hasRole Adaptee;
+?dslEObject hasRole Adaptee;
     hasRole MvcModel.
 ?dslEditor hasRole AdapterClient;
     hasRole MvcView.
@@ -56,13 +64,9 @@ edit the model through the AdapterFactory.
  */
 
     
-/* We discuss evidence for an Observer Pattern next. */
-?DslEObject hasRole ObserverSubject;
-?ItemProviderAdapter hasRole ObserverObject;
 
 
-/* The Command Pattern is also used to redo and undo operations */
-ItemProviderAdapter hasRole CommandCaller
+
 
 
 

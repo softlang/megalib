@@ -13,6 +13,8 @@ AbstractFactoryPattern : DesignPattern;
     = "wikipedia::Abstract_factory_pattern".
 CommandPattern : DesignPattern;
     = "wikipedia::Command_pattern".
+TemplateMethodPattern : DesignPattern;
+    = "wikipedia::Template_method_pattern".
 
 /* Architectural pattern */
 Client-Server : ArchitecturalPattern;

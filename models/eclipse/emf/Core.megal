@@ -2,87 +2,103 @@ module eclipse.emf.Core
 
 import eclipse.Core 
 
-/* The eclipse modeling framework belongs to the model driven engineering
-technologies. It's an eclipse plugin implemented in Java. */
+/* Given namespaces */
 emfJavaDoc :: "http://download.eclipse.org/modeling/emf/emf/javadoc/2.8.0/org/eclipse/emf/".
+
+/* 
+SEE SETUP INSTRUCTIONS:
+For every artifact we provide the binding first.
+For every technology we state a link to the deployed artifacts first.
+ 
+READ INSTRUCTIONS:
+*/
+developmentPlatform :: 
+developmentWorkspace ::
+runtimeWorkspace ::
+
+/* The eclipse modeling framework belongs to the model driven engineering
+technologies. It's a platform that consists of eclipse plugins implemented in Java. */
 Emf : Platform;
     = "https://eclipse.org/modeling/emf/";
     = "emfJavaDoc::common/EmfPlugin.html";
+    = "wikipedia::Eclipse_Modeling_Framework"
     uses Java;
     partOf Eclipse;
     supports ModelDrivenEngineering;
-    belongsTo MDEWare;
-    belongsTo JavaWare;
+    belongsTo MDEWare.
+
+/* EMF builds a bridge between three technological spaces, namely Java, UML and XML related
+technologies. */     
+Emf belongsTo JavaWare;
     bridgesTo XMLWare;
     bridgesTo UMLWare.
 
 /* Its main component is EmfCore which contains Ecore's 
-metametamodel as several Java classes. */
+metametamodel written in Java. The root class 
+provides an interface EObject to any Ecore objects
+corresponding to instances of a metamodel. */
 Emf.ECore : Plugin;
+    = "developmentPlatform::"
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html";
     partOf Emf;
     uses Java.
-EmfEcoreJava : ProgrammingLanguage;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html";
-    subsetOf Java;
-    ^implements Emf.ECore.
-EcoreJVMObjects : ValueLanguage; //EObjects etc.
-    = "";
+EObjects : ValueLanguage; //EObjects etc.
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/EObject.html";
     subsetOf JVMObjects.
-ecoreMetaModel partOf Emf.Core;
+ecoreMetaModel : Artifact;
+    ~= "".
+    elementOf Java;
+    hasRole MdeMetamodel;
+    partOf Emf.ECore;
     manifestsAs File+;
-    conformsTo ecoreMetaModel.
-    
-/* Emf Edit Plugin */
-Emf.Edit : Plugin;
-    = "eclipseHelp::?topic=%2Forg.eclipse.emf.doc%2Freferences%2Foverview%2FEmf.Edit.html";
-    = "emfJavaDoc::edit/package-summary.html";
-    uses Java.
-EmfEditUi : Plugin;
-    = "emfJavaDoc::edit/ui/package-summary.html";
-    uses Java.
-EmfEditJava : ProgrammingLanguage;
-    = "http://www.softlang.org/"; //TODO
-    subsetOf Java.
+    conformsTo ecoreMetaModel;
+    defines EObjects.
+ 
+/* In an EMF project an empty Ecore Model is automatically generated. One can then 
+add content to this metamodel, for example through EMF's default editor. */
+EcoreXmi : DataExchangeLanguage;
+    = "emfJavaDoc::ecore/xmi/XmiResource.html";
+    subsetOf XMI.
+?ecoreModel : Artifact;
+    elementOf EcoreXmi;
+    hasRole MdeMetamodel;
+    manifestsAs File;
 
-/* Emf Editor Plugin */
-EmfEditor : Plugin;
-    = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html#step4";
-    uses Java.
-EmfEditorJava : ProgrammingLanguage;
-    = "http://www.softlang.org/"; //TODO
-    subsetOf Java.    
-EcoreXMI : DataExchangeLanguage;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/xmi/XMIResource.html";
-    subsetOf XMI.
-GeneratorXmi : ConfigurationLanguage;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/codegen/ecore/genmodel/GenModel.html";
-    subsetOf XMI.
-    
+ 
 /* An important component is the Generator that takes a generation
-configuration which is itself a model persisted in XMI. */
-//generateDslJavaModel : GeneratorXmi # EcoreXMI -> >?DSLJavaModel # PluginXML # DSLProperties.
+configuration and an ecore metamodel which are persisted in XMI
+and generates Java code. */
 Emf.CodeGenerator : Plugin;
     = "http://help.eclipse.org/neon/topic/org.eclipse.emf.doc/references/overview/Emf.html?cp=21_0_0";
     = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html";
     partOf Emf;
     uses Java;
-    implements GeneratorXmi;
-    implements generateJava.
-generateJava : GeneratorXmi # EcoreXMI -> EcoreJava.
-Emf.CodeGenerator implements generateJava.
-reload : GeneratorXmi # EcoreXMI # Java -> Java. //TODO: EcoreJava or Java?
-Emf.CodeGenerator implements mergeCustomCode.  
-
-/* Scenario for code merge */
+    implements EcoreJava.
+EcoreJava : ProgrammingLanguage;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html";
+    subsetOf Java;
+    ^implements Emf.CodeGenerator.
+GeneratorXmi : ConfigurationLanguage;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/codegen/ecore/genmodel/GenModel.html";
+    subsetOf EcoreXmi. //??
 ?generator : Artifact;
     elementOf GeneratorXmi;
     hasRole Configuration;
     manifestsAs File.
-?ecoreModel : Artifact;
-    elementOf EcoreXMI;
-    hasRole MdeMetamodel;
-    manifestsAs File;
+generateGenModel : EcoreXmi -> GeneratorXmi.
+generateGenModel(?ecoreModel) |-> ?generatorModel.
+generateJava : GeneratorXmi # EcoreXmi -> EcoreJava.
+Emf.CodeGenerator implements generateJava.
+generateJava(?generatorModel,?ecoreModel) |-> ?ecoreJavaFiles .
+
+
+/* The former mentioned relation between inputs and outputs is only true
+for the initial code generation. Once the code is generated one may 
+add code to it. If any added or manually changed code is marked with 
+@generated NOT and one has to redo the code generation, the code generator 
+copies the annotated fragments. */
+reload : GeneratorXmi # EcoreXmi # Java -> Java.
+Emf.CodeGenerator implements reload.  
 ?dslImplementation0 : Artifact;
     elementOf EcoreJava;
     hasRole MdeMetamodel;
@@ -95,13 +111,28 @@ generateJava(?generator,?ecoreModel) |-> ?dslImplementation0.
     elementOf Java;
     partOf ?dslImplementation1;
     manifestsAs Fragment.
-reload(?generator, ?ecoreModel, ?dslImplementation1) |-> ?dslImplementation1.
-
-/* The Emf persistence framework allows you to persist ecore models in a subset of XMI */
-EmfEcoreXmi : Plugin;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/index.html?org/eclipse/emf/ecore/package-summary.html";
-    = "http://www.vogella.com/tutorials/EclipseEmfPersistence/article.html";
-    uses Java;
-    partOf Emf.ECore;
-    facilitates Persistence;
-    implements EcoreXMI.
+reload(?generator, ?ecoreModel, ?dslImplementation1) |-> ?dslImplementation1.    
+    
+/* EMF itself uses a variant of the Model-View-Controller architecture, where
+the core is the model, edit is the controller and editor is the view. This view 
+is tightly coupled with Eclipse JFace. We will elaborate on the plugins at a later
+point. For now, all you need to know is that these plugins are given as soon as 
+the "Eclipse Modeling Tools" is installed. When you edit an ecore model you actually
+use functionality provided by Emf.Editor which accesses the model through Emf.Edit. */
+EMF uses Model-View-Controller.
+Emf.Edit : Plugin;
+    = "eclipseHelp::?topic=%2Forg.eclipse.emf.doc%2Freferences%2Foverview%2FEmf.Edit.html";
+    = "emfJavaDoc::edit/package-summary.html";
+    partOf Emf;
+    hasRole MvcController;
+    uses Java.
+Emf.EditUi : Plugin;
+    = "emfJavaDoc::edit/ui/package-summary.html";
+    partOf Emf;
+    hasRole MvcController;
+    uses Java.
+Emf.Editor : Plugin;
+    = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html#step4";
+    hasRole MvcView;
+    reuses JFace;
+    uses Java.     
