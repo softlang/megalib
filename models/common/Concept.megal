@@ -3,10 +3,10 @@ module common.Concept
 import common.Namespaces
 
 /* Concept Types, see https://github.com/softlang/megalib/wiki/Concept-Classification */
-DesignPattern < Entity;
-    = "wikipedia::Software_design_pattern".
 ArchitecturalPattern < Entity;
     = "wikipedia::Architectural_pattern".
+DesignPattern < ArchitecturalPattern;
+    = "wikipedia::Software_design_pattern".
 
 Paradigm < Entity ;
     = "wikipedia::Programming_paradigm".

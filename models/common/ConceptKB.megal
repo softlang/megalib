@@ -3,7 +3,7 @@ module common.ConceptKB
 import common.Concept
 
 /* Design pattern */
-Model-View-Controller : DesignPattern;
+ModelViewController : DesignPattern;
     = "wikipedia::Model-view-controller".
 ObserverPattern : DesignPattern;
     = "wikipedia::Observer_pattern".
@@ -15,14 +15,20 @@ CommandPattern : DesignPattern;
     = "wikipedia::Command_pattern".
 TemplateMethodPattern : DesignPattern;
     = "wikipedia::Template_method_pattern".
+DecoratorPattern : DesignPattern;
+    = "wikipedia::Decorator_pattern".
 
 /* Architectural pattern */
-Client-Server : ArchitecturalPattern;
+ClientServer : ArchitecturalPattern;
     = "https://de.wikipedia.org/wiki/Client-Server-Modell".
 REST : ArchitecturalPattern;
     = "wikipedia::Representational_state_transfer".
 ServiceOrientedArchitecture : ArchitecturalPattern;
     = "wikipedia::Service-oriented_architecture".
+PublishSubscribe : ArchitecturalPattern;
+    = "wikipedia::Publish-subscribe_pattern".
+MessageQueue : ArchitecturalPattern;
+    = "wikipedia::Message_queue".
 
 /* Paradigms */
 ParallelProgramming : Paradigm;
@@ -93,6 +99,9 @@ ConcurrentComputing : ProgrammingDomain;
     = "wikipedia::Concurrent_computing".
 ParallelComputing : ProgrammingDomain;
     = "wikipedia::Parallel_computing".
+StreamProcessing : ProgrammingDomain; //TODO: ProgrammingDomain vs classified as Paradigm
+    = "wikipedia::Stream_processing".
+
  
 /* Technological spaces */
 BuildAutomationWare : TechnologySpace;
@@ -251,58 +260,6 @@ MdeMetamodel : Role; // in the sense of MDE
     = "wikipedia::Metamodeling".
 Diagram : Role; //a visual representation of a model
     = "wikipedia::Diagram".
-MvcModel : Role; //data classes plus minor business logics
-    = "wikipedia::Model-view-controller";
-    participantOf Model-View-Controller.
-MvcView : Role; //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
-    = "wikipedia::Model-view-controller";
-    participantOf Model-View-Controller.
-MvcController : Role; //Some kind of mediator between model and view, which may execute rather complex computations
-    = "wikipedia::Model-view-controller";
-    participantOf Model-View-Controller.
-Observer : Role;
-    = "wikipedia::Observer_pattern";
-    participantOf ObserverPattern.
-Subject : Role;
-    = "wikipedia::Observer_pattern";
-    participantOf ObserverPattern.
-AdapterClient : Role;
-    = "wikipedia::Adapter_pattern";
-    participantOf AdapterPattern.
-Adapter : Role;
-    = "wikipedia::Adapter_pattern";
-    participantOf AdapterPattern.
-Adaptee : Role;
-    = "wikipedia::Adapter_pattern";
-    participantOf AdapterPattern.
-    
-
-AbstractFactory : Role;
-    = "wikipedia::Abstract_factory_pattern";
-    participantOf AbstractFactoryPattern.
-AbstractProduct : Role;
-    = "wikipedia::Abstract_factory_pattern";
-    participantOf AbstractFactoryPattern.
-ConcreteFactory : Role;
-    = "wikipedia::Abstract_factory_pattern";
-    participantOf AbstractFactoryPattern.
-ConcreteProduct : Role;
-    = "wikipedia::Abstract_factory_pattern";
-    participantOf AbstractFactoryPattern.
-    
-
-AbstractCommand : Role;
-    = "wikipedia::Command_pattern";
-    participantOf CommandPattern.
-ConcreteCommand : Role;
-    = "wikipedia::Command_pattern";
-    participantOf CommandPattern.
-CommandCaller : Role;
-    = "wikipedia::Command_pattern";
-    participantOf CommandPattern.
-CommandReceiver : Role;
-    = "wikipedia::Command_pattern";
-    participantOf CommandPattern.
 Value : Role; //A runtime value in the execution process of a program
     = "wikipedia::Value_(computer_science)".
 Message : Role; //A message in a communication of software components
@@ -367,3 +324,88 @@ Worker : Role;
 	="wikipedia::Thread_pool".
 Plugin : Role;
     = "wikipedia::Plug-in_(computing)".
+MessageBroker  : Role;
+    = "wikipedia::Message_broker";
+    aspectOf DistributedProgramming.
+MiddleWare : Role;
+    = "wikipedia::Message-oriented_middleware".
+    
+MvcModel : Role; //data classes plus minor business logics
+    = "wikipedia::Model-view-controller";
+    participantOf Model-View-Controller.
+MvcView : Role; //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
+    = "wikipedia::Model-view-controller";
+    participantOf Model-View-Controller.
+MvcController : Role; //Some kind of mediator between model and view, which may execute rather complex computations
+    = "wikipedia::Model-view-controller";
+    participantOf Model-View-Controller.
+    
+Observer : Role;
+    = "wikipedia::Observer_pattern";
+    participantOf ObserverPattern.
+Subject : Role;
+    = "wikipedia::Observer_pattern";
+    participantOf ObserverPattern.
+AdapterClient : Role;
+    = "wikipedia::Adapter_pattern";
+    participantOf AdapterPattern.
+Adapter : Role;
+    = "wikipedia::Adapter_pattern";
+    participantOf AdapterPattern.
+Adaptee : Role;
+    = "wikipedia::Adapter_pattern";
+    participantOf AdapterPattern.
+    
+
+AbstractFactory : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+AbstractProduct : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+ConcreteFactory : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+ConcreteProduct : Role;
+    = "wikipedia::Abstract_factory_pattern";
+    participantOf AbstractFactoryPattern.
+    
+
+AbstractCommand : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+ConcreteCommand : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+CommandCaller : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+CommandReceiver : Role;
+    = "wikipedia::Command_pattern";
+    participantOf CommandPattern.
+    
+PublishSubscribe-Topic : Role;
+    = "wikipedia::Publish-subscribe_pattern";
+    participantOf PublishSubscribe.
+PublishSubscribe-Content : Role;
+    = "wikipedia::Publish-subscribe_pattern";
+    participantOf PublishSubscribe.
+PublishSubscribe-Publisher : Role;
+    = "wikipedia::Publish-subscribe_pattern";
+    participantOf PublishSubscribe.
+PublishSubscribe-Subscriber : Role;
+    = "wikipedia::Publish-subscribe_pattern";
+    participantOf PublishSubscribe.    
+    
+Decorator-ConcreteComponent : Role;
+    = "wikipedia::Decorator_pattern";
+    participantOf DecoratorPattern.
+Decorator-AbstractComponent : Role;
+    = "wikipedia::Decorator_pattern";
+    participantOf DecoratorPattern.   
+Decorator-AbstractDecorator : Role;
+    = "wikipedia::Decorator_pattern";
+    participantOf DecoratorPattern.
+Decorator-ConcreteDecorator : Role;
+    = "wikipedia::Decorator_pattern";
+    participantOf DecoratorPattern.

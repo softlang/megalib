@@ -7,12 +7,13 @@ import eclipse.emf.dsl.Editor
 in the generated code. We found evidence for the following 
 usages. Most interestingly we were able to find all the evidence 
 in the 3k+ LoC class "ItemProviderAdapter".  */
-EMF uses Model-View-Controller;
-    uses AdapterPattern;
-    uses ObserverPattern;
-    uses CommandPattern;
-    uses AbstractFactoryPattern;
-    uses TemplateMethodPattern.
+EMF facilitates ModelViewController;
+    facilitates AdapterPattern;
+    facilitates ObserverPattern;
+    facilitates CommandPattern;
+    facilitates AbstractFactoryPattern;
+    facilitates TemplateMethodPattern;
+    facilitates DecoratorPattern.
 
 
 /* Well first from an abstract perspective, it is already 
@@ -46,13 +47,28 @@ Notifier : Artifact;
 /* For every model class in the model, there exists an item provider.
 The item provider implementations for each model class extend 
 the class ItemProviderAdapter that is actually complicated with about 3000+ LoC. */
-?DslItemProvider : Artifact;
+INotifyChangedListener : Artifact;
+    hasRole AbstractSubject
+AdapterFactoryLabelProvider : Artifact;
+    conformsTo INotifyChangedListener;
+    hasRole Observer.
+ItemProviderAdapter : Artifact;
+    elementOf Java;
+    manifestsAs File;
+    hasRole ConcreteAdapter;
+    partOf ?EmfEdit.
+
+?dslItemProvider : Artifact;
     hasRole Adapter;
     hasRole MvcController;
-    hasRole Observer;   //Pure guess
-    hasRole ObserverSubject. //Verified this one
+    hasRole ConcreteSubject; //Verified this one
+    elementOf JVMObject;
+    manifestsAs Transient;
+    conformsTo ItemProviderAdapter.
 ?dslEObject hasRole Adaptee;
     hasRole MvcModel.
+?dslResource hasRole Adaptee.
+?dslResourceSet hasRole Adaptee.
 ?dslEditor hasRole AdapterClient;
     hasRole MvcView.
 
@@ -66,18 +82,10 @@ edit the model through the AdapterFactory.
     
 
 
-
-
-
-
-AbstractFactoryPattern
-
-AbstractFactory 
-AbstractProduct
-
-Template Method design pattern
-
-
+/* EMF actually facilitates the usage of the decorator Design pattern */
+IItemProviderDecorator : Artifact;
+    hasRole DecoratorAbstractDecorator
+IChangeNotifier hasRole DecoratorAbstractComponent.
 
 
 
