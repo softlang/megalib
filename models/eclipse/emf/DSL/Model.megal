@@ -5,17 +5,17 @@ import java.JavaPlatform
 
 
 
-?DslEObjects : ValueLanguage;
-    subsetOf EObjects.
+
     
 // Meta-model in Java
+?DslEObjects : ValueLanguage;
+    subsetOf EObjects.
 ?dslJavaModel : Artifact;
     partOf ?DevelopmentWorkspace;
     elementOf EcoreJava;
     hasRole MdeMetamodel;
     manifestsAs File+;
     defines ?DslEObjects.
-
 ?dslResourceSet : Artifact;
     elementOf ResourceSet;
     manifestsAs Transient.
@@ -23,7 +23,6 @@ import java.JavaPlatform
     elementOf Resource;
     manifestsAs Transient;
     partOf ?dslResourceSet.
-// Instance in Java
 ?dslEObject : Artifact;
     partOf ?dslResource;
     elementOf ?DslEObjects;

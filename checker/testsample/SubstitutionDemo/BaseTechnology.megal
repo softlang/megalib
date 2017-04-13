@@ -13,6 +13,5 @@ Platformx : Platform;
 myProgram1 : Artifact;
     ~= "http://www.softlang.org/";
     manifestsAs File;
-    hasRole SourceCode;
     elementOf MyPL.
     

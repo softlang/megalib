@@ -17,7 +17,7 @@ public class MegaModel {
     private Map<String, String> elementOfMap;
     private Map<String, String> subsetOfMap;
     private Map<String, Set<Relation>> relationDeclarationMap;
-    private Map<String, Set<Relation>> relationInstanceMap;
+    private Map<String,Set<Relation>> relationshipMap;
     private Map<String,Set<Function>> functionDeclarations;
     private Map<String, Set<Function>> functionApplications;
 
@@ -32,7 +32,7 @@ public class MegaModel {
         elementOfMap = new HashMap<>();
         subsetOfMap = new HashMap<>();
         relationDeclarationMap = new HashMap<>();
-        relationInstanceMap = new HashMap<>();
+        relationshipMap = new HashMap<>();
         functionDeclarations = new HashMap<>();
         functionApplications = new HashMap<>();
         substitutedLanguages = new HashSet<>();
@@ -74,13 +74,13 @@ public class MegaModel {
     }
 
     public Map<String, Set<Relation>> getRelationships() {
-        return Collections.unmodifiableMap(relationInstanceMap);
+        return Collections.unmodifiableMap(relationshipMap);
     }
 
     public void addRelationInstance(String name, String subject, String object) {
         Set<Relation> set = new HashSet<>();
-        if (relationInstanceMap.containsKey(name)) {
-            set = relationInstanceMap.get(name);
+        if(relationshipMap.containsKey(name)){
+            set = relationshipMap.get(name);
         }
         if(name.equals("~=") || name.equals("=")){
             object = object.replaceAll("\"", "");
@@ -92,7 +92,7 @@ public class MegaModel {
             subsetOfMap.put(subject, object);
         }
         set.add(i);
-        relationInstanceMap.put(name, set);
+        relationshipMap.put(name, set);
     }
 
     public Map<String,Set<Function>> getFunctionDeclarations() {
@@ -180,14 +180,14 @@ public class MegaModel {
         subsetOfMap.remove(e);
 
         Map<String, Set<Relation>> relmap = new HashMap<>();
-        for (String name : relationInstanceMap.keySet()) {
-            Set<Relation> rels = relationInstanceMap.get(name).parallelStream()
+        for(String name : relationshipMap.keySet()){
+            Set<Relation> rels = relationshipMap.get(name).parallelStream()
                     .filter((r -> !r.getSubject().equals(e)
                             && !r.getObject().equals(e)))
                     .collect(Collectors.toSet());
             relmap.put(name, rels);
         }
-        relationInstanceMap = relmap;
+        relationshipMap = relmap;
 
         Map<String, Set<Function>> fAppmap = new HashMap<>();
         for (String name : functionApplications.keySet()) {
@@ -200,7 +200,7 @@ public class MegaModel {
     }
 
     public Set<String> getLinks(String name) {
-        return relationInstanceMap.get("=").parallelStream().map(r -> r.getSubject()).filter(s -> s.equals(name))
+        return relationshipMap.get("=").parallelStream().map(r -> r.getSubject()).filter(s -> s.equals(name))
                                   .collect(Collectors.toSet());
     }
 
@@ -210,6 +210,13 @@ public class MegaModel {
 
     public String getNamespace(String name) {
         return namespaceMap.get(name);
+    }
+
+    public boolean containsRelationship(String source, String predicate, String target) {
+        if(!relationshipMap.containsKey(predicate))
+            return false;
+        return relationshipMap.get(predicate).parallelStream()
+                              .anyMatch(r -> r.getSubject().equals(source) && r.getObject().equals(target));
     }
 
 }

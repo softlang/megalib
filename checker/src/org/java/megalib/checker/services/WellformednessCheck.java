@@ -70,11 +70,6 @@ public class WellformednessCheck {
             if(!model.getElementOfMap().containsKey(e)){
                 warnings.add("Language missing for artifact " + e);
             }
-            if(!model.getRelationships().containsKey("manifestsAs")
-               || model.getRelationships().get("manifestsAs").parallelStream()
-                       .noneMatch(r -> r.getSubject().equals(e))){
-                warnings.add("Manifestation missing for " + e);
-            }
         });
     }
 
@@ -97,21 +92,23 @@ public class WellformednessCheck {
         }
 
         if(model.isInstanceOf(e, "Artifact")){
-            Optional<Set<Relation>> o = Optional.ofNullable(model.getRelationships().get("hasRole"))
-                    .filter(set -> set.parallelStream().anyMatch(r -> r.getSubject().equals(e)));
-            if(!o.isPresent()){
-                warnings.add("Role missing for " + e + ".");
+            if(!model.getRelationships().containsKey("manifestsAs")
+               || model.getRelationships().get("manifestsAs").parallelStream()
+                       .noneMatch(r -> r.getSubject().equals(e))){
+                warnings.add("Manifestation missing for " + e);
+            }
+            if(!model.containsRelationship(e, "manifestsAs", "Transient")){
+                long bindcount = Optional.ofNullable(model.getRelationships().get("~="))
+                                         .map(set -> set.parallelStream().filter(r -> r.getSubject().equals(e)).count())
+                                         .orElse(Integer.toUnsignedLong(0));
+                if(bindcount < 1){
+                    warnings.add("Binding missing for Artifact " + e + ".");
+                }
+                if(bindcount > 1){
+                    warnings.add("More than 1 binding for Artifact " + e + ".");
+                }
             }
 
-            long bindcount = Optional.ofNullable(model.getRelationships().get("~="))
-                                     .map(set -> set.parallelStream().filter(r -> r.getSubject().equals(e)).count())
-                                     .orElse(Integer.toUnsignedLong(0));
-            if(bindcount < 1){
-                warnings.add("Binding missing for Artifact " + e + ".");
-            }
-            if(bindcount > 1){
-                warnings.add("More than 1 binding for Artifact " + e + ".");
-            }
         }else{
             Optional<Set<Relation>> o = Optional.ofNullable(model.getRelationships().get("="))
                                                 .filter(set -> set.parallelStream()

@@ -3,8 +3,6 @@ module common.ConceptKB
 import common.Concept
 
 /* Design pattern */
-ModelViewController : DesignPattern;
-    = "wikipedia::Model-view-controller".
 ObserverPattern : DesignPattern;
     = "wikipedia::Observer_pattern".
 AdapterPattern : DesignPattern;
@@ -19,8 +17,10 @@ DecoratorPattern : DesignPattern;
     = "wikipedia::Decorator_pattern".
 
 /* Architectural pattern */
+ModelViewController : ArchitecturalPattern;
+    = "wikipedia::Model-view-controller".
 ClientServer : ArchitecturalPattern;
-    = "https://de.wikipedia.org/wiki/Client-Server-Modell".
+    = "wikipedia::Client–server_model".
 REST : ArchitecturalPattern;
     = "wikipedia::Representational_state_transfer".
 ServiceOrientedArchitecture : ArchitecturalPattern;
@@ -258,8 +258,6 @@ MdeMetamodel : Role; // in the sense of MDE
     = "wikipedia::Metamodeling".
 Diagram : Role; //a visual representation of a model
     = "wikipedia::Diagram".
-Value : Role; //A runtime value in the execution process of a program
-    = "wikipedia::Value_(computer_science)".
 Message : Role; //A message in a communication of software components
     = "wikipedia::Message_passing".
 Specification : Role; //Defines some other conceptual entity in either half-formal or formal manner
@@ -270,12 +268,6 @@ DescriptiveModel : Role;  //A model that describes existing software
     = "http://www.businessdictionary.com/definition/descriptive-model.html".
 TransformationRule : Role; //A definition for a text- or model-transformation that declares data manipulations.
     = "http://101companies.org/wiki/Transformation".
-Reference : Role; //links to some existing entity.
-    = "wikipedia::Reference".
-SourceCode : Role; // An implementation of functionality
-    = "wikipedia::Source_code".
-ByteCode : Role; //instructions for a software interpreter such as the JVM
-    = "wikipedia::Bytecode".
 Executable : Role; //Any artifact that is executed and not only used.
     = "wikipedia::Executable".
 WebResource : Role; // Contains information and is deployed on a web server.

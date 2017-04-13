@@ -1,9 +1,7 @@
 *.project
 *.classpath
-checker/megalib.checker/checker.jar
 *.prefs
 .metadata/
 checker/target/
 .recommenders/
-checker/Prelude.megal
-models/checker.jar
+visualizer/

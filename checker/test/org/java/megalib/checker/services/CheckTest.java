@@ -137,8 +137,7 @@ public class CheckTest {
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
-        assertEquals(1, c.getWarnings().size());
-        assertTrue(c.getWarnings().contains("Manifestation missing for ?a"));
+        assertEquals(0, c.getWarnings().size());
     }
 
     @Test
@@ -159,8 +158,7 @@ public class CheckTest {
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
-        assertEquals(1, c.getWarnings().size());
-        assertEquals("Role missing for a.", c.getWarnings().get(0));
+        assertEquals(0, c.getWarnings().size());
     }
 
     @Test
@@ -185,5 +183,17 @@ public class CheckTest {
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings().contains("Error at Link to 'http://www.nowebsitehere.de' : Connection failed!"));
+    }
+
+    @Test
+    public void checkNoLinkTransient() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/a : Artifact; elementOf Java; manifestsAs Transient.";
+        ml.loadString(input);
+        WellformednessCheck c = new WellformednessCheck(ml.getModel());
+        assertEquals(0, ml.getTypeErrors().size());
+        assertEquals(1, c.getWarnings().size());
+        assertEquals("The following transients are neither input nor output of a function application: [a]",
+                     c.getWarnings().get(0));
     }
 }
