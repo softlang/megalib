@@ -4,18 +4,14 @@ import emf.dsl.Model where {
   [ FSMLModelPlugin / ?DSLModelPlugin,
     fsmlModelPluginJar / ?dslmodelpluginjar,
     FSMLJVMObjects / ?DSLJVMObjects,
-    FSMLXMI / ?DSLXMI,
     fsmlGenModel / ?dslGenModel,
     fsmlJavaModel / ?dslJavaModel,
-    fsmlMetaModel / ?dslMetaModel,
-    fsmlModel / ?dslModel,
     fsmlJVMObject / ?dslJVMobject
   ]
 }
+import emf.persistence.XMI where {
 
-fsmlMetaModel = "http://www.softlang.org/";
-  partOf developWorkspace.
-fsmlModel = "http://www.softlang.org/";
-  partOf usageWorkspace.
-ecoreMetaModel = "http://www.softlang.org/";
-  partOf developPlatform.
+}
+fsmlJavaModel ~= "development::org.softlang.metalib.emf.fsml.fsml".
+
+//TODO: FSML in development mode vs FSML in application mode

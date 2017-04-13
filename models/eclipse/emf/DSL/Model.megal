@@ -3,6 +3,36 @@ module eclipse.emf.dsl.Model
 import eclipse.emf.Core
 import java.JavaPlatform
 
+
+
+?DslEObjects : ValueLanguage;
+    subsetOf EObjects.
+    
+// Meta-model in Java
+?dslJavaModel : Artifact;
+    partOf ?DevelopmentWorkspace;
+    elementOf EcoreJava;
+    hasRole MdeMetamodel;
+    manifestsAs File+;
+    defines ?DslEObjects.
+
+?dslResourceSet : Artifact;
+    elementOf ResourceSet;
+    manifestsAs Transient.
+?dslResource : Artifact;
+    elementOf Resource;
+    manifestsAs Transient;
+    partOf ?dslResourceSet.
+// Instance in Java
+?dslEObject : Artifact;
+    partOf ?dslResource;
+    elementOf ?DslEObjects;
+    manifestsAs Transient;
+    hasRole MdeModel;
+    conformsTo ?dslJavaModel.
+
+
+
 /* Plugin overview*/
 ?dslModelPluginJar : Artifact;
     elementOf Jar;
@@ -17,21 +47,9 @@ import java.JavaPlatform
 /* While Ecore is the language for metamodels written in Xmi, there are multiple existing
 languages that are subset of Xmi that form DSLs. But this set to serialize models in Xmi 
 is different from the metamodeling set. */
-?DslJvmObjects : ValueLanguage;
-    subsetOf ?EcoreJvmObjects.
-?DslXmi : DataExchangeLanguage; //TODO: Defined or Implemented? keep it or remove it
-    subsetOf Xmi.
-?dslGenModel : Artifact;
-    partOf ?DevelopmentWorkspace;
-    elementOf GeneratorXmi;
-    hasRole Configuration;
-    manifestsAs File.
-?dslJavaModel : Artifact;
-    partOf ?DevelopmentWorkspace;
-    elementOf EcoreJava;
-    hasRole MdeMetamodel;
-    manifestsAs File+;
-    defines ?DslJvmObjects.
+
+
+    
 ?dslMetaModel : Artifact;
     partOf ?DevelopmentWorkspace;
     elementOf EcoreXmi;
@@ -40,38 +58,9 @@ is different from the metamodeling set. */
     defines ?DslXmi.
 generateJava(?dslGenModel,?dslMetaModel) |-> ?dslJavaModel.
 
-/* Object and Xmi */
-?dslModel : Artifact;
-    partOf ?RuntimeWorkspace;
-    elementOf ?DslXmi;
-    conformsTo ?dslMetaModel;
-    hasRole MdeModel;
-    manifestsAs File.
-?dslEObject : Artifact;
-    partOf ?RuntimeWorkspace;
-    elementOf ?DslEObjects;
-    manifestsAs Transient;
-    hasRole MdeModel;
-    correspondsTo ?dslModel.
-
-/* The Emf persistence framework allows you to persist ecore models in a subset of Xmi */
-Emf.EcoreXmi : Plugin;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/index.html?org/eclipse/emf/ecore/package-summary.html";
-    = "http://www.vogella.com/tutorials/EclipseEmfPersistence/article.html";
-    uses Java;
-    partOf Emf.ECore;
-    facilitates Persistence;
-    implements EcoreXmi.
-saveDSLModel : ?DslJvmObjects -> ?DslXmi.
-EMF.Persistence implements saveDSLModel.
-saveDSLModel(?dslEObject) |-> ?dslModel.
-loadDSLModel : ?DslXmi # EcoreJava -> ?DslJvmObjects.
-EMF.Persistence implements loadDSLModel.
-loadDSLModel(?dslModel,?dslJavaModel) |-> ?dslEObject.
-
 /* Generic Model Validation */
-EOperations : DataExchangeLanguage;
-    subsetOf EcoreXmi.
+EOperations : ValueLanguage;
+    subsetOf ?.
 ?validationXmi : Artifact;
     elementOf EOperations;
     hasRole Constraint;
@@ -101,12 +90,11 @@ validation : ?DslJvmObjects # DiagnosticChain -> EBoolean # DiagnosticChain.
 validation(?dslEObject,?diagnosticChain0) |-> (?eBooleanResult,?diagnosticChain1).
 ?DslModelPlugin implements validation.
 
-/* Resource resolution */
-Resource : ValueLanguage;
-    = "org.eclipse.emf.ecore.resource.Resource".
-?dslResource : Artifact;
-    elementOf Resource;
-    manifestsAs Transient;
-    hasRole Reference.
-getEObject : Resource -> ?DslJvmObjects.
-Emf.Ecore implements getEObject.
+
+?DslXmi : DataExchangeLanguage; //TODO: Defined or Implemented? keep it or remove it
+    subsetOf Xmi.
+?dslGenModel : Artifact;
+    partOf ?DevelopmentWorkspace;
+    elementOf GeneratorXmi;
+    hasRole Configuration;
+    manifestsAs File.

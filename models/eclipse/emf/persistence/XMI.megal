@@ -1,0 +1,24 @@
+module eclipse.emf.persistence.XMI
+
+/* Object and Xmi */
+?dslModel : Artifact;
+    partOf ?RuntimeWorkspace;
+    elementOf ?DslXmi;
+    conformsTo ?dslMetaModel;
+    hasRole MdeModel;
+    manifestsAs File.
+
+/* The Emf persistence framework allows you to persist ecore models in a subset of Xmi */
+Emf.EcoreXmi : Plugin;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/index.html?org/eclipse/emf/ecore/package-summary.html";
+    = "http://www.vogella.com/tutorials/EclipseEmfPersistence/article.html";
+    uses Java;
+    partOf Emf.ECore;
+    facilitates Persistence;
+    implements EcoreXmi.
+saveDSLModel : ?DslJvmObjects -> ?DslXmi.
+EMF.Persistence implements saveDSLModel.
+saveDSLModel(?dslEObject) |-> ?dslModel.
+loadDSLModel : ?DslXmi # EcoreJava -> ?DslJvmObjects.
+EMF.Persistence implements loadDSLModel.
+loadDSLModel(?dslModel,?dslJavaModel) |-> ?dslEObject.
