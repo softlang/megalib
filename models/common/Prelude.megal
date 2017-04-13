@@ -96,7 +96,6 @@ implements < System # Function;
 implements < System # Language.  
 
 /* A technology or a language can facilitate the usage or realization of a conceptual description. */
-facilitates < Technology # DesignPattern.
 facilitates < Technology # ArchitecturalPattern.
 facilitates < Technology # AbstractProcess.
 facilitates < Technology # Construct.
@@ -143,7 +142,6 @@ uses < System # Language;
 /* Something uses a concept, if its implementation or structure is informalle conform to the concept's 
 definition. Most times, this is synonymous to 
 realization. */
-uses < System # DesignPattern.
 uses < System # ArchitecturalPattern.
 uses < System # AbstractProcess.
 uses < System # Construct.

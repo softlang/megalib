@@ -48,7 +48,6 @@ refines < Construct # Construct.
 refines < Paradigm # Paradigm. 
 refines < Role # Role. 
 
-participantOf < Role # DesignPattern;
-    = "wikipedia::Software_design_pattern#Structure".
+
 participantOf < Role # ArchitecturalPattern;
     = "wikipedia::Architectural_pattern".

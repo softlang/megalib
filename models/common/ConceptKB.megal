@@ -204,8 +204,6 @@ ClusterComputing : AbstractProcess;
  	= "http://de.slideshare.net/bosswebtech/cluster-computing-11382951";
  	= "http://gridbus.csse.unimelb.edu.au/papers/ic_cluster.pdf";
  	aspectOf DistributedProgramming.
-StreamProcessing : AbstractProcess;
-	= "wikipedia::Stream_processing".
 HTTP : Protocol;
     = "wikipedia::HTTP".
 HTTPS : Protocol ;
@@ -332,13 +330,13 @@ MiddleWare : Role;
     
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";
-    participantOf Model-View-Controller.
+    participantOf ModelViewController.
 MvcView : Role; //classes that serve as the interface to the user as they produce visual output. Most times there is some render() function
     = "wikipedia::Model-view-controller";
-    participantOf Model-View-Controller.
+    participantOf ModelViewController.
 MvcController : Role; //Some kind of mediator between model and view, which may execute rather complex computations
     = "wikipedia::Model-view-controller";
-    participantOf Model-View-Controller.
+    participantOf ModelViewController.
     
 Observer : Role;
     = "wikipedia::Observer_pattern";
