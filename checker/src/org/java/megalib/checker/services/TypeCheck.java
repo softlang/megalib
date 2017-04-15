@@ -1,8 +1,5 @@
 package org.java.megalib.checker.services;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -34,7 +31,7 @@ public class TypeCheck {
         if(!errors.isEmpty())
             return false;
         Optional<String> o = Optional.ofNullable(m.getNamespace(name));
-        o.ifPresent(l -> errors.add("Error at namespace " + name + "::<" + link + ">: Already defined namespace."));
+        o.ifPresent(l -> errors.add("Error at namespace " + name + ":: \"" + link + "\": Already defined namespace."));
         return errors.isEmpty();
     }
 
@@ -271,24 +268,7 @@ public class TypeCheck {
             }else{
                 errors.add("Error at linking " + subject + ". Namespace '" + ns + "' does not exist.");
             };
-
         }
-        if(link.startsWith("file://")){
-            if(!new File(link.substring(7)).exists()){
-                errors.add("Error at linking " + subject + ". The link '" + link
-                           + "' does not point to an existing file.");
-                return false;
-            }
-        }else if(link.startsWith("http")){
-            try{
-                new URL(link);
-            }catch(MalformedURLException e){
-                errors.add("Error at linking " + subject + ". '" + link + "' is not a well-formed URL.");
-            }
-        }else{
-            errors.add("Error at linking " + subject + ". '" + link + "' is not accepted.");
-        }
-
         Set<Relation> dlinks = m.getRelationships().get("=");
         Set<Relation> blinks = m.getRelationships().get("~=");
         if(dlinks != null && dlinks.contains(new Relation(subject, link))){

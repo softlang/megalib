@@ -1,14 +1,5 @@
 package org.java.megalib.checker.services;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -18,11 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
@@ -31,7 +17,6 @@ public class WellformednessCheck {
 
     private MegaModel model;
     private List<String> warnings;
-    private boolean nocon; // disable checks that need internet connection
 
     public WellformednessCheck(MegaModel model){
         doChecks(model, false);
@@ -41,14 +26,14 @@ public class WellformednessCheck {
         doChecks(model, nocon);
     }
 
+    /**
+     * 
+     * @param model: a MegaModel AST
+     * @param nocon: Assign true to disable link validation.
+     */
     private void doChecks(MegaModel model, boolean nocon) {
         this.model = model;
         warnings = new LinkedList<>();
-        this.nocon = nocon;
-        if(!nocon){
-            initializeTrustManagement();
-        }
-
         instanceChecks();
         subtypeChecks();
         partOfCheck();
@@ -60,7 +45,8 @@ public class WellformednessCheck {
         cyclicRelationChecks("partOf");
         cyclicRelationChecks("conformsTo");
         model.getFunctionDeclarations().keySet().forEach(f -> checkFunction(f));
-        checkLinks();
+        if(!nocon)
+        	checkLinks();
     }
 
     private void instanceChecks() {
@@ -290,89 +276,14 @@ public class WellformednessCheck {
         if(model.getRelationships().containsKey("~=")){
             links.addAll(model.getRelationships().get("~="));
         }
-        links.parallelStream().forEach(r -> checkLinkWorking(r.getObject()));
+        links.parallelStream().forEach(r -> {
+        	if(!Linker.isResolvable(r.getObject(), model)){
+            	warnings.add("Cannot resolve link to "+r.getSubject()+": "+r.getObject());
+            }
+        });
     }
 
-    private void checkLinkWorking(String link) {
-        if(link.contains("::")){
-            String ns = link.split("::")[0];
-            link = link.replace(ns + "::", model.getNamespace(ns) + "/");
-        }
-        if(link.startsWith("file://")){
-            if(!new File(link.substring(7)).exists()){
-                warnings.add("Cannot link to '" + link + "' : The file does not exist!");
-            }
-        }else{
-            if(!nocon){
-                try{
-                    checkConnection(new URL(link), link);
-                }catch(MalformedURLException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void checkConnection(URL u, String link) {
-        HttpURLConnection huc;
-        try{
-            huc = (HttpURLConnection) u.openConnection();
-        }catch(IOException e){
-            warnings.add("Error at Link to '" + link + "' : The URL connection failed!");
-            return;
-        }
-        try{
-            huc.setRequestMethod("HEAD");
-        }catch(ProtocolException e){
-            warnings.add("Error at Link to '" + link + "' : ProtocolException!");
-            return;
-        }
-        int tries = 5;
-        while(tries > 0){
-            try{
-                if(huc.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND){
-                    warnings.add("Error at Link to '" + link + "' : Link not working " + huc.getResponseCode());
-                }
-                break;
-            }catch(IOException e){
-                tries--;
-            }
-        }
-        if(tries == 0){
-            warnings.add("Error at Link to '" + link + "' : Connection failed!");
-        }
-        huc.disconnect();
-    }
-
-    private void initializeTrustManagement() {
-        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
-            @Override
-            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                java.security.cert.X509Certificate[] chck = null;
-                return chck;
-            }
-
-            @Override
-            public void checkClientTrusted(java.security.cert.X509Certificate[] arg0,
-                                           String arg1) throws java.security.cert.CertificateException {}
-
-            @Override
-            public void checkServerTrusted(java.security.cert.X509Certificate[] arg0,
-                                           String arg1) throws java.security.cert.CertificateException {}
-        }};
-
-        // Install the all-trusting trust manager
-
-        SSLContext sc = null;
-        try{
-            sc = SSLContext.getInstance("TLS");
-            sc.init(null, trustAllCerts, new SecureRandom());
-        }catch(NoSuchAlgorithmException | KeyManagementException e1){
-            e1.printStackTrace();
-        }
-
-        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-    }
+    
 
     public List<String> getWarnings() {
         return warnings;

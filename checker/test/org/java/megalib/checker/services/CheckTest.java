@@ -182,7 +182,17 @@ public class CheckTest {
         WellformednessCheck c = new WellformednessCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
-        assertTrue(c.getWarnings().contains("Error at Link to 'http://www.nowebsitehere.de' : Connection failed!"));
+        assertEquals("Cannot resolve link to ?l: http://www.nowebsitehere.de",c.getWarnings().get(0));
+    }
+    
+    @Test
+    public void checkLinkIntoJar() throws ParserException, IOException{
+    	ModelLoader ml = new ModelLoader();
+        String input = "/**/a : Artifact; ~= \"file://checker.jar/org/main/antlr/techdocgrammar/Megalib.g4\"; elementOf Java; manifestsAs File.";
+        ml.loadString(input);
+        WellformednessCheck c = new WellformednessCheck(ml.getModel());
+        assertEquals(0, ml.getTypeErrors().size());
+        assertEquals(0, c.getWarnings().size());
     }
 
     @Test
@@ -195,5 +205,17 @@ public class CheckTest {
         assertEquals(1, c.getWarnings().size());
         assertEquals("The following transients are neither input nor output of a function application: [a]",
                      c.getWarnings().get(0));
+    }
+    
+    @Test
+    public void checkComplexFunApp() throws ParserException, IOException{
+    	ModelLoader ml = new ModelLoader();
+        String input = "/**/a : Artifact; elementOf Java; manifestsAs Transient. f : Java # Java # Java -> Java # Java # Java. "
+        		+ "?t : Technology; implements f. f(a,a,a) |-> (a,a,a).";
+        ml.loadString(input);
+        WellformednessCheck c = new WellformednessCheck(ml.getModel(),true);
+        assertEquals(0, ml.getTypeErrors().size());
+        c.getWarnings().forEach(w -> System.out.println("-"+w));
+        assertEquals(0, c.getWarnings().size());
     }
 }

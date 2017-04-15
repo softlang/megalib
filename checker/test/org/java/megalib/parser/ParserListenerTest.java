@@ -576,25 +576,6 @@ public class ParserListenerTest {
     }
 
     @Test
-    public void checkNotWellformedURL() throws ParserException, IOException {
-        ModelLoader ml = new ModelLoader();
-        String input = "/**/?l : ProgrammingLanguage; " + "= \"notauri\".";
-        ml.loadString(input);
-        assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at linking ?l. 'notauri' is not accepted.", ml.getTypeErrors().get(0));
-    }
-
-    @Test
-    public void checkInvalidFilePath() throws ParserException, IOException {
-        ModelLoader ml = new ModelLoader();
-        String input = "/**/a : Artifact;" + "~= \"file://notapath\".";
-        ml.loadString(input);
-        assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at linking a. The link 'file://notapath' does not point to an existing file.",
-                     ml.getTypeErrors().get(0));
-    }
-
-    @Test
     public void checkValidFilePath() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
         String input = "/**/a : Artifact;" + "~= \"file://checker.jar\".";
