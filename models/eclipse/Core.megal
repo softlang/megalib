@@ -2,34 +2,65 @@ module eclipse.Core
 
 import java.JavaPlatform
 
-import eclipse.CustomPlatform where {
-    [EclipsePlatform / ?DevelopmentPlatform]
-}
+/* If you validate this module, you have to set this 
+link to your own platform folder. */
+developmentPlatform :: "D:\Programming\IDE\eclipse\modeling\eclipse\plugins".
 
 /* The Eclipse IDE can be used for programming in various programming languages. */
 eclipse :: "http://www.eclipse.org" .
 eclipseHelp :: "http://help.eclipse.org/neon/index.jsp".
+OSGi : ArchitecturalPattern;
+    = "https://en.wikipedia.org/wiki/OSGi".
 Eclipse : IDE;
     = "eclipse::";
     = "eclipseHelp::";
     = "wikipedia::Eclipse_(software)";
-    uses Java.
-OSGi : ArchitecturalPattern;
-    ^uses Eclipse.
-EclipsePlatform partOf Eclipse.
+    uses Java;
+    uses OSGi.
 EclipseCoreRuntime : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2Fpackage-summary.html";
-    uses Java;
-    partOf EclipsePlatform.
-
+    uses Java..
+EclipseCoreRuntimeJar : Artifact;
+    ~= "developmentPlatform::org.eclipse.core.runtime_3.12.0.v20160606-1342.jar";
+    elementOf Jar;
+    hasRole Plugin;
+    manifestsAs File;
+    ^deployedAs EclipseCoreRuntime.
+    
 /* The whole user interface */
-?Ui : LanguageWorkbench; //consists of editors and views
-    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-2.htm&cp=0_2_1".
-
 EclipseUiIde : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fui%2Fide%2Fpackage-summary.html";
     uses Java;
     partOf Eclipse.
+eclipseUIIdeJar : Artifact;
+    ~= "developmentPlatform::org.eclipse.ui.ide_3.12.3.v20170119-0935.jar"
+    elementOf Jar;
+    hasRole Plugin;
+    manifestsAs File;
+    ^deployedAs EclipseUiIde.
+EclipseJFace : Plugin;
+    = "https://wiki.eclipse.org/JFace";
+    partOf Eclipse;
+    reuses SWT.
+EclipseJFaceJar : Artifact;
+    ~= "developmentPlatform::org.eclipse.jface_3.12.2.v20170113-2113.jar"
+    elementOf Jar;
+    hasRole Plugin;
+    manifestsAs File;
+    ^deployedAs EclipseJFace.
+
+/* Introduce Terminology */
+EclipseFeature : Role;
+    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-25.htm".
+EclipseResource : Role;
+    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-12.htm".
+// EclipsePerspective = "eclipseHelp?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-4.htm" 
+EclipseEditor : Role;
+    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-6.htm".
+EclipseView : Role;
+    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-5.htm".
+
+    
 /* Java-based implementation of an editor. */
 ?editor : Plugin;
     = "http://www.vogella.com/tutorials/EclipseEditors/article.html".

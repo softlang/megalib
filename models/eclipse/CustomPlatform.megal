@@ -14,11 +14,11 @@ import java.JavaPlatform
     manifestsAs File;
     hasRole Plugin;
     hasRole Archive.
-?RuntimePlatform : Platform.
-?CustomPlugin : Plugin;
-    partOf ?RuntimePlatform;
-    deployedAs ?CustomPluginJar.
-?RuntimeWorkspace : System;
+?ApplicationPlatform : System.
+?ApplicationWorkspace : System;
     reuses ?RuntimePlatform.
+?CustomPlugin : Plugin;
+    partOf ?ApplicationPlatform;
+    deployedAs ?CustomPluginJar.
 
 //buildPlugin : PluginProject # Manifest # PluginXML -> PluginJar , basically capture registration and build

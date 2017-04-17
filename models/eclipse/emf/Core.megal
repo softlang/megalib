@@ -5,19 +5,9 @@ import eclipse.Core
 /* Given namespaces */
 emfJavaDoc :: "http://download.eclipse.org/modeling/emf/emf/javadoc/2.8.0/org/eclipse/emf/".
 
-/* 
-SEE SETUP INSTRUCTIONS:
-For every artifact we provide the binding first.
-For every technology we state a link to the deployed artifacts first.
- 
-READ INSTRUCTIONS:
-*/
-developmentPlatform :: 
-developmentWorkspace ::
-runtimeWorkspace ::
 
 /* The eclipse modeling framework belongs to the model driven engineering
-technologies. It's a platform that consists of eclipse plugins implemented in Java. */
+technologies. It's a platform that consists of eclipse plugins. */
 Emf : Platform;
     = "https://eclipse.org/modeling/emf/";
     = "emfJavaDoc::common/EmfPlugin.html";
@@ -38,20 +28,26 @@ metametamodel written in Java. The root class
 provides an interface EObject to any Ecore objects
 corresponding to instances of a metamodel. */
 Emf.ECore : Plugin;
-    = "developmentPlatform::"
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/overview-tree.html";
+    = "emfJavaDoc::";
     partOf Emf;
     uses Java.
+ecorePluginNS :: "developmentPlatform::org.eclipse.emf.ecore.source_2.12.0.v20160420-0247.jar".
+ecorePluginJar : Artifact;
+    ~= "ecorePluginNS::";
+    elementOf Jar;
+    manifestsAs File;
+    hasRole Plugin;
+    ^deployedAs Emf.Ecore.
 ResourceSet : ValueLanguage;
-    = "platform::org.eclipse.emf.ecore.resource.ResourceSet".
+    = "ecorePluginNS::org/eclipse/emf/ecore/resource/ResourceSet.java".
 Resource : ValueLanguage;
-    = "platform::org.eclipse.emf.ecore.resource.Resource".
+    = "ecorePluginNS::org/eclipse/emf/ecore/resource/Resource.java".
 EObjects : ValueLanguage; //EObjects etc.
-    = "platform::org.eclipse.emf.ecore.EObject".
+    = "ecorePluginNS::org/eclipse/emf/ecore/EObject".
     = "emfJavaDoc::ecore/EObject.html";
     subsetOf JVMObjects.
 ecoreMetaModel : Artifact;
-    ~= "".
+    ~= "ecorePluginNS::org/eclipse/emf/ecore".
     elementOf Java;
     hasRole MdeMetamodel;
     partOf Emf.ECore;
