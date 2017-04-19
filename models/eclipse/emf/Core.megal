@@ -14,8 +14,7 @@ Emf : Platform;
     = "wikipedia::Eclipse_Modeling_Framework"
     uses Java;
     partOf Eclipse;
-    supports ModelDrivenEngineering;
-    belongsTo MDEWare.
+    supports ModelDrivenEngineering.
 
 /* EMF builds a bridge between three technological spaces, namely Java, UML and XML related
 technologies. */     

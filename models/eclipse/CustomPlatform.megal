@@ -2,7 +2,7 @@ module eclipse.CustomPlatform
 
 import java.JavaPlatform
 
-/* Development vs Runtime System */
+/* Development vs Application Platform */
 ?DevelopmentPlatform : Platform;
     ^partOf EclipsePlatform.
 ?DevelopmentWorkspace : Workspace;

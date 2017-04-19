@@ -3,8 +3,11 @@ module eclipse.Core
 import java.JavaPlatform
 
 /* If you validate this module, you have to set this 
-link to your own platform folder. */
-developmentPlatform :: "D:\Programming\IDE\eclipse\modeling\eclipse\plugins".
+link to your own platform folder.
+In case of a non-portable app: it might be located in user/.p2/pool/plugins 
+In case of a portable app: It is located in the eclipse folder eclipse/plugins
+ */
+developmentPlatform :: "<pathToEclipsePluginsfolder>\plugins".
 
 /* The Eclipse IDE can be used for programming in various programming languages. */
 eclipse :: "http://www.eclipse.org" .
@@ -16,10 +19,12 @@ Eclipse : IDE;
     = "eclipseHelp::";
     = "wikipedia::Eclipse_(software)";
     uses Java;
-    uses OSGi.
+    uses OSGi;
+    supports GeneralPurposeProgramming.
 EclipseCoreRuntime : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2Fpackage-summary.html";
-    uses Java..
+    partOf Eclipse;
+    uses Java.
 EclipseCoreRuntimeJar : Artifact;
     ~= "developmentPlatform::org.eclipse.core.runtime_3.12.0.v20160606-1342.jar";
     elementOf Jar;
@@ -27,7 +32,7 @@ EclipseCoreRuntimeJar : Artifact;
     manifestsAs File;
     ^deployedAs EclipseCoreRuntime.
     
-/* The whole user interface */
+/* The essential plugins for the graphical user interface of eclipse. */
 EclipseUiIde : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fui%2Fide%2Fpackage-summary.html";
     uses Java;

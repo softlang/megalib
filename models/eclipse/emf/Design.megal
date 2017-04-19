@@ -7,13 +7,13 @@ import eclipse.emf.dsl.Editor
 in the generated code. We found evidence for the following 
 usages. Most interestingly we were able to find all the evidence 
 in the 3k+ LoC class "ItemProviderAdapter".  */
-EMF facilitates ModelViewController;
+EMF facilitates ModelViewController; //It reads now like MVC is not used since Controller and View cannot be separated... Mentioning this might only be confusing.
     facilitates AdapterPattern;
     facilitates ObserverPattern;
     facilitates CommandPattern;
-    facilitates AbstractFactoryPattern;
-    facilitates TemplateMethodPattern;
-    facilitates DecoratorPattern.
+    facilitates AbstractFactoryPattern; //implementation detail
+    facilitates TemplateMethodPattern; //implementation detail
+    facilitates DecoratorPattern. //implementation detail
 
 
 /* Well first from an abstract perspective, it is already 
@@ -78,7 +78,27 @@ When something is read, the adapter actually implements interfaces to retrieve c
 When the editor writes something, the adapter implements interfaces to create and "push" commands to 
 edit the model through the AdapterFactory.
  */
-
+ 
+ 
+ 
+/* The Command pattern seems to be actually used only in existing Java-classes.
+One could use @override for createCommand, but we don't have any */
+CommandInterface : Artifact; //implementation detail
+    ~= "developmentPlatform::org.eclipse.emf.common_2.12.0.v20160420-0247.jar/org/eclipse/emf/common/command/Command.java"
+    elementOf Java;
+    hasRole AbstractCommand;
+    manifestsAs File.
+CommandStackInterface : Artifact; //implementation detail
+    ~= "developmentPlatform::org.eclipse.emf.common_2.12.0.v20160420-0247.jar/org/eclipse/emf/common/command/CommandStack.java";
+    elementOf Java;
+    hasRole AbstractCommandStack;
+    hasRole AbstractSubject;
+    manifestsAs File.
+CommandStackListenerInterface : Artifact; //implementation detail
+    ~= "developmentPlatform::org.eclipse.emf.common_2.12.0.v20160420-0247.jar/org/eclipse/emf/common/command/CommandStackListener.java";
+    elementOf Java;
+    hasRole AbstractObserver;
+    manifestsAs File.
     
 
 
