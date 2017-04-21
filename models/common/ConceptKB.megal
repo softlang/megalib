@@ -29,6 +29,9 @@ PublishSubscribe : ArchitecturalPattern;
     = "wikipedia::Publish-subscribe_pattern".
 MessageQueue : ArchitecturalPattern;
     = "wikipedia::Message_queue".
+OSGi : ArchitecturalPattern;
+ = "wikipedia::OSGi";
+ = "https://www.osgi.org/developer/architecture".    
 
 /* Paradigms */
 ParallelProgramming : Paradigm;
