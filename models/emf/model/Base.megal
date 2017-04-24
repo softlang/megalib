@@ -1,0 +1,68 @@
+module emf.model.Base
+
+/* Its main component is EmfCore which contains Ecore's 
+metametamodel written in Java. The root class 
+provides an interface EObject to any Ecore objects
+corresponding to instances of a metamodel. */
+Emf.ECore : Plugin;
+    = "emfJavaDoc::";
+    partOf Emf;
+    uses Java.
+ecorePluginNS :: "platform::org.eclipse.emf.ecore.source_*.jar".
+ecorePluginJar : Artifact;
+    ~= "ecorePluginNS::";
+    elementOf Jar;
+    manifestsAs File;
+    hasRole Plugin;
+    ^deployedAs Emf.Ecore.
+ResourceSet : ValueLanguage;
+    = "ecorePluginNS::org/eclipse/emf/ecore/resource/ResourceSet.java".
+Resource : ValueLanguage;
+    = "ecorePluginNS::org/eclipse/emf/ecore/resource/Resource.java".
+EObjects : ValueLanguage; //EObjects etc.
+    = "ecorePluginNS::org/eclipse/emf/ecore/EObject".
+    = "emfJavaDoc::ecore/EObject.html";
+    subsetOf JVMObjects.
+ecoreMetaModel : Artifact;
+    ~= "ecorePluginNS::org/eclipse/emf/ecore".
+    elementOf Java;
+    hasRole MdeMetamodel;
+    partOf Emf.ECore;
+    manifestsAs File+;
+    conformsTo ecoreMetaModel;
+    defines EObjects.
+
+EObject-Language : ValueLanguage;
+    subsetOf JVMObject-Language.
+eObject-Class : Artifact;
+    manifestsAs File;
+    elementOf Java;
+    defines EObject-Language.
+    
+ResourceSet : File
+	= "platform::org.eclipse.emf.ecore.resource.ResourceSet"; 
+	elementOf Java.
+resourceFactoryRegistry : Transient;
+?resourceSet : Transient;
+    elementOf JVMObject;
+	conformsTo ResourceSet;
+	partOf resourceFactoryRegistry.    
+?resource : Artifact;
+    elementOf Resource-Language;
+    manifestsAs Transient.
+
+?eObject : Artifact;
+    partOf ?resource;
+    elementOf EObject-Language;
+    manifestsAs Transient;
+    hasRole MdeModel.
+/* plugin */
+?dslModelPluginJar : Artifact;
+    elementOf Jar;
+    manifestsAs File;
+    partOf ?DevelopmentWorkspace.
+?DslModelPlugin : Plugin;
+    reuses EclipseCoreRuntime;
+    reuses EmfEcore;
+    reuses EmfEcoreXmi;
+    deployedAs ?dslModelPluginJar.

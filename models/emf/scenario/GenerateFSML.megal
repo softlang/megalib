@@ -1,0 +1,31 @@
+module scenario.GenerateFSML
+// Source substitution
+import model.FSMLImpl
+import scenario.GenerateDSL { 
+ [ FSMLJavaModel / ?DSLJavaModel,
+   FSMLGenmodelFile / ?DSLGenmodelFile, 
+   FSMLEcoreFile / ?DSLEcoreFile, ...
+ ]
+}
+
+++ FSMLGenmodelFile : Artifact
+~= "development::org.softlang.metalib.emf.fsml/model/Fsml.genmodel"
+++ FSMLGenmodelResource : Transient
+++ FSMLGenmodelEObject : Transient
+++		partOf ?GenmodelResource
+++ deserialize (FSMLGenmodelFile) |-> FSMLGenmodelResource
+
+++ EcoreJava : ProgrammingLanguage
+++  subsetOf Java
+++ GenmodelEObjects : ValueLanguage
+++ 	subsetOf EObjects
+++ generateEcoreJava : GenmodelEObjects -> EcoreJava.
+
+++ FSMLModelPlugin : Plugin
+FSMLManifest : Artifact;
+	~="development::org.softlang.metalib.emf.fsml/META-INF/MANIFEST.MF";
+	partOf FSMLModelPlugin
+++ FSMLJavaModel : Artifact
+++ ~="development::org.softlang.metalib.emf.fsml/src/org/softlang/metalib/emf/fsml"
+++ partOf FSMLModelPlugin
+++ generateJava (FSMLGenmodelEObject) |-> FSMLJavaModel

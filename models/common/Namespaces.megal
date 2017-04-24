@@ -1,8 +1,11 @@
 module common.Namespaces
 
-/* Common namespaces */
+/* Encyclopedia and Dictionary namespaces */
 wikipedia :: "https://en.wikipedia.org/wiki".
 oxfordDict :: "https://en.oxforddictionaries.com/definition".
+
+/* Tutorial pages */
+vogella :: "http://www.vogella.com/tutorials/".
 
 /* Organization namespaces */
 w3school :: "http://www.w3schools.com".

@@ -1,6 +1,8 @@
 module eclipse.emf.dsl.Edit
 
-import eclipse.emf.dsl.Model
+import emf.model.Impl
+
+import emf.scenario.GenerateDSL
 
 /* The edit plugin is the bridge between model and editor 
 (and eclipse?) */
@@ -16,7 +18,7 @@ EmfEditJava : ProgrammingLanguage;
     = "http://www.softlang.org/"; //TODO
     subsetOf Java.  
     
-/* Functionality */
+/* code generation to be imported */
 generateEdit : GeneratorXmi -> EmfEditJava .
 EMF.CodeGenerator implements generateEdit.
 ?dslEditCode : Artifact;

@@ -1,0 +1,41 @@
+module scenario.StandaloneTurnstile
+
+import persistence.GenericXMI { 
+ [ FSMLResource / DSLResource,
+   FSMLFile / DSLFile, ...
+ ]
+}
+import model.FSMLImpl
+turnstile :: "application::org.softlang.metalib.emf.fsml.turnstile"
+
+StandaloneTurnstilePlugin : Plugin
+	~="turnstile::META-INF/MANIFEST.MF"
+	reuses FSMLModelPlugin.
+	
+StandaloneTurnstileClasspath : Artifact
+	~="turnstile::.classpath"
+
+RequiredPluginsClasspathEntry : Fragment
+	~="turnstile::.classpath#line5"
+	partOf StandaloneTurnstileClasspath
+
+++ resourceSet : Transient
+	~="turnstile::src/StandaloneTurnstile.java#line17"
+	
+++ resourceFactoryRegistry : Transient
+	~="turnstile::src/StandaloneTurnstile.java#line19"
+
+++ xmiResourceFactory : Transient
+	~="turnstile::src/StandaloneTurnstile.java#line21"
+
+++ FSMLFile : Artifact
+	~="turnstile::Turnstile.fsml"
+
+++ FSMLResource : Transient
+	~="turnstile::src/StandaloneTurnstile.java#line24"
+	
+++ FSMLTurnstileEObject : Transient
+	~="turnstile::src/StandaloneTurnstile.java#line26"
+
+++ FSMLLockedEObject : Transient
+	~="turnstile::src/StandaloneTurnstile.java#line27"

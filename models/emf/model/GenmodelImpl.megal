@@ -7,6 +7,7 @@ import eclipse.emf.dsl.Model where {
 genModelEcoreNS :: "developmentPlatform::org.eclipse.emf.codegen.ecore_2.12.0.v20160526-0356.jar".
 genModelJavaModel ~= "genModelEcoreNS::org/eclipse/emf/codegen/ecore/genmodel".
 
+
 CodeGenerator is actually split into 2 parts
 The first one is here: 
 developmentPlatform::org.eclipse.emf.codegen.source_2.11.0.v20160526-0356.jar
