@@ -19,7 +19,7 @@ ResourceSet : ValueLanguage;
     = "ecorePluginNS::org/eclipse/emf/ecore/resource/ResourceSet.java".
 Resource : ValueLanguage;
     = "ecorePluginNS::org/eclipse/emf/ecore/resource/Resource.java".
-EObjects : ValueLanguage; //EObjects etc.
+EObjectLanguage : ValueLanguage; //instances of EObject etc.
     = "ecorePluginNS::org/eclipse/emf/ecore/EObject".
     = "emfJavaDoc::ecore/EObject.html";
     subsetOf JVMObjects.
