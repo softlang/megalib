@@ -323,6 +323,8 @@ MessageBroker  : Role;
     aspectOf DistributedProgramming.
 MiddleWare : Role;
     = "wikipedia::Message-oriented_middleware".
+Shader : Role;
+    = "wikipedia::Shader".
     
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";
