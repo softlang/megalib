@@ -39,6 +39,8 @@ Folder : Manifestation;
     = "wikipedia::Directory_(computing)".
 Transient : Manifestation; 
     = "wikipedia::Transient_(computer_programming)".
+Transient+ : Manifestation; 
+    = "wikipedia::Transient_(computer_programming)".
 Fragment : Manifestation;  
     = "wikipedia::Snippet_(programming)".
 manifestsAs < Artifact # Manifestation;

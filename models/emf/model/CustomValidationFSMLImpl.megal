@@ -1,0 +1,35 @@
+module emf.model.CustomValidationFSMLImpl
+
+import emf.model.FSMLImpl
+
+/* Generic Model Validation */
+EOperations : ValueLanguage;
+    subsetOf ?.
+?validationXmi : Artifact;
+    elementOf EOperations;
+    hasRole Constraint;
+    manifestsAs Fragment;
+    partOf ?dslMetaModel.
+?validationJava : Artifact
+    elementOf Java;
+    hasRole Constraint;
+    manifestsAs Fragment;
+    partOf ?dslJavaModel. //strictly speaking the FSMImpl.
+DiagnosticChain : ValueLanguage;
+    = "emfJavaDoc::common/util/DiagnosticChain.html";
+    = "eclipseHelp::?topic=%2Forg.eclipse.emf.doc%2Freferences%2Foverview%2FEMF.Validation.html".
+    ^implements EmfEcore.
+?diagnosticChain0 : Artifact;
+    elementOf DiagnosticChain;
+    hasRole Log;
+    manifestsAs Transient.
+?diagnosticChain1 : Artifact;
+    elementOf DiagnosticChain;
+    hasRole Log;
+    manifestsAs Transient.
+?eBooleanResult : Artifact;
+    elementOf EBoolean;
+    manifestsAs Transient.
+validation : ?DslJvmObjects # DiagnosticChain -> EBoolean # DiagnosticChain.
+validation(?dslEObject,?diagnosticChain0) |-> (?eBooleanResult,?diagnosticChain1).
+?DslModelPlugin implements validation.

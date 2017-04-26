@@ -1,6 +1,6 @@
-module eclipse.emf.fsml.Model
+module emf.model.FSMLImpl
 
-import emf.dsl.Model where {
+import emf.model.Impl where {
   [ FSMLModelPlugin / ?DSLModelPlugin,
     fsmlModelPluginJar / ?dslmodelpluginjar,
     FSMLJVMObjects / ?DSLJVMObjects,

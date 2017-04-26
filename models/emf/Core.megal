@@ -1,0 +1,23 @@
+module eclipse.emf.Core
+
+import eclipse.Core 
+
+/* Given namespaces */
+emfJavaDoc :: "http://download.eclipse.org/modeling/emf/emf/javadoc/2.8.0/org/eclipse/emf/".
+
+
+/* The eclipse modeling framework belongs to the model driven engineering
+technologies. It's a platform that consists of eclipse plugins. */
+Emf : Platform;
+    = "https://eclipse.org/modeling/emf/";
+    = "emfJavaDoc::common/EmfPlugin.html";
+    = "wikipedia::Eclipse_Modeling_Framework"
+    uses Java;
+    partOf Eclipse;
+    supports ModelDrivenEngineering.
+
+/* EMF builds a bridge between three technological spaces, namely Java, UML and XML related
+technologies. */     
+Emf belongsTo JavaWare;
+    bridgesTo XMLWare;
+    bridgesTo UMLWare.

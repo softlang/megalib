@@ -7,20 +7,22 @@ link to your own platform folder.
 In case of a non-portable app: it might be located in user/.p2/pool/plugins 
 In case of a portable app: It is located in the eclipse folder eclipse/plugins
  */
-developmentPlatform :: "<pathToEclipsePluginsfolder>\plugins".
+platform :: "<pathToEclipsePluginsfolder>\plugins".
 
 /* The Eclipse IDE can be used for programming in various programming languages. */
 eclipse :: "http://www.eclipse.org" .
 eclipseHelp :: "http://help.eclipse.org/neon/index.jsp".
-OSGi : ArchitecturalPattern;
-    = "https://en.wikipedia.org/wiki/OSGi".
 Eclipse : IDE;
     = "eclipse::";
     = "eclipseHelp::";
+    = "vogella::EclipseExtensionPoint/article.html";
+    = "vogella::EclipsePlugin/article.html";
     = "wikipedia::Eclipse_(software)";
     uses Java;
     uses OSGi;
     supports GeneralPurposeProgramming.
+
+/* Eclipse has a plugin based architecture. E.g., the core plugin 'org.eclipse.core.runtime' is deployed in the eclipse folder under '../eclipse/plugins' or in the user folder under '.p2/plugins'. */
 EclipseCoreRuntime : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2Fpackage-summary.html";
     partOf Eclipse;
@@ -28,7 +30,6 @@ EclipseCoreRuntime : Plugin;
 EclipseCoreRuntimeJar : Artifact;
     ~= "developmentPlatform::org.eclipse.core.runtime_3.12.0.v20160606-1342.jar";
     elementOf Jar;
-    hasRole Plugin;
     manifestsAs File;
     ^deployedAs EclipseCoreRuntime.
     
@@ -36,7 +37,8 @@ EclipseCoreRuntimeJar : Artifact;
 EclipseUiIde : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fui%2Fide%2Fpackage-summary.html";
     uses Java;
-    partOf Eclipse.
+    partOf Eclipse;
+    supports GUIProgramming.
 eclipseUIIdeJar : Artifact;
     ~= "developmentPlatform::org.eclipse.ui.ide_3.12.3.v20170119-0935.jar"
     elementOf Jar;
@@ -46,6 +48,7 @@ eclipseUIIdeJar : Artifact;
 EclipseJFace : Plugin;
     = "https://wiki.eclipse.org/JFace";
     partOf Eclipse;
+    supports GUIProgramming;
     reuses SWT.
 EclipseJFaceJar : Artifact;
     ~= "developmentPlatform::org.eclipse.jface_3.12.2.v20170113-2113.jar"
@@ -54,7 +57,7 @@ EclipseJFaceJar : Artifact;
     manifestsAs File;
     ^deployedAs EclipseJFace.
 
-/* Introduce Terminology */
+/* Introduce Terminology, we skip the digital abstract entities here. */
 EclipseFeature : Role;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-25.htm".
 EclipseResource : Role;
@@ -64,14 +67,3 @@ EclipseEditor : Role;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-6.htm".
 EclipseView : Role;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-5.htm".
-
-    
-/* Java-based implementation of an editor. */
-?editor : Plugin;
-    = "http://www.vogella.com/tutorials/EclipseEditors/article.html".
-?editorCode : Artifact; //TODO: The implementation is not part of the jar, but the managing code.
-    elementOf Java;
-    manifestsAs File;
-    partOf ?Ui. //?
-/* TODO: How is a plugin registered and what do you have to do to start a new 
-platform? */    

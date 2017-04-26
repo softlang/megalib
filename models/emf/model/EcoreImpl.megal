@@ -1,6 +1,6 @@
-module eclipse.emf.ecore.Model
+module emf.model.EcoreImpl
 
-import eclipse.emf.dsl.Model where {
+import emf.model.Impl where {
   [ EcoreJvmObject / ?DSLJVMObject,
     EcoreXmi / ?DSLXMI,
     ecoreMetaModel / ?dslMetaModel

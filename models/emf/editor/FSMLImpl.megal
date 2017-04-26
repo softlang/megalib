@@ -1,4 +1,4 @@
-module eclipse.emf.fsml.Editor
+module emf.editor.FSMLImpl
 
 import eclipse.emf.dsl.Editor where {
     [FsmlUI / ?DslUi,

@@ -102,8 +102,10 @@ ConcurrentComputing : ProgrammingDomain;
     = "wikipedia::Concurrent_computing".
 ParallelComputing : ProgrammingDomain;
     = "wikipedia::Parallel_computing".
-StreamProcessing : ProgrammingDomain; //TODO: ProgrammingDomain vs classified as Paradigm
+StreamProcessing : ProgrammingDomain; //TODO: ProgrammingDomain vs classified as Paradigm?
     = "wikipedia::Stream_processing".
+GUIProgramming : ProgrammingDomain;
+    = "wikipedia::Graphical_user_interface".
 
  
 /* Technological spaces */

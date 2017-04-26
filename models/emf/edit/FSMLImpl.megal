@@ -1,4 +1,4 @@
-module eclipse.emf.fsml.Edit
+module emf.edit.FSMLImpl
 
 /* FSML Edit */
 FsmlEdit : Plugin;

@@ -1,0 +1,47 @@
+module emf.persistence.GenericXMI
+
+import emf.persistence.Base
+
+/* In an EMF project an empty Ecore Model is automatically generated. One can then 
+add content to this metamodel, for example through EMF's default editor. */
+EcoreXmi : DataExchangeLanguage;
+    = "emfJavaDoc::ecore/xmi/XmiResource.html";
+    subsetOf XMI.
+?ecoreModel : Artifact;
+    elementOf EcoreXmi;
+    hasRole MdeMetamodel;
+    manifestsAs File.
+    
+/* (De-)serialization */
+serialize : Resource -> XMI.
+deserialize : XMI -> Resource.
+
+//?dslResource : Transient; see persistence.Base
+//?dslEObject : Transient; see persistence.Base
+?dslFile : Artifact;
+    correspondsTo ?dslResource;
+    elementOf XMI.
+?dslXmiElement : Artifact;
+    correspondsTo ?dslEObject;
+    elementOf XMI;
+    manifestsAs Fragment;
+    partOf ?dslFile.
+deserialize(?dslFile) |-> ?dslResource.
+serialize(?dslResource) |-> ?dslFile.
+
+/* The Emf persistence framework allows you to persist ecore models in a subset of Xmi */
+Emf.EcoreXmi : Plugin;
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/index.html?org/eclipse/emf/ecore/package-summary.html";
+    = "http://www.vogella.com/tutorials/EclipseEmfPersistence/article.html";
+    uses Java;
+    partOf Emf.ECore;
+    facilitates Persistence;
+    implements EcoreXmi.
+xmiResourceFactoryImpl : Artifact;
+    ~= "platform::org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl"
+    manifestsAs File;
+    elementOf Java.
+?xmiResourceFactory : Artifact;
+    partOf resourceFactoryRegistry;
+    conformsTo xmiResourceFactoryImpl;
+    defines deserialize.
