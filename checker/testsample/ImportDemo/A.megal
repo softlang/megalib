@@ -1,9 +1,9 @@
 module A 
 
 /**/
-?program : Application.
+?Program : Application.
 ?spec : Artifact;
-    partOf ?program;
+    partOf ?Program;
     elementOf HTML5;
     hasRole Specification;
     manifestsAs File;
