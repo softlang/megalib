@@ -1,0 +1,20 @@
+module emf.model.Dynamic
+
+import emf.model.Base where{
+    [
+        ?dynamicEObject / ?eObject,
+        ?dynamicResource / ?resource
+    ]
+}
+
+
+/* Instead of working on concrete custom implemented and mostly generated
+classes one may work on a dynamic variant. */    
+DynamicEObject-Language : ValueLanguage;
+    subsetOf EObject-Language.
+dynamicEObjectClass : Artifact;
+    ~= "ecorePluginNS::org/eclipse/emf/ecore/impl/DynamicEObjectImpl.java";
+    elementOf Java;
+    partOf Emf.ECore.
+?dynamicEObject elementOf DynamicEObject-Language;
+    partOf ?dynamicResource.

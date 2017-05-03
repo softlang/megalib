@@ -12,15 +12,18 @@ platform :: "<pathToEclipsePluginsfolder>\plugins".
 /* The Eclipse IDE can be used for programming in various programming languages. */
 eclipse :: "http://www.eclipse.org" .
 eclipseHelp :: "http://help.eclipse.org/neon/index.jsp".
+//++ OSGi : ArchitecturalPattern;
+//++ = "wikipedia::OSGi";
+//++ = "https://www.osgi.org/developer/architecture";
+//++ = "vogella::OSGi/article.html".
 Eclipse : IDE;
-    = "eclipse::";
-    = "eclipseHelp::";
-    = "vogella::EclipseExtensionPoint/article.html";
-    = "vogella::EclipsePlugin/article.html";
-    = "wikipedia::Eclipse_(software)";
-    uses Java;
-    uses OSGi;
-    supports GeneralPurposeProgramming.
+	= "eclipse::";
+	= "eclipseHelp::";
+	= "vogella::EclipseExtensionPoint/article.html";
+	= "vogella::EclipsePlugin/article.html";
+	= "wikipedia::Eclipse_(software)";
+	uses OSGi;
+	supports GeneralPurposeProgramming.
 
 /* Eclipse has a plugin based architecture. E.g., the core plugin 'org.eclipse.core.runtime' is deployed in the eclipse folder under '../eclipse/plugins' or in the user folder under '.p2/plugins'. */
 EclipseCoreRuntime : Plugin;
@@ -28,32 +31,45 @@ EclipseCoreRuntime : Plugin;
     partOf Eclipse;
     uses Java.
 EclipseCoreRuntimeJar : Artifact;
-    ~= "developmentPlatform::org.eclipse.core.runtime_3.12.0.v20160606-1342.jar";
+    ~= "platform::org.eclipse.core.runtime_*.jar";
     elementOf Jar;
     manifestsAs File;
     ^deployedAs EclipseCoreRuntime.
     
 /* The essential plugins for the graphical user interface of eclipse. */
+EclipseUi : Plugin;
+    = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fui%2Fide%2Fpackage-summary.html";
+    uses Java;
+    partOf Eclipse;
+    supports GUIProgramming.
+eclipseUIJar : Artifact;
+    ~= "platform::org.eclipse.ui_*.jar";
+    elementOf Jar;
+    manifestsAs File;
+    ^deployedAs EclipseUi.
 EclipseUiIde : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fui%2Fide%2Fpackage-summary.html";
     uses Java;
     partOf Eclipse;
     supports GUIProgramming.
 eclipseUIIdeJar : Artifact;
-    ~= "developmentPlatform::org.eclipse.ui.ide_3.12.3.v20170119-0935.jar"
+    ~= "platform::org.eclipse.ui.ide_*.jar";
     elementOf Jar;
-    hasRole Plugin;
     manifestsAs File;
     ^deployedAs EclipseUiIde.
+SWT : Plugin;
+    = "https://wiki.eclipse.org/SWT";
+    uses Java;
+    partOf Eclipse.
 EclipseJFace : Plugin;
     = "https://wiki.eclipse.org/JFace";
     partOf Eclipse;
+    uses Java;
     supports GUIProgramming;
     reuses SWT.
-EclipseJFaceJar : Artifact;
-    ~= "developmentPlatform::org.eclipse.jface_3.12.2.v20170113-2113.jar"
+eclipseJFaceJar : Artifact;
+    ~= "platform::org.eclipse.jface_*.jar";
     elementOf Jar;
-    hasRole Plugin;
     manifestsAs File;
     ^deployedAs EclipseJFace.
 
@@ -67,3 +83,9 @@ EclipseEditor : Role;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-6.htm".
 EclipseView : Role;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.user%2Fconcepts%2Fconcepts-5.htm".
+    
+/* Classpath entries can be added using .classpath files in eclipse */
+ClasspathLanguage : ConfigurationLanguage;
+    = "eclipseHelp?topic=%2Forg.eclipse.jdt.doc.user%2Fconcepts%2Fconcept-build-classpath.htm";
+    subsetOf XML;
+    ^implements Eclipse.

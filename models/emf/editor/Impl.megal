@@ -1,27 +1,31 @@
-module eclipse.emf.dsl.Editor
+module emf.editor.Impl
 
-import eclipse.emf.dsl.Edit
+import emf.editor.Base
+import emf.edit.Impl
 import eclipse.Core where {
-    [ ?DslUi / ?Ui,
+    [ ?dslUi / ?Ui,
     ?dslEditorCode / ?editorCode ]
 }
-/* Plugin overview*/
-?DslEditor : Plugin;
-    reuses ?DslEdit;
-    reuses EmfEcoreXmi;
-    reuses EmfEditUi;
-    reuses EclipseUiIde;
-    reuses EclipseCoreRuntime;
-    reuses EclipseCoreResources.
+module emf.editor.Impl
 
-?dslEditorCode elementOf EmfEditorJava.
+import emf.editor.Base
+import emf.model.Impl
+import emf.edit.Impl
 
-/* Editor generation */
-generateEditor : GeneratorXmi -> EmfEditorJava .
-EMF.CodeGenerator implements generateEditor.
-generateEditor(?dslGenModel) |-> ?dslEditorCode .
+//++ ?dslEObject : Artifact
+//++ manifestsAs Transient
+?EditorUIDSL : ValueLanguage;
+    subsetOf ???
+?dslUI : Artifact;
+    manifestsAs Transient;
+    correspondsTo ?dslEObject;
+    elementOf ?dslEditorUI.
 
-//TODO: Relate to JFace
-TreeViewer
-TableViewer
-ListViewer
+showEObject : ?EObjectDSL -> ?EditorUIDSL.
+showEObject(?dslEObject) |-> ?dslUI.
+
+?dslEditor : Artifact;
+    manifestsAs Transient;
+    defines showEObject;
+    uses label;
+    uses children.

@@ -12,7 +12,6 @@ and thus a new language that is a subset of EObjects. */
 ?dslEObject-Language : ValueLanguage;
 	subsetOf EObject-Language.
 ?dslJavaModel : Artifact;
-	partOf ?DevelopmentWorkspace;
 	elementOf Java;
 	hasRole MdeMetamodel;
 	manifestsAs File+;

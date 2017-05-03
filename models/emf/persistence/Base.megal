@@ -1,0 +1,15 @@
+module emf.persistence.Base
+
+import emf.model.Base
+//++ ?resource : Transient
+//++ ?eObject : Transient
+
+/* Resource factory registry */
+resourceFactoryRegistryImpl : Artifact;
+    ~= "";
+    manifestsAs File;
+    elementOf Java.
+?resourceFactoryRegistry : Artifact;
+    manifestsAs Transient;
+    elementOf JVMObject;
+    conformsTo resourceFactoryRegistryImpl.

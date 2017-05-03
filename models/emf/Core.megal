@@ -1,4 +1,4 @@
-module eclipse.emf.Core
+module emf.Core
 
 import eclipse.Core 
 
@@ -11,7 +11,7 @@ technologies. It's a platform that consists of eclipse plugins. */
 Emf : Platform;
     = "https://eclipse.org/modeling/emf/";
     = "emfJavaDoc::common/EmfPlugin.html";
-    = "wikipedia::Eclipse_Modeling_Framework"
+    = "wikipedia::Eclipse_Modeling_Framework";
     uses Java;
     partOf Eclipse;
     supports ModelDrivenEngineering.
@@ -21,3 +21,31 @@ technologies. */
 Emf belongsTo JavaWare;
     bridgesTo XMLWare;
     bridgesTo UMLWare.
+
+/* Its main component is EmfCore which contains Ecore's 
+metametamodel written in Java. The root class 
+provides an interface EObject to any Ecore objects
+corresponding to instances of a metamodel. */    
+Emf.ECore : Plugin;
+    = "emfJavaDoc::";
+    partOf Emf;
+    uses Java.
+ecorePluginNS :: "platform::org.eclipse.emf.ecore.source_*.jar".
+ecorePluginJar : Artifact;
+    ~= "ecorePluginNS::";
+    elementOf Jar;
+    manifestsAs File;
+    hasRole Plugin;
+    ^deployedAs Emf.Ecore.
+EObjectLanguage : ValueLanguage; //instances of EObject etc.
+    = "ecorePluginNS::org/eclipse/emf/ecore/EObject".
+    = "emfJavaDoc::ecore/EObject.html";
+    subsetOf JVMObjects.
+ecoreMetaModel : Artifact;
+    ~= "ecorePluginNS::org/eclipse/emf/ecore".
+    elementOf Java;
+    hasRole MdeMetamodel;
+    partOf Emf.ECore;
+    manifestsAs File+;
+    conformsTo ecoreMetaModel;
+    defines EObjects.

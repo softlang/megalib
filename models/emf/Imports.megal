@@ -1,7 +1,7 @@
-module eclipse.emf.Imports
+module emf.Imports
 
-import eclipse.emf.EMF
-import RationalRose
+import emf.Environment
+import rationalrose.RationalRose
 
 /* One can import Java interfaces annotated in a specific way and
 retrieve an Ecore model.

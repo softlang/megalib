@@ -1,31 +1,37 @@
-module scenario.GenerateFSML
-// Source substitution
-import model.FSMLImpl
-import scenario.GenerateDSL { 
- [ FSMLJavaModel / ?DSLJavaModel,
-   FSMLGenmodelFile / ?DSLGenmodelFile, 
-   FSMLEcoreFile / ?DSLEcoreFile, ...
- ]
+module emf.application.GenerateFSML
+////++ Source substitution
+import emf.model.FSMLImpl
+import emf.application.GenerateDSL { 
+    [ 
+        fsmlJavaModel / ?dslJavaModel,
+        fsmlGenmodelFile / ?dslGenmodelFile, 
+        fsmlGenmodelResource / ?genmodelResource,
+        fsmlGenmodelEObject / ?genmodelEObject,
+        EObjectGenmodelLanguage / ?EObjectDSL,
+        fsmlEcoreFile / ?dslEcoreFile, 
+        fsmlEcoreResource / ?ecoreResource
+    ]
 }
 
-++ FSMLGenmodelFile : Artifact
-~= "development::org.softlang.metalib.emf.fsml/model/Fsml.genmodel"
-++ FSMLGenmodelResource : Transient
-++ FSMLGenmodelEObject : Transient
-++		partOf ?GenmodelResource
-++ deserialize (FSMLGenmodelFile) |-> FSMLGenmodelResource
+//++ fsmlGenmodelFile : Artifact
+fsmlGenmodelFile ~= "development::org.softlang.metalib.emf.fsml/model/Fsml.genmodel".
+//?genmodelResource refersTo ?ecoreResource.
+//++ fsmlGenmodelResource : Transient
+//++ fsmlGenmodelEObject : Transient+
+//++		partOf fsmlGenmodelResource
+//++ deserialize (fsmlGenmodelFile) |-> fsmlGenmodelResource
 
-++ EcoreJava : ProgrammingLanguage
-++  subsetOf Java
-++ GenmodelEObjects : ValueLanguage
-++ 	subsetOf EObjects
-++ generateEcoreJava : GenmodelEObjects -> EcoreJava.
+//++ EcoreJava : ProgrammingLanguage
+//++  subsetOf Java
+//++ EObjectGenmodelLanguage : ValueLanguage
+//++ 	subsetOf EObjectLanguage
+//++ generateJava : EObjectGenmodelLanguage -> EcoreJava.
 
-++ FSMLModelPlugin : Plugin
-FSMLManifest : Artifact;
-	~="development::org.softlang.metalib.emf.fsml/META-INF/MANIFEST.MF";
-	partOf FSMLModelPlugin
-++ FSMLJavaModel : Artifact
-++ ~="development::org.softlang.metalib.emf.fsml/src/org/softlang/metalib/emf/fsml"
-++ partOf FSMLModelPlugin
-++ generateJava (FSMLGenmodelEObject) |-> FSMLJavaModel
+//++ FSMLModelPlugin : Plugin
+fsmlManifest : Artifact;
+    ~="development::org.softlang.metalib.emf.fsml/META-INF/MANIFEST.MF";
+    partOf FSMLModelPlugin.
+//++ fsmlJavaModel : Artifact
+//++ ~="development::org.softlang.metalib.emf.fsml/src/org/softlang/metalib/emf/fsml"
+//++ partOf FSMLModelPlugin
+//++ generateJava (fsmlGenmodelEObject) |-> fsmlJavaModel

@@ -1,41 +1,47 @@
-module scenario.StandaloneTurnstile
+module emf.application.StandaloneTurnstile
 
-import persistence.GenericXMI { 
- [ FSMLResource / DSLResource,
-   FSMLFile / DSLFile, ...
- ]
+import emf.persistence.GenericXMI { 
+[ FSMLResource / DSLResource,
+FSMLFile / DSLFile, ...
+]
 }
 import model.FSMLImpl
-turnstile :: "application::org.softlang.metalib.emf.fsml.turnstile"
 
-StandaloneTurnstilePlugin : Plugin
-	~="turnstile::META-INF/MANIFEST.MF"
-	reuses FSMLModelPlugin.
-	
-StandaloneTurnstileClasspath : Artifact
-	~="turnstile::.classpath"
+turnstile :: "application::org.softlang.metalib.emf.fsml.turnstile".
 
-RequiredPluginsClasspathEntry : Fragment
-	~="turnstile::.classpath#line5"
-	partOf StandaloneTurnstileClasspath
+StandaloneTurnstilePlugin : Plugin;
+    ~="turnstile::META-INF/MANIFEST.MF";
+    uses Java;
+    reuses FSMLModelPlugin.
 
-++ resourceSet : Transient
-	~="turnstile::src/StandaloneTurnstile.java#line17"
-	
-++ resourceFactoryRegistry : Transient
-	~="turnstile::src/StandaloneTurnstile.java#line19"
+standaloneTurnstileClasspath : Artifact;
+    ~="turnstile::.classpath";
+    elementOf ClasspathLanguage;
+    manifestsAs File.
 
-++ xmiResourceFactory : Transient
-	~="turnstile::src/StandaloneTurnstile.java#line21"
+requiredPluginsClasspathEntry : Artifact;
+    ~="turnstile::.classpath#line5";
+    elementOf ClasspathLanguage;
+    manifestsAs Fragment;
+    partOf StandaloneTurnstileClasspath.
 
-++ FSMLFile : Artifact
-	~="turnstile::Turnstile.fsml"
+//++ resourceSet : Artifact
+resourceSet ~="turnstile::src/StandaloneTurnstile.java#line17".
 
-++ FSMLResource : Transient
-	~="turnstile::src/StandaloneTurnstile.java#line24"
-	
-++ FSMLTurnstileEObject : Transient
-	~="turnstile::src/StandaloneTurnstile.java#line26"
+//++ resourceFactoryRegistry : Artifact
+resourceFactoryRegistry ~="turnstile::src/StandaloneTurnstile.java#line19".
 
-++ FSMLLockedEObject : Transient
-	~="turnstile::src/StandaloneTurnstile.java#line27"
+//++ xmiResourceFactory : Artifact
+xmiResourceFactory ~="turnstile::src/StandaloneTurnstile.java#line21".
+
+//++ fsmlFile : Artifact
+fsmlFile ~="turnstile::Turnstile.fsml".
+
+//++ fsmlResource : Artifact
+fsmlResource ~="turnstile::src/StandaloneTurnstile.java#line24".
+
+//++ fsmlTurnstileEObject : Artifact
+fsmlTurnstileEObject ~="turnstile::src/StandaloneTurnstile.java#line26".
+
+//++ fsmlLockedEObject : Artifact
+fsmlLockedEObject ~="turnstile::src/StandaloneTurnstile.java#line27".

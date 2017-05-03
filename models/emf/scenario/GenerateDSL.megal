@@ -1,49 +1,57 @@
-import emf.model.EcoreImpl { ... }
-import emf.model.GenmodelImpl { ... }
-import emf.persistence.GenericXmi { 
- [ ?GenmodelResource / ?DSLResource,
-   ?GenmodelFile / ?DSLFile,
-   ?GenmodelEObject / ?DSLEObject, ...
- ];
- [ ?EcoreResource / DSLResource,
-   ?EcoreFile / DSLFile, ...
- ]
+module emf.application.GenerateDSL
+
+import emf.model.EcoreImpl where { ... }
+import emf.model.GenmodelImpl where { ... }
+import emf.persistence.GenericXmi where { 
+    [ 
+        ?genmodelResource / ?dslResource,
+        ?genmodelFile / ?dslFile,
+        ?genmodelEObject / ?dslEObject
+    ],
+    [ 
+        ?ecoreResource / ?dslResource,
+        ?ecoreFile / ?dslFile
+    ]
 }
-import model.Impl
+import emf.model.Impl
 
-/* An important component is the Generator that takes a generation
-configuration and an ecore metamodel which are persisted in XMI
-and generates Java code. */
-Emf.CodeGenerator : Plugin;
-    = "http://help.eclipse.org/neon/topic/org.eclipse.emf.doc/references/overview/Emf.html?cp=21_0_0";
-    = "http://www.eclipse.org/modeling/emf/docs/2.x/tutorials/clibmod/clibmod_emf2.0.html";
-    partOf Emf;
-    uses Java;
-    implements EcoreJava.
+/* The input of a code generation process is a genmodel. This genmodel 
+exists as an XMI file first and is deserialized */
+//++ ?genmodelFile : Artifact
+//++ ?genmodelResource : Transient
+?genmodelResource refersTo ?ecoreResource.
+//++ ?genmodelEObject : Transient+
+//++		partOf ?genmodelResource
+//++ deserialize (?genmodelFile) |-> ?genmodelResource
+
+/* The next step is to generate Java code from the genmodel */
 EcoreJava : ProgrammingLanguage;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.7.0/org/eclipse/emf/ecore/package-summary.html";
     subsetOf Java;
-    ^implements Emf.CodeGenerator.
-GeneratorXmi : ConfigurationLanguage;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/org/eclipse/emf/codegen/ecore/genmodel/GenModel.html";
-    subsetOf EcoreXmi. //??
-?generator : Artifact;
-    elementOf GeneratorXmi;
-    hasRole Configuration;
-    manifestsAs File.
-generateGenModel : EcoreXmi -> GeneratorXmi.
-generateGenModel(?ecoreModel) |-> ?generatorModel.
-generateJava : GeneratorXmi # EcoreXmi -> EcoreJava.
-Emf.CodeGenerator implements generateJava.
-generateJava(?generatorModel,?ecoreModel) |-> ?ecoreJavaFiles .
+    ^implements EMF. //TODO: Refine this simplification
+//++ EObjectGenmodelLanguage : ValueLanguage
+//++ 	subsetOf EObjectLanguage
+generateJava : EObjectGenmodelLanguage -> EcoreJava.
+?DSLModelPlugin : Plugin.
+//++ ?dslJavaModel : Artifact
+?dslJavaModel partOf ?DSLModelPlugin.
+generateJava (?GenmodelEObject) |-> ?dslJavaModel.
 
+/* Now one can see that there is a correspondence between an EClass
+and a generated model class */
+//++ ?dslJavaModelClass : Artifact
+//++	partOf ?dslJavaModel
+//++ ?ecoreFile : Artifact
+//++ ?ecoreEClass : Artifact
+//++ manifestsAs Fragment
+?ecoreEClass correspondsTo ?dslJavaModelClass.
+//++ partOf ?ecoreFile
 
 /* The former mentioned relation between inputs and outputs is only true
 for the initial code generation. Once the code is generated one may 
 add code to it. If any added or manually changed code is marked with 
 @generated NOT and one has to redo the code generation, the code generator 
 copies the annotated fragments. */
-reload : GeneratorXmi # EcoreXmi # Java -> Java.
+reload : GeneratorXmi # Java -> Java.
 Emf.CodeGenerator implements reload.  
 ?dslImplementation0 : Artifact;
     elementOf EcoreJava;
@@ -52,35 +60,9 @@ Emf.CodeGenerator implements reload.
 generateJava(?generator,?ecoreModel) |-> ?dslImplementation0.
 ?dslImplementation1 : Artifact;
     elementOf Java;
-    manifestsAs File+;
+    manifestsAs File+.
 ?dslCustomFragment : Artifact;
     elementOf Java;
     partOf ?dslImplementation1;
     manifestsAs Fragment.
-reload(?generator, ?ecoreModel, ?dslImplementation1) |-> ?dslImplementation1.    
-
-++ ?GenmodelFile : Artifact
-++ ?GenmodelResource : Transient
-++	refersTo ?EcoreResource.
-++ ?GenmodelEObject : Transient
-++		partOf ?GenmodelResource
-++ deserialize (?GenmodelFile) |-> ?GenmodelResource
-
-++ EcoreJava : ProgrammingLanguage
-++  subsetOf Java
-++ GenmodelEObjects : ValueLanguage
-++ 	subsetOf EObjects
-generateEcoreJava : GenmodelEObjects -> EcoreJava.
-
-?DSLModelPlugin : Plugin
-++ ?DSLJavaModel : Artifact
-	partOf ?DSLModelPlugin
-generateJava (?GenmodelEObject) |-> ?DSLJavaModel
-
-++ ?DSLJavaModelClass : Artifact
-++	partOf ?DSLJavaModel,
-++ ?EcoreFile : Artifact
-++ ?EcoreResource : Artifact
-++ ?EcoreEObjectsEClass : Fragment
-	correspondsTo ?DSLJavaModelClass.
-++ partOf ?EcoreResource
+reload(?generator, ?dslImplementation1) |-> ?dslImplementation1.    

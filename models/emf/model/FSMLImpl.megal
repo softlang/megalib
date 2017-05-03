@@ -2,7 +2,6 @@ module emf.model.FSMLImpl
 
 import emf.model.Impl where {
   [ FSMLModelPlugin / ?DSLModelPlugin,
-    fsmlModelPluginJar / ?dslmodelpluginjar,
     FSMLJVMObjects / ?DSLJVMObjects,
     fsmlGenModel / ?dslGenModel,
     fsmlJavaModel / ?dslJavaModel,
@@ -12,6 +11,10 @@ import emf.model.Impl where {
 import emf.persistence.XMI where {
 
 }
-fsmlJavaModel ~= "development::org.softlang.metalib.emf.fsml.fsml".
 
-//TODO: FSML in development mode vs FSML in application mode
+development :: "<pathToProjects>/org.softlang.metalib.emf.fsml".
+
+//++ FSMLModelPlugin : Plugin
+// FSMLEObject-Language subsetOf EObject-Language
+fsmlJavaModel ~= "development::org/softlang/metalib/emf/fsml/fsml".
+
