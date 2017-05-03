@@ -12,12 +12,16 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.java.megalib.checker.services.Substitution;
 import org.java.megalib.checker.services.SubstitutionCheck;
 import org.java.megalib.checker.services.TypeCheck;
+import org.java.megalib.models.Block;
 import org.java.megalib.models.MegaModel;
+import org.java.megalib.models.Module;
 
 import main.antlr.techdocgrammar.MegalibBaseListener;
+import main.antlr.techdocgrammar.MegalibParser.BlockContext;
 import main.antlr.techdocgrammar.MegalibParser.FunctionApplicationContext;
 import main.antlr.techdocgrammar.MegalibParser.FunctionDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.InstanceDeclarationContext;
+import main.antlr.techdocgrammar.MegalibParser.ModuleContext;
 import main.antlr.techdocgrammar.MegalibParser.NamespaceContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationDeclarationContext;
 import main.antlr.techdocgrammar.MegalibParser.RelationInstanceContext;
@@ -27,6 +31,9 @@ import main.antlr.techdocgrammar.MegalibParser.SubtypeDeclarationContext;
 
 public class ParserListener extends MegalibBaseListener {
     private MegaModel model;
+    private Module module;
+    private Block block;
+
     private TypeCheck typeCheck;
     private Map<String,Set<String>> substByGroup;
     private SubstitutionCheck substCheck;
@@ -39,7 +46,33 @@ public class ParserListener extends MegalibBaseListener {
     }
 
     @Override
+    public void enterModule(ModuleContext ctx) {
+        module = new Module(ctx.getChild(1).getText());
+    }
+
+    @Override
+    public void exitModule(ModuleContext ctx) {
+        model.addModule(module);
+    }
+
+    @Override
+    public void enterBlock(BlockContext ctx) {
+        block = new Block(module.getBlocks().size(), ctx.getChild(0).getText());
+    }
+
+    @Override
+    public void exitBlock(BlockContext ctx) {
+        module.addBlock(block);
+    }
+
+    @Override
+    public void enterSubstitutionGroup(SubstitutionGroupContext ctx) {
+        block = new Block(module.getBlocks().size(), "");
+    }
+
+    @Override
     public void enterSubstitution(SubstitutionContext ctx) {
+
         String s = ctx.getChild(0).getText();
         String o = ctx.getChild(2).getText();
         Set<String> set;
@@ -56,7 +89,7 @@ public class ParserListener extends MegalibBaseListener {
     @Override
     public void exitSubstitutionGroup(SubstitutionGroupContext ctx) {
         if(substCheck.substituteGroup(substByGroup, model)){
-            model = new Substitution(model, substByGroup).substituteGroup();
+            model = new Substitution(model, substByGroup, block).substituteGroup();
         }
         substCheck.getErrors().forEach(e -> typeCheck.addError(e));
         substByGroup.clear();

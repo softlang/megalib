@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import org.java.megalib.models.Block;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
@@ -15,11 +16,13 @@ import org.java.megalib.models.Relation;
 public class Substitution {
 
     private MegaModel model;
+    private Block block;
     private Map<String,Set<String>> substByGroup;
     private Map<String,Set<Function>> newFunctions;
 
-    public Substitution(MegaModel model, Map<String,Set<String>> substByGroup){
+    public Substitution(MegaModel model, Map<String,Set<String>> substByGroup, Block block){
         this.model = model;
+        this.block = block;
         this.substByGroup = substByGroup;
         newFunctions = new ConcurrentHashMap<>();
     }
@@ -47,14 +50,18 @@ public class Substitution {
              .forEach(entry -> entry.getValue().forEach(f -> substituteFunction(entry.getKey(), f)));
         newFunctions.entrySet().stream()
                     .forEach(e -> e.getValue()
-                                   .forEach(f -> model.addFunctionDeclaration(e.getKey(), f.getInputs(),
-                                                                              f.getOutputs())));
+                                   .forEach(f -> {
+                                       model.addFunctionDeclaration(e.getKey(), f.getInputs(), f.getOutputs());
+                                       block.addFunctionDeclaration(e.getKey(), f.getInputs(), f.getOutputs());
+                                   }));
         newFunctions.clear();
         model.getFunctionApplications().entrySet().parallelStream()
              .forEach(entry -> entry.getValue().forEach(f -> substituteFunction(entry.getKey(), f)));
         newFunctions.entrySet().stream()
-                    .forEach(e -> e.getValue().forEach(f -> model.addFunctionApplication(e.getKey(), f.getInputs(),
-                                                                                         f.getOutputs())));
+                    .forEach(e -> e.getValue().forEach(f -> {
+                        model.addFunctionApplication(e.getKey(), f.getInputs(),f.getOutputs());
+                        block.addFunctionApplication(e.getKey(), f.getInputs(),f.getOutputs());
+                    }));
         return model;
     }
 
@@ -68,11 +75,13 @@ public class Substitution {
                 for(String substingSubj : substByGroup.get(substituted)){
                     for(String substingObj : substByGroup.get(r.getObject())){
                         model.addRelationInstance(rname, substingSubj, substingObj);
+                        block.addRelationInstance(rname, substingSubj, substingObj);
                     }
                 }
             }else{
                 for(String substingSubj : substByGroup.get(substituted)){
                     model.addRelationInstance(rname, substingSubj, r.getObject());
+                    block.addRelationInstance(rname, substingSubj, r.getObject());
                 }
             }
         }
@@ -81,11 +90,13 @@ public class Substitution {
                 for(String substingObj : substByGroup.get(substituted)){
                     for(String substingSubj : substByGroup.get(r.getSubject())){
                         model.addRelationInstance(rname, substingSubj, substingObj);
+                        block.addRelationInstance(rname, substingSubj, substingObj);
                     }
                 }
             }else{
                 for(String substingObj : substByGroup.get(substituted)){
                     model.addRelationInstance(rname, r.getSubject(), substingObj);
+                    block.addRelationInstance(rname, r.getSubject(), substingObj);
                 }
             }
         }

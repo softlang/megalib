@@ -1,5 +1,6 @@
 package org.java.megalib.checker.services;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -27,13 +28,14 @@ public class WellformednessCheck {
     }
 
     /**
-     * 
+     *
      * @param model: a MegaModel AST
      * @param nocon: Assign true to disable link validation.
      */
     private void doChecks(MegaModel model, boolean nocon) {
         this.model = model;
-        warnings = new LinkedList<>();
+        warnings = Collections.synchronizedList(new LinkedList<>());
+        checkNamingConventions();
         instanceChecks();
         subtypeChecks();
         partOfCheck();
@@ -45,12 +47,36 @@ public class WellformednessCheck {
         cyclicRelationChecks("partOf");
         cyclicRelationChecks("conformsTo");
         model.getFunctionDeclarations().keySet().forEach(f -> checkFunction(f));
-        if(!nocon)
-        	checkLinks();
+        if(!nocon){
+            checkLinks();
+        }
+    }
+
+    private void checkNamingConventions() {
+        model.getSubtypesMap().keySet().parallelStream()
+             .filter(name -> name.substring(0, 1).equals(name.substring(0, 1).toLowerCase()))
+             .forEach(name -> warnings.add("The Type ID " + name + " must begin with an uppercase letter"));
+
+        model.getInstanceOfMap().entrySet().parallelStream().forEach(entry -> {
+            String name = entry.getKey().replace("?", "");
+            if(entry.getValue().equals("Artifact") || entry.getValue().equals("Function")){
+                if(name.substring(0, 1).equals(name.substring(0, 1).toUpperCase())){
+                    warnings.add("The " + entry.getValue() + " ID " + entry.getKey()
+                                 + " must begin with a lower case letter.");
+                }
+            }else{
+                if(name.substring(0, 1).equals(name.substring(0, 1).toLowerCase())){
+                    warnings.add("The " + entry.getValue() + " ID " + entry.getKey()
+                                 + " must begin with an upper case letter.");
+                }
+            }
+        });
+
     }
 
     private void instanceChecks() {
         Map<String,String> map = model.getInstanceOfMap();
+
         map.keySet().stream().filter(e -> !e.startsWith("?")).forEach(e -> concreteInstanceChecks(e));
         map.keySet().stream().filter(e -> model.isInstanceOf(e, "Artifact")).forEach(e -> {
             if(!model.getElementOfMap().containsKey(e)){
@@ -283,7 +309,7 @@ public class WellformednessCheck {
         });
     }
 
-    
+
 
     public List<String> getWarnings() {
         return warnings;

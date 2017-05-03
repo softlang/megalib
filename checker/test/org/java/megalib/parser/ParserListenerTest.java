@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.java.megalib.checker.services.ModelLoader;
 import org.java.megalib.models.Function;
+import org.java.megalib.models.Module;
 import org.java.megalib.models.Relation;
 import org.junit.Test;
 
@@ -26,6 +27,10 @@ public class ParserListenerTest {
     public void preludeIsParsed() {
         ModelLoader ml = new ModelLoader();
         assertEquals(0, ml.getTypeErrors().size());
+        assertEquals(6, ml.getModel().getModules().size());
+        Module m = ml.getModel().getModules().get(5);
+        assertEquals(15, m.getBlocks().size());
+        m.getBlocks().forEach(b -> assertTrue(b.getText().startsWith("/*") && b.getText().endsWith("*/")));
     }
 
     @Test
@@ -60,6 +65,7 @@ public class ParserListenerTest {
         assertTrue(subtypes.containsKey("DerivedType"));
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals("Artifact", subtypes.get("DerivedType"));
+        assertEquals(7, ml.getModel().getModules().size());
     }
 
     @Test

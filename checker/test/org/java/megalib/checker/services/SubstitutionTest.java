@@ -98,10 +98,10 @@ public class SubstitutionTest {
 
     @Test
     public void testProjectInstance() {
-        assertEquals("Application", ml.getModel().getInstanceOfMap().get("?project"));
-        assertEquals("Application", ml.getModel().getInstanceOfMap().get("?plproject"));
-        assertEquals("Application", ml.getModel().getInstanceOfMap().get("myProject1"));
-        assertEquals("Application", ml.getModel().getInstanceOfMap().get("myProject2"));
+        assertEquals("Application", ml.getModel().getInstanceOfMap().get("?Project"));
+        assertEquals("Application", ml.getModel().getInstanceOfMap().get("?PLProject"));
+        assertEquals("Application", ml.getModel().getInstanceOfMap().get("MyProject1"));
+        assertEquals("Application", ml.getModel().getInstanceOfMap().get("MyProject2"));
     }
 
     @Test

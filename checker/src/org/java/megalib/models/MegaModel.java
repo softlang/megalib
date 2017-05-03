@@ -3,6 +3,7 @@
  */
 package org.java.megalib.models;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +27,8 @@ public class MegaModel {
 
     private Set<String> removableAbstract;
 
+    private List<Module> modules;
+
     public MegaModel() {
         subtypeOfMap = new HashMap<>();
         instanceOfMap = new HashMap<>();
@@ -38,6 +41,15 @@ public class MegaModel {
         substitutedLanguages = new HashSet<>();
         removableAbstract = new HashSet<>();
         namespaceMap = new HashMap<>();
+        modules = new ArrayList<>();
+    }
+
+    public void addModule(Module m) {
+        modules.add(m);
+    }
+
+    public List<Module> getModules() {
+        return Collections.unmodifiableList(modules);
     }
 
     public Map<String, String> getSubtypesMap() {
