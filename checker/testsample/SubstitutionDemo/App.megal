@@ -1,7 +1,7 @@
 module App
 
 import Technology where {
-    [myProject1 / ?plproject,
+    [MyProject1 / ?PLProject,
      myProgram1 / ?myplprogram,
      myObject11 / ?myolobject,
      myObject12 / ?myolobject,
@@ -9,7 +9,7 @@ import Technology where {
      MyDS1 / ?DS,
      mydata11 / ?data ];
      
-    [myProject2 / ?plproject,
+    [MyProject2 / ?PLProject,
      myProgram2 / ?myplprogram,
      myObject21 / ?myolobject,
      myObject22 / ?myolobject,
@@ -19,14 +19,14 @@ import Technology where {
      mydata22 / ?data ]
 }
 /**/
-myProject1 = "http://softlang.wikidot.com/".
+MyProject1 = "http://softlang.wikidot.com/".
 myObject11 ~= "http://softlang.wikidot.com/".
 myObject12 ~= "http://softlang.wikidot.com/".
 MyD1 = "http://softlang.wikidot.com/".
 MyDS1 = "http://softlang.wikidot.com/".
 mydata11 ~= "http://softlang.wikidot.com/".
 
-myProject2 = "http://softlang.wikidot.com/".
+MyProject2 = "http://softlang.wikidot.com/".
 myProgram2 ~= "http://softlang.wikidot.com/".
 myObject21 ~= "http://softlang.wikidot.com/".
 myObject22 ~= "http://softlang.wikidot.com/".

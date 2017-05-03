@@ -94,6 +94,9 @@ supports < Language # ProgrammingDomain.
 /* A language has constructs that allow programming in a certain mindset */
 facilitates < Language # Paradigm.
 
+facilitates < Language # Construct. // !!Experimental!!
+encodes < Language # Construct. //ALWAYS
+
 
 /* A language family consists of multiple related languages.
 A language family has one ascendant and multiple descendants.
@@ -108,7 +111,6 @@ kinds of notation etc. */
 Notation < Entity;
     = "wikipedia::File_format". //not really a good link
 encodedAs < Language # Notation. // !!Experimental!!
-encodes < Language # Construct. // !!Experimental!!
 Text : Notation;
     = "http://www.iue.tuwien.ac.at/phd/fasching/node26.html".
 Binary : Notation;
@@ -118,7 +120,13 @@ Visual : Notation;
 Markup : Notation;
     = "wikipedia::Markup_language".
 mappedTo < Language # Language. //TODO: This needs a link... 
-    
+
+TypeSystem < Entity;
+    = "wikipedia::Type_system".
+typedBy < Language # TypeSystem.
+StaticTyping : TypeSystem;
+    = "wikipedia::Type_system#Static_type_checking".
+DynamicTyping : TypeSystem;
+    = "wikipedia::Type_system#Dynamic_type_checking_and_runtime_type_information".
+
 //TODO: What kind of classifiers are declarative and imperative? They are paradigms according to the Wikipedia page.
-//TODO:  conceptual, logical, and physical levels?
-//TODO: How to express that a language is only conceptual?

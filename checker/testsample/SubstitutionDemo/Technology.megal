@@ -4,7 +4,7 @@ import BaseTechnology
 import Abstract where {
     [ MySerializer / ?Serializer,
     MyPL / ?PL, //?PL cannot be substituted more than once in this case!
-    ?plproject / ?project,
+    ?PLProject / ?Project,
     ?myplprogram / ?program,
     ?myolobject / ?object, 
     MyOL / ?OL ]

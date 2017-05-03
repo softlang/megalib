@@ -30,8 +30,12 @@ PublishSubscribe : ArchitecturalPattern;
 MessageQueue : ArchitecturalPattern;
     = "wikipedia::Message_queue".
 OSGi : ArchitecturalPattern;
- = "wikipedia::OSGi";
- = "https://www.osgi.org/developer/architecture".    
+    = "wikipedia::OSGi";
+    = "https://www.osgi.org/developer/architecture".    
+PipeFilter : ArchitecturalPattern;
+    = "http://www.dossier-andreas.net/software_architecture/pipe_and_filter.html".
+GraphicsPipeline : ArchitecturalPattern; //TODO: maybe specialization of PipeFilter
+    = "https://en.wikipedia.org/wiki/Graphics_pipeline".
 
 /* Paradigms */
 ParallelProgramming : Paradigm;

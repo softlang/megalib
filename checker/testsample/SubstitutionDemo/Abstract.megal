@@ -18,7 +18,7 @@ module Abstract
 f : ?OL -> ?D.
 
 /* conformance to data types in an OO program */
-?project : Application;
+?Project : Application;
     uses ?PL;
     reuses ?Serializer;
     uses Serialization.

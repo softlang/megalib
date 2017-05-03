@@ -52,9 +52,6 @@ JavaClassLibrary : Library; //component and library
     = "https://en.wikipedia.org/wiki/Java_Class_Library";
     partOf JRE; //non-optional part
     uses Java.
-SWT : Library;
-    = "https://wiki.eclipse.org/SWT";
-    partOf JavaClassLibrary.
 /* The Java programming language,
 which is compiled into Java byte code, which is then interpreted using
 runtime data handled by the JVM. */
@@ -62,11 +59,9 @@ compileJava : Java -> JavaByteCode.
 JavaC implements compileJava.
 ?javaFiles : Artifact;
     elementOf Java;
-    hasRole SourceCode;
     manifestsAs File+.
 ?classFiles : Artifact;
     elementOf JavaByteCode;
-    hasRole ByteCode;
     manifestsAs File+.
 compileJava(?javaFiles) |-> ?classFiles.
 //TODO: Cannot state eval, cannot express system state changes.

@@ -5,4 +5,4 @@ import bcd.C
 /* */
 f : HTML5 -> HTML5.
 f(?a1) |-> ?a2.
-?program implements f.
+?Program implements f.
