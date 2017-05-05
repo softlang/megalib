@@ -4,4 +4,4 @@
 .metadata/
 checker/target/
 .recommenders/
-visualizer/
+visualizer/bin/
