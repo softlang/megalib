@@ -1,24 +1,26 @@
-module eclipse.emf.genmodel.Model
+module emf.model.GenmodelImpl
 
-import eclipse.emf.dsl.Model where {
-    [ genModelJavaModel / ?dslJavaModel,
-      GenmodelLanguage / ?dslEObject-Language,
-      ?genModel / ?dslEObject
+import emf.model.Impl where {
+    [ GenmodelModelPlugin / ?DSLModelPlugin,
+      GenmodelJVMObjects / ?EObjectDSL,
+      ?genmodelResource / ?dslResource,
+      genmodelJavaModel / ?dslJavaModel,
+      ?genmodelEObject / ?dslEObject
     ]
 }
+
+/* Genmodel is bootstrapped */
 genModelEcoreNS :: "platform::org.eclipse.emf.codegen.ecore_*.jar".
-genModelJavaModel ~= "genModelEcoreNS::org/eclipse/emf/codegen/ecore/genmodel".
-//genModelJavaModel defines GenmodelLanguage
-//
-//?genModel elementOf GenmodelLanguage
-//    conformsTo genModelJavaModel
-
-
-
-
-CodeGenerator is actually split into 2 parts
-
-
-The bootstrapped is here:
-developmentPlatform::org.eclipse.emf.codegen.ecore_2.12.0.v20160526-0356.jar
+//++ GenmodelModelPlugin : Plugin
+GenmodelModelPlugin ~= "genModelEcoreNS::".
+//++EObjectGenmodelLanguage : ValueLanguage
+//++    subsetOf EObjectLanguage
+//++genmodelJavaModel : Artifact
+//++    defines EObjectGenmodelLanguage
+genmodelJavaModel ~= "EcoreModelPluginNS::org/eclipse/emf/ecore".
+//++ ?genmodelResource : Artifact
+//++    manifestsAs Transient
+//++ ?genmodelEObject : Artifact
+//++    partOf genmodelResource
+//++    manifestsAs Transient
 

@@ -28,7 +28,7 @@ JVM : Construct;
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
 JVMValue : ValueLanguage;
     = "https://docs.oracle.com/javase/specs/jvms/se8/html/".
-JVMObject : ValueLanguage;
+JVMObjects : ValueLanguage;
     = "https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html";
     encodes Object;
     subsetOf JVMValue.
@@ -37,10 +37,10 @@ JVMDouble : ValueLanguage;
     subsetOf JVMValue.
 JVMString : ValueLanguage;
     = "https://docs.oracle.com/javase/6/docs/api/java/lang/String.html";
-    subsetOf JVMObject. //string as a wrapper for a character array
+    subsetOf JVMObjects. //string as a wrapper for a character array
 JVMList : ValueLanguage;
     = "https://docs.oracle.com/javase/8/docs/api/java/util/List.html";
-    subsetOf JVMObject.
+    subsetOf JVMObjects.
 JavaSEHotSpot : Application;
     = "http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136373.html";
     uses Java;

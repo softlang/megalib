@@ -1,20 +1,28 @@
 module emf.model.FSMLImpl
 
 import emf.model.Impl where {
-  [ FSMLModelPlugin / ?DSLModelPlugin,
-    FSMLJVMObjects / ?DSLJVMObjects,
-    fsmlGenModel / ?dslGenModel,
-    fsmlJavaModel / ?dslJavaModel,
-    fsmlJVMObject / ?dslJVMobject
-  ]
+    [ FSMLModelPlugin / ?DSLModelPlugin,
+      EObjectFSML / ?EObjectDSL,
+      ?fsmlResource / ?dslResource,
+      fsmlJavaModel / ?dslJavaModel,
+      ?fsmlEObject / ?dslEObject
+    ]
 }
-import emf.persistence.XMI where {
+/* REQUIREMENT: One has to define this namespace as the local filepath to the emf projects. */
+development :: "<pathToProjects>".
 
-}
-
-development :: "<pathToProjects>/org.softlang.metalib.emf.fsml".
-
+/* The FSML implementation contains generated model classes.
+Thus, the pattern from emf.model.Impl applies. */
+FSMLNS :: "development::org.softlang.metalib.emf.fsml".
 //++ FSMLModelPlugin : Plugin
-// FSMLEObject-Language subsetOf EObject-Language
-fsmlJavaModel ~= "development::org/softlang/metalib/emf/fsml/fsml".
-
+FSMLModelPlugin ~= "FSMLNS::".
+//++EObjectFSML : ValueLanguage
+//++    subsetOf EObjectLanguage
+//++fsmlJavaModel : Artifact
+//++    defines EObjectFSML
+fsmlJavaModel ~= "FSMLNS::src/org/softlang/metalib/emf/fsml/fsml".
+//++ ?fsmlResource : Artifact
+//++    manifestsAs Transient
+//++ ?fsmlEObject : Artifact
+//++    partOf fsmlResource
+//++    manifestsAs Transient

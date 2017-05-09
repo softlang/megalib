@@ -83,6 +83,8 @@ Interpreter < Application;
     = "wikipedia::Language_interpretation".
 FileSystem < Application;
     = "wikipedia::File_system".
+WebServer < Application;
+  = "wikipedia::Web_server".
 OperatingSystem < Platform;
     = "wikipedia::Operating_system".
 ParserGenerator < Framework;
@@ -116,16 +118,20 @@ bridgesTo < System # TechnologySpace.
 managedBy < Technology # Artifact; 
     = "wikipedia::Software_repository".
 
-/* In a usage scenario the technology is locally deployed as an artifact.
-One might further want to specify on which physical component the artifact
-is deployed. */
+/* In a usage scenario the technology is locally deployed as an artifact. */
 deployedAs < System # Artifact; 
     = "wikipedia::Software_deployment".
+    
+/* One might further want to specify on which physical component the    
+artifact is deployed. 
+
+!!!This block is highly experimental!!!*/
+
 Node < Entity; 
     = "wikipedia::Node_(networking)#Distribute".
-Hardware < Entity;
+Hardware < Entity; 
     = "wikipedia::Computer_hardware".
-composedOf < Hardware # Node.
+composedOf < Node # Hardware.
 deployedAt < Artifact # Node; 
     = "wikipedia::Software_deployment".
 deployedAt < Artifact # Hardware.

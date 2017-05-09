@@ -5,16 +5,31 @@ import emf.model.Base where {
      ?dslResource / ?resource]
 }
 
-
 /* If one choses to create a Java model for a DSL,
-this Java model defines new subclasses of EObject 
-and thus a new language that is a subset of EObjects. */
-?dslEObject-Language : ValueLanguage;
-	subsetOf EObject-Language.
+this Java model contains new subclasses of EObject 
+and defines a new language that is a subset of EObjects.
+The containing project may be used as an Eclipse plugin. */
+?DSLModelPlugin : Plugin;
+    uses Java.
+?EObjectDSL : ValueLanguage;
+	subsetOf EObjectLanguage.
 ?dslJavaModel : Artifact;
+    partOf ?DSLModelPlugin;
 	elementOf Java;
 	hasRole MdeMetamodel;
 	manifestsAs File+;
-	defines ?dslEObject-Language.
-?dslEObject elementOf ?dslEObject-Language;
+	defines ?EObjectDSL.
+
+/* Any runtime instance is an elementOf of the DSL runtime
+objects and conformsTo to the Java model. It is a part of a resource. */
+//++ ?dslResource : Artifact
+//++    elementOf ResourceLanguage
+//++    conformsTo Resource
+//++    manifestsAs Transient
+//++ ?dslEObject : Artifact
+//++    partOf ?dslResource
+//++    manifestsAs Transient
+//++    hasRole MdeModel
+//++    elementOf EObjectLanguage
+?dslEObject elementOf ?EObjectDSL;
 	conformsTo ?dslJavaModel.

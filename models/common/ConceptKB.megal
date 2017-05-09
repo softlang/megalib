@@ -306,6 +306,8 @@ Client : Role;
     = "wikipedia::Client_(computing)".
 Identifier : Role;
     = "wikipedia::Identifier".
+Constraint : Role;
+    = "https://101wiki.softlang.org/Condition". //TODO: Better link
 TransactionLog : Role;
     = "wikipedia::Transaction_log".
 MapOperation : Role;
@@ -331,6 +333,10 @@ MiddleWare : Role;
     = "wikipedia::Message-oriented_middleware".
 Shader : Role;
     = "wikipedia::Shader".
+Request : Role;
+  = "wikipedia::Client%E2%80%93server_model".
+Response : Role;
+  = "wikipedia::Client%E2%80%93server_model".
     
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";

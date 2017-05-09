@@ -1,0 +1,9 @@
+module jet.Core
+
+/* 'JET is typically used in the implementation of a "code generator".' */
+Jet : Plugin;
+    = "https://eclipse.org/modeling/m2t/?project=jet".
+    partOf Eclipse;
+    facilitates ModelToText;
+    supports ModelDrivenEngineering;
+    uses Java.

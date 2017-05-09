@@ -14,6 +14,7 @@ import emf.persistence.GenericXmi where {
     ]
 }
 import emf.model.Impl
+import jet.Core
 
 /* The input of a code generation process is a genmodel. This genmodel 
 exists as an XMI file first and is deserialized */
@@ -31,6 +32,21 @@ EcoreJava : ProgrammingLanguage;
 //++ EObjectGenmodelLanguage : ValueLanguage
 //++ 	subsetOf EObjectLanguage
 generateJava : EObjectGenmodelLanguage -> EcoreJava.
+
+/* The functionality for code generation can be found at */
+CodeGeneratorPlugin : Plugin;
+    = "eclipseHelp::topic=%2Forg.eclipse.emf.doc%2Ftutorials%2Fclibmod%2Fclibmod.html&anchor=step2";
+    partOf EMF;
+    implements generateJava;
+    reuses Jet.
+codeGeneratorJar : Artifact;
+    ~= "platform::org.eclipse.emf.codegen_*.jar";
+    elementOf Jar;
+    manifestsAs File.
+
+/* The generated Java is added to the project that may serve as 
+another Eclipse plugin */
+
 ?DSLModelPlugin : Plugin.
 //++ ?dslJavaModel : Artifact
 ?dslJavaModel partOf ?DSLModelPlugin.

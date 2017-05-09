@@ -36,16 +36,16 @@ ecorePluginJar : Artifact;
     elementOf Jar;
     manifestsAs File;
     hasRole Plugin;
-    ^deployedAs Emf.Ecore.
+    ^deployedAs Emf.ECore.
 EObjectLanguage : ValueLanguage; //instances of EObject etc.
-    = "ecorePluginNS::org/eclipse/emf/ecore/EObject".
+    = "ecorePluginNS::org/eclipse/emf/ecore/EObject";
     = "emfJavaDoc::ecore/EObject.html";
     subsetOf JVMObjects.
 ecoreMetaModel : Artifact;
-    ~= "ecorePluginNS::org/eclipse/emf/ecore".
+    ~= "ecorePluginNS::org/eclipse/emf/ecore";
     elementOf Java;
     hasRole MdeMetamodel;
     partOf Emf.ECore;
     manifestsAs File+;
     conformsTo ecoreMetaModel;
-    defines EObjects.
+    defines EObjectLanguage.

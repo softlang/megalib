@@ -2,34 +2,36 @@ module emf.model.CustomValidationFSMLImpl
 
 import emf.model.FSMLImpl
 
-/* Generic Model Validation */
-//++ development::org.softlang.metalib.emf.fsml.fsml
-EOperations : ValueLanguage;
-    subsetOf ?.
-validationXmi : Artifact;
-    elementOf EOperations;
-    hasRole Constraint;
-    manifestsAs Fragment;
-    partOf ?dslMetaModel.
-validationJava : Artifact
+/* TODO: It might also be interesting to abstract this */
+validationFragment : Artifact;
+    ~= "FSMLNS::src/org/softlang/metalib/emf/fsml/fsml/impl/FSMImpl.java#line=86-100";
     elementOf Java;
     hasRole Constraint;
     manifestsAs Fragment;
-    partOf ?dslJavaModel. //strictly speaking the FSMImpl.
-DiagnosticChain : ValueLanguage;
+    partOf fsmlJavaModel. 
+DiagnosticChainLanguage : ValueLanguage;
     = "emfJavaDoc::common/util/DiagnosticChain.html";
-    = "eclipseHelp::?topic=%2Forg.eclipse.emf.doc%2Freferences%2Foverview%2FEMF.Validation.html".
-    ^implements Emf.Ecore.
-diagnosticChain0 : Artifact;
-    elementOf DiagnosticChain;
+    = "eclipseHelp::?topic=%2Forg.eclipse.emf.doc%2Freferences%2Foverview%2FEMF.Validation.html";
+    ^implements Emf.ECore.
+DiagnosticChainClass : Artifact;
+    ~= "platform::org.eclipse.emf.common_*.jar/org/eclipse/emf/common/util/DiagnosticChain.java";
+    elementOf Java;
+    manifestsAs File;
+    defines DiagnosticChainLanguage.
+?diagnosticChain0 : Artifact;
+    elementOf DiagnosticChainLanguage;
     hasRole Log;
     manifestsAs Transient.
-diagnosticChain1 : Artifact;
-    elementOf DiagnosticChain;
+?diagnosticChain1 : Artifact;
+    elementOf DiagnosticChainLanguage;
     hasRole Log;
     manifestsAs Transient.
-eBooleanResult : Artifact;
+EBoolean : ValueLanguage;
+    subsetOf EObjectLanguage.
+?eBooleanResult : Artifact;
     elementOf EBoolean;
     manifestsAs Transient.
-validation : ?DslJvmObjects # DiagnosticChain -> EBoolean # DiagnosticChain.
-validation(?dslEObject,?diagnosticChain0) |-> (?eBooleanResult,?diagnosticChain1).
+//++ fsmlEObject : Artifact
+//++    elementOf EObjectFSML
+validation : EObjectFSML # DiagnosticChainLanguage -> EBoolean # DiagnosticChainLanguage.
+validation(?fsmlEObject,?diagnosticChain0) |-> (?eBooleanResult,?diagnosticChain1).

@@ -1,3 +1,5 @@
+//This module is a sketch for what could be added concerning design. This information may be helpful for new people working at EMF itself.
+
 module eclipse.emf.Design
 
 import eclipse.emf.dsl.Editor
@@ -62,7 +64,7 @@ ItemProviderAdapter : Artifact;
     hasRole Adapter;
     hasRole MvcController;
     hasRole ConcreteSubject; //Verified this one
-    elementOf JVMObject;
+    elementOf JVMObjects;
     manifestsAs Transient;
     conformsTo ItemProviderAdapter.
 ?dslEObject hasRole Adaptee;

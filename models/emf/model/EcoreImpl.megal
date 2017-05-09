@@ -1,11 +1,20 @@
 module emf.model.EcoreImpl
 
 import emf.model.Impl where {
-  [ EcoreJvmObject / ?DSLJVMObject,
-    EcoreXmi / ?DSLXMI,
-    ecoreMetaModel / ?dslMetaModel
+  [ Emf.ECore / ?DSLModelPlugin,
+    EObjectLanguage / ?EObjectDSL,
+    ecoreMetaModel / ?dslJavaModel,
+    ?ecoreResource / ?dslResource,
+    ?ecoreEObject / ?dslEObject
   ]
 }
-/* TODO: Ecore Bootstrapping */
-EcoreWorkspace : System;
-    = "".
+/* Ecore is bootstrapped. The Emf.Ecore plugin is mentioned in emf.Core */
+//++ Emf.ECore : Plugin
+//++EObjectLanguage : ValueLanguage
+//++ecoreMetaModel : Artifact
+//++    defines EObjectLanguage
+//++ ?ecoreResource : Artifact
+//++    manifestsAs Transient
+//++ ?ecoreEObject : Artifact
+//++    partOf ecoreResource
+//++    manifestsAs Transient

@@ -30,15 +30,13 @@ in every model at runtime. */
 /* Further, any such EObject instance is part of a resource that corresponds to a 
 serialized file and the resource is part of a resource set. Any resource set can 
 be accessed through a registry. This way, Resource Management is supported.  */
-ResourceSetLanguage : ValueLanguage;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/resource/ResourceSet.html".
 resourceSetClass : Artifact;
 	~= "ecorePluginNS::org/eclipse/emf/ecore/resource/ResourceSet.java"; 
     manifestsAs File;
-    defines ResourceSetLanguage;
 	elementOf Java.
 ResourceLanguage : ValueLanguage;
-    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/resource/Resource.html".
+    = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/resource/Resource.html";
+    subsetOf JVMObjects.
 resourceClass : Artifact;
 	~= "ecorePluginNS::org/eclipse/emf/ecore/resource/Resource.java"; 
     manifestsAs File;
@@ -46,11 +44,11 @@ resourceClass : Artifact;
 	elementOf Java.
 ?resourceFactoryRegistry : Artifact;
     manifestsAs Transient;
-    elementOf JVMObject.
+    elementOf JVMObjects.
 ?resourceSet : Artifact;
     manifestsAs Transient;
-    elementOf JVMObject;
-	conformsTo ResourceSet;
+    elementOf JVMObjects;
+	conformsTo resourceSetClass;
 	partOf ?resourceFactoryRegistry.    
 ?resource : Artifact;
     partOf ?resourceSet;
