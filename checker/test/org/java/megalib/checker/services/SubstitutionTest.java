@@ -22,10 +22,11 @@ public class SubstitutionTest {
 
     private ModelLoader ml;
 
-    @Before
+
     public void setUp() throws IOException {
         ml = new ModelLoader();
         ml.loadFile("testsample/SubstitutionDemo/App.megal");
+        ml.getTypeErrors().forEach(w -> System.out.println(w));
         assertTrue(ml.getTypeErrors().isEmpty());
     }
 
@@ -52,13 +53,18 @@ public class SubstitutionTest {
         ModelLoader ml = new ModelLoader();
         assertTrue(ml.loadFile("testsample/SubstitutionDemo/Technology.megal"));
         assertEquals(0, ml.getTypeErrors().size());
+        assertTrue(ml.getModel().getInstanceOfMap().containsKey("?PLProject"));
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, c.getWarnings().size());
     }
 
     @Test
     public void testApp() throws IOException {
-        assertEquals(0, ml.getTypeErrors().size());
+        ml = new ModelLoader();
+        ml.loadFile("testsample/SubstitutionDemo/App.megal");
+        ml.getTypeErrors().forEach(w -> System.out.println(w));
+        // assertTrue(ml.getTypeErrors().isEmpty());
+        assertTrue(ml.getModel().getInstanceOfMap().containsKey("MyProject1"));
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, c.getWarnings().size());
     }

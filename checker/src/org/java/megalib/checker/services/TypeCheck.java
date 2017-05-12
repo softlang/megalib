@@ -216,7 +216,7 @@ public class TypeCheck {
                     + app.getOutputs() + ": It already exists.");
         }
 
-        // Stop if errors already occured
+        // Stop if errors already occurred
         if(!errors.isEmpty())
             return false;
 

@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class MegaModel {
     private Map<String, String> subtypeOfMap;
     private Map<String, String> instanceOfMap;
-    private Map<String, String> elementOfMap;
     private Map<String, String> subsetOfMap;
     private Map<String, Set<Relation>> relationDeclarationMap;
     private Map<String,Set<Relation>> relationshipMap;
@@ -32,7 +31,6 @@ public class MegaModel {
     public MegaModel() {
         subtypeOfMap = new HashMap<>();
         instanceOfMap = new HashMap<>();
-        elementOfMap = new HashMap<>();
         subsetOfMap = new HashMap<>();
         relationDeclarationMap = new HashMap<>();
         relationshipMap = new HashMap<>();
@@ -98,9 +96,7 @@ public class MegaModel {
             object = object.replaceAll("\"", "");
         }
         Relation i = new Relation(subject, object);
-        if (name.equals("elementOf")) {
-            elementOfMap.put(subject, object);
-        }else if(name.equals("subsetOf")){
+        if(name.equals("subsetOf")){
             subsetOfMap.put(subject, object);
         }
         set.add(i);
@@ -136,10 +132,6 @@ public class MegaModel {
         functionApplications.put(name, set);
     }
 
-    public Map<String,String> getElementOfMap() {
-        return Collections.unmodifiableMap(elementOfMap);
-    }
-
     public boolean isInstanceOf(String entity, String type) {
         if (!instanceOfMap.containsKey(entity))
             return false;
@@ -158,12 +150,8 @@ public class MegaModel {
     }
 
     public boolean isElementOf(String art, String lang) {
-        if (!elementOfMap.containsKey(art))
-            return false;
-        String temp = elementOfMap.get(art);
-        if (temp.equals(lang) || isSubsetOf(temp, lang))
-            return true;
-        return false;
+        return relationshipMap.get("elementOf").parallelStream().filter(r -> r.getSubject().equals(art))
+                              .map(r -> r.getObject()).anyMatch(l -> l.equals(lang) || isSubsetOf(l, lang));
     }
 
     public boolean isSubsetOf(String subset, String superset) {
@@ -188,7 +176,6 @@ public class MegaModel {
 
     private void cleanUpAbstractInstance(String e) {
         instanceOfMap.remove(e);
-        elementOfMap.remove(e);
         subsetOfMap.remove(e);
 
         Map<String, Set<Relation>> relmap = new HashMap<>();
@@ -214,6 +201,14 @@ public class MegaModel {
     public Set<String> getLinks(String name) {
         return relationshipMap.get("=").parallelStream().map(r -> r.getSubject()).filter(s -> s.equals(name))
                                   .collect(Collectors.toSet());
+    }
+
+    public Map<String,Set<String>> getLinkMap() {
+        Map<String,Set<String>> linkMap = new HashMap<>();
+
+
+
+        return linkMap;
     }
 
     public void addNamespace(String name, String link) {

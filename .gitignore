@@ -5,3 +5,5 @@
 checker/target/
 .recommenders/
 visualizer/bin/
+MegaLTriples/
+MegaMetrics/

@@ -79,7 +79,7 @@ public class WellformednessCheck {
 
         map.keySet().stream().filter(e -> !e.startsWith("?")).forEach(e -> concreteInstanceChecks(e));
         map.keySet().stream().filter(e -> model.isInstanceOf(e, "Artifact")).forEach(e -> {
-            if(!model.getElementOfMap().containsKey(e)){
+            if(model.getRelationships().get("elementOf").parallelStream().noneMatch(r -> r.getSubject().equals(e))){
                 warnings.add("Language missing for artifact " + e);
             }
         });
