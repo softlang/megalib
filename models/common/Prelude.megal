@@ -49,6 +49,13 @@ manifestsAs < Artifact # Manifestation;
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
     = "wikipedia::Function_(mathematics)".
+    
+/* TODO: Discussion needed on experimenting with Data flow */
+concretizes < Function # AbstractProcess. 
+defines < Artifact # Artifact; //Code declares and defines Transients
+    = "wikipedia::Declaration_(computer_programming)".
+decomposes < Function # Function. //A function can be decomposed into steps
+
 
 /* A technology is reusable 'third party' Software. See Wiki */
 System < Entity;
