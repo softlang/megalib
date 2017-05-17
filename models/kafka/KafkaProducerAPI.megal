@@ -1,0 +1,14 @@
+module kafka.KafkaProducerAPI
+
+import kafka.kafka
+
+
+/*
+The Producer API allows applications to send streams of data to topics in the Kafka cluste
+*/
+ProducerAPI : API;
+    ="https://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaProducer.html";
+    implements SendData;
+    uses Java;
+    partOf Kafka.
+

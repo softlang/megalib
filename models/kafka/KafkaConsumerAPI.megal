@@ -1,0 +1,13 @@
+module kafka.KafkaConsumerAPI
+
+import kafka.kafka
+
+/*
+Allows applications to read streams of data from topics in the Kafka cluster
+*/    
+ConsumerAPI : API;
+    ="https://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html";
+    implements RecvData;
+    uses Java;
+    partOf Kafka.
+

@@ -4,20 +4,25 @@ import spark.Spark
 import spark.SparkJavaApi
 
 /*
-Any worker will perform a certain calculation on a cluster
+An external service for acquiring resources on the cluster (e.g. standalone manager, Mesos, YARN)
 */
-Worker : Role;
-	="https://en.wikipedia.org/wiki/Thread_pool".
+SparksStandaloneClusterManager : Technology;
+    ="http://spark.apache.org/docs/latest/spark-standalone.html";
+    ="https://jaceklaskowski.gitbooks.io/mastering-apache-spark/content/diagrams/spark-platform.png"
+    partOf Spark;
+    belongsTo ClusterManagementWare;
+    facilitates ClusterManager;
+    facilitates ResourceManagement.
 
 ?javaSparkContextOld : Artifact;
-	elementOf JavaSparkContext;
-	manifestsAs Transient;
-	hasRole Value.
+    elementOf JavaSparkContext;
+    manifestsAs Transient;
+    hasRole Value.
 
 ?javaSparkContextNew : Artifact;
-	elementOf JavaSparkContext;
-	manifestsAs Transient;
-	hasRole Value.
+    elementOf JavaSparkContext;
+    manifestsAs Transient;
+    hasRole Value.
 
 /*
 Deployment of a jar will change the JavaSparkContext
@@ -29,17 +34,11 @@ deployJob(?driverProgramm, ?javaSparkContextOld) |-> ?javaSparkContextNew.
 Any node that can run application code in the cluster
 */
 ?worker : Artifact;
-	partOf Spark;
-	deployedAt SparkCluster;
-	hasRole Worker.
+    partOf Spark;
+    deployedAt ?SparkCluster;
+    hasRole Worker.
 
-/*
-An external service for acquiring resources on the cluster (e.g. standalone manager, Mesos, YARN)
-*/
-SparksStandaloneClusterManager : Component;
-	="http://spark.apache.org/docs/latest/spark-standalone.html";
-	partOf Spark;
-	belongsTo ClusterManagementWare;
-	implements deployJob;
-	facilitates ClusterManager;
-	facilitates ResourceManagement.
+SparksStandaloneClusterManager implements deployJob.
+
+
+

@@ -1,0 +1,23 @@
+module spark.ConcreteImplementation
+
+import spark.Spark where {
+    [ company / ?concreteData,
+      JavaByteCode / ?LocalFileFormat,
+      total / ?driverProgramm,
+      Localhost / ?DriverComputer,
+      employeeRdd / ?rddObjects
+    ]
+}
+/*
+Describing the 101 implementation of spark
+*/
+//++company : Artifact;
+company ~= "".
+//++total : Artifact;
+total ~= "".
+
+//++Localhost : Node;
+Localhost ~= "127.0.0.1".
+  
+//++employeeRdd : Artifact
+employeeRdd ~= "".

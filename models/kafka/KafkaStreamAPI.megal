@@ -1,0 +1,55 @@
+module kafka.KafkaStreamAPI
+
+import kafka.kafka
+
+/*
+A Stream represents an unbounded, continuously updating data set. A stream is an ordered, replayable, and fault-tolerant sequence of immutable data records, where a data record is defined as a key-value pair
+*/    
+KafkaStreamDSL : ProgrammingLanguage;
+    ="https://kafka.apache.org/0102/documentation/streams#streams_dsl";
+    subsetOf Java.
+KafkaStream : DatabaseLanguage;
+    ="https://kafka.apache.org/0102/documentation/streams#streams_overview".
+
+/*
+Tansforming streams of data from input topics to output topics
+*/
+StreamAPI : API;
+    ="http://docs.confluent.io/3.0.0/streams/introduction.html";
+    uses Java;
+    partOf Kafka;
+    implements KafkaStream.
+    
+
+?inputStream1 : Artifact;
+    elementOf KafkaStream;
+    manifestsAs Transient;
+    deployedAt ?KafkaCluser;
+    hasRole Log.
+?inputStream2 : Artifact;
+    elementOf KafkaStream;    
+    manifestsAs Transient;
+    deployedAt ?KafkaCluser;
+    hasRole Log.
+?resultStream : Artifact;    
+    manifestsAs Transient;
+    deployedAt ?KafkaCluser;
+    hasRole Log;
+    elementOf KafkaStream.
+/*
+A join operation merges two streams based on the keys of their data records, and yields a new stream. 
+*/
+join : KafkaStream # KafkaStream -> KafkaStream.
+join(?inputStream1, ?inputStream2) |-> ?resultStream.
+
+/*
+Among these transformations, filter, map, mapValues, etc, are stateless transformation operations that can be applied to Streams
+*/
+transformStream : KafkaStream # KafkaStream -> KafkaStream.
+transformStream(?inputStream1, ?inputStream2) |-> ?resultStream.
+
+
+StreamAPI    implements transformStream;
+            implements join.
+
+

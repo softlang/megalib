@@ -3,69 +3,74 @@ module hadoop.HadoopYARN
 import hadoop.Hadoop
 import java.JavaPlatform 
 
+/*
+Hadoop Yarn is part of the Hadoop framework. It is coded in Java and its main purporse is to manage the hadoop cluster. It decides on what node a certain executable jar file should be executed.
+*/
+HadoopYARN : Technology;
+    = "https://hadoop.apache.org/docs/r2.7.2/hadoop-yarn/hadoop-yarn-site/YARN.html";
+    partOf Hadoop;
+    belongsTo ClusterManagementWare;
+    facilitates ClusterManager;
+    uses Java.
 
 /*
 A developer may wants to execute a certain job, e. g. counting of elements in a file or 
 the processing of certain kind of input, on a cluster. The job is encoded in a ".jar" file. It is a strict virtual thing that is saved in the memory and hence manifests as a trasient. 
 */
 ?inputJob : Artifact;
-	elementOf Jar;
-	manifestsAs Transient;
-	deployedAt LocalComputer;
-	hasRole ByteCode.
+    elementOf Jar;
+    manifestsAs Transient;
+    deployedAt ?LocalComputer;
+    hasRole Executable.
 /*
 The current state of a YARN cluster, a set of nodes that are managed by Hadoop YARN, is internally saved in the JAVA class Yarn Application State. This class is already compiled to Java Bytecode.
 */
 YarnApplicationState : ValueLanguage;
-	= "https://hadoop.apache.org/docs/r2.4.1/api/org/apache/hadoop/yarn/api/records/YarnApplicationState.html";
-	subsetOf JavaByteCode.
+    = "https://hadoop.apache.org/docs/r2.4.1/api/org/apache/hadoop/yarn/api/records/YarnApplicationState.html";
+    subsetOf JVMObject.
 /*
 Before a person decides to execute a job on a cluster the cluster has a certain state (preClusterMap),  that is saved in a Java object. 
 After the job has been loaded and executed the cluster is in a different state (postClusterMap). 
 */
 ?preClusterMap : Artifact;
-	elementOf YarnApplicationState;
-	hasRole SystemState;
-	deployedAt YarnNode;
-	manifestsAs Transient.
+    elementOf YarnApplicationState;
+    hasRole SystemState;
+    deployedAt ?YarnNode;
+    manifestsAs Transient.
 ?postClusterMap : Artifact;
-	elementOf YarnApplicationState;
-	deployedAt YarnNode;
-	hasRole SystemState;
-	manifestsAs Transient.
+    elementOf YarnApplicationState;
+    deployedAt ?YarnNode;
+    hasRole SystemState;
+    manifestsAs Transient.
 /*
 YARN is taking a Java binary (Jar file) as input and executes it at some node in the cluster. Hence the state of the YARN cluster will be changed after it executed it. 
 */
 deployJobToCluster : YarnApplicationState # Jar -> YarnApplicationState.
 deployJobToCluster(?preClusterMap, ?inputJob) |-> ?postClusterMap.
 
-/*
-Hadoop Yarn is part of the Hadoop framework. It is coded in Java and its main purporse is to manage the hadoop cluster. It decides on what node a certain executable jar file should be executed.
-*/
-HadoopYARN : Component;
-	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-yarn/hadoop-yarn-site/YARN.html";
-	partOf Hadoop;
-	belongsTo ClusterManagementWare;
-	facilitates ClusterManager;
-	uses Java;
-	implements YarnApplicationState;
-	implements deployJobToCluster.
+
+HadoopYARN  implements YarnApplicationState;
+            implements deployJobToCluster.
 
 /*
 NodeManagers take instructions from the ResourceManager and manage resources available on a single node.
+Find something better than Plugin
 */
-NodeManager : Component;
-	= "https://github.com/apache/hadoop/tree/trunk/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager";
-	partOf HadoopYARN;
-	uses Java.
+NodeManager : Plugin;
+    = "https://github.com/apache/hadoop/tree/trunk/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager";
+    partOf HadoopYARN;
+    uses Java.
 
 /*
-The Resource manager is part of YARN.  In fact it arbitrates all the available cluster resources.
+The Resource manager is part of YARN.  In fact it mediates all the available cluster resources.
+Find something better than Plugin
 */
-ResourceManager : Component;
-	= "https://github.com/apache/hadoop/tree/trunk/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager" ;
-	partOf HadoopYARN;
-	reuses NodeManager;
-	facilitates ResourceManagement;
-	uses Java.
+ResourceManager : Plugin;
+    = "https://github.com/apache/hadoop/tree/trunk/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager" ;
+    partOf HadoopYARN;
+    reuses NodeManager;
+    facilitates ResourceManagement;
+    uses Java.
+
+
 

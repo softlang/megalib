@@ -4,68 +4,81 @@ import hadoop.Hadoop
 import hadoop.HadoopYARN
 import java.JavaPlatform 
 
-
 /*
 Hadoop uses a specific kind of a distributed file system.
 */
 HadoopDistributedFileSystem : Construct;
-	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/filesystem/index.html";
-	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html#NameNode_and_DataNodes";
-    refines DistributedFilesystem.
+    = "https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/filesystem/index.html";
+    = "https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html#NameNode_and_DataNodes".
+    
+/*
+HDFS is the primary distributed storage used by Hadoop application. It is a module of hadoop. 
+*/
+HDFS : Technology;
+    ="https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html";
+    partOf Hadoop;
+    uses Java;
+    uses HadoopDistributedFileSystem;
+    reuses HadoopYARN;
+    implements FilePath;
+    implements JSON.
 
-?hdfsSystem : UserFiles;
+ShellScript : CommandLineLanguage;
+    ="https://en.wikipedia.org/wiki/Shell_script".
+
+?hdfsSystem : FileSystem;
    uses HadoopDistributedFileSystem.
 
 /*
 Files that are stored in a HDFS cluster will be called HDFS Files. They are normal computer files like CSV, Word, PDF, Jar files. In fact those files can follow any language
 */
 ?HDFSFiles : Language;
-	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/FileSystemShell.html#get".
+    = "https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/FileSystemShell.html#get".
 
 /*
 A SequenceFile is a certain file format used by HDFS. That format is storing data in the form of a KeyValue pairs. It is in that sense a certain file format used by HadoopHdfs 
 */
 SequenceFile : DocumentLanguage;
-	= "https://wiki.apache.org/hadoop/SequenceFile";
-	subsetOf ?HDFSFiles. //A SequenceFile is a possible filetype stored on Hadoop. It is more specific then a general hadoop file
+    = "https://wiki.apache.org/hadoop/SequenceFile";
+    subsetOf ?HDFSFiles. //A SequenceFile is a possible filetype stored on Hadoop. It is more specific then a general hadoop file
 /*
 A file that is saved on a computer and represents data
 */
 ?someFile : Artifact;
-	elementOf ?HDFSFiles;
-	manifestsAs File;
-	deployedAt LocalComputer.
+    elementOf ?HDFSFiles;
+    manifestsAs File;
+    deployedAt ?LocalComputer.
 /*
 A file that is stored on a HDFS cluster and represents data
 */
 ?someHdfFile : Artifact;
-	elementOf ?HDFSFiles;
-	manifestsAs File;
-	partOf ?hdfsSystem;
-	deployedAt DataNode. 
+    elementOf ?HDFSFiles;
+    manifestsAs File;
+    partOf ?hdfsSystem;
+    deployedAt ?DataNode. 
 /*
 The state of the HDFS cluster is composed of the stored files in it
-*/	
+*/    
 ?preHDFSState : Artifact;
-	elementOf ?HDFSFiles;
-	manifestsAs File+;
-	hasRole Database.	
+    elementOf ?HDFSFiles;
+    manifestsAs File+;
+    hasRole Database.    
 ?postHDFSState : Artifact;
-	elementOf ?HDFSFiles;
-	manifestsAs File+;
-	hasRole Database.
+    elementOf ?HDFSFiles;
+    manifestsAs File+;
+    hasRole Database.
 
 /*
 The concrete path to a file:
-*/	
+*/    
 ?filePath : Artifact;
-	elementOf FilePath;
-	manifestsAs Transient;
-	hasRole Reference.
+    elementOf FilePath;
+    manifestsAs Transient;
+    hasRole Reference.
 
 /*
 The user is able to write data to the file system. This will change the state of the HDFS Cluster
-*/		
+*/        
 write : ?HDFSFiles # FilePath # ?HDFSFiles -> ?HDFSFiles.
 write(?someFile, ?filePath ,?preHDFSState) |-> ?postHDFSState.
 /*
@@ -75,20 +88,9 @@ read : FilePath # ?HDFSFiles -> ?HDFSFiles.
 read(?filePath ,?preHDFSState) |-> ?someFile.
 
 
-/*
-HDFS is the primary distributed storage used by Hadoop application. It is a module of hadoop. 
-*/
-HDFS : Component;
-	="https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html";
-	facilitates DistributedFilesystem;
-	partOf Hadoop;
-	uses Java;
-	uses HadoopDistributedFileSystem;
-	reuses HadoopYARN;
-	implements FilePath;
-	implements JSON;
-	implements write;
-	implements read.
+
+HDFS implements write;
+     implements read.
 
 /*
 The filesystem will be implemented through the HDFS software.
@@ -98,44 +100,47 @@ The filesystem will be implemented through the HDFS software.
 /*
 There exists the possebility to read files, stored on the HDFS cluster, over a Web-Interaface 
 */
-WebHDFS : WebService;
-	= "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/WebHDFS.html";
-	partOf HDFS;
-	facilitates REST;
-	uses HTTP;
-	uses SoftwareInterface;
-	implements read;
-	implements write;
-	uses Java.
+WebHDFS : Service;
+    = "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/WebHDFS.html";
+    partOf HDFS;
+    facilitates REST;
+    uses HTTP;
+    uses SoftwareInterface;
+    implements read;
+    implements write;
+    uses Java.
 /*
 There exists a library coded in C that is able to communicate with Hadoop as well.
 */
 LibHdfs : API;
-	= "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/LibHdfs.html";
-	uses C;
-	uses SoftwareInterface;
-	partOf HDFS;
-	implements write;
-	implements read.
+    = "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/LibHdfs.html";
+    uses C;
+    uses SoftwareInterface;
+    partOf HDFS;
+    implements write;
+    implements read.
 /*
 A Java API can be used to read and write to the HDFS cluster as well
 */
 HDFSApi : API;
-	= "http://hadoop.apache.org/docs/current/api/org/apache/hadoop/fs/package-summary.html";
-	implements ?HDFSFiles;
-	uses SoftwareInterface;
-	uses Java;
-	partOf HDFS;
-	implements write;
-	implements read.
+    = "http://hadoop.apache.org/docs/current/api/org/apache/hadoop/fs/package-summary.html";
+    implements ?HDFSFiles;
+    uses SoftwareInterface;
+    uses Java;
+    partOf HDFS;
+    implements write;
+    implements read.
 /*
 There exists the possebility to read and write to the HDFS Cluster by using the Shell commands
+Should rather be a Software Suit but this does not exist
 */
-HDFSShellCommands : Program;
-	= "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html";
-	uses Java;
-	uses ShellScript;
-	uses SoftwareInterface;
-	partOf HDFS;
-	implements write;
-	implements read.
+HDFSShellCommands : Application;
+    = "https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/FileSystemShell.html";
+    uses Java;
+    uses ShellScript;
+    uses SoftwareInterface;
+    partOf HDFS;
+    implements write;
+    implements read.
+
+

@@ -5,26 +5,37 @@ import hadoop.HadoopYARN
 import hadoop.HadoopHDFS
 
 /*
+Hadoop Map Reduce is a YARN-based system for parallel processing of large data sets. It is implementing the input and output formats that it can handle
+*/
+HadoopMapReduce : Technology;
+    = "https://hadoop.apache.org/docs/r2.7.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html";
+    partOf Hadoop;
+    uses MapReduce;
+    uses Java;
+    reuses HDFS;
+    reuses HadoopYARN.
+
+/*
 The MapReduce implementation of Hadoop is working on clusters. Hence there are differen Nodes that 
 can play a role.
 */
-MapNode : Node.
-ReduceNode : Node.
-StorageNode : Node.
-HadoopClusterNode : Node.
+?MapNode : Node.
+?ReduceNode : Node.
+?StorageNode : Node.
+?HadoopClusterNode : Node.
 
 /*
 A Mapper is a class in the hadoop framework. Subclasses of it have the purpose to implement a Map operation that should be called by Hadoop. The developer has therby to implement a subclass of the Mapper class. Internally both are java objects.
 */
 Mapper : ValueLanguage;
-	="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Mapper";
-	subsetOf JVM.Object.
+    ="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Mapper";
+    subsetOf JVMObject.
 /*
 A Reducer is a class in the hadoop framework. Subclasses of it have the purpose to implement a reduce operation. The developer will create such a subclass
 */
 Reducer : ValueLanguage;
-	="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Reducer";
-	subsetOf JVM.Object.
+    ="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Reducer";
+    subsetOf JVMObject.
 
 /*
 The input format represents the data that should be processed by the framework. They are stored in
@@ -32,18 +43,18 @@ classes that inherit from Input or Output format. Those classes will be implemen
 depending on the project and hence they are abstract.
 */
 ?InputFormat : ValueLanguage; 
-	= "https://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/InputFormat.html".
+    = "https://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/InputFormat.html".
 ?OutputFormat : ValueLanguage; 
-	= "https://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/OutputFormat.html".
+    = "https://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/OutputFormat.html".
 
 /*
 The map function takes the mapper object and the current state of Hadoop (Context, key, ..) and returns a differen state that manifests in changed java objects.
 */
-map : Mapper # JVM.Object -> JVM.Object.
+map : Mapper # JVMObject -> JVMObject.
 /*
 The reduce function will take the output of the map function, that is stored by changing java objects and executes the implemented Reducer . Finally the result of the reducer function will be saved.
 */
-reduce : Reducer # JVM.Object -> JVM.Object.
+reduce : Reducer # JVMObject -> JVMObject.
 
 /*
 Hadoop MapReduce is taking a Mapper implementation as input as well as a Reducer. Those two operations will be executed on the input that is represented by a subclass of InputFormat, the result will be saved in a class of the type "outputFormat".
@@ -51,63 +62,70 @@ Hadoop MapReduce is taking a Mapper implementation as input as well as a Reducer
 exMapReduce : Mapper # Reducer # ?InputFormat -> ?OutputFormat.
 
 /*
+There exists a program that is implementing the map & reduce function
+*/
+?mapImplementation : Application;
+    implements map.
+?reduceImplementation : Application;
+    implements reduce.
+/*
 A mapper will be implemented by the developer. It will in the end transform the input by mapping
 the input to certain key value pairs. Since it is a Java programm this will happen inside the JVM.
 */
 ?mapper : Artifact;
-	elementOf Mapper;
-	implements map;
-	hasRole TransformationRule;
+    partOf ?mapImplementation;
+    elementOf Mapper;
+    hasRole TransformationRule;
     hasRole MapOperation;
-	manifestsAs Transient;
-	deployedAt MapNode.
+    manifestsAs Transient;
+    deployedAt ?MapNode.
 /*
 The reducer will be implemented by a conrete java file (created by the developer) and finally be executed by the framework. The reduce function takes as input key value pairs and aggregates those as defined by the developer. It is a construct that will just exist during runtime.
 */
 ?reducer : Artifact;
-	elementOf Reducer;
-	implements reduce;
-	hasRole TransformationRule;
+    partOf ?reduceImplementation;
+    elementOf Reducer;
+    hasRole TransformationRule;
     hasRole ReduceOperation;
-    deployedAt ReduceNode;
-	manifestsAs Transient.
+    deployedAt ?ReduceNode;
+    manifestsAs Transient.
 
 /*
 The input files are containing the data that should be processed. They will be loaded into the pre and post state by internal Hadoop routines (defined later). The data can either be a database, files, (or..). Anyways there has to be a Output or Input Format class that abstracts from that I/O format.  
 */
 ?inputFiles : Artifact;
-	elementOf ?InputFormat;
-	manifestsAs File+;
-	deployedAt StorageNode;
-	hasRole Database.
+    elementOf ?InputFormat;
+    manifestsAs File+;
+    deployedAt ?StorageNode;
+    hasRole Database.
 ?outputFiles : Artifact;
-	elementOf ?OutputFormat;
-	deployedAt StorageNode;
-	manifestsAs File+;
-	hasRole Database.
+    elementOf ?OutputFormat;
+    deployedAt ?StorageNode;
+    manifestsAs File+;
+    hasRole Database.
 
 /*
 The input files will be loaded during runtime into java classes. Those classes are during runtime java objects. They will load their data from the input/output files which could be the representation of a database or filesystem (or ..). 
 */
 ?preState : Artifact;
-	elementOf JVM.Object;
-	deployedAt HadoopClusterNode;
-	manifestsAs Transient; 
-	hasRole Value.
+    elementOf JVMObject;
+    deployedAt ?HadoopClusterNode;
+    manifestsAs Transient; 
+    hasRole Value.
 
 /*
 The output of the Hadoop MapReduce operation is internally represented by java objects. After the execution finished those values will be persisted in some output format that is described by the coresponding subclass of OutputFormat. The transformation will internally be handled by the hadoop framework. More precisely by the exMapReduce function.
 */
 ?posMapState : Artifact;
-	elementOf JVM.Object;
-	manifestsAs Transient; 
-	deployedAt HadoopClusterNode;
-	hasRole Value.
+    elementOf JVMObject;
+    manifestsAs Transient; 
+    deployedAt ?HadoopClusterNode;
+    hasRole Value.
 ?posReduceState : Artifact;
-	elementOf JVM.Object;
-	deployedAt HadoopClusterNode;
-	manifestsAs Transient; 
-	hasRole Value.
+    elementOf JVMObject;
+    deployedAt ?HadoopClusterNode;
+    manifestsAs Transient; 
+    hasRole Value.
 /*
 The map function will execute the mapper subclass implemented by the developer during the runtime 
 */
@@ -118,26 +136,20 @@ The reduce function will use a Reduce subclass implemented by the developer
 reduce(?reducer, ?posMapState) |-> ?posReduceState.
 exMapReduce(?mapper, ?reducer, ?inputFiles) |-> ?outputFiles.
 
-/*
-Hadoop Map Reduce is a YARN-based system for parallel processing of large data sets. It is implementing the input and output formats that it can handle
-*/
-HadoopMapReduce : Component;
-	= "https://hadoop.apache.org/docs/r2.7.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html";
-	partOf Hadoop;
-	uses MapReduce;
-	uses Java;
-	implements exMapReduce;
-	implements ?OutputFormat;
-	implements ?InputFormat;
-	reuses HDFS;
-	reuses HadoopYARN.
+
+HadoopMapReduce implements exMapReduce;
+                implements ?OutputFormat;
+                implements ?InputFormat.
+
 
 /*
 The Hadoop MapReduce API can be imported by the Java program. It usually takes the Reducer and Mapper as input
 */
 HadoopMapReduceAPI : API;
-	= "https://hadoop.apache.org/docs/r2.4.1/api/org/apache/hadoop/mapreduce/package-summary.html";
-	partOf HadoopMapReduce;
-	implements Mapper;
-	implements Reducer;
-	uses Java.
+    = "https://hadoop.apache.org/docs/r2.4.1/api/org/apache/hadoop/mapreduce/package-summary.html";
+    partOf HadoopMapReduce;
+    implements Mapper;
+    implements Reducer;
+    uses Java.
+
+

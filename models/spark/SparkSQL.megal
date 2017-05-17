@@ -2,38 +2,43 @@ module spark.SparkSQL
 
 import spark.Spark
 
-/*
-A DataFrame is a Dataset organized into named columns. It is conceptually equivalent to a table in a relational database or a data frame in R/Python, but with richer optimizations under the hood
-*/
-DataFrame : Construct;
-	="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html".
 
+/*
+Spark SQL is a Spark module for structured data processing. It provides an interface provides more informations about both the strucuture of the data and the computation beeing performed.
+*/
+SparkSQL : Technology;
+    ="http://spark.apache.org/docs/latest/sql-programming-guide.html";
+    uses SQL;
+    uses ResilientDistributedDatasets;
+    partOf Spark.
+
+    
 /*
 Spark implements DataFrames under the hood. Those implementation is following a grammar and hence
 is an own language.
 */
 ScalaDataFrames : DatabaseLanguage;
-	="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html".
-	
+    ="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html".
+    
 
 /*
 A concrete dataFrame created from Rdds, a resulting data frame from a SQL operation and finally a SQL statement.
 */
 ?dataFrame : Artifact;
-	elementOf ScalaDataFrames;
-	hasRole Database;
-	manifestsAs Transient;
-	deployedAt SparkCluster.
+    elementOf ScalaDataFrames;
+    hasRole Database;
+    manifestsAs Transient;
+    deployedAt ?SparkCluster.
 ?resultingDataFrame : Artifact;
-	elementOf ScalaDataFrames;
-	hasRole Database;
-	manifestsAs Transient;
-	deployedAt SparkCluster.
+    elementOf ScalaDataFrames;
+    hasRole Database;
+    manifestsAs Transient;
+    deployedAt ?SparkCluster.
 ?sqlStatement : Artifact;
-	elementOf SQL;
-	hasRole Query;
-	manifestsAs Transient;
-	deployedAt SparkCluster.
+    elementOf SQLQuery;
+    hasRole Query;
+    manifestsAs Transient;
+    deployedAt ?SparkCluster.
 
 
 /*
@@ -49,15 +54,9 @@ function calls. Both will be abstracted using SQL language. The result of the op
 dataFramesOperations : ScalaDataFrames # SQL -> ScalaDataFrames.
 dataFramesOperations(?dataFrame, ?sqlStatement) |-> ?resultingDataFrame.
 
-/*
-Spark SQL is a Spark module for structured data processing. It provides an interface provides more informations about both the strucuture of the data and the computation beeing performed.
-*/
-SparkSql : Component;
-	="http://spark.apache.org/docs/latest/sql-programming-guide.html";
-	uses SQL;
-	uses ResilientDistributedDatasets;
-	implements ScalaDataFrames;
-	facilitates DataFrame;
-	implements createFrame;
-	implements dataFramesOperations;
-	partOf Spark.
+SparkSQL implements ScalaDataFrames;
+         facilitates DataFrame;
+         implements createFrame;
+         implements dataFramesOperations.
+
+

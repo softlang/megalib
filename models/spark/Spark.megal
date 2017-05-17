@@ -1,76 +1,69 @@
 module spark.Spark
 
-
-import java.JavaPlatform 
 import hadoop.Hadoop
 import hadoop.HadoopYARN
 import python.PythonPlatform
+
 /*
-Has to be added to the Common.Language section
+Apache Spark is a fast and general engine for big data processing, with built-in modules for streaming, SQL, machine learning and graph processing.
 */
-Scala : ProgrammingLanguage;
-	= "https://en.wikipedia.org/wiki/Scala_(programming_language)".
-/*
-A program that executes the operations on a RDD format. It is coded by the user of Spark
-*/
-DriverProgram : Role;
-	= "http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf".
+Spark : Framework;
+    = "http://spark.apache.org/";
+    uses Java;
+    uses Scala;
+    uses Python;      
+    uses CoarseGrainedTransformation;
+    belongsTo ClusterComputingWare;
+    supports DistributedComputing;
+    reuses HadoopYARN;
+    facilitates ClusterComputing;
+    facilitates CoarseGrainedTransformation.
+
 /*
 The nodes necessary for the setup and execution of the Spark technology
 */
-SparkCluster : Node;
-	="http://spark.apache.org/docs/latest/cluster-overview.html".
-DriverComputer : Node.
-
+?SparkCluster : Node;
+    ="http://spark.apache.org/docs/latest/cluster-overview.html".
+?DriverComputer : Node.
 /*
-Formally, an RDD is a read-only, partitioned collection of records. RDDs provide an interface
-based on coarse-grained transformations (e.g., map, filter and join) that apply the same operation to many data items. This allows them to efficiently provide fault tolerance by logging the transformations used to build a dataset (its lineage) rather than the actual data.
-*/	
-ResilientDistributedDatasets : LoggingLanguage;
-	="http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf".
+Formally, an RDD is a read-only, partitioned collection of records. RDDs provide an interface based on coarse-grained transformations (e.g., map, filter and join) that apply the same operation to many data items. This allows them to efficiently provide fault tolerance by logging the transformations used to build a dataset (its lineage) rather than the actual data.
+*/    
+ResilientDistributedDatasets : LogLanguage;
+    ="http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf".
 
-
-/*
-A fine grained update would be an update to one record in a database whereas coarse grained is generally functional operators for example map, reduce, flatMap, join. 
-Source : http://stackoverflow.com/questions/26195512/fine-grained-transformation-vs-coarse-grained-transformations
-*/
-CoarseGrainedTransformation : AbstractProcess;
-	="http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf".
-CoarseGrainedTransformation refines Transformation.
 
 /*
 Some hack as long as we don't know how to deal with local files 
 */
-?LocalFileFormat : DataExchangeLanguage.
+?LocalFileFormat : Language.
 
 /*
 Some Data stored on the local computer, e.g. as a file, in a database, inside the java code, that will either be loaded for processing or saved as a result
 */
 ?concreteData : Artifact;
-	elementOf ?LocalFileFormat;
-	hasRole Database;
-	manifestsAs Transient;
-	deployedAt DriverComputer.
+    elementOf ?LocalFileFormat;
+    hasRole Database;
+    manifestsAs Transient;
+    deployedAt ?DriverComputer.
 
 /*
 To use Spark, developers write a driver program that implements the high-level control flow of their application and launches various operations in parallel
 */
 ?driverProgramm : Artifact;
-	elementOf Java;
-	hasRole TransformationRule;
-	hasRole DriverProgram;
-	uses CoarseGrainedTransformation;
-	manifestsAs File;
-	deployedAt DriverComputer.
+    elementOf Java;
+    hasRole TransformationRule;
+    hasRole DriverProgram;
+    manifestsAs File;
+    deployedAt ?DriverComputer.
 
 /*
 The representation of a concrete resilient distributed dataset during runtime.
 */
 ?rddObjects : Artifact;
-	elementOf ResilientDistributedDatasets;
-	hasRole Log;
-	manifestsAs Transient;
-	deployedAt SparkCluster.
+    elementOf ResilientDistributedDatasets;
+    hasRole Log;
+    manifestsAs Transient;
+    deployedAt ?SparkCluster.
 
 /*
 The Spark system will take as input a driver written in java. This one will further load data that
@@ -84,18 +77,10 @@ The driver program may works with already computed rdds in the memory and simply
 performTransformationInMemory: Java # ResilientDistributedDatasets -> ResilientDistributedDatasets.
 performTransformationInMemory(?driverProgramm, ?rddObjects) |-> ?rddObjects.
 
-Spark : Framework;
-	= "http://spark.apache.org/";
-	uses Java;
-	uses Scala;
-	uses Python;
-	implements ResilientDistributedDatasets;
-	implements performTransformationInMemory;
-	implements performTransformationOnFiles;
-	uses CoarseGrainedTransformation;
-	belongsTo ClusterComputingWare;
-	supports DistributedComputing;
-	reuses HadoopYARN;
-	facilitates ClusterComputing;
-	facilitates CoarseGrainedTransformation.
+
+Spark implements ResilientDistributedDatasets;
+      implements performTransformationInMemory;
+      implements performTransformationOnFiles.
+
+
 

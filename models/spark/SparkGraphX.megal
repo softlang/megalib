@@ -3,46 +3,44 @@ module spark.SparkGraphX
 import spark.Spark
 
 /*
-Graphs are an important construct in computer science. 
-It is a programmin domain covered by conferences as well as a space of technologies
-*/	
-GraphProgramming : ProgrammingDomain;
-	= "https://en.wikipedia.org/wiki/Graph_theory".
-GraphWare : TechnologySpace;
-	="https://en.wikipedia.org/wiki/Graph_theory".
-/*
-A graph is composed of nodes and edges
+GraphX is supporting graphs and graph-parallel computation on RDDs objects
 */
-GraphDataType : Construct;
-	= "https://en.wikipedia.org/wiki/Graph_(abstract_data_type)".
+GraphX : Technology;
+    ="http://spark.apache.org/docs/latest/graphx-programming-guide.html";
+    belongsTo GraphWare;
+    facilitates Graph;
+    uses ResilientDistributedDatasets;
+    supports GraphProgramming;
+    partOf Spark.
+    
 /*
 Two graphs can be joined
 */
-JoinGraphsOperator : AbstractProcess;
-	="http://spark.apache.org/docs/latest/graphx-programming-guide.html#join-operators";
-	aspectOf GraphProgramming.
+JoinGraphs : AbstractProcess;
+    ="http://spark.apache.org/docs/latest/graphx-programming-guide.html#join-operators";
+    aspectOf GraphProgramming.
 
 GraphStructuralOperator : AbstractProcess;
-	="http://spark.apache.org/docs/latest/graphx-programming-guide.html#structural-operators";
-	aspectOf GraphProgramming.
+    ="http://spark.apache.org/docs/latest/graphx-programming-guide.html#structural-operators";
+    aspectOf GraphProgramming.
 
 
 /*
 RDDGraphs are defined in Java
 */
-RddGraph : ProgrammingLanguage;
-	="https://spark.apache.org/docs/2.0.1/api/java/org/apache/spark/graphx/Graph.html";
-	subsetOf Java.
+RddGraph : ValueLanguage;
+    ="https://spark.apache.org/docs/2.0.1/api/java/org/apache/spark/graphx/Graph.html";
+    subsetOf JVMObject.
 
 ?rddGraph : Artifact;
-	elementOf RddGraph;
-	manifestsAs Transient;
-	hasRole Database.
+    elementOf RddGraph;
+    manifestsAs Transient;
+    hasRole Database.
 
 ?postRddGraph : Artifact;
-	elementOf RddGraph;
-	manifestsAs Transient;
-	hasRole Database.
+    elementOf RddGraph;
+    manifestsAs Transient;
+    hasRole Database.
 
 /*
 The graph structure can be created by the driver programm by constructing it with data
@@ -55,18 +53,12 @@ Certain graph operations can be performed
 transformGraph: Java # RddGraph -> RddGraph.
 transformGraph(?driverProgramm, ?rddGraph) |-> ?postRddGraph.
 
-/*
-GraphX is supporting graphs and graph-parallel computation on RDDs objects
-*/
-GraphX : Component;
-	="http://spark.apache.org/docs/latest/graphx-programming-guide.html";
-	belongsTo GraphWare;
-	facilitates GraphDataType;
-	uses ResilientDistributedDatasets;
-	supports GraphProgramming;
-	implements RddGraph;
-	implements createGraph;
-	implements transformGraph;
-	facilitates JoinGraphsOperator;
-	facilitates GraphStructuralOperator;
-	partOf Spark.
+
+GraphX    implements createGraph;
+        implements transformGraph;
+        facilitates JoinGraphs;
+        implements RddGraph;
+        facilitates GraphStructuralOperator.
+
+
+

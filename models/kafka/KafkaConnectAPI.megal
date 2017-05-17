@@ -1,0 +1,16 @@
+module kafka.kafkaConnectAPI
+
+import kafka.kafka
+
+/*
+Connect API allows implementing connectors that continually pull from some source data system into Kafka or push from Kafka into some sink data system.
+*/
+ConnectAPI : API;
+    ="https://kafka.apache.org/documentation/#connectapi";
+    uses Java;
+    implements SendData;
+    implements RecvData;
+    facilitates SoftwareInterface;
+    hasRole Interface;
+    partOf Kafka.
+

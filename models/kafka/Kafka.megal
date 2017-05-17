@@ -1,0 +1,128 @@
+module kafka.kafka
+
+/*
+A topic is a category or feed name to which records are published
+*/
+TopicConstruct : Construct;
+    ="https://kafka.apache.org/documentation/#intro_topics".
+/*
+The process of making starting up a software beased on a configuration
+*/
+Initialization: AbstractProcess;
+    ="https://en.wikipedia.org/wiki/Initialization_(programming)".
+
+
+/*
+Kafka is a distributed streaming platform
+*/
+Kafka : Platform;
+    ="https://kafka.apache.org/";
+    supports DistributedComputing;
+    supports StreamProcessing;
+    facilitates ClusterComputing;
+    hasRole MessageBroker;
+    facilitates PublishSubscribe;
+    facilitates TopicConstruct;
+    uses Java;
+    uses Scala.
+/*
+Avro relies on schemas. When Avro data is read, the schema used when writing it is always present.
+*/
+AvroSchema : SchemaLanguage;
+    ="https://avro.apache.org/docs/1.8.1/spec.html";
+    subsetOf JSON.
+
+/*
+Kafka has a different set of bash tool that will be used for the setting up and starting of the cluster. Those scripts are aggregated in that software suit.
+*/
+KafkaShellScripts : SoftwareSuite;
+    ="https://github.com/apache/kafka/tree/0.8/bin";
+    uses Bash;
+    facilitates Initialization;
+    partOf Kafka.
+
+?KafkaCluser : Node.
+
+/*
+A topic identifies a data stream
+*/
+Topic : ReferenceLanguage;
+    = "https://kafka.apache.org/documentation/#intro_topics".
+/*
+Messages will be used to share data and information between publisher, subscribers and the kafka core
+*/
+KafkaMessage : DataExchangeLanguage;
+    ="https://kafka.apache.org/documentation/#messageformat".
+/*
+Kafka is modelled around a log. The log manifest by the messages published.
+*/
+KafkaLog : LogLanguage;
+    = "https://kafka.apache.org/documentation/#log".
+
+
+/*
+Kafka is storing and maintaining logs on the cluster.
+*/
+?preLog : Artifact;
+    elementOf KafkaLog;
+    hasRole Log;
+    manifestsAs File;
+    deployedAt ?KafkaCluser.
+?postLog : Artifact;
+    elementOf KafkaLog;
+    hasRole Log;
+    manifestsAs File;
+    deployedAt ?KafkaCluser.
+/*
+A topic is the identifier for a certain data stream
+*/
+?topic : Artifact;
+    elementOf Topic;
+    hasRole Identifier;
+    manifestsAs Transient.
+/*
+Messages will be used for the updating or tansfering of data
+*/    
+?message : Artifact;
+    elementOf KafkaMessage;
+    manifestsAs Transient;
+    hasRole DataStream.
+
+/*
+Messages can be produced by a publisher to a certain topic that will appended to the log
+Later a subscriber can read those logs by pulling those values
+*/
+produce : Topic # KafkaMessage # KafkaLog -> KafkaLog.
+consume : Topic # KafkaLog -> KafkaMessage.
+produce(?topic, ?message, ?preLog) |-> ?postLog.
+consume(?topic, ?postLog) |-> ?message.  
+
+Kafka implements produce.
+Kafka implements consume.
+
+
+/*
+The plain data that have to be send to a different place with the help of kafka
+*/
+?Data : Language.
+?conreteData : Artifact;
+    elementOf ?Data;
+    hasRole Database;
+    manifestsAs Transient.
+/*
+There exist interfaces that will create and interpret Kafka messages 
+based on the input data and the existing data
+*/
+SendData: ?Data # Topic -> KafkaMessage.
+RecvData:  KafkaMessage # Topic -> ?Data.
+SendData(?conreteData, ?topic) |-> ?message.
+RecvData(?message, ?topic) |-> ?conreteData.
+
+/*
+Kafka shell scripts are able to translate I/O to Kafka messages and vice versa
+*/
+KafkaShellScripts implements SendData;
+                  implements RecvData.
+
+
+

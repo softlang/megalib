@@ -3,19 +3,13 @@ module spark.SparkMlib
 import spark.Spark
 
 /*
-Algorithms that are learning patterns and datas and finally apply those techniques are part
-of the machine learning programming domain. 
-*/
-MachineLearning : ProgrammingDomain;
-	= "https://en.wikipedia.org/wiki/Machine_learning".
-
-/*
 MLib is a library that uses RDD objects and hence the Spark framework to implement machine learning
 algorithms on a cluster. "Its goal is to make practical machine learning scalable and easy"
-*/	
+*/    
 MLlib : Library;
-	= "http://spark.apache.org/docs/latest/ml-guide.html";
-	supports MachineLearning;
-	uses ResilientDistributedDatasets;
-	uses Java;
-	partOf Spark.
+    = "http://spark.apache.org/docs/latest/ml-guide.html";
+    supports MachineLearning;
+    uses ResilientDistributedDatasets;
+    uses Java;
+    partOf Spark.
+

@@ -3,12 +3,20 @@ module spark.SparkJavaApi
 import spark.Spark
 
 /*
+One part of the Spark technology is an API that is defining certain kind of operations that can be called by the Spark framework itself or by a driver program
+*/
+SparksJavaApi : Technology;
+    = "http://spark.apache.org/docs/latest/api/java/index.html";
+    partOf Spark;
+    uses Java.
+
+/*
 Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
 */
 JavaSparkContext : ValueLanguage;
-	="http://spark.apache.org/docs/latest/cluster-overview.html";
-	="https://spark.apache.org/docs/1.4.0/api/java/org/apache/spark/SparkContext.html";
-	subsetOf JVM.Object.
+    ="http://spark.apache.org/docs/latest/cluster-overview.html";
+    ="https://spark.apache.org/docs/1.4.0/api/java/org/apache/spark/SparkContext.html";
+    subsetOf JVMObject.
 
 /*
 Spark can write the RDDs out to a file system if necessary
@@ -16,15 +24,13 @@ Spark can write the RDDs out to a file system if necessary
 writeRDDToFile : ResilientDistributedDatasets  -> ?LocalFileFormat.
 writeRDDToFile(?rddObjects) |-> ?concreteData.
 
-
-/*
-One part of the Spark technology is an API that is defining certain kind of operations that can be called by the Spark framework itself or by a driver program
+ /*
+ Apparently I am not able to express this any more:     
+    ?driverProgramm reuses SparksJavaApi.
 */
-SparksJavaApi : Component;
-	= "http://spark.apache.org/docs/latest/api/java/index.html";
-	uses Java;
-	implements JavaSparkContext;
-	implements writeRDDToFile;
-	facilitates SoftwareInterface;
-	partOf Spark.
-?driverProgramm reuses SparksJavaApi.
+
+SparksJavaApi implements JavaSparkContext;
+    implements writeRDDToFile;
+      facilitates SoftwareInterface.
+
+

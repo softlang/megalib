@@ -5,7 +5,7 @@ import hadoop.Hadoop
 /*
 Hadood common is the part of the Hadoop project that supports the different parts of the hadoop project like HDFS. It is coded in Java
 */
-HadoopCommon : Component;
+HadoopCommon : Technology;
 	="https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/CLIMiniCluster.html";
 	partOf Hadoop;
 	uses Java.
@@ -24,8 +24,10 @@ NativeLibrary : Library;
 /*
 Some script are in this part of hadoop to make the start up proccess easier.
 ToDo: A function that says that a parameter is an input and as a result hadoop will be started (with the regard to the configuration)
+
+Application is not fitting
 */
-StartUpScript : Program;
+StartUpScript : Application;
 	= "https://github.com/apache/hadoop-common/tree/HADOOP-3628/bin";
 	partOf HadoopCommon;
-	uses ShellScript.
+	uses Bash.
