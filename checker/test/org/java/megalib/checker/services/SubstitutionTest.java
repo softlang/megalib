@@ -22,7 +22,7 @@ public class SubstitutionTest {
 
     private ModelLoader ml;
 
-
+    @Before
     public void setUp() throws IOException {
         ml = new ModelLoader();
         ml.loadFile("testsample/SubstitutionDemo/App.megal");

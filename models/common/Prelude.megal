@@ -54,7 +54,7 @@ Function < Entity;
 concretizes < Function # AbstractProcess. 
 defines < Artifact # Artifact; //Code declares and defines Transients
     = "wikipedia::Declaration_(computer_programming)".
-decomposes < Function # Function. //A function can be decomposed into steps
+composedOf < Function # Function. //A function can be decomposed into steps
 
 
 /* A technology is reusable 'third party' Software. See Wiki */

@@ -21,7 +21,7 @@ TechnologySpace < Entity;
 subspaceOf < TechnologySpace # TechnologySpace;
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
     
-AbstractProcess < Entity; 
+AbstractProcess < Entity; //or execution model
     = "wikipedia::Abstract_process".
 Protocol < AbstractProcess; 
     = "wikipedia::Communications_protocol".

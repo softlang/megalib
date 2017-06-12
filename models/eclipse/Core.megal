@@ -23,6 +23,7 @@ Eclipse : IDE;
 	= "vogella::EclipsePlugin/article.html";
 	= "wikipedia::Eclipse_(software)";
 	uses OSGi;
+    uses Java;
 	supports GeneralPurposeProgramming.
 
 /* Eclipse has a plugin based architecture. E.g., the core plugin 'org.eclipse.core.runtime' is deployed in the eclipse folder under '../eclipse/plugins' or in the user folder under '.p2/plugins'. */
@@ -30,7 +31,7 @@ EclipseCoreRuntime : Plugin;
     = "eclipseHelp::?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fcore%2Fruntime%2Fpackage-summary.html";
     partOf Eclipse;
     uses Java.
-EclipseCoreRuntimeJar : Artifact;
+eclipseCoreRuntimeJar : Artifact;
     ~= "platform::org.eclipse.core.runtime_*.jar";
     elementOf Jar;
     manifestsAs File;

@@ -109,15 +109,47 @@ The plain data that have to be send to a different place with the help of kafka
     elementOf ?Data;
     hasRole Database;
     manifestsAs Transient.
+
+/*
+A Consumer is a program that uses the ConsumerAPI to receive messages from a Kafka topic
+*/
+?ConsumerNode : Node.
+?consumer : Artifact;
+    ="https://kafka.apache.org/documentation/#theconsumer";
+    elementOf Java;
+    hasRole Executable;
+    manifestsAs Transient;
+    deployedAt ?ConsumerNode.
+/*
+A Producer is a program that uses the ConsumerAPI to receive messages from a Kafka topic
+*/
+?ProducerNode : Node.
+?producer : Artifact;
+    ="https://kafka.apache.org/documentation/#theproducer";
+    elementOf Java;
+    hasRole Executable;
+    manifestsAs Transient;
+    deployedAt ?ProducerNode.
+/**/
+?StreamNode : Node.
+?streamProgram : Artifact;
+    ="https://kafka.apache.org/documentation/streams";
+    elementOf Java;
+    hasRole Executable;
+    manifestsAs Transient;
+    deployedAt ?ProducerNode.
+
 /*
 There exist interfaces that will create and interpret Kafka messages 
 based on the input data and the existing data
 */
-SendData: ?Data # Topic -> KafkaMessage.
-RecvData:  KafkaMessage # Topic -> ?Data.
-SendData(?conreteData, ?topic) |-> ?message.
-RecvData(?message, ?topic) |-> ?conreteData.
+SendData: ?Data # Topic # Java -> KafkaMessage.
+RecvData:  KafkaMessage # Topic # Java -> ?Data.
+StreamData: ?Data # Topic # KafkaMessage  # Java -> KafkaMessage.
 
+SendData(?conreteData, ?topic, ?consumer) |-> ?message.
+RecvData(?message, ?topic, ?producer) |-> ?conreteData.
+StreamData(?conreteData, ?topic, ?message, ?streamProgram)|-> ?message.
 /*
 Kafka shell scripts are able to translate I/O to Kafka messages and vice versa
 */

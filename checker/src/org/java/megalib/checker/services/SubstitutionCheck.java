@@ -80,9 +80,10 @@ public class SubstitutionCheck {
             errors.add("Unable to substitute : " + e + " does not exist.");
             return true;
         }
-        if(!m.isInstanceOf(e, "Language") && !m.isInstanceOf(e, "Artifact") && !m.isInstanceOf(e, "System")){
+        if(!m.isInstanceOf(e, "Language") && !m.isInstanceOf(e, "Artifact") && !m.isInstanceOf(e, "System")
+           && !m.isInstanceOf(e, "Node")){
             errors.add("Unable to substitute " + e + " by " + by
-                       + ". Only instances of Language, Artifact, System and Technology can be substituted.");
+                       + ". Only instances of Language, Artifact, System and Node can be substituted.");
             return true;
         }
         return false;

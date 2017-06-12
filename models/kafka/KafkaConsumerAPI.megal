@@ -10,4 +10,3 @@ ConsumerAPI : API;
     implements RecvData;
     uses Java;
     partOf Kafka.
-

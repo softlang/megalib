@@ -1,0 +1,25 @@
+module kafka.ConcreteImplementation
+
+import kafka.kafka where {
+    [ 101companies / ?topic,
+      employeeMessage / ?message,
+      JSON / ?Data,
+      empoyeeData / ?conreteData,
+      101producer / ?producer,
+      101consumer / ?consumer,
+      101stream / ?streamProgram
+    ]
+}
+/*
+Describing the 101 Total/Cut implementation of kafka
+*/
+101companies ~= "https://github.com/fruether/101kafka/blob/master/README.md#step-3-create-the-topics-for-company-data-exchange".
+
+employeeMessage ~= "https://github.com/fruether/101kafka/blob/master/src/main/java/org/softlang/companies/kafka/Producer101.java#L29";
+ 				~="https://github.com/fruether/101kafka/blob/master/src/main/java/org/softlang/companies/kafka/Consumer101.java#L43". 
+ empoyeeData ~="https://github.com/fruether/101kafka/blob/master/src/main/java/org/softlang/companies/model/Employee.java#L56";
+ 			 ~="https://github.com/fruether/101kafka/blob/master/src/main/java/org/softlang/companies/kafka/Consumer101.java#L45".
+ 101producer ~="https://github.com/fruether/101kafka/blob/master/src/main/java/org/softlang/companies/kafka/Producer101.java".
+ 101consumer ~="https://github.com/fruether/101kafka/blob/master/src/main/java/org/softlang/companies/kafka/Consumer101.java".
+ 101stream ~="https://github.com/fruether/101kafka/blob/master/src/main/java/org/softlang/companies/kafka/Stream101.java".
+ 
