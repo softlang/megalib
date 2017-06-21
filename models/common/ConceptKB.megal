@@ -214,6 +214,12 @@ ClusterComputing : AbstractProcess;
  	= "http://de.slideshare.net/bosswebtech/cluster-computing-11382951";
  	= "http://gridbus.csse.unimelb.edu.au/papers/ic_cluster.pdf";
  	aspectOf DistributedProgramming.
+LexicalAnalysis : AbstractProcess;
+    = "101wiki::Lexical_analysis";
+    aspectOf MetaProgramming.
+Parsing : AbstractProcess;
+    = "101wiki::Parsing";
+    aspectOf Metaprogramming.
 HTTP : Protocol;
     = "wikipedia::HTTP".
 HTTPS : Protocol ;
@@ -337,6 +343,9 @@ Request : Role;
   = "wikipedia::Client%E2%80%93server_model".
 Response : Role;
   = "wikipedia::Client%E2%80%93server_model".
+ConcreteSyntaxTree : Role;
+    ="https://101wiki.softlang.org/Concrete_syntax_tree";
+	="https://en.wikipedia.org/wiki/Parse_tree".
     
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";
@@ -354,6 +363,7 @@ Observer : Role;
 Subject : Role;
     = "wikipedia::Observer_pattern";
     participantOf ObserverPattern.
+    
 AdapterClient : Role;
     = "wikipedia::Adapter_pattern";
     participantOf AdapterPattern.

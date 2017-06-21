@@ -1,6 +1,7 @@
 module common.Namespaces
 
 /* Encyclopedia and Dictionary namespaces */
+101wiki :: "https://101wiki.softlang.org".
 wikipedia :: "https://en.wikipedia.org/wiki".
 oxfordDict :: "https://en.oxforddictionaries.com/definition".
 

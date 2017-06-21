@@ -7,3 +7,5 @@ checker/target/
 visualizer/bin/
 MegaLTriples/
 MegaMetrics/
+bin/
+target/

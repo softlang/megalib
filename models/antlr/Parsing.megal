@@ -1,0 +1,60 @@
+module antlr.Parsing
+
+import antlr.Codegeneration
+
+
+/*
+Any language could be defined by a grammar that serves as an input.
+*/
+?InputLanguage : Language. 
+?grammar defines ?InputLanguage.
+?input : Artifact;
+	manifestsAs File;
+	elementOf ?InputLanguage;
+	conformsTo ?grammar. 
+	
+/*
+ANTLR parser is preceded by a lexical analysis, which converts characters to tokens.
+*/
+?GeneratedParser implements lex;
+    uses LexicalAnalysis.
+TokenStreamLanguage : ValueLanguage;
+	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/Java/src/org/antlr/v4/runtime/CommonTokenStream.java";
+	subsetOf JVMObject;
+    ^implements ANTLR.
+lex : ?InputLanguage -> TokenStreamLanguage.
+?tokenstream : Artifact;
+	manifestsAs Transient;
+	elementOf TokenStreamLanguage.
+lex(?input) |-> ?tokenstream.
+
+/*
+A parser is a software component that takes text as input and 
+builds an intermediate data structure.
+*/
+
+ConcreteSyntaxTreeLanguage : ValueLanguage;
+    = "https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/tree/ParseTree.java";
+	subsetOf JVMObject.
+parse : TokenStreamLanguage -> ConcreteSyntaxTreeLanguage.
+?GeneratedParser implements parse;
+    uses Parsing.
+
+?concreteSyntaxTree : Artifact;
+	manifestsAs Transient;
+	elementOf ConcreteSyntaxTreeLanguage.
+parse(?tokenstream) |-> (?concreteSyntaxTree).
+
+/*
+Language for Lexer and Parser
+*/
+LexerLanguage : ValueLanguage;
+	="https://github.com/antlr/antlr4/blob/master/doc/lexer-rules.md";
+	subsetOf JVMObject.	
+ParserLanguage : ValueLanguage;
+	="https://github.com/antlr/antlr4/blob/master/doc/parser-rules.md";
+	subsetOf JVMObject.
+antlrLexer : Artifact;
+	~="https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/Lexer.java".	
+antlrParser : Artifact;
+	~="https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/Parser.java".

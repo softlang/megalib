@@ -1,0 +1,20 @@
+module antlr.App
+
+
+import antlr.CodeGeneration
+
+/*
+Any app that uses ANTLR contains
+ - a grammar
+ - a generated parser
+ - the deployed ANTLR jar
+*/
+?App : Application;
+	reuses ANTLR; 
+	uses Java;
+    ^partOf ?GeneratedParser.
+?antlrJar : Artifact;
+    partOf ?App;
+    elementOf Jar;
+    manifestsAs File;
+    ^deployedAs ANTLR.

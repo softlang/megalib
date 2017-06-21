@@ -1,0 +1,39 @@
+module Listener
+
+/*
+Add and Get for Listeners. ANTLR facilitates the ObserverPattern, but uses
+the terms subject and listener instead of subject and observer.
+
+@Resources:
+https://github.com/antlr/antlr4/blob/master/doc/listeners.md
+*/
+ANTLR facilitates ObserverPattern.
+?ListenerLanguage : ValueLanguage;
+    ^implements ANTLR.
+?SubjectLanguage : ValueLanguage;
+    ^implements ANTLR.
+?subject0 : Artifact;
+    elementOf ?SubjectLanguage;
+    hasRole Subject;
+    manifestsAs Transient.
+?subject1 : Artifact;
+    elementOf ?SubjectLanguage;
+    hasRole Subject;
+    manifestsAs Transient.
+?subject2 : Artifact;
+    elementOf ?SubjectLanguage;
+    hasRole Subject;
+    manifestsAs Transient.
+?listener0 : Artifact;
+    elementOf ?ListenerLanguage;
+    hasRole Observer;
+    manifestsAs Transient.
+?listener2 : Artifact;
+    elementOf ?ListenerLanguage;
+    hasRole Observer;
+    manifestsAs Transient.
+addListener : ?SubjectLanguage # ?ListenerLanguage -> ?SubjectLanguage.
+addListener(?subject0, ?listener0) |-> ?subject1.	  
+//something happens between function usages of addListener and getListeners
+getListeners : ?SubjectLanguage -> ?ListenerLanguage.
+getListeners(?subject2) |-> ?listener2.

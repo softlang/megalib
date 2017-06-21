@@ -1,0 +1,62 @@
+module JavaANTLRErrorlistenerForLexer
+import JavaANTLR
+import JavaANTLRListenerPattern where{
+	[
+		ErrorListenerObjectLanguage / ?ListenerLanguage,
+		ErrorListenerObjectsLanguage / ?ListenersLanguage ,
+	//substitution for lexing
+		Lexer / ?SubjectLanguage,
+		?lexerErrorListener / ?listenerBeforeApplication,
+		?lexerObject / ?subject,
+		?lexerObjectWithErrorListener / ?subjectWithListeners,
+		?lexerObjectWithErrorListenerAfterApplication / ?subjectWithListenersAfterApplication,
+		?returnedLexerErrorListeners / ?listenersAfterApplication
+	]
+}
+/*
+Error-Listeners are specialized data-structures, which processes the errors, that occur during lexing or parsing.
+for more information about listeners in ANTLR or listeners in general, see module JavaANTLRErrorlistenerForLexer or module ObserverPatternExtended
+ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Main Program
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+?ErrorListener : System;
+	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/error/ErrorListener.js";
+	="http://www.antlr.org/api/Java/org/antlr/v4/runtime/ANTLRErrorListener.html";
+	reuses ANTLR.	
+ErrorListenerObjectLanguage
+	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/error/ErrorListener.js";
+	subsetOf JVMObject.
+ErrorListenerObjectsLanguage
+	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/error/ErrorListener.js";
+	subsetOf JVMObject.
+	
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding Listeners to lexer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+from substitution:
+addListener : Lexer # ErrorListenerObjectLanguage -> Lexer.
+	//="http://www.antlr.org/api/Java/org/antlr/v4/runtime/Recognizer.html#addErrorListener(org.antlr.v4.runtime.ANTLRErrorListener)".
+addListener(?lexerObject, ?lexerErrorListener) |-> ?lexerObjectWithErrorListener.	
+*/
+?ErrorListener implements addListener.
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+lexing with listener
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+lex : ?InputLanguage # Lexer -> TokenStreamLanguage # Lexer. //the ErrorListeners are attached to the Lexer
+lex(?input, ?lexerObjectWithErrorListener) |-> (?tokens, ?lexerObjectWithErrorListenerAfterApplication).
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+returning Listeners after application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+getErrorListeners : Lexer -> ErrorListenerObjectsLanguage.
+	//="http://www.antlr.org/api/Java/org/antlr/v4/runtime/Recognizer.html#getErrorListeners()".
+getErrorListeners(?lexerObjectWithErrorListenerAfterApplication) |-> ?returnedLexerErrorListeners.
+?ErrorListener implements getErrorListeners.

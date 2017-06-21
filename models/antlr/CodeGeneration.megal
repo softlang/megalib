@@ -1,0 +1,28 @@
+module antlr.Codegeneration
+
+import antlr.Core 
+
+/*
+several artifacts are actually generated. At first, the lexer implementation is generated.
+Second, the parser implementation is generated.
+*/
+?grammar : Artifact; 
+	manifestsAs File+;
+	elementOf g4;
+	hasRole Grammar.
+?lexerFiles : Artifact;
+	elementOf ANTLRJava;
+	manifestsAs File+;
+    hasRole Lexer.
+?parserFiles : Artifact;
+	elementOf ANTLRJava;
+	manifestsAs File+;
+    hasRole Parser.
+generateLexer : g4 -> ANTLRJava .
+generateParser : g4 -> ANTLRJava .
+generateLexer(?grammar) |-> ?lexerFiles .
+generateParser(?grammar) |-> ?parserFiles .
+?GeneratedParser : Parser;
+    ^partOf ?lexerFiles;
+    ^partOf ?parserFiles;
+    uses Java.

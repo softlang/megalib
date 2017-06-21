@@ -1,0 +1,59 @@
+module antlr.ListenerForLexer
+import antlr.Core
+import antlr.Listener where{
+	[
+		ANTLRListenerObjectLanguage / ?ListenerLanguage,
+		ANTLRListenerObjectsLanguage / ?ListenersLanguage ,
+        //substitution for lexing
+		Lexer / ?SubjectLanguage,
+		?aNTLRLexerListener / ?listenerBeforeApplication,
+		?lexerObject / ?subject,
+		?lexerObjectWithANTLRListener / ?subjectWithListeners,
+		?lexerObjectWithANTLRListenerAfterApplication / ?subjectWithListenersAfterApplication,
+		?returnedANTLRLexerListeners / ?listenersAfterApplication
+	]
+}
+/*
+for more information about listeners in ANTLR or listeners in general, see module JavaANTLRErrorlistenerForLexer or module ObserverPatternExtended.
+ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Main Program
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+?ANTLRListener : System;
+	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/ANTLR/ANTLRListener.js";
+	reuses ANTLR.	
+ANTLRListenerObjectLanguage
+	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/ANTLR/ANTLRListener.js";
+	subsetOf JVMObject.
+ANTLRListenerObjectsLanguage
+	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/ANTLR/ANTLRListener.js";
+	subsetOf JVMObject.
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding Listeners to lexer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+from substitution:
+addListener : Lexer # ANTLRListenerObjectLanguage -> Lexer.
+addListener(?lexerObject, ?aNTLRLexerListener) |-> ?lexerObjectWithANTLRListener.	
+*/
+?ANTLRListener implements addListener.
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+lexing with listener 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+lex : ?InputLanguage # Lexer -> TokenStreamLanguage # Lexer. //the ANTLRListeners are attached to the Lexer
+lex(?input, ?lexerObjectWithANTLRListener) |-> (?tokens, ?lexerObjectWithANTLRListenerAfterApplication).
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+returning Listeners after application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+from substitution:
+getListeners : Lexer -> ANTLRListenerObjectsLanguage.
+getListeners(?lexerObjectWithANTLRListenerAfterApplication) |-> ?returnedANTLRLexerListeners.
+*/
+?ANTLRListener implements getListeners.
