@@ -18,17 +18,16 @@ import org.java.megalib.models.MegaModel;
 
 public class Linker {
 
-	
-	
+
+
 	protected static boolean isResolvable(String link, MegaModel model){
 		if(link.contains("::")){
             String ns = link.split("::")[0];
             link = link.replace(ns + "::", model.getNamespace(ns) + "/");
         }
-        if(link.startsWith("file://")){
-        	return isValidFilePath(link);
-            
-        }else if(link.startsWith("http")){
+        if(link.startsWith("file://"))
+            return isValidFilePath(link.split("#")[0].substring(7));
+        else if(link.startsWith("http")){
         	initializeTrustManagement();
             try{
                 return isValidURL(new URL(link));
@@ -36,18 +35,17 @@ public class Linker {
                 return false;
             }
         }
-		
+
 		return false;
 	}
-	
+
 	private static boolean isValidFilePath(String link) {
 		if(new File(link).exists())
 				return true;
 		else{
 			String[] parts = link.split("\\.");
-			if(parts.length==3){
-				return true; //TODO: Implement linking to checker.jar/org/main/antlr/techdocgrammar/Megalib.g4
-			}
+			if(parts.length==3)
+                return true; //TODO: Implement linking to checker.jar/org/main/antlr/techdocgrammar/Megalib.g4
 		}
 		return false;
 	}

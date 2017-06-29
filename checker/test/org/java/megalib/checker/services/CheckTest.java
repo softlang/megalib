@@ -196,6 +196,16 @@ public class CheckTest {
     }
 
     @Test
+    public void checkRelativeLinkUp() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/a : Artifact; ~= \"file://../checker\"; elementOf Java; manifestsAs File.";
+        ml.loadString(input);
+        WellformednessCheck c = new WellformednessCheck(ml.getModel());
+        assertEquals(0, ml.getTypeErrors().size());
+        assertEquals(0, c.getWarnings().size());
+    }
+
+    @Test
     public void checkNoLinkTransient() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
         String input = "/**/a : Artifact; elementOf Java; manifestsAs Transient.";
