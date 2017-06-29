@@ -38,6 +38,7 @@ public class Substitution {
      * @return
      */
     public MegaModel substituteGroup() {
+        System.out.println("Substgroup:" + substByGroup);
         substByGroup.forEach((key, set) -> set.forEach(v -> {
             if(!model.getInstanceOfMap().containsKey(v)){
                 model.addInstanceOf(v, model.getInstanceOfMap().get(key));

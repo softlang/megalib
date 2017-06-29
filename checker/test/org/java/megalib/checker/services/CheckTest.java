@@ -202,20 +202,20 @@ public class CheckTest {
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
-        assertEquals(1, c.getWarnings().size());
+        assertEquals(2, c.getWarnings().size());
+        assertEquals("Binding missing for Artifact a.", c.getWarnings().get(0));
         assertEquals("The following transients are neither input nor output of a function application: [a]",
-                     c.getWarnings().get(0));
+                     c.getWarnings().get(1));
     }
 
     @Test
     public void checkComplexFunApp() throws ParserException, IOException{
     	ModelLoader ml = new ModelLoader();
-        String input = "/**/a : Artifact; elementOf Java; manifestsAs Transient. f : Java # Java # Java -> Java # Java # Java. "
+        String input = "/**/a : Artifact; ~= \"softlang.org\"; elementOf Java; manifestsAs Transient. f : Java # Java # Java -> Java # Java # Java. "
                        + "?T : Technology; implements f. f(a,a,a) |-> (a,a,a).";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(),true);
         assertEquals(0, ml.getTypeErrors().size());
-        c.getWarnings().forEach(w -> System.out.println("-"+w));
         assertEquals(0, c.getWarnings().size());
     }
 }

@@ -46,7 +46,7 @@ public class SubstitutionCheck {
 
     private boolean isInvalidArtifactSubst(String by, String e, MegaModel m, Map<String,Set<String>> substByGroup) {
 
-        if(!manifestationMismatch(by, e, m))
+        if(manifestationMismatch(by, e, m))
             return true;
 
         return false;

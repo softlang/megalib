@@ -90,6 +90,8 @@ public class ParserListener extends MegalibBaseListener {
     public void exitSubstitutionGroup(SubstitutionGroupContext ctx) {
         if(substCheck.substituteGroup(substByGroup, model)){
             model = new Substitution(model, substByGroup, block).substituteGroup();
+        }else{
+            System.err.println("Meep");
         }
         substCheck.getErrors().forEach(e -> typeCheck.addError(e));
         substByGroup.clear();

@@ -27,7 +27,6 @@ public class SubstitutionTest {
         ml = new ModelLoader();
         ml.loadFile("testsample/SubstitutionDemo/App.megal");
         ml.getTypeErrors().forEach(w -> System.out.println(w));
-        assertTrue(ml.getTypeErrors().isEmpty());
     }
 
     @Test
@@ -63,7 +62,7 @@ public class SubstitutionTest {
         ml = new ModelLoader();
         ml.loadFile("testsample/SubstitutionDemo/App.megal");
         ml.getTypeErrors().forEach(w -> System.out.println(w));
-        // assertTrue(ml.getTypeErrors().isEmpty());
+        assertTrue(ml.getTypeErrors().isEmpty());
         assertTrue(ml.getModel().getInstanceOfMap().containsKey("MyProject1"));
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, c.getWarnings().size());

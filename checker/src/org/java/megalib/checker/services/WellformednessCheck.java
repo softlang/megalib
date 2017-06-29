@@ -59,14 +59,14 @@ public class WellformednessCheck {
 
         model.getInstanceOfMap().entrySet().parallelStream().forEach(entry -> {
             String name = entry.getKey().replace("?", "");
-            if(entry.getValue().equals("Artifact") || entry.getValue().equals("Function")){
+            if(model.isInstanceOf(entry.getKey(), "Artifact") || entry.getValue().equals("Function")){
                 if(name.substring(0, 1).equals(name.substring(0, 1).toUpperCase())){
                     warnings.add("The " + entry.getValue() + " ID " + entry.getKey()
                                  + " must begin with a lower case letter.");
                 }
             }else{
                 if(name.substring(0, 1).equals(name.substring(0, 1).toLowerCase())){
-                    warnings.add("The " + entry.getValue() + " ID " + entry.getKey()
+                    warnings.add("The " + entry.getValue() + " ID " + name
                                  + " must begin with an upper case letter.");
                 }
             }
@@ -106,22 +106,12 @@ public class WellformednessCheck {
         }
 
         if(model.isInstanceOf(e, "Artifact")){
-            if(!model.getRelationships().containsKey("manifestsAs")
-               || model.getRelationships().get("manifestsAs").parallelStream()
-                       .noneMatch(r -> r.getSubject().equals(e))){
-                warnings.add("Manifestation missing for " + e);
-            }
-            if(!model.containsRelationship(e, "manifestsAs", "Transient")){
                 long bindcount = Optional.ofNullable(model.getRelationships().get("~="))
                                          .map(set -> set.parallelStream().filter(r -> r.getSubject().equals(e)).count())
                                          .orElse(Integer.toUnsignedLong(0));
                 if(bindcount < 1){
                     warnings.add("Binding missing for Artifact " + e + ".");
                 }
-                if(bindcount > 1){
-                    warnings.add("More than 1 binding for Artifact " + e + ".");
-                }
-            }
 
         }else{
             Optional<Set<Relation>> o = Optional.ofNullable(model.getRelationships().get("="))

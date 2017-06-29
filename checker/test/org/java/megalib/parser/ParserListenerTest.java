@@ -29,7 +29,7 @@ public class ParserListenerTest {
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(6, ml.getModel().getModules().size());
         Module m = ml.getModel().getModules().get(5);
-        assertEquals(16, m.getBlocks().size());
+        assertEquals(17, m.getBlocks().size());
         m.getBlocks().forEach(b -> assertTrue(b.getText().startsWith("/*") && b.getText().endsWith("*/")));
     }
 

@@ -219,7 +219,7 @@ LexicalAnalysis : AbstractProcess;
     aspectOf MetaProgramming.
 Parsing : AbstractProcess;
     = "101wiki::Parsing";
-    aspectOf Metaprogramming.
+    aspectOf MetaProgramming.
 HTTP : Protocol;
     = "wikipedia::HTTP".
 HTTPS : Protocol ;
