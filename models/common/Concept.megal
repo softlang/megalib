@@ -2,6 +2,10 @@ module common.Concept
 
 import common.Namespaces
 
+/* Supertype, if you do not know how to classify a concept */
+Concept < Entity;
+    = "https://github.com/softlang/megalib/wiki/Concept-Classification".
+
 /* Concept Types, see https://github.com/softlang/megalib/wiki/Concept-Classification */
 ArchitecturalPattern < Entity;
     = "wikipedia::Architectural_pattern".
