@@ -1,4 +1,4 @@
-module antlr.Codegeneration
+module antlr.CodeGeneration
 
 import antlr.Core 
 
@@ -8,7 +8,7 @@ Second, the parser implementation is generated.
 */
 ?grammar : Artifact; 
 	manifestsAs File+;
-	elementOf g4;
+	elementOf G4;
 	hasRole Grammar.
 ?lexerFiles : Artifact;
 	elementOf ANTLRJava;
@@ -18,8 +18,10 @@ Second, the parser implementation is generated.
 	elementOf ANTLRJava;
 	manifestsAs File+;
     hasRole Parser.
-generateLexer : g4 -> ANTLRJava .
-generateParser : g4 -> ANTLRJava .
+generateLexer : G4 -> ANTLRJava .
+generateParser : G4 -> ANTLRJava .
+ANTLR implements generateLexer;
+    implements generateParser.
 generateLexer(?grammar) |-> ?lexerFiles .
 generateParser(?grammar) |-> ?parserFiles .
 ?GeneratedParser : Parser;

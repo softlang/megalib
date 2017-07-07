@@ -1,5 +1,5 @@
 module antlr.demo.MegaLChecker
-import antlr.JavaANTLRErrorlistenerForParser where {
+import antlr.ErrorlistenerForParser where {
 	[
 		checker / ?App,
 		megaL / ?InputLanguage, 
@@ -13,7 +13,7 @@ import antlr.JavaANTLRErrorlistenerForParser where {
 		?parserObjectWithListenersAfterApplication / ?parserObjectWithErrorListenerAfterApplication
 	]
 } 
-import antlr.JavaANTLRListenerForParser where{
+import antlr.ListenerForParser where{
 	[
 		checker / ?App,
 		megaL / ?InputLanguage, 

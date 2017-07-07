@@ -1,6 +1,6 @@
-module Core
+module antlr.Core
 
-import javastringtemplate.Core
+import stringtemplate.Core
 
 /*
 ANTLR is a "parser-generator". Thus, it is a framework used to generate parsers.
@@ -13,7 +13,7 @@ ANTLR : ParserGenerator;
 
 /* ANTLR essentially implements two languages, one for grammars and the Java subset 
 produced as output of the code generation process. */
-g4 : GrammarLanguage;
+G4 : GrammarLanguage;
 	="ANTLRGITHUB::doc/grammars.md";
     ="ANTLRGITHUB::doc/lexer-rules.md";
     ^implements ANTLR.

@@ -1,6 +1,7 @@
-module JavaANTLRErrorlistenerForParser
-import JavaANTLR
-import JavaANTLRListenerPattern where{
+module antlr.ErrorlistenerForParser
+
+import antlr.Core
+import antlr.Listener where{
 	[
 		ErrorListenerObjectLanguage / ?ListenerLanguage,
 		ErrorListenerObjectsLanguage / ?ListenersLanguage ,

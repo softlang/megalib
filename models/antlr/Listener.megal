@@ -1,4 +1,6 @@
-module Listener
+module antlr.Listener
+
+import antlr.Core
 
 /*
 Add and Get for Listeners. ANTLR facilitates the ObserverPattern, but uses

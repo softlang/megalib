@@ -1,4 +1,4 @@
-module javastringtemplate.StringTemplate
+module stringtemplate.Core
 
 import java.JavaPlatform
 
@@ -17,7 +17,7 @@ StringTemplateLanguage : TemplateLanguage;
 StringTemplateObject : ValueLanguage;
     = "https://github.com/antlr/stringtemplate4/blob/master/src/org/stringtemplate/v4/ST.java";
     ^implements StringTemplate;
-    subsetOf JVMObject .
+    subsetOf JVMObjectLanguage .
 wrap : StringTemplateLanguage -> StringTemplateObject.
 StringTemplate implements wrap.
 ?template : Artifact;
@@ -33,16 +33,15 @@ wrap(?template) |-> ?stObject1.
    
 /* The template can then be filled with concrete values by calling the toString method 
 of an input object */
-setVar : JVMString # JVMObject # StringTemplateObject -> StringTemplateObject.
+setVar : JVMString # JVMObjectLanguage # StringTemplateObject -> StringTemplateObject.
 StringTemplate implements setVar.
 ?variable : Artifact;
     elementOf JVMString;
     manifestsAs Transient;
     hasRole Identifier.
 ?value : Artifact;
-    elementOf JVMObject;
-    manifestsAs Transient;
-    hasRole Value.
+    elementOf JVMObjectLanguage;
+    manifestsAs Transient.
 ?stObject2 : Artifact;
     elementOf StringTemplateObject;
     hasRole Template;
@@ -55,8 +54,7 @@ render : StringTemplateObject -> JVMString.
 StringTemplate implements render.
 ?prettyPrintedString : Artifact;
     elementOf JVMString;
-    manifestsAs Transient;
-    hasRole Value.
+    manifestsAs Transient.
 render(?stObject2) |-> ?prettyPrintedString.
 
 

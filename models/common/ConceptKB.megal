@@ -220,6 +220,8 @@ LexicalAnalysis : AbstractProcess;
 Parsing : AbstractProcess;
     = "101wiki::Parsing";
     aspectOf MetaProgramming.
+ParserGeneration : AbstractProcess;
+    = "101wiki::Parser_generation".
 HTTP : Protocol;
     = "wikipedia::HTTP".
 HTTPS : Protocol ;
@@ -346,6 +348,10 @@ Response : Role;
 ConcreteSyntaxTree : Role;
     ="https://101wiki.softlang.org/Concrete_syntax_tree";
 	="https://en.wikipedia.org/wiki/Parse_tree".
+Lexer : Role;
+    ="101wiki::Lexer".
+Parser : Role;
+    ="101wiki::Parser".
     
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";

@@ -93,9 +93,11 @@ FileSystem < Application;
 WebServer < Application;
   = "wikipedia::Web_server".
 OperatingSystem < Platform;
-    = "wikipedia::Operating_system".
+  = "wikipedia::Operating_system".
 ParserGenerator < Framework;
-    = "wikipedia::Category:Parser_generators".
+  = "wikipedia::Category:Parser_generators".
+Parser < Application;
+  = "101wiki::Parser".
     
 /* Relationship of system components to components of architectural pattern 
 Any system that has such a role is a part of a larger system that uses the pattern*/

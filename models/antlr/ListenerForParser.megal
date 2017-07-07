@@ -1,6 +1,7 @@
-module JavaANTLRListenerForParser
-import JavaANTLR
-import JavaANTLRListenerPattern where{
+module antlr.ListenerForParser
+
+import antlr.Core
+import antlr.Listener where{
 	[
 		ANTLRListenerObjectLanguage / ?ListenerLanguage,
 		ANTLRListenerObjectsLanguage / ?ListenersLanguage ,

@@ -82,7 +82,7 @@ dialectOf < Language # Language;
 
 /* A language's evolution is inspired by other languages */
 influencedBy < Language # Language;
-    = "http://brendangriffen.com/gow-programming-languages.html". 
+    = "https://exploringdata.github.io/vis/programming-languages-influence-network/". 
 
 /* A language belongs to a set of technical solutions in application scenarios */
 belongsTo < Language # TechnologySpace;
