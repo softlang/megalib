@@ -1,0 +1,26 @@
+module antlr.demo.checker.ListenerForParser
+
+import antlr.demo.checker.Core
+import antlr.ListenerForParser where{
+	[
+		checker / ?App,
+		MegaL / ?InputLanguage, 
+		checkerGrammar / ?grammar,
+		checkerLexer / ?lexer, 
+		checkerParser / ?parser, 
+		checkerParserFiles / ?parserFiles, 
+		checkerLexerFiles / ?lexerFiles,
+		?someMegaModel / ?input,
+		checkerModelListener / ?parserListener0, //
+		?parserObject2 / ?subject2
+	]
+}
+
+
+/*
+@Description:
+A parser-listener is attached to the parser and create a new java-object for the mega-model. 
+
+@Rationale:
+See linked files to Github for better highlighting 
+*/

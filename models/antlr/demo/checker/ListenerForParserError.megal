@@ -1,0 +1,26 @@
+module antlr.demo.checker.ListenerForParserError
+
+import antlr.demo.checker.Core
+import antlr.ListenerForParserError where {
+	[
+		checker / ?App,
+		MegaL / ?InputLanguage, 
+		checkerGrammar / ?grammar,
+		checkerLexer / ?ANTLRJavaLexer, 
+		checkerParser / ?ANTLRJavaParser, 
+		checkerParserFiles / ?ANTLRJavaParserFiles, 
+		checkerLexerFiles / ?ANTLRJavaLexerFiles,
+		?someMegaModel / ?input,
+		CheckerErrorListener / ?ErrorListener,
+		?parserObjectWithListenersAfterApplication / ?parserObjectWithErrorListenerAfterApplication
+	]
+} 
+
+
+/*
+@Description:
+An ErrorListener will be attached to the parser. When Errors are detected, the checker will quit and return an errorMessage.
+
+@Rationale:
+See linked files to Github for better highlighting 
+*/

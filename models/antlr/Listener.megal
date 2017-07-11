@@ -50,7 +50,6 @@ See substituting Applications
     elementOf ?ListenerLanguage;
     hasRole Observer;
     manifestsAs Transient.
-
 addListener(?subject0, ?listener0) |-> ?subject1.	  
 //something happens between function usages of addListener and getListeners
 getListeners(?subject2) |-> ?listener2.
