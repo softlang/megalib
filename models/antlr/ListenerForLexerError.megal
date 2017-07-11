@@ -1,0 +1,50 @@
+module antlr.ListenerForLexerError
+
+import antlr.Core
+import antlr.Parsing
+import antlr.Listener where{
+	[   //substitution for lexing
+		ErrorListenerLanguage / ?ListenerLanguage,
+		LexerLanguage / ?SubjectLanguage,
+		?lexerErrorListener0 / ?listener0,
+        ?lexerErrorListener2 / ?listener2,
+		?lexerObject0 / ?subject0,
+		?lexerObject1 / ?subject1,
+		?lexerObject2 / ?subject2
+	]
+}
+/*
+@Description:
+Error-Listeners are notified by error handling that occur at lexical analysis.
+
+@Rationale:
+see module JavaANTLRErrorlistenerForLexer or module ObserverPatternExtended
+See http://www.antlr.org/api/Java/org/antlr/v4/runtime/ANTLRErrorListener.html
+See https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/error/ErrorListener.js
+*/
+ErrorListenerLanguage = "ANTLRJAVARUN::ANTLRErrorListener.java".
+LexerLanguage = "ANTLRJAVARUN::Lexer.java".
+    
+
+/*
+@Description:
+ErrorListeners are attached to the Lexer.
+
+@Rationale:
+See samples
+*/
+lex : ?InputLanguage # LexerLanguage -> TokenStreamLanguage # LexerLanguage. 
+?App implements lex.
+lex(?input, ?lexerObject1) |-> (?tokenstream, ?lexerObject2).
+
+/*
+@Description:
+returning Listeners after application
+
+@Rationale:
+See samples
+See http://www.antlr.org/api/Java/org/antlr/v4/runtime/Recognizer.html#getErrorListeners()
+*/
+getErrorListeners : LexerLanguage -> ErrorListenerLanguage.
+getErrorListeners(?lexerObject2) |-> ?lexerErrorListener2.
+?App implements getErrorListeners.

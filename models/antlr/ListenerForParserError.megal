@@ -1,0 +1,38 @@
+module antlr.ListenerForParserError
+
+import antlr.Core
+import antlr.Parsing
+import antlr.Listener where{
+	[   //substitution for lexing
+		ErrorListenerLanguage / ?ListenerLanguage,
+		ParserLanguage / ?SubjectLanguage,
+		?parserErrorListener0 / ?listener0,
+        ?parserErrorListener2 / ?listener2,
+		?parserObject0 / ?subject0,
+		?parserObject1 / ?subject1,
+		?parserObject2 / ?subject2
+	]
+}
+/*
+@Description:
+Error-Listeners are specialized data-structures, which processes the errors, that occur during lexing or parsing.
+for more information about listeners in ANTLR or listeners in general, see module JavaANTLRErrorlistenerForLexer or module ObserverPatternExtended
+
+@Rationale:
+See http://www.antlr.org/api/Java/org/antlr/v4/runtime/ANTLRErrorListener.html
+*/	
+ErrorListenerLanguage
+	="ANTLRJAVARUN::ANTLRErrorListener.java".
+
+/*
+@Description:
+
+from substitution
+addListener(?parserObject, ?parserErrorListener) |-> ?parserObjectWithErrorListener.	
+getListeners(?parserObject2) |-> ?paserErrorListener2.
+
+Errorlistener attached to a parser 
+*/
+parse : TokenStreamLanguage # ParserLanguage -> ConcreteSyntaxTreeLanguage # ParserLanguage. //the ErrorListeners are attached to the Parser
+parse(?tokenstream, ?parserObject1) |-> (?concreteSyntaxTree, ?parserObject2).
+

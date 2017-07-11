@@ -1,19 +1,35 @@
 module antlr.Listener
 
 import antlr.Core
+import antlr.App
 
 /*
+@Description:
 Add and Get for Listeners. ANTLR facilitates the ObserverPattern, but uses
 the terms subject and listener instead of subject and observer.
 
-@Resources:
-https://github.com/antlr/antlr4/blob/master/doc/listeners.md
+@Rationale:
+See https://github.com/antlr/antlr4/blob/master/doc/listeners.md
 */
 ANTLR facilitates ObserverPattern.
 ?ListenerLanguage : ValueLanguage;
-    ^implements ANTLR.
+    ^implements ANTLR;
+    subsetOf JVMObjectLanguage.
 ?SubjectLanguage : ValueLanguage;
-    ^implements ANTLR.
+    ^implements ANTLR;
+    subsetOf JVMObjectLanguage.
+addListener : ?SubjectLanguage # ?ListenerLanguage -> ?SubjectLanguage.
+?App implements addListener.    
+getListeners : ?SubjectLanguage -> ?ListenerLanguage.
+?App implements getListeners.    
+
+/*
+@Description:
+A concrete scenario could have participants as follows.
+
+@Rationale: 
+See substituting Applications
+*/
 ?subject0 : Artifact;
     elementOf ?SubjectLanguage;
     hasRole Subject;
@@ -34,8 +50,7 @@ ANTLR facilitates ObserverPattern.
     elementOf ?ListenerLanguage;
     hasRole Observer;
     manifestsAs Transient.
-addListener : ?SubjectLanguage # ?ListenerLanguage -> ?SubjectLanguage.
+
 addListener(?subject0, ?listener0) |-> ?subject1.	  
 //something happens between function usages of addListener and getListeners
-getListeners : ?SubjectLanguage -> ?ListenerLanguage.
 getListeners(?subject2) |-> ?listener2.

@@ -1,62 +1,26 @@
 module antlr.ListenerForParser
 
 import antlr.Core
+import antlr.Parsing
 import antlr.Listener where{
 	[
-		ANTLRListenerObjectLanguage / ?ListenerLanguage,
-		ANTLRListenerObjectsLanguage / ?ListenersLanguage ,
-	//substitution for parsing
-		Parser / ?SubjectLanguage,
-		?aNTLRParserListener / ?listenerBeforeApplication,
-		?parserObject / ?subject,
-		?parserObjectWithANTLRListener / ?subjectWithListeners,
-		?parserObjectWithANTLRListenerAfterApplication / ?subjectWithListenersAfterApplication,
-		?returnedANTLRParserListeners / ?listenersAfterApplication
+		ParserListenerLanguage / ?ListenerLanguage,
+		ParserLanguage / ?SubjectLanguage,
+		?parserListener0 / ?listener0,
+		?parserObject0 / ?subject0,
+		?parserObject1 / ?subject1,
+		?parserObject2 / ?subject2,
+		?parserListener2 / ?listener2
 	]
 }
 /*
-for more information about listeners in ANTLR or listeners in general, see module JavaANTLRErrorlistenerForLexer or module ObserverPatternExtended.
- 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Main Program
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-?ANTLRListener : System;
-	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/ANTLR/ANTLRListener.js";
-	="https://github.com/antlr/antlr4/blob/master/doc/listeners.md";
-	reuses ANTLR.	
-ANTLRListenerObjectLanguage
-	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/ANTLR/ANTLRListener.js";
-	subsetOf JVMObject.
-ANTLRListenerObjectsLanguage
-	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/JavaScript/src/antlr4/ANTLR/ANTLRListener.js";
-	subsetOf JVMObject.
+@Description:
+the ANTLRListeners are attached to the Parser via addListener and returned via getListener
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Adding Listeners to parser
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from substitution:
-addListener : Parser # ANTLRListenerObjectLanguage -> Parser.
-addListener(?parserObject, ?aNTLRParserListener) |-> ?parserObjectWithANTLRListener.
+@Rationale:
+See https://github.com/antlr/antlr4/blob/master/doc/listeners.md
 */
-?ANTLRListener implements addListener.
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-parsing with listener
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-parse : TokenStreamLanguage # Parser -> ConcreteSyntaxTreeLanguage # Parser. //the ANTLRListeners are attached to the Parser
-parse(?tokens, ?parserObjectWithANTLRListener) |-> (?concreteSyntaxTree, ?parserObjectWithANTLRListenerAfterApplication).
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-returning Listeners after application
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from substitution:
-getListeners : Parser -> ANTLRListenerObjectsLanguage.
-	//="http://www.antlr.org/api/Java/org/antlr/v4/runtime/Parser.html#getParseListeners()".
-getListeners(?parserObjectWithANTLRListenerAfterApplication) |-> ?returnedANTLRParserListeners.
-*/
-?ANTLRListener implements getListeners.
+ParserListenerLanguage
+	="ANTLRJAVARUN::tree/ParseTreeListener.java".
+parse : TokenStreamLanguage # ParserLanguage -> ConcreteSyntaxTreeLanguage # ParserLanguage. 
+parse(?tokenstream, ?parserObject1) |-> (?concreteSyntaxTree, ?parserObject2).

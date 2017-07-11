@@ -6,6 +6,7 @@ import stringtemplate.Core
 ANTLR is a "parser-generator". Thus, it is a framework used to generate parsers.
 */
 ANTLRGITHUB :: "https://github.com/antlr/antlr4/blob/master".
+ANTLRJAVARUN :: "https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/Java/src/org/antlr/v4/runtime".
 ANTLR : ParserGenerator; 
 	= "https://github.com/antlr/antlr4";
     uses ParserGeneration;
