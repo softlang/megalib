@@ -1,10 +1,15 @@
 module antlr.Parsing
 
 import antlr.CodeGeneration
-
+import antlr.App
 
 /*
-Any language could be defined by a grammar that serves as an input.
+@Description: 
+    Any language could be defined by a grammar that serves as an input.
+@Rationale:
+    We need a placeholder for any input language that is processed,
+    any grammar that ANTLR is supposed to process 
+    and any input file that shall be parsed.
 */
 ?InputLanguage : Language. 
 ?grammar defines ?InputLanguage.
@@ -14,14 +19,17 @@ Any language could be defined by a grammar that serves as an input.
 	conformsTo ?grammar. 
 	
 /*
-ANTLR parser is preceded by a lexical analysis, which converts characters to tokens.
+@Description:
+    ANTLR parser is preceded by a lexical analysis, which converts characters to tokens.
+@Rationale:
+    See how ANTLR realizes the lexical analysis
 */
 TokenStreamLanguage : ValueLanguage;
 	="https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/Java/src/org/antlr/v4/runtime/CommonTokenStream.java";
 	subsetOf JVMObjectLanguage;
     ^implements ANTLR.
 lex : ?InputLanguage -> TokenStreamLanguage.
-?GeneratedParser implements lex;
+?App implements lex;
     uses LexicalAnalysis.
 ?tokenstream : Artifact;
 	manifestsAs Transient;
@@ -29,15 +37,18 @@ lex : ?InputLanguage -> TokenStreamLanguage.
 lex(?input) |-> ?tokenstream.
 
 /*
-A parser is a software component that takes text as input and 
-builds an intermediate data structure.
+@Description:
+    A parser is a software component that takes text as input and 
+    builds an intermediate data structure.
+@Rationale:
+    See how ANTLR realizes the Parsing process
 */
 
 ConcreteSyntaxTreeLanguage : ValueLanguage;
     = "https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/tree/ParseTree.java";
 	subsetOf JVMObjectLanguage.
 parse : TokenStreamLanguage -> ConcreteSyntaxTreeLanguage.
-?GeneratedParser implements parse;
+?App implements parse;
     uses Parsing.
 
 ?concreteSyntaxTree : Artifact;
@@ -46,7 +57,10 @@ parse : TokenStreamLanguage -> ConcreteSyntaxTreeLanguage.
 parse(?tokenstream) |-> (?concreteSyntaxTree).
 
 /*
-Language for Lexer and Parser
+@Description:
+    Language for Lexer and Parser objects
+@Rationale:
+    We need these to what kind of objects are I/O in functions
 */
 LexerLanguage : ValueLanguage;
 	="https://github.com/antlr/antlr4/blob/master/doc/lexer-rules.md";

@@ -3,8 +3,11 @@ module antlr.CodeGeneration
 import antlr.Core 
 
 /*
-several artifacts are actually generated. At first, the lexer implementation is generated.
-Second, the parser implementation is generated.
+@Description:
+    several artifacts are actually generated. At first, the lexer implementation is generated.
+    Second, the parser implementation is generated.
+@Rationale:
+    See parser call in demo
 */
 ?grammar : Artifact; 
 	manifestsAs File+;
@@ -24,7 +27,3 @@ ANTLR implements generateLexer;
     implements generateParser.
 generateLexer(?grammar) |-> ?lexerFiles .
 generateParser(?grammar) |-> ?parserFiles .
-?GeneratedParser : Parser;
-    ^partOf ?lexerFiles;
-    ^partOf ?parserFiles;
-    uses Java.

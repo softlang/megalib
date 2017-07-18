@@ -1,9 +1,9 @@
-module antlr.demo.checker.Core
+module antlr.demo.checker.App
 
-import antlr.App where {
-    Checker / ?App,
-    MegaL / ?InputLanguage
-}
+import antlr.Parsing where { 
+    [ MegaL / ?InputLanguage,
+      Checker / ?App ] }
+
 /*
 @Description:
 The Checker helps the user to find syntactical errors in a megamodel written in MegaL.
@@ -22,47 +22,45 @@ Checker = "MEGALIB::blob/master/checker/src/org/java/megalib/checker";
 the checker takes the model as input and returns a list of problems.
 
 @Rationale:
-See https://github.com/softlang/megalib/...
+See https://github.com/softlang/megalib/wiki "Use Checker"
 */
 checkModel : MegaL -> JVMObjectLanguage .
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-lexing and parsing with listener and error-listener
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-as described in JavaANTLR, JavaANTLRListenerForParser and JavaANTLRErrorlistener:
-lexing
+@Description:
+    lexing and parsing with listener and error-listener
+
+@Rationale:
+    See imports:
+
 	lex(?someMegaModel) |-> ?tokenstream.
-adding listeners
+
 	?parserObject conformsTo ?ANTLRJavaParserFiles.	
 	addListener(?parserObject, ?ParserErrorListener) |-> ?parserObjectWithErrorListener.
 	addListener(?parserObject, ?aNTLRParserListener) |-> ?parserObjectWithANTLRListener.
-parsing
+
 	parse(?tokens, ?parserObjectWithErrorListener) |-> (?concreteSyntaxTree, ?parserObjectWithListenersAfterApplication).
-returning listeners
+
 	getErrorListeners(?parserObjectWithListenersAfterApplication) |-> ?returnedParserErrorListeners.
 	getListeners(?parserObjectWithListenersAfterApplication) |-> ?returnedANTLRParserListeners.
-	
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-returning errors
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-A simple loop iterates over the Error-Listeners and the program returns a message, if there are any parsing-errors recorded in any of the Error-Listeners.
-In this example, no errors are returned. If there were any errors, no megaModel could be returned and the example would end at this point.
 */
 getErrors: ErrorListenerObjectsLanguage -> JVMString.
 checker implements getErrors.
-?noErrors : Artifact;
+?errors : Artifact;
 	manifestsAs Transient;
 	elementOf JVMString.
-getErrors(?returnedParserErrorListeners) |-> ?noErrors.
+getErrors(?returnedParserErrorListeners) |-> ?errors.
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-returning megaModel Object
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The megaModel, which was created during parsing, with the help of the listener, is returned here.
+@Description:
+    returning megaModel Object
+
+@Rationale:
+    The megaModel, which was created during parsing,    
+    with the help of the listener, is returned here.
 */
-MegaModelObjectLanguage : Language;
+MegaModelObjectLanguage : ValueLanguage;
+    = "MEGALIB::tree/master/checker/src/org/java/megalib/models";
 	subsetOf JVMObject.
 ?megaModel : Artifact;
 	manifestsAs Transient;
@@ -72,10 +70,10 @@ checker implements getMegaModel.
 getMegaModel (?returnedANTLRParserListeners) |-> (?megaModel).
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-finding and returning warnings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The checker finds warnings (like missing links or manifestations of artifacts) in the model and returns them.
+@Description:
+    finding and returning warnings
+@Rationale:
+    See https://github.com/softlang/megalib/wiki
 */
 getWarnings: MegaModelObjectLanguage -> JVMList.
 checker implements getWarnings.
@@ -85,12 +83,10 @@ checker implements getWarnings.
 getWarnings(?megaModel) |-> ?warnings.
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-bindings for artifacts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@Description:
+    Concrete lexer and parsers are generated.
+@Rationale:
+    TODO: We need linking to a local project
 */
 checkerLexer = "https://github.com/softlang/megalib/tree/master/checker".
 checkerParser = "https://github.com/softlang/megalib/tree/master/checker".
-
-CheckerErrorListener = "https://github.com/softlang/megalib/tree/master/checker".
-MegaModelObjectLanguage = "https://github.com/softlang/megalib/tree/master/checker".

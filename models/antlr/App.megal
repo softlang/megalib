@@ -4,15 +4,17 @@ module antlr.App
 import antlr.CodeGeneration
 
 /*
-Any app that uses ANTLR contains
- - a grammar
- - a generated parser
- - the deployed ANTLR jar
+@Description:
+    Any app that uses ANTLR contains
+        - a grammar
+        - a generated parser
+        - the deployed ANTLR jar
+@Rationale:
+    Naming the most core elements for any Java application that reuses ANTLR
 */
 ?App : Application;
 	reuses ANTLR; 
-	uses Java;
-    ^partOf ?GeneratedParser.
+	uses Java.
 ?antlrJar : Artifact;
     partOf ?App;
     elementOf Jar;

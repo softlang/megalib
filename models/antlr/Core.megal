@@ -3,7 +3,11 @@ module antlr.Core
 import stringtemplate.Core
 
 /*
-ANTLR is a "parser-generator". Thus, it is a framework used to generate parsers.
+@Description:
+    ANTLR is a "parser-generator". Thus, it is a framework used to generate parsers.
+@Rationale:
+    See https://github.com/antlr/antlr4
+    Simplification as we only focus on the java runtime.
 */
 ANTLRGITHUB :: "https://github.com/antlr/antlr4/blob/master".
 ANTLRJAVARUN :: "https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/Java/src/org/antlr/v4/runtime".
@@ -12,8 +16,13 @@ ANTLR : ParserGenerator;
     uses ParserGeneration;
 	uses Java.
 
-/* ANTLR essentially implements two languages, one for grammars and the Java subset 
-produced as output of the code generation process. */
+/* 
+@Description: 
+    ANTLR essentially implements two languages, one for grammars and the Java subset 
+    produced as output of the code generation process. 
+@Rationale:
+    See https://github.com/antlr/antlr4/doc/grammars.md
+*/
 G4 : GrammarLanguage;
 	="ANTLRGITHUB::doc/grammars.md";
     ="ANTLRGITHUB::doc/lexer-rules.md";
@@ -23,7 +32,12 @@ ANTLRJava : ProgrammingLanguage;
 	subsetOf Java.
     //^implements ANTLR. Actually not
     
-/* Actually ANTLR uses stringtemplate for code generation */
+/* 
+@Description:
+    Actually ANTLR uses stringtemplate for code generation 
+@Rationale:
+    See provided link for javaTemplate
+*/
 javaTemplate : Artifact;
     ~= "ANTLRGITHUB::tool/resources/org/antlr/v4/tool/templates/codegen/Java/Java.stg";
     elementOf StringTemplateLanguage;
