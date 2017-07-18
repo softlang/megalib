@@ -63,7 +63,9 @@ public class TypeCheck {
             errors.add("Error at " + instance + ": The instantiated type is not (transitive) subtype of Entity.");
         }
         if (m.getInstanceOfMap().containsKey(instance)) {
-            errors.add("Error at " + instance + ": Multiple types cannot be assigned to the same instance.");
+        	if(!m.isSubtypeOf(type,m.getInstanceOfMap().get(instance))){
+                errors.add("Error at " + instance + ": Multiple types cannot be assigned to the same instance.");
+        	}
         }else if(m.getInstanceOfMap().keySet().parallelStream()
             .anyMatch(i -> i.toLowerCase().equals(instance.toLowerCase()))){
             errors.add("Error at "+ instance+ ": This ID is already given to another instance, possible with a different capitalization.");

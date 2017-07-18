@@ -148,7 +148,6 @@ public class ParserListener extends MegalibBaseListener {
                     model.addRelationInstance(p, s, o);
                 }
             }
-
         }
     }
 
