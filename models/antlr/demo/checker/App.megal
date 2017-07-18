@@ -1,8 +1,11 @@
 module antlr.demo.checker.App
 
-import antlr.Parsing where { 
+import antlr.App where { 
     [ MegaL / ?InputLanguage,
       Checker / ?App ] }
+import antlr.demo.checker.ListenerForParser
+import antlr.demo.checker.ListenerForParserError
+
 
 /*
 @Description:
@@ -25,6 +28,7 @@ the checker takes the model as input and returns a list of problems.
 See https://github.com/softlang/megalib/wiki "Use Checker"
 */
 checkModel : MegaL -> JVMObjectLanguage .
+Checker implements checkModel. 
 
 /*
 @Description:

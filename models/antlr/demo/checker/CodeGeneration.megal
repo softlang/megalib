@@ -1,7 +1,10 @@
 module antlr.demo.checker.CodeGeneration
 
 import antlr.CodeGeneration where {
-    ....
+    [  megaLGrammar / ?grammar,
+       megaLLexerFiles / ?lexerFiles,
+       megaLParserFiles / ?parserFiles
+    ]
 }
 
 /*
@@ -11,9 +14,10 @@ The checker reuses ANTLR such that a parser is generated from a grammar
 @Rationale:
 See linked files 
 See plugin call to ANTLR https://github.com/softlang/megalib/blob/master/checker/pom.xml
+
+++generateLexer(checkerGrammar) |-> checkerLexerFiles.
+++generateParser(checkerGrammar) |-> checkerParserFiles.
 */
-//++generateLexer(checkerGrammar) |-> checkerLexerFiles.
-//++generateParser(checkerGrammar) |-> checkerParserFiles.
-checkerGrammar ~= "file://../checker/src/main/antlr/techdocgrammar/Megalib.g4".
-checkerLexerFiles  ~= "file://../checker/target/generated-sources/antlr4/main/antlr/techdocgrammar/MegalibLexer.java".
-checkerParserFiles ~= "file://../checker/target/generated-sources/antlr4/main/antlr/techdocgrammar/MegalibParser.java".
+megaLGrammar ~= "file://../checker/src/main/antlr/techdocgrammar/Megalib.g4".
+megaLLexerFiles  ~= "file://../checker/target/generated-sources/antlr4/main/antlr/techdocgrammar/MegalibLexer.java".
+megaLParserFiles ~= "file://../checker/target/generated-sources/antlr4/main/antlr/techdocgrammar/MegalibParser.java".

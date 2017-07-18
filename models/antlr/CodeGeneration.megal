@@ -1,6 +1,7 @@
 module antlr.CodeGeneration
 
 import antlr.Core 
+import antlr.App
 
 /*
 @Description:
@@ -12,15 +13,19 @@ import antlr.Core
 ?grammar : Artifact; 
 	manifestsAs File+;
 	elementOf G4;
-	hasRole Grammar.
+	hasRole Grammar;
+    defines ?InputLanguage;
+    partOf ?App.
 ?lexerFiles : Artifact;
 	elementOf ANTLRJava;
 	manifestsAs File+;
-    hasRole Lexer.
+    hasRole Lexer;
+    partOf ?App.
 ?parserFiles : Artifact;
 	elementOf ANTLRJava;
 	manifestsAs File+;
-    hasRole Parser.
+    hasRole Parser;
+    partOf ?App.
 generateLexer : G4 -> ANTLRJava .
 generateParser : G4 -> ANTLRJava .
 ANTLR implements generateLexer;

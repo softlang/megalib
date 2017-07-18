@@ -12,8 +12,10 @@ import antlr.CodeGeneration
 @Rationale:
     Naming the most core elements for any Java application that reuses ANTLR
 */
+?InputLanguage : Language. 
 ?App : Application;
 	reuses ANTLR; 
+    implements ?InputLanguage;
 	uses Java.
 ?antlrJar : Artifact;
     partOf ?App;
