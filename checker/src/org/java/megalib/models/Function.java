@@ -39,12 +39,6 @@ public class Function {
 	
 	@Override
 	public int hashCode() {
-		String concat = "";
-		for(String i : inputs)
-			concat+=i;
-		concat+="->";
-		for(String o : outputs)
-			concat+=o;
-		return concat.hashCode();
+		return inputs.hashCode() + outputs.hashCode();
 	}
 }
