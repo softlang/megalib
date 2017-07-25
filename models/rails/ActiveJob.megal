@@ -1,0 +1,13 @@
+module rails.ActiveJob
+
+import rails.RubyOnRailsNamespace
+import rails.ActiveSupport
+
+/*
+The Ruby on Rails component that is used to implement background jobs executed
+by the Web Application.
+*/
+ActiveJob : Framework;
+    = "RubyOnRailsGuides::active_job_basics.html";
+    = "RubyOnRailsGithub::activejob";
+    uses Ruby.

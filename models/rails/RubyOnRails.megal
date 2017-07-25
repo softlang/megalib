@@ -1,0 +1,35 @@
+module rails.RubyOnRails
+
+import ruby.RubyPlatform
+import rails.RubyOnRailsNamespace
+import rails.ActiveSupport
+import rails.ActionCable
+import rails.ActionController
+import rails.ActionDispatch
+import rails.ActionMailer
+import rails.ActionView
+import rails.ActiveJob
+import rails.ActiveRecord
+import rails.ActiveRecordMigration
+import rails.RailsCLI
+
+/*
+A Framework for writing Web Applications in Ruby. It consists of multiple
+components and follows the design pattern Model-View-Controller.
+*/
+RubyOnRails : Framework;
+    = "https://rubyonrails.org/";
+    = "RubyOnRailsGithub::";
+    ^partOf ActiveSupport;
+    ^partOf ActionCable;
+    ^partOf ActionController;
+    ^partOf ActionDispatch;
+    ^partOf ActionMailer;
+    ^partOf ActionView;
+    ^partOf ActiveJob;
+    ^partOf ActiveRecord;
+    ^partOf RailsCLI;
+    uses Ruby;
+    facilitates ModelViewController;
+    supports WebApplicationDevelopment;
+    belongsTo RubyWare.

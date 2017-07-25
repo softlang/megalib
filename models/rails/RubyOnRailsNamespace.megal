@@ -1,0 +1,10 @@
+module rails.RubyOnRailsNamespace
+
+/*
+Locations where information about RubyOnRails can be found
+*/
+RubyOnRailsGithub :: "https://github.com/rails/rails/tree/5-0-stable".
+
+RubyOnRailsAPI :: "http://api.rubyonrails.org".
+
+RubyOnRailsGuides :: "http://guides.rubyonrails.org/v5.0.2".

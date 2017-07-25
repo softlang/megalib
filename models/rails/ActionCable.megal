@@ -1,0 +1,13 @@
+module rails.ActionCable
+
+import rails.RubyOnRailsNamespace
+import rails.ActiveSupport
+
+/*
+Action Cable is the Ruby on Rails Component that is used to integrate real-time
+features into a Web Application using WebSockets.
+*/
+ActionCable : Framework;
+    = "RubyOnRailsGuides::action_cable_overview.html";
+    = "RubyOnRailsGithub::actioncable";
+    uses Ruby.

@@ -1,0 +1,82 @@
+module rails.ActiveRecordMigration
+
+import rails.RubyOnRailsNamespace
+import rails.ActiveRecord
+import rails.ActiveSupport
+import ruby.Rake
+import ruby.RubyPlatform
+
+/*
+Active Record "Migrations are a feature of Active Record that allows you to
+evolve your database schema over time." It defines a Ruby DSL for the
+definition of migrations of the database to a new scheme with the added benefit
+of reversability.
+*/
+ActiveRecordMigration : Framework;
+  = "RubyOnRailsGuides::active_record_migrations.html";
+  = "RubyOnRailsGithub::activerecord/lib/active_record/migration";
+  partOf ActiveRecord;
+  uses Ruby;
+  reuses Rake;
+  facilitates Persistence.
+
+
+/*
+The Ruby DSL for writing database migrations
+*/
+ActiveRecordMigrationLanguage : TransformationLanguage;
+  = "RubyOnRailsAPI::classes/ActiveRecord/Migration.html";
+  subsetOf Ruby;
+  ^implements ActiveRecordMigration.
+
+/*
+This function represents the creation of SQL statements for executing the
+migration defined in the Active Record Migrations Ruby DSL for migrations.
+*/
+createDBSchemeCall : ActiveRecordMigrationLanguage -> SQLDDL.
+ActiveRecordMigration implements createDBSchemeCall.
+
+/*
+The actual file that contains the source code for the migration
+*/
+?dbMigrationFile : Artifact;
+  hasRole TransformationRule;
+  elementOf ActiveRecordMigrationLanguage;
+  manifestsAs File.
+
+/*
+generated SQL that performs the scheme modification on the DB
+*/
+?sqlDdlArtifactOfMigration : Artifact;
+  hasRole TransformationRule;
+  elementOf SQLDDL;
+  manifestsAs Transient.
+
+/*
+generation of SQL
+*/
+createDBSchemeCall(?dbMigrationFile) |-> ?sqlDdlArtifactOfMigration.
+
+/*
+This function represents the creation of SQL statements for reversing the
+migration defined in the Active Record Migrations Ruby DSL for migrations.
+*/
+createReverseChangeDBSchemeCall : ActiveRecordMigrationLanguage -> SQLDDL.
+ActiveRecordMigration implements createReverseChangeDBSchemeCall.
+
+/*
+generation of SQL
+*/
+createReverseChangeDBSchemeCall(?dbMigrationFile) |-> ?sqlDdlArtifactOfMigration.
+
+/*
+This function represents the execution of the migration SQL statements in
+the database.
+*/
+executeChangeSchemeCallOnDB : SQLDDL # YAML # ?DbLanguage ->  ?DbLanguage.
+ActiveRecordMigration implements executeChangeSchemeCallOnDB.
+
+/*
+Execution of SQL for the migration
+*/
+executeChangeSchemeCallOnDB(?sqlDdlArtifactOfMigration,?dbConnectionConfig,?dbFile) |-> ?dbFile.

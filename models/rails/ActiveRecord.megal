@@ -1,0 +1,207 @@
+module rails.ActiveRecord
+
+import rails.RubyOnRailsNamespace
+import rails.ActiveSupport
+import ruby.RubyPlatform
+
+/*
+The component "Active Record is the M in MVC". It is used to define the model
+of the application. It also implements the persistence of the model instances.
+*/
+ActiveRecord : Framework;
+  = "RubyOnRailsGuides::active_record_basics.html";
+  = "RubyOnRailsGithub::activerecord";
+    uses Ruby;
+    facilitates Persistence;
+    facilitates ObjectRelationalMapping.
+
+
+/*
+The language for representing ActiveRecord::Base objects in memory.
+*/
+ActiveRecordBaseObjects : ValueLanguage;
+  = "RubyOnRailsAPI::classes/ActiveRecord/Base.html";
+  subsetOf RubyObjects;
+  ^implements ActiveRecord.
+
+/*
+The source code file of the ActiveRecord::Base class from which every model
+class is derived.
+*/
+activeRecordBaseClass : Artifact;
+  = "RubyOnRailsAPI::classes/ActiveRecord/Base.html";
+  ~= "RubyOnRailsGithub::activerecord/lib/active_record/base.rb";
+  elementOf Ruby;
+  partOf ActiveRecord;
+  manifestsAs File;
+  defines ActiveRecordBaseObjects.
+
+
+/*
+The language for representing ApplicationRecord objects, which are derived from
+ActiveRecord::Base, in memory.
+*/
+ApplicationRecordObjects : ValueLanguage;
+  = "RubyOnRailsAPI::classes/ActiveRecord/Base.html";
+  subsetOf ActiveRecordBaseObjects;
+  ^implements ActiveRecord.
+
+
+/*
+The source code file of the ApplicationRecord class which is a subclass of
+ActiveRecord::Base and is created by the rails command line application.
+The defined class is usually used as the base class to derive every model class
+from in an application. It sits between ActiveRecord::Base and the actual model
+classes in the inheritance hirarchy.
+*/
+?applicationRecordClass : Artifact;
+  elementOf Ruby;
+  manifestsAs File;
+  defines ApplicationRecordObjects.
+
+
+/*
+The language for representing the actual model object, which are all derived from
+ApplicationRecord, in memory.
+*/
+?ApplicationRecordDerivativeObjects : ValueLanguage;
+  subsetOf ApplicationRecordObjects;
+  ^implements ActiveRecord.
+
+/*
+The source code files of the actual model classes which are derived from
+ApplicationRecord.
+*/
+?applicationRecordDerivative : Artifact;
+  elementOf Ruby;
+  manifestsAs File;
+  defines ?ApplicationRecordDerivativeObjects.
+
+/*
+The instances of the model classes in memory.
+*/
+?applicationRecordDerivativeInstance : Artifact;
+  conformsTo ?applicationRecordDerivative;
+  elementOf ?ApplicationRecordDerivativeObjects;
+  manifestsAs Transient.
+
+
+/*
+The abstract database language. Most of the time this is the on disk format
+of the database server used.
+*/
+?DbLanguage : DatabaseLanguage.
+
+/*
+The configuration file for the database written in YAML.
+*/
+?dbConnectionConfig : Artifact;
+  = "RubyOnRailsGuides::configuring.html#configuring-a-database";
+  elementOf YAML;
+  hasRole Configuration;
+  manifestsAs File.
+
+/*
+The files(s) where the database is stored on disk
+*/
+?dbFile : Artifact;
+  elementOf ?DbLanguage;
+  hasRole Database;
+  manifestsAs File+.
+
+
+/*
+This function represents a call to create a new instance in the database.
+It does not execute the call to the database and just creates the needed SQL
+statements.
+*/
+createDBCall : ActiveRecordBaseObjects -> SQLDML.
+ActiveRecord implements createDBCall.
+
+/*
+The generated SQL for a create call
+*/
+?createDBSQLArtifact : Artifact;
+  elementOf SQLDML;
+  hasRole TransformationRule;
+  manifestsAs Transient.
+
+createDBCall(?applicationRecordDerivativeInstance) |-> ?createDBSQLArtifact.
+
+/*
+This function represents a call to query information from the database.
+It does not execute the call to the database and just creates the needed SQL
+statements. The query will be constructed out of the data given by the object
+that is handed to the function.
+*/
+queryDBCall : ActiveRecordBaseObjects -> SQLQuery.
+ActiveRecord implements queryDBCall.
+
+/*
+The generated SQL for a query
+*/
+?queryDBSQLArtifact : Artifact;
+  elementOf SQLQuery;
+  hasRole Query;
+  manifestsAs Transient.
+
+queryDBCall(?applicationRecordDerivativeInstance) |-> ?queryDBSQLArtifact.
+
+/*
+This function represents a call to update an instance in the database.
+*/
+updateDBCall : ActiveRecordBaseObjects -> SQLDML.
+ActiveRecord implements updateDBCall.
+
+/*
+The generated SQL for a update call
+*/
+?updateDBSQLArtifact : Artifact;
+  elementOf SQLDML;
+  hasRole TransformationRule;
+  manifestsAs Transient.
+
+updateDBCall(?applicationRecordDerivativeInstance) |-> ?updateDBSQLArtifact.
+
+/*
+This function represents a call to delete an instance from the database.
+*/
+destroyDBCall : ActiveRecordBaseObjects -> SQLDML.
+ActiveRecord implements destroyDBCall.
+
+/*
+The generated SQL for a destroy call
+*/
+?destroyDBSQLArtifact : Artifact;
+  elementOf SQLDML;
+  hasRole TransformationRule;
+  manifestsAs Transient.
+
+destroyDBCall(?applicationRecordDerivativeInstance) |-> ?destroyDBSQLArtifact.
+
+/*
+This function represents the execution of a database call that modifies
+the database using the SQL created in the functions above, a YAML file that
+contains the database configuration and the physical database file on the disk,
+which is modified.
+*/
+executeModificationDBCall : SQLDML # YAML # ?DbLanguage -> ?DbLanguage.
+ActiveRecord implements executeModificationDBCall.
+
+/*
+This function represents the execution of a database call that queries
+the database using the SQL created in the function above, a YAML file that
+contains the database configuration and the physical database file on the disk.
+ActiveRecord::Base objects are returned.
+*/
+executeQueryDBCall : SQLQuery # YAML # ?DbLanguage -> ActiveRecordBaseObjects.
+ActiveRecord implements executeQueryDBCall.
+
+/*
+Execution of the calls/queries
+*/
+executeModificationDBCall(?createDBSQLArtifact,?dbConnectionConfig,?dbFile) |-> ?dbFile.
+executeModificationDBCall(?updateDBSQLArtifact,?dbConnectionConfig,?dbFile) |-> ?dbFile.
+executeModificationDBCall(?destroyDBSQLArtifact,?dbConnectionConfig,?dbFile) |-> ?dbFile.
+
+executeQueryDBCall(?queryDBSQLArtifact,?dbConnectionConfig,?dbFile) |-> ?applicationRecordDerivativeInstance.

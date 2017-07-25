@@ -1,0 +1,28 @@
+module ruby.ERuby
+import ruby.RubyPlatform
+
+
+
+/*
+A Framework for templating with Ruby thats part of the Ruby Standard Library
+*/
+ERB : Framework;
+  = "http://ruby-doc.org/stdlib-2.4.1/libdoc/erb/rdoc/ERB.html";
+  partOf RubyStandardLibrary;
+  uses Ruby;
+  belongsTo RubyWare.
+
+/*
+The Language that the eRuby is embedded into.
+*/
+?OtherLanguage : Language.
+
+/*
+The eRuby (embedded Ruby) language is a subset of ruby
+which is used for writing templates.
+*/
+ERuby : TemplateLanguage;
+  = "https://apidock.com/ruby/ERB";
+  embeddedInto ?OtherLanguage;
+  subsetOf Ruby;
+  ^implements ERB.

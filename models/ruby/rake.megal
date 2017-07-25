@@ -1,0 +1,28 @@
+module ruby.Rake
+import ruby.RubyPlatform
+
+/*
+"The process of managing a task through its life cycle"
+- Wikipedia 13.04.17
+*/
+TaskManagement : AbstractProcess;
+  = "wikipedia::Task_management".
+
+/*
+"Build automation is the process of automating the creation of a software build
+and the associated processes including: compiling computer source code into
+binary code, packaging binary code, and running automated tests."
+- Wikipedia 13.04.17
+*/
+BuildAutomation : AbstractProcess;
+  = "wikipedia::Build_automation".
+
+/*
+Rake is a tool written in Ruby. Its purpose is software task management
+and build automation.
+*/
+Rake : Application;
+  = "https://github.com/ruby/rake";
+    uses Ruby;
+    facilitates TaskManagement;
+    facilitates BuildAutomation.

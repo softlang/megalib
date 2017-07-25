@@ -1,0 +1,153 @@
+module rails.ActionView
+
+import rails.RubyOnRailsNamespace
+import rails.ActiveSupport
+import ruby.RubyPlatform
+import ruby.ERuby where {
+  [HTML5 / ?OtherLanguage]
+}
+import rails.ActiveRecord
+
+/*
+Action View is a component of Ruby on Rails responsible for compiling the
+response to a request that is handled by Action Controller.
+*/
+ActionView : Framework;
+  = "RubyOnRailsGuides::action_view_overview.html";
+  = "RubyOnRailsGuides::form_helpers.html";
+  = "RubyOnRailsGithub::actionview";
+  uses Ruby.
+
+/*
+Assemble a complete template file out of the different parts, which are:
+ * view specific template
+ * application specific template
+ * used partials
+*/
+assembleCompleteTemplate : ERuby # ERuby # ERuby -> ERuby.
+ActionView implements assembleCompleteTemplate.
+
+/*
+The template file for a specific site that is used as a base for creating the response.
+*/
+?actionViewTemplateFile : Artifact;
+  elementOf ERuby;
+  hasRole Template;
+  manifestsAs File.
+
+/*
+The template file for the whole application that is used as a base for creating the response.
+The template for the specific site is embedded into this file.
+*/
+?actionViewApplicationTemplateFile : Artifact;
+  elementOf ERuby;
+  hasRole Template;
+  manifestsAs File.
+
+/*
+Partial Templates that can be reused in other templates.
+These amount of these can be >=0.
+*/
+?actionViewPartialTemplateFile : Artifact;
+  elementOf ERuby;
+  hasRole Template;
+  manifestsAs File+.
+
+/*
+The output of the template combination process
+*/
+?actionViewCombinedTemplateOutcome : Artifact;
+  elementOf ERuby;
+  hasRole Template;
+  manifestsAs Transient.
+
+assembleCompleteTemplate(?actionViewApplicationTemplateFile,?actionViewTemplateFile,?actionViewPartialTemplateFile) |-> ?actionViewCombinedTemplateOutcome.
+
+/*
+Assemble a complete Javascript file to be included in the output from:
+ * controller specific javascript file
+ * application specific javascript file
+*/
+assembleCompleteJavaScript : JavaScript # JavaScript -> JavaScript.
+ActionView implements assembleCompleteJavaScript.
+
+/*
+The javascript file of a controller that may have been generated from coffeescript
+*/
+?javaScriptSpecificFile : Artifact;
+  elementOf JavaScript;
+  manifestsAs File.
+
+/*
+The javascript file of the whole application. Its included in every view.
+*/
+?javaScriptApplicationFile : Artifact;
+  elementOf JavaScript;
+  manifestsAs File.
+
+/*
+The output of the combination process of the javascript files
+*/
+?javaScriptCombinedOutcome : Artifact;
+  elementOf JavaScript;
+  manifestsAs Transient.
+
+assembleCompleteJavaScript(?javaScriptSpecificFile,?javaScriptApplicationFile) |-> ?javaScriptCombinedOutcome.
+
+/*
+Assemble a complete Javascript file to be included in the output from:
+* controller specific css file
+* application specific css file
+*/
+assembleCompleteCss : CSS # CSS -> CSS.
+ActionView implements assembleCompleteCss.
+
+
+/*
+The css file of the whole application. Its included in every view.
+*/
+?cssApplicationFile : Artifact;
+  elementOf CSS;
+  manifestsAs File.
+
+/*
+The css file of a controller
+*/
+?cssSpecificFile : Artifact;
+  elementOf CSS;
+  manifestsAs File.
+
+/*
+The output of the combination process of the css files
+*/
+?cssCombinedOutcome : Artifact;
+  elementOf CSS;
+  manifestsAs Transient.
+
+
+assembleCompleteCss(?cssSpecificFile,?cssApplicationFile) |-> ?cssCombinedOutcome.
+
+/*
+This function describes the execution of the ERB code creating valid HTML5 with
+Javascript.
+*/
+applyTemplates : ERuby # JavaScript # CSS # ApplicationRecordObjects -> HTML5.
+ActionView implements applyTemplates.
+
+
+/*
+The needed in memory objects that are used in the process of executing the templates.
+These can be null too if none are needed
+*/
+?neededApplicationRecordObjectsInstances : Artifact;
+ elementOf ApplicationRecordObjects;
+ manifestsAs Transient.
+
+/*
+The resulting HTML5 output of the template replacement process
+*/
+?html5Outcome : Artifact;
+ elementOf HTML5;
+ manifestsAs Transient.
+
+applyTemplates(?actionViewCombinedTemplateOutcome,?javaScriptCombinedOutcome,?cssCombinedOutcome,?neededApplicationRecordObjectsInstances) |-> ?html5Outcome.

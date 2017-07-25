@@ -1,0 +1,140 @@
+module rails.RailsCLI
+
+import sqlite.SQLite
+
+import rails.RubyOnRailsNamespace
+
+import rails.ActionController where {
+  [generatedApplicationController / ?applicationControllerClass,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  generatedApplicationCss / ?cssApplicationFile]
+}
+
+import rails.ActionDispatch where {
+  [generatedRoutesRB / ?actionDispatchRoutingFile]
+}
+
+import rails.ActiveRecordMigration
+
+import rails.ActiveRecord where {
+  [SQLiteImage / ?DbLanguage,
+  defaultSQLiteDBConfiguration / ?dbConnectionConfig,
+  defaultSQLiteDB / ?dbFile,
+  generatedApplicationRecord / ?applicationRecordClass]
+}
+
+import rails.ActionView
+import ruby.RubyPlatform
+import ruby.Rake
+import puma.Puma
+
+/*
+The Ruby On Rails command line application used for the generation of a new
+project, models, views, controllers, model migrations, interacting with the
+database, running database migrations, starting a development web server for
+testing the application and more.
+*/
+RailsCLI: Application;
+  = "RubyOnRailsGuides::command_line.html";
+  = "RubyOnRailsGithub::railties";
+  uses Ruby;
+  reuses Puma;
+  reuses Rake;
+  reuses SQLite.
+
+/*
+The language describing the parameter format of the rails command line pplication
+*/
+RailsCommandLineParameterLanguage : CommandLineLanguage;
+  = "RubyOnRailsGuides::command_line.html";
+  subsetOf RubyCommandLineParameterLanguage;
+  ^implements RailsCLI.
+
+/*
+These function describes the generation of Ruby source code
+dependent on the given parameters of the rails command line application.
+*/
+generateModelCode : RailsCommandLineParameterLanguage -> Ruby.
+generateModelCode : RailsCommandLineParameterLanguage -> ActiveRecordMigrationLanguage.
+
+generateControllerCode : RailsCommandLineParameterLanguage -> Ruby.
+generateControllerCode : RailsCommandLineParameterLanguage -> JavaScript.
+generateControllerCode : RailsCommandLineParameterLanguage -> CSS.
+
+/*
+This function describes the generation of database migration files
+dependent on the given parameters of the rails command line application.
+*/
+generateMigrationCode : RailsCommandLineParameterLanguage -> ActiveRecordMigrationLanguage.
+
+/*
+These funtions describe the creation of a new project.
+*/
+newProject : RailsCommandLineParameterLanguage -> Ruby.
+newProject : RailsCommandLineParameterLanguage -> YAML.
+newProject : RailsCommandLineParameterLanguage -> CoffeeScript.
+newProject : RailsCommandLineParameterLanguage -> HTML5.
+newProject : RailsCommandLineParameterLanguage -> JavaScript.
+newProject : RailsCommandLineParameterLanguage -> CSS.
+newProject : RailsCommandLineParameterLanguage -> SQLiteImage.
+newProject : RailsCommandLineParameterLanguage -> ERuby.
+
+
+RailsCLI implements generateModelCode.
+RailsCLI implements generateControllerCode.
+RailsCLI implements generateMigrationCode.
+RailsCLI implements newProject.
+
+/*
+An abstract command line string for generating models in the Ruby on Rails
+project. Command line: rails generate model <modelname> <modelattributes>
+*/
+?generateModelCmdLineString : Artifact;
+  elementOf RailsCommandLineParameterLanguage;
+  manifestsAs Transient.
+
+generateModelCode(?generateModelCmdLineString) |-> ?applicationRecordDerivative.
+generateModelCode(?generateModelCmdLineString) |-> ?dbMigrationFile.
+
+
+/*
+An abstract command line string for generating controllers in the Ruby on Rails
+project. Command line: rails generate controller <controllername>
+*/
+?generateControllerCmdLineString : Artifact;
+  elementOf RailsCommandLineParameterLanguage;
+  manifestsAs Transient.
+
+generateControllerCode(?generateControllerCmdLineString) |-> ?applicationControllerDerivative.
+generateControllerCode(?generateControllerCmdLineString) |-> ?javaScriptSpecificFile.
+generateControllerCode(?generateControllerCmdLineString) |-> ?cssSpecificFile.
+
+/*
+An abstract command line string for creationg the default folder structure of
+a Ruby on Rails project with a working databse configuration based on SQLite.
+Command Line: rails new <projectname>
+*/
+?newProjectCmdLineString : Artifact;
+  elementOf RailsCommandLineParameterLanguage;
+  manifestsAs Transient.
+
+newProject(?newProjectCmdLineString) |-> generatedApplicationController.
+newProject(?newProjectCmdLineString) |-> generatedApplicationRecord.
+newProject(?newProjectCmdLineString) |-> generatedApplicationJavaScript.
+newProject(?newProjectCmdLineString) |-> generatedApplicationCss.
+newProject(?newProjectCmdLineString) |-> generatedRoutesRB.
+newProject(?newProjectCmdLineString) |-> generatedApplicationTemplate.
+newProject(?newProjectCmdLineString) |-> defaultSQLiteDBConfiguration.
+newProject(?newProjectCmdLineString) |-> defaultSQLiteDB.
+
+/*
+An abstract command line string for the manipulation of existing models/the
+database.
+Command Line: rails generate migration <migrationname>
+*/
+?generateMigrationCmdLineString : Artifact;
+  elementOf RailsCommandLineParameterLanguage;
+  manifestsAs Transient.
+
+generateMigrationCode(?generateMigrationCmdLineString) |-> ?dbMigrationFile.

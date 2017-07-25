@@ -1,0 +1,49 @@
+module puma.Puma
+
+import ruby.RubyPlatform
+
+/*
+@Description:
+    Puma is a "A Modern, Concurrent Web Server for Ruby"
+    The process of extracting the requested URL out of an incomming HTTPRequest.
+@Rationale: See provided link
+*/
+Puma : WebServer;
+  = "http://puma.io/";
+  uses Ruby.
+extractUrlFromHttpRequest : HTTPRequest -> URL.
+Puma implements extractUrlFromHttpRequest.
+
+/*
+@Description: An HTTP Request by a user of the Server requesting a resource that the server
+may provide.
+
+@Rationale: TODO
+*/
+?incommingHttpRequest : Artifact;
+  elementOf HTTPRequest;
+  manifestsAs Transient.
+?incommingHttpRequestURL : Artifact;
+  hasRole Identifier;
+  elementOf URL;
+  manifestsAs Transient.
+extractUrlFromHttpRequest(?incommingHttpRequest) |-> ?incommingHttpRequestURL.
+
+
+/*
+@Description:
+After using the URL to identify which resource was requested the request is
+answered with an HTTPResponse containing HTML and Javascript Code.
+
+@Rationale: TODO
+*/
+sendResponse : HTML5 -> HTTPResponse.
+Puma implements sendResponse.
+?html5 : Artifact;
+  hasRole WebResource;
+  elementOf HTML5;
+  manifestsAs Transient.
+?outgoingHttpResponse : Artifact;
+  elementOf HTTPResponse;
+  manifestsAs Transient.
+sendResponse(?html5) |-> ?outgoingHttpResponse.

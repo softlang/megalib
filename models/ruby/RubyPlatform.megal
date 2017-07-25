@@ -1,7 +1,7 @@
 module ruby.RubyPlatform
 
 /* Basics */
-RubyPlatform : Software;
+RubyPlatform : Platform;
     = "https://github.com/ruby/ruby";
     uses Ruby;
     uses C;
@@ -9,12 +9,16 @@ RubyPlatform : Software;
     belongsTo RubyWare.
 
 RubyStandardLibrary : Library;
+    = "http://ruby-doc.org/stdlib-2.4.1/";
     partOf RubyPlatform;
     uses Ruby;
     belongsTo RubyWare.
-    
+
 /* TODO: Languages explained*/
 RubyObjects : ValueLanguage;
+  = "http://ruby-doc.org/core-2.4.1/Object.html";
     encodes Object.
+
 RubyCommandLineParameterLanguage : CommandLineLanguage;
+  = "http://ruby-doc.org/core-2.4.1/Object.html#ARGV";
     ^implements RubyPlatform.

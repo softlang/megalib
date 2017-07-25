@@ -1,0 +1,13 @@
+module rails.ActionMailer
+
+import rails.RubyOnRailsNamespace
+import rails.ActiveSupport
+
+/*
+A Component of Ruby on Rails that deals with sending and receiving emails from
+and to the Web Application
+*/
+ActionMailer : Framework;
+    = "RubyOnRailsGuides::action_mailer_basics.html";
+    = "RubyOnRailsGithub::actionmailer";
+    uses Ruby.

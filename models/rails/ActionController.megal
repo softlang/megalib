@@ -1,0 +1,102 @@
+module rails.ActionController
+
+import rails.RubyOnRailsNamespace
+import rails.ActiveSupport
+import rails.ActiveRecord
+import rails.ActionView
+import ruby.RubyPlatform
+
+/*
+The Component "Action Controller is the C in MVC. [...] [It] is responsible for
+making sense of the request and producing the appropriate output."
+*/
+ActionController : Framework;
+  = "RubyOnRailsGuides::action_controller_overview.html";
+  = "RubyOnRailsGithub::actionpack/lib/action_controller";
+  uses Ruby.
+
+
+/*
+The language that describes the instances of ActionController::Base in memory
+*/
+ActionControllerBaseObjects : ValueLanguage;
+  = "RubyOnRailsAPI::classes/ActionController/Base.html";
+  subsetOf RubyObjects;
+  ^implements ActionController.
+
+/*
+The source code file of ActionController::Base. The base class from which every
+controler is derived.
+*/
+actionControllerBaseClass : Artifact;
+  = "RubyOnRailsAPI::classes/ActionController/Base.html";
+  ~= "RubyOnRailsGithub::actionpack/lib/action_controller/base.rb";
+  elementOf Ruby;
+  partOf ActionController;
+  manifestsAs File;
+  defines ActiveRecordBaseObjects.
+
+/*
+The language that describes the instances of ApplicationController in memory.
+ApplicationController is a subclass of ActionController::Base.
+*/
+ApplicationControllerObjects : ValueLanguage;
+  = "RubyOnRailsAPI::classes/ActionController/Base.html";
+  subsetOf ActionControllerBaseObjects;
+  ^implements ActionController.
+
+/*
+The source code file of the ApplicationController class. It is a derivative of
+ApplicationController::Base and is the basis for deriving the actual controllers
+in the web application. It is created by the rails command line application.
+*/
+?applicationControllerClass : Artifact;
+  elementOf Ruby;
+  manifestsAs File;
+  defines ApplicationControllerObjects.
+
+/*
+The language that describes the instances of derivatives of
+ApplicationController (your actual model objects) in memory. They all are
+subclasses of ApplicationController.
+*/
+?ApplicationControllerDerivativeObjects : ValueLanguage;
+  subsetOf ApplicationControllerObjects;
+  ^implements ActionController.
+
+/*
+The source code files of the actual controller classes used in the application.
+*/
+?applicationControllerDerivative : Artifact;
+  elementOf Ruby;
+  manifestsAs File;
+  defines ?ApplicationControllerDerivativeObjects.
+
+/*
+This function describes the custom controller actions that can be
+implemented in a controller.For example interaction of the controller with the
+model, i.e. creating new model object instances, their alteration, destruction,
+retrieval and persisting to and from the database and the following creation
+of the the resulting views. Every controller can have many differently named
+action functions.
+*/
+customControllerAction : ActionControllerBaseObjects -> ActiveRecordBaseObjects.
+customControllerAction : ActionControllerBaseObjects -> ERuby # ERuby # ERuby # JavaScript # JavaScript # CSS # CSS.
+
+ActionController implements customControllerAction.
+
+/*
+the actual instances of the controllers in memory.
+*/
+?applicationControllerDerivativeInstance : Artifact;
+  conformsTo ?applicationControllerDerivative;
+  elementOf ?ApplicationControllerDerivativeObjects;
+  manifestsAs Transient.
+
+/*
+Here we execute a controller action.
+We get all the required Model Instance Objects that we need
+and all the required files we need to create the view (optional)
+*/
+customControllerAction(?applicationControllerDerivativeInstance) |-> ?neededApplicationRecordObjectsInstances.
+customControllerAction(?applicationControllerDerivativeInstance) |-> (?actionViewApplicationTemplateFile,?actionViewTemplateFile,?actionViewPartialTemplateFile,?javaScriptApplicationFile,?javaScriptSpecificFile,?cssApplicationFile,?cssSpecificFile).

@@ -1,0 +1,56 @@
+module rails.ActionDispatch
+
+import rails.RubyOnRailsNamespace
+import rails.ActiveSupport
+import rails.ActionController
+import ruby.RubyPlatform
+
+/*
+The component Action Dispatch of Ruby on Rails defines the language
+of the routing file which describes which URL should be dispatched to which
+controller.
+*/
+ActionDispatch : Framework;
+  = "RubyOnRailsGuides::routing.html";
+  = "RubyOnRailsGithub::actionpack/lib/action_dispatch";
+  uses Ruby.
+
+
+/*
+The language which is used for expressing which controller to use based on
+the URL of the incomming request in the routing file.
+*/
+ActionDispatchRoutingLanguage : ValueLanguage;
+  = "RubyOnRailsGuides::routing.html";
+  = "RubyOnRailsAPI::classes/ActionDispatch/Routing.html";
+  subsetOf Ruby;
+  ^implements ActionDispatch.
+
+/*
+This function describes the actual dispatch of the request to a controller
+instance using the URL and the routing file.
+*/
+dispatchURL : URL # ActionDispatchRoutingLanguage -> ?ApplicationControllerDerivativeObjects.
+
+ActionDispatch implements dispatchURL.
+
+
+/*
+The actual file which describes the dispatch routing using the defined
+Domain Specific Language.
+*/
+?actionDispatchRoutingFile : Artifact;
+  = "RubyOnRailsGuides::routing.html";
+  elementOf ActionDispatchRoutingLanguage;
+  hasRole Configuration;
+  manifestsAs File.
+
+/*
+The URL of the request that is to be dispatched to a controller
+*/
+?requestedURL : Artifact;
+  elementOf URL;
+  manifestsAs Transient;
+  hasRole Identifier.
+
+dispatchURL(?requestedURL,?actionDispatchRoutingFile) |-> ?applicationControllerDerivativeInstance.

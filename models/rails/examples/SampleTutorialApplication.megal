@@ -1,0 +1,399 @@
+module rails.examples.SampleTutorialApplication
+
+import sqlite.SQLite
+
+import rails.RailsCLI where {
+  //Generate Project
+  [generateNewBlogProjectCommand / ?newProjectCmdLineString];
+  // Generation Welcome Controller
+  [generateWelcomeControllerCommand / ?generateControllerCmdLineString,
+  welcomeController / ?applicationControllerDerivative,
+  welcomeControllerJavaScript / ?javaScriptSpecificFile,
+  welcomeControllerCss / ?cssSpecificFile];
+  // Generation Article Controller
+  [generateArticleControllerCommand / ?generateControllerCmdLineString,
+  articleController / ?applicationControllerDerivative,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  articleControllerCss / ?cssSpecificFile];
+  // Generation Comment Controller
+  [generateCommentControllerCommand / ?generateControllerCmdLineString,
+  commentController / ?applicationControllerDerivative,
+  commentControllerJavaScript / ?javaScriptSpecificFile,
+  commentControllerCss / ?cssSpecificFile];
+  // Generation Article Model
+  [articleModel / ?applicationRecordDerivative,
+  createArticleModelMigration / ?dbMigrationFile,
+  generateArticleModelCommand / ?generateModelCmdLineString];
+  // Generation Comment Model
+  [commentModel / ?applicationRecordDerivative,
+  createCommentModelMigration / ?dbMigrationFile,
+  generateCommentModelCommand / ?generateModelCmdLineString]
+}
+
+import rails.ActiveRecord where {
+  //Article Model
+  [ArticleModelObjects / ?ApplicationRecordDerivativeObjects,
+  articleModel / ?applicationRecordDerivative,
+  articleModelInstance / ?applicationRecordDerivativeInstance,
+  generatedApplicationRecord / ?applicationRecordClass,
+  SQLiteImage / ?DbLanguage,
+  defaultSQLiteDBConfiguration / ?dbConnectionConfig,
+  defaultSQLiteDB / ?dbFile];
+  //Comment Model
+  [CommentModelObjects / ?ApplicationRecordDerivativeObjects,
+  commentModel / ?applicationRecordDerivative,
+  commentModelInstance / ?applicationRecordDerivativeInstance,
+  generatedApplicationRecord / ?applicationRecordClass,
+  SQLiteImage / ?DbLanguage,
+  defaultSQLiteDBConfiguration / ?dbConnectionConfig,
+  defaultSQLiteDB / ?dbFile]
+}
+
+import rails.ActionView where {
+  //Welcome Controller Index View
+  [welcomeControllerIndexView / ?actionViewTemplateFile,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  welcomeControllerIndexViewUsedPartials / ?actionViewPartialTemplateFile,
+  welcomeControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  welcomeControllerCss / ?cssSpecificFile,
+  renderedWelcomeIndexPage / ?html5Outcome];
+  //Article Controller New View
+  [articleControllerNewView / ?actionViewTemplateFile,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  articleControllerNewViewUsedPartials / ?actionViewPartialTemplateFile,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  articleControllerCss / ?cssSpecificFile,
+  articleModelInstance / ?neededApplicationRecordObjectsInstances,
+  renderedArticleNewPage / ?html5Outcome];
+  //Article Controller Show View
+  [articleControllerShowView / ?actionViewTemplateFile,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  articleControllerShowViewUsedPartials / ?actionViewPartialTemplateFile,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  articleControllerCss / ?cssSpecificFile,
+  articleModelInstance / ?neededApplicationRecordObjectsInstances,
+  renderedArticleShowPage / ?html5Outcome];
+  //Article Controller Index View
+  [articleControllerIndexView / ?actionViewTemplateFile,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  articleControllerIndexViewUsedPartials / ?actionViewPartialTemplateFile,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  articleControllerCss / ?cssSpecificFile,
+  articleModelInstance / ?neededApplicationRecordObjectsInstances,
+  renderedArticleIndexPage / ?html5Outcome];
+  //Article Controller Edit View
+  [articleControllerEditView / ?actionViewTemplateFile,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  articleControllerEditViewUsedPartials / ?actionViewPartialTemplateFile,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  articleControllerCss / ?cssSpecificFile,
+  articleModelInstance / ?neededApplicationRecordObjectsInstances,
+  renderedArticleEditPage / ?html5Outcome]
+}
+
+import rails.ActionController  where {
+  //Not every controller action can be expressed individually here. Those that dont
+  //produce a visual output are summarized in one entry.
+  // Welcome Controller Index Action
+  [WelcomeControllerObjects / ?ApplicationControllerDerivativeObjects,
+  welcomeController / ?applicationControllerDerivative,
+  welcomeControllerInstance / ?applicationControllerDerivativeInstance,
+  generatedApplicationController / ?applicationControllerClass,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  welcomeControllerIndexView / ?actionViewTemplateFile,
+  welcomeControllerIndexViewUsedPartials / ?actionViewPartialTemplateFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  welcomeControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  welcomeControllerCss / ?cssSpecificFile];
+  // Article New Action
+  [ArticleControllerObjects / ?ApplicationControllerDerivativeObjects,
+  articleController / ?applicationControllerDerivative,
+  articleControllerInstance / ?applicationControllerDerivativeInstance,
+  generatedApplicationController / ?applicationControllerClass,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  articleControllerNewView / ?actionViewTemplateFile,
+  articleControllerNewViewUsedPartials / ?actionViewPartialTemplateFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  articleControllerCss / ?cssSpecificFile,
+  articleModelInstance / ?neededApplicationRecordObjectsInstances];
+  // Article Show Action
+  [ArticleControllerObjects / ?ApplicationControllerDerivativeObjects,
+  articleController / ?applicationControllerDerivative,
+  articleControllerInstance / ?applicationControllerDerivativeInstance,
+  generatedApplicationController / ?applicationControllerClass,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  articleControllerShowView / ?actionViewTemplateFile,
+  articleControllerShowViewUsedPartials / ?actionViewPartialTemplateFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  articleControllerCss / ?cssSpecificFile,
+  articleModelInstance / ?neededApplicationRecordObjectsInstances];
+  // Article Index Action
+  [ArticleControllerObjects / ?ApplicationControllerDerivativeObjects,
+  articleController / ?applicationControllerDerivative,
+  articleControllerInstance / ?applicationControllerDerivativeInstance,
+  generatedApplicationController / ?applicationControllerClass,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  articleControllerIndexView / ?actionViewTemplateFile,
+  articleControllerIndexViewUsedPartials / ?actionViewPartialTemplateFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  articleControllerCss / ?cssSpecificFile,
+  articleModelInstance / ?neededApplicationRecordObjectsInstances];
+  // Article Edit Action
+  [ArticleControllerObjects / ?ApplicationControllerDerivativeObjects,
+  articleController / ?applicationControllerDerivative,
+  articleControllerInstance / ?applicationControllerDerivativeInstance,
+  generatedApplicationController / ?applicationControllerClass,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  articleControllerEditView / ?actionViewTemplateFile,
+  articleControllerEditViewUsedPartials / ?actionViewPartialTemplateFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  articleControllerCss / ?cssSpecificFile,
+  articleModelInstance / ?neededApplicationRecordObjectsInstances];
+  // Article other actions - they dont have a view
+  [ArticleControllerObjects / ?ApplicationControllerDerivativeObjects,
+  articleController / ?applicationControllerDerivative,
+  articleControllerInstance / ?applicationControllerDerivativeInstance,
+  generatedApplicationController / ?applicationControllerClass,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  articleControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  articleControllerCss / ?cssSpecificFile,
+  articleModelInstance / ?neededApplicationRecordObjectsInstances];
+  // Comment Actions dont produce output. only needed for persistence
+  [CommentControllerObjects / ?ApplicationControllerDerivativeObjects,
+  commentController / ?applicationControllerDerivative,
+  commentControllerInstance / ?applicationControllerDerivativeInstance,
+  generatedApplicationController / ?applicationControllerClass,
+  generatedApplicationTemplate / ?actionViewApplicationTemplateFile,
+  generatedApplicationJavaScript / ?javaScriptApplicationFile,
+  commentControllerJavaScript / ?javaScriptSpecificFile,
+  generatedApplicationCss / ?cssApplicationFile,
+  commentControllerCss / ?cssSpecificFile,
+  commentModelInstance / ?neededApplicationRecordObjectsInstances]
+}
+
+
+import puma.Puma where {
+  // Here we Handle a request. First two entries is the processing of the request to a URL
+  // Last two entries is the packaging of the HTNL+JavaScript into an HTTPResponse
+  [incomingArticleIndexHttpRequest / ?incommingHttpRequest,
+   articleIndexURL / ?incommingHttpRequestURL,
+   renderedArticleIndexPage / ?html5,
+   outgoingArticleIndexHttpResponse / ?outgoingHttpResponse]
+}
+
+import rails.ActionDispatch where {
+  // Here we route the request to a specific Controller (Article in this case) based on
+  // the URL. The controller will handle the request and use ActiveRecord and ActionView
+  // to create an output.
+  [generatedRoutesRB / ?actionDispatchRoutingFile,
+  articleIndexURL / ?requestedURL,
+  ArticleControllerObjects / ?ApplicationControllerDerivativeObjects,
+  articleController / ?applicationControllerDerivative,
+  articleControllerInstance / ?applicationControllerDerivativeInstance]
+}
+
+import rails.RubyOnRails
+import rails.ActiveSupport
+
+/*
+The simple web application described in the Ruby on Rails Getting Started Tutorial
+*/
+SampleTutorialApplication : Service;
+  = "RubyOnRailsGuides::getting_started.html";
+    reuses RubyOnRails;
+    reuses RailsCLI;
+    reuses Puma;
+    reuses SQLite;
+    uses ModelViewController;
+    uses Ruby.
+
+/*
+The root of our Ruby on Rails Project.
+*/
+RailsProjectRoot :: "file://../../railsExample/blog".
+
+/*
+The locations of the auto-generated configuration and source files by the rails new
+command.
+======================================================================================
+*/
+generatedApplicationController ~= "RailsProjectRoot::app/controllers/application_controller.rb".
+generatedApplicationController partOf SampleTutorialApplication.
+
+generatedApplicationRecord ~= "RailsProjectRoot::app/models/application_record.rb".
+generatedApplicationRecord partOf SampleTutorialApplication.
+
+generatedApplicationJavaScript ~= "RailsProjectRoot::app/assets/javascripts/application.js".
+generatedApplicationJavaScript partOf SampleTutorialApplication.
+
+generatedApplicationCss ~= "RailsProjectRoot::app/assets/stylesheets/application.css".
+generatedApplicationCss partOf SampleTutorialApplication.
+
+generatedRoutesRB ~= "RailsProjectRoot::config/routes.rb".
+generatedRoutesRB partOf SampleTutorialApplication.
+
+generatedApplicationTemplate ~= "RailsProjectRoot::app/views/layouts/application.html.erb".
+generatedApplicationTemplate partOf SampleTutorialApplication.
+
+defaultSQLiteDBConfiguration ~= "RailsProjectRoot::config/database.yml".
+defaultSQLiteDBConfiguration partOf SampleTutorialApplication.
+
+defaultSQLiteDB ~= "RailsProjectRoot::db/development.sqlite3".
+defaultSQLiteDB partOf SampleTutorialApplication.
+
+/*
+Generation of the Welcome Controller
+Command: bin/rails generate controller Welcome index
+======================================================================================
+*/
+welcomeController ~= "RailsProjectRoot::app/controllers/welcome_controller.rb".
+welcomeController  partOf SampleTutorialApplication.
+welcomeController hasRole MvcController.
+
+welcomeControllerJavaScript ~= "RailsProjectRoot::app/assets/javascripts/welcome.coffee".
+welcomeControllerJavaScript partOf SampleTutorialApplication.
+
+welcomeControllerCss ~= "RailsProjectRoot::app/assets/stylesheets/welcome.scss".
+welcomeControllerCss partOf SampleTutorialApplication.
+
+/*
+Creation of the index view of the Welcome Controller
+======================================================================================
+*/
+welcomeControllerIndexView ~= "RailsProjectRoot::app/views/welcome/index.html.erb".
+welcomeControllerIndexView partOf SampleTutorialApplication.
+welcomeControllerIndexView hasRole MvcView.
+
+/*
+Generation of the Article Controller
+Command: bin/rails generate controller Articles
+======================================================================================
+*/
+articleController ~= "RailsProjectRoot::app/controllers/articles_controller.rb".
+articleController partOf SampleTutorialApplication.
+articleController hasRole MvcController.
+
+articleControllerJavaScript ~= "RailsProjectRoot::app/assets/javascripts/articles.coffee".
+articleControllerJavaScript partOf SampleTutorialApplication.
+
+articleControllerCss ~= "RailsProjectRoot::app/assets/stylesheets/articles.scss".
+articleControllerCss partOf SampleTutorialApplication.
+
+
+/*
+Creation of the new view of the Article Controller
+======================================================================================
+*/
+articleControllerNewView  ~= "RailsProjectRoot::app/views/articles/new.html.erb".
+articleControllerNewView partOf SampleTutorialApplication.
+articleControllerNewView hasRole MvcView.
+
+articleControllerNewViewUsedPartials  ~= "RailsProjectRoot::app/views/articles/_form.html.erb".
+articleControllerNewViewUsedPartials partOf SampleTutorialApplication.
+
+renderedArticleNewPage ~= "http://localhost:3000/articles/new".
+renderedArticleNewPage partOf SampleTutorialApplication.
+
+
+/*
+Generation of the Article model
+======================================================================================
+*/
+articleModel ~= "RailsProjectRoot::app/models/article.rb".
+articleModel partOf SampleTutorialApplication.
+articleModel hasRole MvcModel.
+
+createArticleModelMigration ~= "RailsProjectRoot::db/migrate/20170323145048_create_articles.rb".
+createArticleModelMigration partOf SampleTutorialApplication.
+
+
+/*
+Creation of the show view of the Article Controller
+======================================================================================
+*/
+articleControllerShowView  ~= "RailsProjectRoot::app/views/articles/show.html.erb".
+articleControllerShowView partOf SampleTutorialApplication.
+articleControllerShowView hasRole MvcView.
+
+articleControllerShowViewUsedPartials  ~= "RailsProjectRoot::app/views/comments/_form.html.erb".
+articleControllerShowViewUsedPartials  ~= "RailsProjectRoot::app/views/comments/_comment.html.erb".
+articleControllerShowViewUsedPartials partOf SampleTutorialApplication.
+
+renderedArticleShowPage ~= "http://localhost:3000/articles/:id".
+renderedArticleShowPage partOf SampleTutorialApplication.
+
+
+/*
+Creation of the index view of the Article Controller
+======================================================================================
+*/
+articleControllerIndexView  ~= "RailsProjectRoot::app/views/articles/index.html.erb".
+articleControllerIndexView partOf SampleTutorialApplication.
+articleControllerIndexView hasRole MvcView.
+
+renderedArticleIndexPage ~= "http://localhost:3000/articles".
+renderedArticleIndexPage partOf SampleTutorialApplication.
+
+
+/*
+Creation of the edit view of the Article Controller
+======================================================================================
+*/
+articleControllerEditView  ~= "RailsProjectRoot::app/views/articles/edit.html.erb".
+articleControllerEditView partOf SampleTutorialApplication.
+articleControllerEditView hasRole MvcView.
+
+articleControllerEditViewUsedPartials  ~= "RailsProjectRoot::app/views/articles/_form.html.erb".
+articleControllerEditViewUsedPartials partOf SampleTutorialApplication.
+
+renderedArticleEditPage ~= "http://localhost:3000/articles/:id/edit".
+renderedArticleEditPage partOf SampleTutorialApplication.
+
+
+/*
+Generation of the Comment model
+======================================================================================
+*/
+commentModel ~= "RailsProjectRoot::app/models/comment.rb".
+commentModel partOf SampleTutorialApplication.
+commentModel hasRole MvcModel.
+
+createCommentModelMigration ~= "RailsProjectRoot::db/migrate/20170323152050_create_comments.rb".
+createCommentModelMigration partOf SampleTutorialApplication.
+
+
+/*
+Generation of the Comment Controller
+======================================================================================
+*/
+
+commentController ~= "RailsProjectRoot::app/controllers/comments_controller.rb".
+commentController partOf SampleTutorialApplication.
+commentController hasRole MvcController.
+
+commentControllerJavaScript ~= "RailsProjectRoot::app/assets/javascripts/comments.coffee".
+commentControllerJavaScript partOf SampleTutorialApplication.
+
+commentControllerCss ~= "RailsProjectRoot::app/assets/stylesheets/comments.scss".
+commentControllerCss partOf SampleTutorialApplication.
