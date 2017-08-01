@@ -1,5 +1,6 @@
 module rails.ActiveRecord
 
+import rails.RubyOnRails
 import rails.RubyOnRailsNamespace
 import rails.ActiveSupport
 import ruby.RubyPlatform
@@ -9,8 +10,9 @@ The component "Active Record is the M in MVC". It is used to define the model
 of the application. It also implements the persistence of the model instances.
 */
 ActiveRecord : Framework;
-  = "RubyOnRailsGuides::active_record_basics.html";
-  = "RubyOnRailsGithub::activerecord";
+    = "RubyOnRailsGuides::active_record_basics.html";
+    = "RubyOnRailsGithub::activerecord";
+    partOf RubyOnRails;
     uses Ruby;
     facilitates Persistence;
     facilitates ObjectRelationalMapping.

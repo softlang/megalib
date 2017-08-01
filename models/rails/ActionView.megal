@@ -1,6 +1,7 @@
 module rails.ActionView
 
 import rails.RubyOnRailsNamespace
+import rails.RubyOnRails
 import rails.ActiveSupport
 import ruby.RubyPlatform
 import ruby.ERuby where {
@@ -16,6 +17,7 @@ ActionView : Framework;
   = "RubyOnRailsGuides::action_view_overview.html";
   = "RubyOnRailsGuides::form_helpers.html";
   = "RubyOnRailsGithub::actionview";
+  partOf RubyOnRails;
   uses Ruby.
 
 /*

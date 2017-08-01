@@ -1,5 +1,6 @@
 module rails.ActionDispatch
 
+import rails.RubyOnRails
 import rails.RubyOnRailsNamespace
 import rails.ActiveSupport
 import rails.ActionController
@@ -13,6 +14,7 @@ controller.
 ActionDispatch : Framework;
   = "RubyOnRailsGuides::routing.html";
   = "RubyOnRailsGithub::actionpack/lib/action_dispatch";
+  partOf RubyOnRails;
   uses Ruby.
 
 

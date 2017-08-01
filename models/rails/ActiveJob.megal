@@ -1,5 +1,6 @@
 module rails.ActiveJob
 
+import rails.RubyOnRails
 import rails.RubyOnRailsNamespace
 import rails.ActiveSupport
 
@@ -10,4 +11,5 @@ by the Web Application.
 ActiveJob : Framework;
     = "RubyOnRailsGuides::active_job_basics.html";
     = "RubyOnRailsGithub::activejob";
+    partOf RubyOnRails;
     uses Ruby.

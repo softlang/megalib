@@ -1,7 +1,7 @@
 module rails.ActiveSupport
 
 import rails.RubyOnRailsNamespace
-import ruby.RubyPlatform
+import rails.RubyOnRails
 
 /*
 A Ruby on Rails component that provides Ruby Standard library extensions,
@@ -10,4 +10,5 @@ utilities and other transversal stuff.
 ActiveSupport : Library;
     = "RubyOnRailsGuides::active_support_core_extensions.html";
     = "RubyOnRailsGithub::activesupport";
+    partOf RubyOnRails;
     uses Ruby.

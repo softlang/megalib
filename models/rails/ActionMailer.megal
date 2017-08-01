@@ -1,5 +1,6 @@
 module rails.ActionMailer
 
+import rails.RubyOnRails
 import rails.RubyOnRailsNamespace
 import rails.ActiveSupport
 
@@ -10,4 +11,5 @@ and to the Web Application
 ActionMailer : Framework;
     = "RubyOnRailsGuides::action_mailer_basics.html";
     = "RubyOnRailsGithub::actionmailer";
+    partOf RubyOnRails;
     uses Ruby.

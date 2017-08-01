@@ -30,14 +30,17 @@ import ruby.Rake
 import puma.Puma
 
 /*
-The Ruby On Rails command line application used for the generation of a new
+@Description: The Ruby On Rails command line application used for the generation of a new
 project, models, views, controllers, model migrations, interacting with the
 database, running database migrations, starting a development web server for
 testing the application and more.
+
+@Rationale: TODO for this whole file.
 */
 RailsCLI: Application;
   = "RubyOnRailsGuides::command_line.html";
   = "RubyOnRailsGithub::railties";
+  partOf RubyOnRails;
   uses Ruby;
   reuses Puma;
   reuses Rake;
