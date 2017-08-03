@@ -1,0 +1,74 @@
+module haskell.th.SyntaxQ
+
+import haskell.HaskellRuntime
+import haskell.HaskellPlatform
+
+/* The Quotation Monad (QMonad) is an environment for object-programs.
+   Like the IO Monad it allows a object-program to be run at compile-time and provides an environment for
+   variables in object-programs and allows the
+   generation of new variable names. */
+QMonad : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:2";
+   encodes Expression;
+   encodes Monad.
+
+/* TemplateHaskellDeclarationsQ represents Template Haskell object-programs
+   used to create a list of haskell declarations.
+
+   The language is composed of lists of TemplateHaskellDeclaration elements contained in a Q Monad.
+   The declaration in the library is:
+     type DecsQ = Q [Dec] */
+TemplateHaskellDeclarationsQ : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:23";
+   encodes Expression;
+   subsetOf HsList;
+   subsetOf QMonad.
+
+/* TemplateHaskellTypeQ represents Template Haskell object-programs
+   used to create a haskell type.
+
+   The language is composed of TemplateHaskelType elements contained in a Q Monad.
+   The declaration in the library is:
+      type TypeQ = Q Type */
+TemplateHaskellTypeQ : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:23";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   subsetOf QMonad.
+
+/* TemplateHaskellPatternQ represents Template Haskell object-programs
+   used to create a haskell pattern.
+
+   The language is composed of TemplateHaskellType contained in a Q Monad.
+   The declaration in the library is:
+      type PatQ = Q Pat */
+TemplateHaskellPatternQ : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:23";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   subsetOf QMonad.
+
+/* TemplateHaskellExpressionQ represents Template Haskell object-programs
+   used to create a haskell expression.
+
+   The language is composed of TemplateHaskellDeclarations contained in a Q Monad.
+   Does not contain any type information of the expression.
+   The declaration in the library is:
+      type ExpQ = Q Exp */
+TemplateHaskellExpressionQ : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:23";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   subsetOf QMonad.
+
+/* TemplateHaskellTypedExpressionQ represents Template Haskell object-programs
+   used to create a typed haskell expression.
+
+   The language is composed of TemplateHaskellTypedExpression contained in a Q Monad.
+   It is similar to the TemplateHaskellExpressionQ but also contains type information
+   The Q means it is contained in a Q Monad. */
+TemplateHaskellTypedExpressionQ : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:12";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   subsetOf QMonad.

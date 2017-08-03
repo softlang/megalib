@@ -256,6 +256,14 @@ Tree : Construct;
     = "wikipedia::Tree_(graph_theory)".
 Expression : Construct; //Propose a language of expression not yet evaluated to values (compile-time)
    = "wikipedia::Expression_(computer_science)".
+/* A monadid datatype is used to chain certain types of computations.
+It can be used for complex computations like Parsers or IO.
+A monad provides at least two function:
+   1. A return function for wrapping values into a monadic datatype.
+   2. A bind function to chain monadic computations.*/
+Monad : Construct; // propose a Monad construct
+   = "https://en.wikipedia.org/wiki/Monad_(functional_programming)";
+   aspectOf FunctionalProgramming.
 
 /* Frequently appearing roles that single artifacts may have. */
 Configuration : Role;   //settings statements.
@@ -352,6 +360,8 @@ Lexer : Role;
     ="101wiki::Lexer".
 Parser : Role;
     ="101wiki::Parser".
+AST : Role; 
+   = "https://en.wikipedia.org/wiki/Abstract_syntax_tree".
     
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";

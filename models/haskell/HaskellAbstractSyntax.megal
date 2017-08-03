@@ -1,0 +1,63 @@
+module haskell.HaskellAbstractSyntax
+
+import haskell.HaskellRuntime
+
+/* HsAbstractSyntax is the abstract syntax of Haskell.
+It is used to build Haskell abstract syntax trees.
+The abstract syntax of Haskell is also called HsSyn. */
+HsAbstractSyntax : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/HsSyn.hs";
+   subsetOf HsRuntimeExpression.
+
+/* Haskell abstract syntax of an Haskell expression */
+HsAbstractSyntaxExpression : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/HsExpr.hs#l275";
+   subsetOf HsAbstractSyntax.
+
+/* Haskell abstract syntax of a Haskell pattern */
+HsAbstractSyntaxPattern : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/HsPat.hs#l72";
+   subsetOf HsAbstractSyntax.
+
+/* Haskell abstract syntax of a Haskell declaration */
+HsAbstractSyntaxDeclaration : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/HsDecls.hs#l131";
+   subsetOf HsAbstractSyntax.
+
+/* Haskell abstract syntax of a type */
+HsAbstractSyntaxType : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/HsTypes.hs#l421";
+   subsetOf HsAbstractSyntax.
+
+/* HsAbstractSyntaxDeclarations is a list of HsAbstractSyntaxDeclaration.*/
+HsAbstractSyntaxDeclarations : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/Convert.hs#l49";
+   subsetOf HsList.
+
+/* Haskell Abstract Syntax to splice a expression.
+
+Derived from HsSpliceE value constructor */
+HsAbstractSyntaxExpressionSplice : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/HsExpr.hs#l581";
+   subsetOf HsAbstractSyntaxExpression.
+
+/*  Haskell Abstract Syntax to splice one or more declarations.
+
+Derived from SpliceDecl algebraic datatype */
+HsAbstractSyntaxDeclarationsSplice : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/HsDecls.hs#l307";
+   subsetOf HsAbstractSyntaxDeclaration.
+
+/* Haskell Abstract Syntax to splice a type.
+
+Derived from HsSpliceTy constructor */
+HsAbstractSyntaxTypeSplice : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/HsTypes.hs#l527";
+   subsetOf HsAbstractSyntaxType.
+
+/* Haskell Abstract Syntax to splice a pattern.
+
+Derived from SplicePat constructor */
+HsAbstractSyntaxPatternSplice : ValueLanguage;
+   = "https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/hsSyn/HsPat.hs#l202";
+   subsetOf HsAbstractSyntaxPattern.

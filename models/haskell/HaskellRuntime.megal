@@ -1,0 +1,41 @@
+module haskell.HaskellRuntime
+
+/* HsRuntimeExpression is the language of all Haskell expressions at runtime */
+HsRuntimeExpression : ValueLanguage;
+   = "https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-220003";
+   encodes Expression.
+
+/* HsAlgebraicDataType is the language of all possible algebraic datatypes in haskell*/
+HsAlgebraicDataType : ValueLanguage;
+   = "https://wiki.haskell.org/Algebraic_data_type".
+
+/* Evaluated Haskell expression at runtime*/
+HsValue : ValueLanguage;
+   = "https://wiki.haskell.org/";
+   subsetOf HsRuntimeExpression.
+
+/* Haskell list at runtime */
+HsList : ValueLanguage;
+   = "https://wiki.haskell.org/";
+   subsetOf HsRuntimeExpression.
+
+/* Haskell String at runtime.
+HsString is a HsList of HsChar*/
+HsString : ValueLanguage;
+   = "https://wiki.haskell.org/";
+   subsetOf HsList.
+
+/* Haskell number at runtime*/
+HsNum : ValueLanguage;
+   = "https://wiki.haskell.org/";
+   subsetOf HsValue.
+
+/* Haskell integer at runtime*/
+HsInteger : ValueLanguage;
+   = "https://wiki.haskell.org/";
+   subsetOf HsNum.
+
+/* Haskell char at runtime*/
+HsChar : ValueLanguage;
+   = "https://wiki.haskell.org/";
+   subsetOf HsValue.

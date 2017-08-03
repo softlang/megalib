@@ -1,0 +1,125 @@
+module haskell.th.TemplateHaskellLibrary
+
+import haskell.HaskellPlatform
+import haskell.HaskellRuntime
+import haskell.th.SyntaxQ
+
+/* A Template Haskell Library providing datatypes and functions for object-program construction.
+This library provides utility function like pretty-printing too. */
+TemplateHaskellLibrary : Library;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH-Lib.html";
+   uses Haskell;
+   facilitates PrettyPrinting;
+   implements QMonad;
+   implements TemplateHaskellDeclarationsQ;
+   implements TemplateHaskellExpressionQ;
+   implements TemplateHaskellTypeQ;
+   implements TemplateHaskellPatternQ;
+   implements TemplateHaskellTypedExpressionQ;
+   ^reuses GHC. // TemplateHaskell uses the TemplateHaskellLibrary for object-program evaluation
+
+/* The Template Haskell representation of a name of a haskell expression or type:
+
+data Name = ... */
+TemplateHaskellName : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:13";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   ^implements TemplateHaskellLibrary.
+
+/* TemplateHaskellExpression is a datatype to represent a
+   Template Haskelll Abstract Syntax Tree of a Haskell Expression.
+
+   Declaration inside the Library:
+      data Exp = ...*/
+TemplateHaskellExpression : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:23";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   ^implements TemplateHaskellLibrary.
+
+/* TemplateHaskellTypedExpression is a datatype to represent a
+   Template Haskelll Abstract Syntax Tree of a typed Haskell Expression.
+
+   Declaration inside the Library:
+      data TExp a = ...*/
+TemplateHaskellTypedExpression : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:12";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   ^implements TemplateHaskellLibrary.
+
+/* TemplateHaskellPattern is a datatype to represent a
+   Template Haskelll Abstract Syntax Tree of a Haskell pattern.
+
+   Declaration inside the Library:
+      data Pat = ... */
+TemplateHaskellPattern : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:23";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   ^implements TemplateHaskellLibrary.
+
+/* TemplateHaskellDeclaration is a datatype to represent a
+   Template Haskelll Abstract Syntax Tree of a Haskell Declaration.
+
+   Declaration inside the Library:
+      data Dec = ... */
+TemplateHaskellDeclaration : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:23";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   ^implements TemplateHaskellLibrary.
+
+/* TemplateHaskellType is a datatype to represent a
+   Template Haskelll Abstract Syntax Tree of a Haskell Type.
+
+   Declaration inside the Library:
+      data Type = ...*/
+TemplateHaskellType : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:23";
+   encodes Expression;
+   subsetOf HsRuntimeExpression;
+   ^implements TemplateHaskellLibrary.
+
+/* InfoQ is a Algebraic datatype intended as container for information obtained from a compiler query.
+   This datatype is wrapped in a Q Monad to allow usage during a compile-time execution.
+   This allows to use the information obtained from InfoQ to construct object-programs.
+*/
+InfoQ : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH.html#g:4";
+   subsetOf HsRuntimeExpression;
+   subsetOf QMonad;
+   ^implements TemplateHaskellLibrary.
+
+/* The function reify looks up informations about types, declarations or
+   expressions with the name represented by the TemplateHaskellName argument.
+   The output is the information contained in a InfoQ datatype.
+*/
+reify : TemplateHaskellName -> InfoQ.
+reify ^implements TemplateHaskellLibrary.
+/*Applicatcion example for reify*/
+?expressionName : Artifact;
+   elementOf TemplateHaskellName;
+   manifestsAs Transient.
+?expressionInformation: Artifact;
+   elementOf InfoQ;
+   manifestsAs Transient.
+reify(?expressionName) |-> ?expressionInformation.
+
+
+/* Abstraction of the Templat Haskell pretty printing function for TH Abstract Syntax Trees.
+Return an Haskell String containing the AST as concrete Haskell syntax*/
+pprint : TemplateHaskellExpression  -> HsString.
+pprint : TemplateHaskellDeclaration -> HsString.
+pprint : TemplateHaskellPattern     -> HsString.
+pprint : TemplateHaskellType        -> HsString.
+pprint ^implements TemplateHaskellLibrary.
+/* Applicatcion example for pprint */
+?thExpression : Artifact;
+   elementOf TemplateHaskellExpression;
+   manifestsAs Transient.
+?hsExpressionCode : Artifact;
+   elementOf HsString;
+   manifestsAs Transient.
+pprint(?thExpression) |-> ?hsExpressionCode.

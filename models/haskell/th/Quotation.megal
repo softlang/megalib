@@ -1,0 +1,114 @@
+module haskell.th.Quotation
+
+import haskell.HaskellPlatform
+import haskell.th.SyntaxQ
+import haskell.th.TemplateHaskellLibrary
+import haskell.th.TemplateHaskell
+
+/*
+Basic Quoting in Tenmplate Haskell:
+
+ Parse concrete Haskell syntax to a object-program.
+The input is a concrete Haskell (see HaskellPlatform.megal) and the output is a object-program.
+The normal expression quote is called with [|...|] or [e|...|].
+The typed expression quote is called with [||...||].
+*/
+quoteExpression      : Haskell  -> TemplateHaskellExpressionQ.   //sample: [e|map|]
+/* Abstract scenario for Template Haskell expression quotation */
+?haskellCodeOfExpression : Artifact;
+   elementOf Haskell;
+   manifestsAs Transient.
+?thExpressionObjectProgram : Artifact;
+   elementOf TemplateHaskellExpressionQ;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+quoteExpression(?haskellCodeOfExpression) |-> ?thExpressionObjectProgram.
+
+quoteDeclaration     : Haskell  -> TemplateHaskellDeclarationsQ.  //sample: [d|Data A = B|]
+/* Abstract scenario for Template Haskell declaration quotation */
+?haskellCodeOfDeclaration : Artifact;
+   elementOf Haskell;
+   manifestsAs Transient.
+?thDeclarationObjectProgram : Artifact;
+   elementOf TemplateHaskellDeclarationsQ;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+quoteDeclaration(?haskellCodeOfDeclaration) |-> ?thDeclarationObjectProgram.
+
+quoteType            : Haskell  -> TemplateHaskellTypeQ.  //sample: [t|String|]
+/* Abstract scenario for Template Haskell type quotation */
+?haskellCodeOfType : Artifact;
+   elementOf Haskell;
+   manifestsAs Transient.
+?thTypeObjectProgram : Artifact;
+   elementOf TemplateHaskellTypeQ;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+quoteType(?haskellCodeOfType) |-> ?thTypeObjectProgram.
+
+quotePattern         : Haskell  -> TemplateHaskellPatternQ.   //sample: [p|(x:xs)|]
+/* Abstract scenario for Template Haskell pattern quotation */
+?haskellCodeOfPattern : Artifact;
+   elementOf Haskell;
+   manifestsAs Transient.
+?thPatternObjectProgram : Artifact;
+   elementOf TemplateHaskellPatternQ;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+quotePattern(?haskellCodeOfPattern) |-> ?thPatternObjectProgram.
+
+quoteTypedExpression : Haskell  -> TemplateHaskellTypedExpressionQ. // [||map||]
+/* Abstract scenario for Template Haskell typed expression quotation */
+?haskellCodeOfTypedExpression : Artifact;
+   elementOf Haskell;
+   manifestsAs Transient.
+?thTypedExpressionObjectProgram : Artifact;
+   elementOf TemplateHaskellTypedExpressionQ;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+quoteTypedExpression(?haskellCodeOfTypedExpression) |-> ?thTypedExpressionObjectProgram.
+
+
+/* This function takes a Haskell expression and returns the name of the expression.
+The name quote is called with '
+Sample: 'map returns the name GHC.Base.map
+
+Alternative possible definition: HsRuntimeExpression -> TemplateHaskellName
+*/
+expressionNameQuote : Haskell -> TemplateHaskellName.
+/* Abstract scenario for Template Haskell typed expression quotation */
+?nameOfExpression : Artifact;
+   elementOf Haskell;
+   manifestsAs Transient.
+?thNameOfExpression : Artifact;
+   elementOf TemplateHaskellName;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+expressionNameQuote(?nameOfExpression) |-> ?thNameOfExpression.
+
+
+/* This function takes a Haskell type and returns the name of the type.
+The name quote is called with ''
+Sample: ''Int returns the name GHC.Types.Int
+
+Alternative possible definition: HsType -> TemplateHaskellName
+*/
+typeNameQuote : Haskell -> TemplateHaskellName.
+/* Abstract scenario for Template Haskell typed expression quotation */
+?nameOfType : Artifact;
+   elementOf Haskell;
+   manifestsAs Transient.
+?thNameOfType : Artifact;
+   elementOf TemplateHaskellName;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+typeNameQuote(?nameOfType) |-> ?thNameOfType.
+
+/* Quotes are implemented by GHC as part of the Template Haskell extensions */
+GHC implements quoteExpression.
+GHC implements quoteDeclaration.
+GHC implements quoteType.
+GHC implements quotePattern.
+GHC implements quoteTypedExpression.
+GHC implements expressionNameQuote.
+GHC implements typeNameQuote.

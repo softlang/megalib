@@ -1,0 +1,67 @@
+module haskell.th.fsmlSystem.Metalib
+
+import haskell.th.QuasiQuotation where {
+   [
+      FSML  / ?DSL,
+      main  / ?haskellCodeWithQuasiQuotation,
+      fsmlQuote / ?haskellQuasiQuoteCode,
+      mainAST / ?haskellCodeAst,
+      fsmlQuoteAST / ?quoteAst,
+      fsmlQuoter / ?quoter,
+      fsmlCode / ?dslCodeFromQuote,
+      fsmlCodeString / ?stringOfQuote,
+      fsmlObjectProgram / ?objectProgramConstructedFromQuote,
+      newMainAST / ?astAfterQuasiQuoteSplice
+   ]
+}
+/* */
+//++ FSML : Language
+FSML = "https://softlang.github.io/metalib/".
+
+//++ main : Artifact
+//++    elementOf Haskell.
+main ~= "https://github.com/softlang/metalib/blob/master/haskell/fsml/app/Main.hs";
+   manifestsAs File.
+
+//++ fsmlQuote : Artifact
+//++     elementOf Haskell
+//++     partOf main
+fsmlQuote ~= "https://github.com/softlang/metalib/blob/master/haskell/fsml/app/Main.hs#L7".
+
+//++ fsmlCode : Artifact
+//++     elementOf FSML
+//++     partOf fsmlQuote
+fsmlCode ~= "https://github.com/softlang/metalib/blob/master/haskell/fsml/app/Main.hs#L8".
+
+//++ fsmlQuoter : Artifact
+//++     elementOf QuasiQuoter
+fsmlQuoter ~= "https://github.com/softlang/metalib/blob/master/haskell/fsml/src/Language/FSML/QuasiQuoter.hs#L15".
+
+//++ mainAST : Atrifact
+//++   elementOf HsAbstractSyntax
+//++   hasRole AST
+//++   manifestsAs Transient
+mainAST ~= "https://github.com/softlang/metalib/blob/master/haskell/fsml/app/Main.hs".
+
+//++ fsmlQuoteAST : Artifact;
+//++     elementOf HsAbstractSyntax
+//++     partOf mainAST
+fsmlQuoteAST ~= "https://github.com/softlang/metalib/blob/master/haskell/fsml/app/Main.hs#L7".
+
+//++ fsmlCodeString : Artifact
+//++     elementOf HsString
+//++     partOf fsmlQuoteAST
+fsmlCodeString ~= "https://github.com/softlang/metalib/blob/master/haskell/fsml/app/Main.hs#L8".
+
+//++ fsmlObjectProgram : Artifact
+//++     elementOf TemplateHaskellDeclarationsQ
+//++     manifestsAs Transient
+fsmlObjectProgram ~= "https://github.com/softlang/metalib/blob/master/haskell/fsml/app/Main.hs#L7".
+
+//++ newMainAST : Artifact
+//++     manifestsAs Transient
+//++     elementOf HsAbstractSyntax
+newMainAST ~= "https://github.com/softlang/metalib/blob/master/haskell/fsml/app/Main.hs".
+
+//++ parse(main) |-> mainAST.
+//++ quasiQuote(mainAST, fsmlQuoter, fsmlCode) |-> newMainAST.

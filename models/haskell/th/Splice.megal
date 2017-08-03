@@ -1,0 +1,110 @@
+module haskell.th.Splice
+
+import haskell.HaskellPlatform
+import haskell.th.SyntaxQ
+import haskell.th.TemplateHaskell
+/*
+   Template Haskell splice function $(...) : A splice is a special function executed
+   during the haskell compile-time. The splice function executes a object-program (second argument) and
+   inserts the resulting Haskell AST into the original Haskell AST (first argument).
+   A short example: "f x = x + $(litE $ integerL 42)" with the object-program "litE $ integerL 42" is converted
+   to the function "f x = x + 42".
+
+   For an overview of top-level and nested splices see:
+   https://git.haskell.org/ghc.git/blob/67345ccf51538acf2b6452c738ba641b119f5a5e:/compiler/typecheck/TcSplice.hs#l236
+*/
+// splice a expression: \x -> x + 1
+splice : HsAbstractSyntax # TemplateHaskellExpressionQ  -> HsAbstractSyntax.
+// splice a top-level declaration: data A = ...
+splice : HsAbstractSyntax # TemplateHaskellDeclarationsQ -> HsAbstractSyntax.
+// splice a type: Integer
+splice : HsAbstractSyntax # TemplateHaskellTypeQ -> HsAbstractSyntax.
+// splice a pattern: (x:xs)
+splice : HsAbstractSyntax # TemplateHaskellPatternQ  -> HsAbstractSyntax.
+
+
+?haskellCodeWithSpliceCall : Artifact;
+   elementOf Haskell;
+   manifestsAs File+.
+?astBeforeSplice : Artifact;
+   elementOf HsAbstractSyntax;
+   manifestsAs Transient;
+   hasRole AST.
+?objectProgram : Artifact;
+   elementOf TemplateHaskellExpressionQ;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+?astAfterSplice : Artifact;
+   elementOf HsAbstractSyntax;
+   manifestsAs Transient;
+   hasRole AST.
+parse(?haskellCodeWithSpliceCall) |-> ?astBeforeSplice.
+splice(?astBeforeSplice,?objectProgram) |-> ?astAfterSplice.
+
+
+/* Part of the splice function.
+   After parsing this function runs at compile-time
+   to convert the Haskell abstract syntax tree of a splice to its resulting object-program.*/
+compileSplice : HsAbstractSyntaxExpressionSplice   -> TemplateHaskellExpressionQ.
+compileSplice : HsAbstractSyntaxDeclarationsSplice -> TemplateHaskellDeclarationsQ.
+compileSplice : HsAbstractSyntaxPatternSplice      -> TemplateHaskellPatternQ.
+compileSplice : HsAbstractSyntaxTypeSplice         -> TemplateHaskellTypeQ.
+
+?spliceExpressionAst : Artifact;
+   elementOf HsAbstractSyntaxExpressionSplice;
+   manifestsAs Transient;
+   hasRole AST;
+   partOf ?astBeforeSplice.
+compileSplice(?spliceExpressionAst) |-> ?objectProgram.
+
+
+/* Part of the splice function.
+   Convert a object-program to a Haskell abstract syntax tree representing the same functionality as the object-program.
+   Example: $(litE $ integerL 42) is transformed to: 42
+ */
+executeSplice : TemplateHaskellExpressionQ   -> HsAbstractSyntaxExpression.
+executeSplice : TemplateHaskellDeclarationsQ -> HsAbstractSyntaxDeclarations.
+executeSplice : TemplateHaskellTypeQ         -> HsAbstractSyntaxType.
+executeSplice : TemplateHaskellPatternQ      -> HsAbstractSyntaxPattern.
+
+?evaluatedObjectProgram : Artifact;
+   elementOf HsAbstractSyntaxExpression;
+   manifestsAs Transient;
+   hasRole AST.
+executeSplice(?objectProgram) |-> ?evaluatedObjectProgram.
+
+/* Part of the splice function.
+   The result from executeSplice is inserted into the abstract syntax tree in place of the splice.
+   Example: f x = x + $(litE $ integerL 42) is converted to: f x = x + 42 */
+spliceAst : HsAbstractSyntax # HsAbstractSyntaxExpression   -> HsAbstractSyntax.
+spliceAst : HsAbstractSyntax # HsAbstractSyntaxDeclarations -> HsAbstractSyntax.
+spliceAst : HsAbstractSyntax # HsAbstractSyntaxType         -> HsAbstractSyntax.
+spliceAst : HsAbstractSyntax # HsAbstractSyntaxPattern      -> HsAbstractSyntax.
+spliceAst(?astBeforeSplice, ?evaluatedObjectProgram) |-> ?astAfterSplice.
+/*After executing spliceAst or splice*/
+?evaluatedObjectProgram partOf ?astAfterSplice.
+
+
+/* Similar to the splice function this function splices a object-program with type information into a Haskell program */
+typedSplice : HsAbstractSyntax # TemplateHaskellTypedExpressionQ -> HsAbstractSyntax.
+/* Applicatcion example for typedSplice */
+?originalAst : Artifact;
+   elementOf HsAbstractSyntax;
+   manifestsAs Transient;
+   hasRole AST.
+?typedObjectProgram : Artifact;
+   elementOf TemplateHaskellTypedExpressionQ;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+?astWithSplicedTypedExpression : Artifact;
+   elementOf HsAbstractSyntax;
+   manifestsAs Transient;
+   hasRole AST.
+typedSplice(?originalAst,?typedObjectProgram) |-> ?astWithSplicedTypedExpression.
+
+/* Splices are implemented by GHC as part of the Template Haskell extensions */
+GHC implements splice.
+GHC implements compileSplice.
+GHC implements executeSplice.
+GHC implements spliceAst.
+GHC implements typedSplice.

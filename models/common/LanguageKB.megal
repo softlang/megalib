@@ -177,6 +177,12 @@ Ruby : ProgrammingLanguage;
 /* Perl */
 Perl : ProgrammingLanguage;
     = "wikipedia::Perl".
+
+/* Haskell */
+Haskell : ProgrammingLanguage;
+   = "https://www.haskell.org/onlinereport/haskell2010/";
+   facilitates FunctionalProgramming;
+   supports GeneralPurposeProgramming.
     
 /* Linux' Shell script language */
 Bash : CommandLineLanguage;

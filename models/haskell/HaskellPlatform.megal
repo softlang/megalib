@@ -1,0 +1,71 @@
+module haskell.HaskellPlatform
+
+import haskell.HaskellRuntime
+import haskell.HaskellAbstractSyntax
+
+
+
+/* Platform for a stable and full Haskell installation */
+HaskellPlatform : Platform;
+   = "https://www.haskell.org/platform/";
+   uses Haskell.
+
+/*Glasgow Haskell Compiler : the interactive and batch compilation system for the Haskell programming language*/
+GHC : Platform;
+   = "https://www.haskell.org/ghc/";
+   partOf HaskellPlatform;
+   uses Haskell;
+   implements HsAlgebraicDataType;
+   implements HsRuntimeExpression;
+   implements HsValue;
+   implements HsList;
+   implements HsString;
+   implements HsNum;
+   implements HsInteger;
+   implements HsChar;
+   implements HsAbstractSyntax;
+   implements HsAbstractSyntaxExpression;
+   implements HsAbstractSyntaxPattern;
+   implements HsAbstractSyntaxDeclaration;
+   implements HsAbstractSyntaxType;
+   implements HsAbstractSyntaxDeclarations;
+   implements HsAbstractSyntaxExpressionSplice;
+   implements HsAbstractSyntaxTypeSplice;
+   implements HsAbstractSyntaxPatternSplice.
+
+/* Glasgow Haskell Compiler interactive: the interactive haskell interpreter called with ghci */
+GHCi : Application;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/ghci.html";
+   partOf GHC;
+   facilitates Interpretation;
+   uses Haskell.
+
+/* the haskell batch compiler called with ghc */
+HaskellCompiler : Compiler;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/using.html#using-ghc";
+   partOf GHC;
+   facilitates Compilation;
+   uses Haskell.
+
+/* Haskell build system and package manager */
+Cabal : Application;
+   = "https://www.haskell.org/cabal/";
+   partOf HaskellPlatform;
+   uses Haskell.
+
+/* Tool for safe package enviroments */
+Stack : Application;
+   = "https://docs.haskellstack.org/en/stable/README/";
+   partOf HaskellPlatform;
+   uses Haskell.
+
+/* Parser functionality */
+parse : Haskell -> HsAbstractSyntax.
+GHC implements parse.
+?hsCode : Artifact;
+   elementOf Haskell.
+?hsAst : Artifact;
+   elementOf HsAbstractSyntax;
+   manifestsAs Transient;
+   hasRole AST.
+parse(?hsCode) |-> ?hsAst.

@@ -1,0 +1,106 @@
+module haskell.th.QuasiQuotation
+
+import haskell.HaskellPlatform
+import haskell.th.Splice
+import haskell.th.SyntaxQ
+import haskell.th.TemplateHaskell
+
+/* Template Haskell Library for Quasi-Quotation.
+   Quasi-Quotation is used for embedding a domain specific language into the Haskell (Haskell2010) language*/
+TemplateHaskellQuoteLibrary : Library;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH-Quote.html";
+   uses Haskell;
+   partOf GHC;
+   implements QuasiQuoterLanguage.
+
+/* Domain specific language (dsl) embedded by quasi-quotation */
+?DSL : Language.
+
+/* Algebraic datatype providing functions to implement quasi-quotation of a DSL in Haskell*/
+QuasiQuoterLanguage : ValueLanguage;
+   = "https://downloads.haskell.org/~ghc/latest/docs/html/libraries/template-haskell-2.11.0.0/Language-Haskell-TH-Quote.html";
+   encodes Expression;
+   subsetOf HsRuntimeExpression.
+
+/* This quote functions are part of a QuasiQuoterLanguage and parse a String into a
+   Template Haskell object-program.
+   The QuasiQuoterLanguage defines which dsl is parsed.
+
+   Sample:
+      quoteExp regex "A*"
+   returns a object-program parsing "A*" as a regex */
+quoteExp : QuasiQuoterLanguage # HsString -> TemplateHaskellExpressionQ.
+quotePat : QuasiQuoterLanguage # HsString -> TemplateHaskellPatternQ.
+quoteType: QuasiQuoterLanguage # HsString -> TemplateHaskellTypeQ.
+quoteDec : QuasiQuoterLanguage # HsString -> TemplateHaskellDeclarationsQ.
+TemplateHaskellQuoteLibrary implements quoteExp;
+    implements quotePat;
+    implements quoteType;
+    implements quoteDec.
+
+/* quasiQuote is a function for quoting a dsl (?DSL) using the quasi-quotation functions
+   from the QuasiQuoterLanguage argument and splices the resulting object-program into
+   the Haskell AST from the first argument.
+
+   Sample:
+      f = [regex|A*|]
+   The whole term is the first argument HsAbstractSyntax.
+   The term A* is the dsl code.
+   regex is the QuasiQuoterLanguage.
+   [regex|A*|] is the quasi-quote.
+   The quasi-quote is executed and turned into a object-program
+   and then spliced into the place of the quasi-quote.
+      */
+quasiQuote : HsAbstractSyntax # QuasiQuoterLanguage # ?DSL -> HsAbstractSyntax.
+
+/* Concrete usage of a quasi-quotation, demonstrated with the top-level function quasiQuote
+   and then step by step with parsing the code (parse), parsing the dsl (quoteDec) and splicing the object-program (executeSplice,spliceAst).
+   The goal is to embed the domain specific language (?dsl) using the QuasiQuoterLanguage (?quoter) into Haskell*/
+?haskellCodeWithQuasiQuotation : Artifact;
+   elementOf Haskell.
+?quoter : Artifact;
+   elementOf QuasiQuoterLanguage;
+   manifestsAs Transient.
+?haskellQuasiQuoteCode : Artifact;
+   elementOf Haskell;
+   manifestsAs Fragment;
+   hasRole QuasiQuote;
+   partOf ?haskellCodeWithQuasiQuotation.
+?dslCodeFromQuote : Artifact;
+   elementOf ?DSL;
+   manifestsAs Fragment;
+   partOf ?haskellQuasiQuoteCode.
+?haskellCodeAst : Artifact;
+   elementOf HsAbstractSyntax;
+   manifestsAs Transient;
+   hasRole AST.
+?astAfterQuasiQuoteSplice : Artifact;
+   elementOf HsAbstractSyntax;
+   manifestsAs Transient;
+   hasRole AST;
+   hasRole ObjectProgram.
+parse(?haskellCodeWithQuasiQuotation) |-> ?haskellCodeAst.
+quasiQuote(?haskellCodeAst,?quoter,?dslCodeFromQuote) |-> ?astAfterQuasiQuoteSplice.
+
+/*
+@Description: Three steps composing quasi-quotation
+
+@Rationale: See Paper 
+*/
+?quoteAst : Artifact;
+   elementOf HsAbstractSyntax;
+   manifestsAs Transient;
+   hasRole AST;
+   partOf ?haskellCodeAst.
+?stringOfQuote : Artifact;
+   elementOf HsString;
+   manifestsAs Transient;
+   partOf ?quoteAst.
+?objectProgramConstructedFromQuote : Artifact;
+   elementOf TemplateHaskellDeclarationsQ;
+   manifestsAs Transient;
+   hasRole ObjectProgram.
+// Produce program from splice quote step by step
+parse(?haskellQuasiQuoteCode) |-> ?quoteAst.
+quoteDec(?quoter,?stringOfQuote) |-> ?objectProgramConstructedFromQuote.
+splice(?haskellCodeAst,?objectProgramConstructedFromQuote) |-> ?astAfterQuasiQuoteSplice.
