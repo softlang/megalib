@@ -1,0 +1,11 @@
+module rails.demo.tmsblog.ArticleActiveRecord
+
+import rails.ActiveRecord where {
+  [ArticleModelObjects / ?ApplicationRecordDerivativeObjects,
+  articleModel / ?applicationRecordDerivative,
+  articleModelInstance / ?applicationRecordDerivativeInstance,
+  generatedApplicationRecord / ?applicationRecordClass,
+  SQLiteImage / ?DbLanguage,
+  defaultSQLiteDBConfiguration / ?dbConnectionConfig,
+  defaultSQLiteDB / ?dbFile]
+}
