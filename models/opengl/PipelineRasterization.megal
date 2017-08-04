@@ -1,0 +1,41 @@
+module opengl.PipelineRasterization
+
+import opengl.PipelinePrimitiveProcessing
+
+
+/*
+@Description:
+	Input are the processed primitives from primitive processing. These are subdivided into fragments (pixel-values). 
+	
+@Rationale:
+	https://en.wikipedia.org/wiki/Rasterisation
+*/
+rasterization : ?StorageLanguage -> ?StorageLanguage.
+
+/*
+@Description:
+	A segment of a primitive related to a pixel area.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Fragment
+*/
+GlFragment : Role;
+	= "glwiki::Fragment".
+
+/*
+@Description:
+	The generated fragments from the rasterization. They conform to a specific primitive.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Fragment
+*/
+?fragments : Artifact;
+	= "glwiki::Fragment";
+	elementOf ?StorageLanguage;
+	manifestsAs Transient;
+	hasRole GlFragment.
+	
+rasterization(?primitives) |-> ?fragments.
+rasterization ^composedOf glPipeline.
+rasterization concretizes Rasterization.
+?OpenGLPipeline implements rasterization.

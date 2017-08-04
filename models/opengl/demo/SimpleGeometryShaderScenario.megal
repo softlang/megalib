@@ -1,0 +1,204 @@
+module opengl.scenarios.SimpleGeometryShaderScenario
+
+//import opengl.scenarios.Simple2DTriangleScenario where {
+//	[ 	  
+//	  framebuffer2 / framebuffer,
+//	  vertexBuffer2 / vertexBuffer,
+//	  colorBuffer2 / colorBuffer,
+//	  
+//	  vertexArrayObject2 / vertexArrayObject,
+//	  vaaVertices2 / vaaVertices,
+//	  vaaColors2 / vaaColors,
+//	  
+//	  vertexIn2 / vertexIn,
+//	  vertexOut2 / vertexOut,
+//	  glPosition2 / glPosition,
+//	  passColor2 / passColor,
+//	  
+//	  pixel2 / pixel,
+//	  
+//	  colorTexture2 / colorTexture
+//	]
+//}
+
+import opengl.Platform where {
+	[ 
+	  shader / ?shaderObject
+	]
+}
+
+import opengl.Pipeline where {
+	[ 
+	  framebuffer / ?framebuffer,
+	  vertexBuffer / ?buffer,
+	  colorBuffer / ?buffer,
+	  
+	  vertexArrayObject / ?vertexArrayObject,
+	  vaaVertices / ?vertexAttributeArray,
+	  vaaColors / ?vertexAttributeArray
+	]
+}
+
+import opengl.PipelineVertexProcessing where {
+	[ 
+	  vertexIn / ?verticesVsIn,
+	  vertexOut / ?verticesVsOut,
+	  glPosition / ?glPosition,
+	  passColor / ?passValue
+	]
+}
+
+// This is different to the Simple2DTriangleScenario.
+import opengl.PipelinePrimitiveProcessing where {
+	[ 
+	  passColorArray / ?passValue,
+	  primitiveIn / ?primitivesGsIn,
+	  primitiveOut / ?primitivesGsOut
+	]
+}
+
+import opengl.PipelineFragmentProcessing where {
+	[ 
+	  pixel / ?pixel
+	]
+}
+
+import opengl.PipelinePixelProcessing where {
+	[ 
+	  colorTexture / ?fboTexture
+	]
+}
+
+
+
+/* An application using OpenGL. */
+OpenGLApp : Application;
+	uses C++;
+    reuses GLEW.
+
+/* An application using OpenGL to render a triangle. Two other triangles are created on the GPU in the geometry shader. */
+deployedOpenGLApp : Artifact;
+	~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp";
+	elementOf C++;
+	manifestsAs File;
+	hasRole Executable;
+	^deployedAs OpenGLApp.
+
+
+	
+//
+// Buffer Objects
+//
+
+/* The default FBO (frame buffer object), created at context initialization. */
+framebuffer ~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#line=52".
+
+///* Beside the depth texture, one of the default textures of the FBO. (this texture is displayed on the screen) */	
+//colorTexture partOf framebuffer.
+
+/* Stores vertex positions. */
+vertexBuffer ~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#lines=86-89";
+	~= "../code/src/shaders/Example/Ex02_SimpleGeometryShader.vert#line=4".
+	
+/* Stores color values for each vertex. */
+colorBuffer ~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#lines=92-95";
+	~= "../code/src/shaders/Example/Ex02_SimpleGeometryShader.vert#line=5".
+	
+
+	
+//
+// Vertex Array Object
+//
+
+/* All information about the object to be rendered. */
+vertexArrayObject ~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#lines=100-102".
+	
+/* Information about vertex count and memory layout. */
+vaaVertices ~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#lines=106-107";
+	^defines vertexArrayObject.
+	
+/* Information about the number of vertex colors and their memory layout. */
+vaaColors ~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#lines=118-119";
+	^defines vertexArrayObject.
+
+
+
+//
+// Shader
+//
+
+// TODO: Experimental
+///* The function to call the vertex shader. */
+//vertexShader ~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert#line=9".
+//
+///* The function to call the geometry shader. */
+//geometryShader ~= "../code/src/shaders/Example/ex02_simpleGeometryShader.geom#line=17".
+//
+///* The function to call the fragment shader. */
+//fragmentShader ~= "../code/src/shaders/Example/ex02_simpleGeometryShader.frag#line=9".
+
+/* The shader code */
+shaderFiles : Artifact;
+	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert";
+	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.geom";
+	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.frag";
+    elementOf GLSL;
+    manifestsAs File+;
+    hasRole Shader.
+	
+
+/* A shader program object. This is linked to the pipeline and contains the executable shader code. */
+shaderProgram : Artifact;
+	~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#line=67";
+	~= "../code/src/libraries/Common/Shader.cpp#line=74";
+	elementOf ?ShaderBinaryLanguage;
+	manifestsAs Transient.
+
+	
+/* The code to execute on the GPU */
+shader ~= "../code/src/libraries/Common/Shader.cpp#line=6";
+	conformsTo shaderFiles;
+	partOf shaderProgram.
+
+	
+/* In and outgoing vertices of the vertex shader */
+vertexIn ~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=4-5".
+vertexOut ~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=12-13".
+//++ vertexShader(vertexIn) |-> vertexOut.
+
+
+/* Primitives in the geometry shader process. */
+//++?primitivesGsIn : Artifact; // same for primitivesGsOut
+//++	elementOf ?StorageLanguage;
+//++	manifestsAs Transient;
+//++	hasRole GlPrimitive.
+primitiveIn ~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert#line=8".
+primitiveOut ~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert#line=10".
+//++ geometryShader(primitiveIn) |-> primitiveOut.
+
+	
+//
+// Artifacts in the Pipeline. They are only accessible in the different shaders and not part of the OpenGL App.
+//
+
+/* The vertex position in world coordinates, used for rasterization. */
+glPosition ^defines shader;
+	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert#line=12".
+
+
+/* Color value of all vertices of the primitive in the geometry shader. */
+passColorArray ^defines shader;
+	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert#line=7";
+	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.geom#line=14".
+	
+/* The color value from the vertex. It's interpolated by the rasterizer for the fragment shader. */
+passColor ^defines shader;
+	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.geom#line=15";
+	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.frag#line=4".
+
+
+/* Shader output color for the framebuffer. */
+pixel ^defines shader;
+	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.frag#line=7".
+
+	

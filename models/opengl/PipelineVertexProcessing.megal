@@ -1,91 +1,130 @@
 module opengl.PipelineVertexProcessing
 
-import opengl.Pipeline
+import opengl.PipelineDrawDispatch where {
+	[ 
+	  ?drawCallIn / ?drawCall
+	]
+}
 
 
-
-/* 
-	Draw Dispatch
+/*
+@Description:
+	Start of the rendering pipeline. Execute Vertex Shader to transform vertices. This stage will always be executed and has a default if no vertex shader is bound. In the default case, vertices are passed by without any transformation.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Processing
 */
-ParameterSet : Role.
-Draw : ValueLanguage.
-drawDispatch : Draw -> Draw. //TODO genauer nachschauen
-?drawCallIn : Artifact;
-	elementOf Draw;
-	hasRole ParameterSet. //TODO define
-?drawCallOut : Artifact;
-	elementOf Draw;
-	hasRole ParameterSet.
-drawDispatch(?drawCallIn) |-> ?drawCallOut.
+vertexProcessing : GlslArray -> ?StorageLanguage.
+
+/* A point defined by its position and other attributes. */
+GlVertex : Role;
+	= "glwiki::Vertex_Specification".
+
+/*
+@Description:
+	A list of vertices. Each vertex is defined by its unique ID and a 4 dimensional position. The fourth component must be set to 1. Four dimensions are necessary for matrix multiplication to transform the points.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Stream
+	//TODO information about transformation
+*/
+?vertices : Artifact;
+	= "glwiki::Vertex_Specification#Vertex_Stream";
+	elementOf ?StorageLanguage;
+	manifestsAs Transient;
+	hasRole GlVertex.
+	
+/*
+@Description:
+	This function processes incoming draw calls to prepare vertices for the vertex shader invocation. This includes loading buffer data, specified in the vertex shader.
+	
+@Rationale:
+	TODO
+*/
+vertexProcessing(?drawCallIn) |-> ?vertices.
+vertexProcessing ^composedOf glPipeline.
+vertexProcessing concretizes VertexProcessing.
+?OpenGLPipeline implements vertexProcessing.
+
+	
+///* Extract all vertex IDs from the draw call. */
+//VertexInvocation : AbstractProcess;
+//	^uses ?OpenGLPipeline.
+//
+//
+///* Load vertex information from the bound buffers. */
+//VertexAssembly : AbstractProcess;
+//	^uses ?OpenGLPipeline.
+	
+	
+/*
+@Description:
+	Execute the vertex shader and compute vertex information (e.g. transform the position). Additionally it can write to pass values for other shader stages.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Shader
+*/
+VertexShading : AbstractProcess;
+	= "glwiki::Vertex_Shader"; //TODO more links?
+	//refines SIMT; //TODO
+	^uses ?OpenGLPipeline.
+	
+/*
+@Description:
+	The vertex shader function. It processes vertices to modify them, e.g. for view transformation.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Shader
+*/
+vertexShader : ?StorageLanguage -> ?StorageLanguage.
+?verticesVsIn : Artifact;
+	elementOf ?StorageLanguage;
+	manifestsAs Transient;
+	hasRole GlVertex.
+?verticesVsOut : Artifact;
+	elementOf ?StorageLanguage;
+	manifestsAs Transient;
+	hasRole GlVertex.
+vertexShader(?verticesVsIn) |-> ?verticesVsOut.
+vertexShader concretizes VertexShading.
+vertexShader ^composedOf vertexProcessing.
+
+?OpenGLPipeline implements vertexShader.
+	
 	
 
-// extract all vertex IDs from the parameter set
-ConditionalRendering : AbstractProcess;
-	^uses OpenGLPipeline.
+//
+//  Values used in vertex shading
+//
 
+// Inputs
+/* A unique ID per vertex. */
+?glVertexID : Artifact;
+	= "glwiki::Vertex_Shader#Other_inputs";
+	manifestsAs Transient;
+	elementOf GlslInt.
+/* In instaced rendering, meshes are rendered multiple times with different transformation matrices. This ID defines the instance, the vertex is processed in. */
+?glIstanceID : Artifact; 
+	= "glwiki::Vertex_Shader#Other_inputs";
+	manifestsAs Transient;
+	elementOf GlslInt.
+
+// Outputs
+/* The position of the vertex. (required output of the vertex shader) */
+?glPosition : Artifact;
+	= "glwiki::Vertex_Shader#Outputs";
+	manifestsAs Transient;
+	elementOf GlslVec4.
+/* If rendering points instead of triangles, this value describes the diameter of the point in pixel for the rasterizer. */
+?glPointSize : Artifact;
+	= "glwiki::Vertex_Shader#Outputs";
+	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glPointSize.xhtml";
+	manifestsAs Transient;
+	elementOf GlslFloat.
+/* The clipping distance of this vertex, e.g. minimal distance to the camera to discard the rasterization. */
+?glClipDistance : Artifact;
+	= "glwiki::Vertex_Shader#Outputs";
+	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_ClipDistance.xhtml";
+	manifestsAs Transient;
+	elementOf GlslFloatArray.
 	
-// load vertex information from buffers
-DrawDispatching : AbstractProcess;
-	^uses OpenGLPipeline.
-	
-	
-
-
-/* gets a parameter set, containing vertices array and their attributes and array ranges. */
-vertexProcessing : Draw -> GlslVec4.
-?drawCall : Artifact;
-	elementOf Draw; //TODO define
-	hasRole ParameterSet. //TODO define
-?vertex : Artifact;
-	elementOf GlslVec4;
-	hasRole Value.
-vertexProcessing(?drawCall) |-> ?vertex.
-	
-	
-// TODO weitere Artefakte als Artifact definieren (Eingabebuffer, o.ä.)
-// TODO Komponenten definieren (uses VertexInvocation) -> Funktion definieren
-	
-
-// extract all vertex IDs from the parameter set
-VertexInvocation : AbstractProcess;
-	^uses OpenGLPipeline.
-/*	Draw -> gl_VertexID.
-?drawCall : Artifact;
-	elementOf DrawCall;
-	hasRole ParameterSet.
-?vertexID : Artifact;
-	elementOf uint;
-	hasRole Value.
-VertexInvocation(?drawCall) |-> ?vertexID. */
-
-// load vertex information from buffers
-VertexAssembly : AbstractProcess;
-	^uses OpenGLPipeline.
-/*	VertexID -> Vertex.
-?vertexID : Artifact;
-	elementOf uint;
-	hasRole Value.
-?vertex : Artifact;
-	elementOf Vertex;
-	hasRole ParameterSet;
-VertexAssembly(?vertexID) |-> ?vertex.
-
- compute values (e.g. position) and write them to the output values */
-?OpenGLApp : Application;
-    reuses OpenGLPipeline.
-Shader : Role.
-?shaderFiles : Artifact;
-    elementOf GLSL;
-    manifestsAs File+;
-    hasRole Shader.
-
-//TODO Funktion definieren. (Vertex Shader)	
-
-//	Vertex -> Vertex.
-//?vertexIn : Artifact;
-//	elementOf Vertex;
-//	hasRole ParameterSet;
-//?vertexOut : Artifact;
-//	elementOf Vertex;
-//	hasRole ParameterSet;
-//VertexShader(?vertexIn) |-> ?vertexOut.*/

@@ -54,7 +54,7 @@ Function < Entity;
 concretizes < Function # AbstractProcess. 
 defines < Artifact # Artifact; //Code declares and defines Transients
     = "wikipedia::Declaration_(computer_programming)".
-composedOf < Function # Function. //A function can be decomposed into steps
+composedOf < Function # Function. //Function composition
 
 
 /* A technology is reusable 'third party' Software. See Wiki */
@@ -67,6 +67,8 @@ Library < Technology;
     = "wikipedia::Library_(computing)".
 API < Technology; 
     = "wikipedia::Application_programming_interface".
+DeviceDriver < API;
+    = "wikipedia::Device_driver".
 Framework < Technology; 
     = "wikipedia::Software_framework".
 Plugin < Technology; 
@@ -130,6 +132,10 @@ managedBy < Technology # Artifact;
 /* In a usage scenario the technology is locally deployed as an artifact. */
 deployedAs < System # Artifact; 
     = "wikipedia::Software_deployment".
+    
+/* Compliance to a specification */
+compliesTo < System # Artifact;
+    = "wikipedia::Regulatory_compliance".
     
 /* One might further want to specify on which physical component the    
 artifact is deployed. 

@@ -1,86 +1,199 @@
 module opengl.Platform
 
-/*
-glDrawElements : Vertex -> Fragment;
-	//glDrawElements implements Rendering.
+/* This module defines basic components of OpenGL */
+glwiki :: "https://www.khronos.org/opengl/wiki".
+glspec :: "https://www.khronos.org/registry/OpenGL/specs/gl".
+
+/* 
+@Description: The driver written in some language
+
+@Rationale: See provided links
 */
+GPU : Hardware;
+	= "wikipedia::Graphics_processing_unit".
+?DriversLanguage : MachineLanguage; 
+	= "wikipedia::Device_driver";
+	encodedAs Binary.
 
-OpenGL : Framework;
-	= "https://www.opengl.org/";
-    supports ConcurrentComputing.
-	//uses MachineLanguage.
+/* 
+@Description:
+    An API/Framework for graphics programming and rendering.
+        
+@Rationale:
+    See https://www.opengl.org/
+	or https://en.wikipedia.org/wiki/OpenGL
+*/
+OpenGL : Artifact; //TODO Framework/API
+	~= "https://www.opengl.org/documentation/current_version/";
+	= "wikipedia::OpenGL";
+    manifestsAs File+;
+    hasRole Specification.
+?OpenGLDriver : API;
+	= "glwiki::Getting_Started#Downloading_OpenGL";
+	= "wikipedia::#Video_card#Graphic_drivers";
+	uses ?DriverLanguage;
+	hasRole DeviceDriver;
+	compliesTo OpenGL.	
+
+/* 
+@Description:
+	Provide OpenGL functionality for C/C++ and connect to the graphics driver's API. There are alternatives like "gl3w" and other librarys for other languages like Java to provide OpenGL functionality. 
 	
-
-// Builds a bridge to the driver implementation of OpenGL
+@Rationale:
+	See http://glew.sourceforge.net/ and https://www.khronos.org/opengl/wiki/Language_bindings for other bindings.
+*/
 GLEW : Library;
 	= "http://glew.sourceforge.net/";
 	uses C;
-	reuses OpenGL.
+	reuses ?OpenGLDriver.
+	
+/*
+@Description:
+	The machine code of a shader, compiled by the graphics driver to be executed on the GPU. It uses instructions (e.g. addition/multiplication) supported by the graphics card.
+	
+@Rationale:
+	TODO instruction set
+*/
+?ShaderBinaryLanguage : MachineLanguage;
+	encodedAs Binary.
 
+	
+/* 
+@Description:
+	The OpenGL Shading Language used in OpenGL shaders. Like other shading languages it isn't limited to shading operations and can be used for general purpose programming in compute shaders.
 
-// Processing unit
-GPU : Hardware;
-	= "https://en.wikipedia.org/wiki/Graphics_processing_unit".
-
-
-/* The OpenGL Shader Language */
-ShaderLanguage < Language .
-GLSL : ShaderLanguage; //TODO: Component?
+@Rationale:
+	See https://en.wikipedia.org/wiki/OpenGL_Shading_Language
+*/
+GLSL : ShadingLanguage; //TODO: Component?
 	= "https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.40.pdf";
+	= "wikipedia::OpenGL_Shading_Language";
 	supports GraphicsProgramming;
 	facilitates ConcurrentProgramming;
-	encodedAs Text;
-    ^implements OpenGL.
+	influencedBy C;
+	encodedAs Text.
+
+/* 
+@Description:
+	Compiles GLSL Code into machine code for the specific GPU. The machine code is graphics card specific and uses the available instructions of the GPU. The graphics driver implements the compiler.
+	
+@Rationale:
+	https://en.wikipedia.org/wiki/OpenGL_Shading_Language#Compilation_and_execution
+*/
+?GLSLCompiler : Compiler;
+	= "https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/";
+	= "wikipedia::OpenGL_Shading_Language#Compilation_and_execution";
+	partOf ?GraphicsDriver;
+	uses ?DriverLanguage;
+	implements GLSL.
 	
 	
 /*
-	ValueLanguage
-
-	Basic types
+@Description:
+	The compilation process for GLSL shader code to GPU instruction code.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/GLAPI/glCompileShader
 */
+glCompileShader : GLSL -> ?ShaderBinaryLanguage.
+?GLSLCompiler implements glCompileShader.
+
+/* The shader code encoded as a string. */
+?shaderCode : Artifact;
+	elementOf GLSL;
+	hasRole Shader;
+	manifestsAs Transient.
+	
+/* The compiled shader object. */
+?shaderObject : Artifact;
+	= "glwiki::GLSL_Object#Program_objects";
+	elementOf ?ShaderBinaryLanguage;
+	conformsTo ?shaderCode;
+	hasRole Shader;
+    manifestsAs Transient.
+	
+glCompileShader(?shaderCode) |-> ?shaderObject.
+	
+	
+/* 
+@Description:
+	A language to store buffers. It's more an abstract language, by following alignment rules specified in the OpenGL specification or specific to the used graphics card. It may be a GlslVec4Array in most of the times, due to alignment of vec3 to vec4, but maybe there will be a graphics card with another storage layout.
+	
+@Rationale:
+	See headline of https://www.khronos.org/opengl/wiki/Buffer_Object
+*/
+?StorageLanguage : ValueLanguage;
+	= "glwiki::Buffer_Object".
+	
+	
+/* 
+@Description:
+	A language to store textures. It has different rules than StorageLanguage. A texture may have mipmaps (smaller versions of the texture) and its memory layout depends on the data layout (e.g. rgb-channels).
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Texture#Storage
+*/
+?TextureStorageLanguage : ValueLanguage;
+	= "glwiki::Texture".
+	
+	
+	
+//
+//	Basic types
+//
 GlslInt : ValueLanguage; // 32 Bit integer
-	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Scalars";
-    ^implements OpenGL.
+	= "glwiki::Data_Type_(GLSL)#Scalars";
+    ^implements ?GLSLCompiler.
 
 GlslUint : ValueLanguage; // 32 Bit unsigned integer
-	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Scalars";
-    ^implements OpenGL.
+	= "glwiki::Data_Type_(GLSL)#Scalars";
+    ^implements ?GLSLCompiler.
 
 GlslFloat : ValueLanguage; // 32 Bit floating point value
-	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Scalars";
-    ^implements OpenGL.
+	= "glwiki::Data_Type_(GLSL)#Scalars";
+    ^implements ?GLSLCompiler.
 
 GlslBool : ValueLanguage; // 8 Bit boolean
-	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Scalars";
-    ^implements OpenGL.
+	= "glwiki::Data_Type_(GLSL)#Scalars";
+    ^implements ?GLSLCompiler.
 
 	
-/* Arrays */
+//
+//  Arrays
+//
 GlslArray : ValueLanguage;
-	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Arrays";
-    ^implements OpenGL.
+	= "glwiki::Data_Type_(GLSL)#Arrays";
+    ^implements ?GLSLCompiler.
 
 	
 GlslVec4 : ValueLanguage; // 4 component float value (vector)
-	= "https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)#Vectors";
-	subsetOf GlslArray.
+	= "glwiki::Data_Type_(GLSL)#Vectors";
+	subsetOf GlslArray;
+	subsetOf GlslFloat.
 
 GlslVec4Array : ValueLanguage; // GlslArray of vec4
-	subsetOf GlslArray.
+	= "glwiki::Data_Type_(GLSL)#Arrays";
+	subsetOf GlslArray;
+	subsetOf GlslVec4.
+	
+GlslFloatArray : ValueLanguage; // GlslArray of float
+	= "glwiki::Data_Type_(GLSL)#Arrays";
+	subsetOf GlslArray;
+	subsetOf GlslFloat.
 	
 
-/* Texture - Contains additional information and provides optimized functions compared to GlslArrays */
-// 1D GlslArray of values.
+// Texture - Contains additional information and provides optimized functions compared to GlslArrays */
+/* 1D array of values. */
 GlslTexture1D : ValueLanguage;
-	= "https://www.khronos.org/opengl/wiki/Texture";
+	= "glwiki::Texture";
 	subsetOf GlslArray.
 	
-// 2D GlslArray of values.
+/* 2D array of values. */
 GlslTexture2D : ValueLanguage;
-	= "https://www.khronos.org/opengl/wiki/Texture";
+	= "glwiki::Texture";
 	subsetOf GlslArray.
 
-// 3D GlslArray of values.
+/* 3D array of values. */
 GlslTexture3D : ValueLanguage;
-	= "https://www.khronos.org/opengl/wiki/Texture";
+	= "glwiki::Texture";
 	subsetOf GlslArray.

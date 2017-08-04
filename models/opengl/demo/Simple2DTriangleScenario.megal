@@ -1,0 +1,195 @@
+module opengl.scenarios.Simple2DTriangleScenario
+
+import opengl.Platform where {
+	[ 
+	  shader / ?shaderObject
+	]
+}
+
+import opengl.Pipeline where {
+	[ 
+	  framebuffer / ?framebuffer,
+	  vertexBuffer / ?buffer,
+	  colorBuffer / ?buffer,
+	  
+	  vertexArrayObject / ?vertexArrayObject,
+	  vaaVertices / ?vertexAttributeArray,
+	  vaaColors / ?vertexAttributeArray
+	]
+}
+
+import opengl.PipelineVertexProcessing where {
+	[ 
+	  vertexIn / ?verticesVsIn,
+	  vertexOut / ?verticesVsOut,
+	  glPosition / ?glPosition,
+	  passColor / ?passValue
+	]
+}
+
+import opengl.PipelineFragmentProcessing where {
+	[ 
+	  pixel / ?pixel
+	]
+}
+
+import opengl.PipelinePixelProcessing where {
+	[ 
+	  colorTexture / ?fboTexture
+	]
+}
+
+	
+	
+/* An application using OpenGL. */
+OpenGLApp : Application;
+	uses C++;
+    reuses GLEW.
+
+/* An application using OpenGL to render a triangle. The color is given for each vertex and is interpolated for the triangle. */
+deployedOpenGLApp : Artifact;
+	~= "../code/src/executables/Ex01_SimpleTriangle/main.cpp";
+	elementOf C++;
+	manifestsAs File;
+	hasRole Executable;
+	^deployedAs OpenGLApp.
+
+
+	
+//
+// Buffer Objects
+//
+
+/* The default FBO (frame buffer object), created at context initialization. */
+//++?framebuffer : Artifact;
+//++	= "glwiki::Default_Framebuffer";
+//++	= "glwiki::Framebuffer_Object";
+//++	elementOf ?TextureStorageLanguage;
+//++	manifestsAs Transient.
+framebuffer ~= "../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=52".
+
+///* Beside the depth texture, one of the default textures of the FBO. (this texture is displayed on the screen) */
+//++?texture : Artifact;
+//++	= "glwiki::Texture";
+//++	elementOf ?TextureStorageLanguage;
+//++	manifestsAs Transient.
+//colorTexture partOf framebuffer.
+
+/* Stores vertex positions. */
+//++?buffer : Artifact;
+//++	= "glwiki::Buffer_Object";
+//++	elementOf ?StorageLanguage;
+//++	manifestsAs Transient.
+vertexBuffer ~= "../code/src/executables/Ex01_SimpleTriangle/main.cpp#lines=86-89";
+	~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=4".
+	
+/* Stores color values for each vertex. */
+//++?buffer : Artifact;
+colorBuffer ~= "../code/src/executables/Ex01_SimpleTriangle/main.cpp#lines=92-95";
+	~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=5".
+	
+
+	
+//
+// Vertex Array Object
+//
+
+/* All information about the object to be rendered. */
+//++?vertexArrayObject : Artifact;
+//++	= "glwiki::Vertex_Specification#Vertex_Array_Object";
+//++	elementOf ?StorageLanguage;
+//++	manifestsAs Transient.
+vertexArrayObject ~= "../code/src/executables/Ex01_SimpleTriangle/main.cpp#lines=100-102".
+	
+/* Information about vertex count and memory layout. */
+//++?vertexAttributeArray : Artifact;
+//++	= "glwiki::GLAPI/glEnableVertexAttribArray";
+//++	= "glwiki::GLAPI/glVertexAttribPointer";
+//++	partOf ?vertexArrayObject;
+//++	elementOf GLSL;
+//++	manifestsAs Transient.
+vaaVertices ~= "../code/src/executables/Ex01_SimpleTriangle/main.cpp#lines=106-107";
+	^defines vertexArrayObject.
+
+/* Information about the number of vertex colors and their memory layout. */
+//++?vertexAttributeArray : Artifact;	
+vaaColors ~= "../code/src/executables/Ex01_SimpleTriangle/main.cpp#lines=118-119";
+	^defines vertexArrayObject.
+	
+
+
+//
+// Shader
+//
+
+// TODO: Experimental
+///* The function to call the vertex shader. */
+//vertexShader ~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=9".
+//
+///* The function to call the fragment shader. */
+//fragmentShader ~= "../code/src/shaders/Example/ex01_simpleTriangle.frag#line=9".
+
+/* The shader code */
+shaderFiles : Artifact;
+	~= "../code/src/shaders/Example/ex01_simpleTriangle.vert";
+	~= "../code/src/shaders/Example/ex01_simpleTriangle.frag";
+    elementOf GLSL;
+    manifestsAs File+;
+    hasRole Shader.
+	
+
+/* A shader program object. This is linked to the pipeline and contains the executable shader code. */
+shaderProgram : Artifact;
+	~= "../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=67";
+	~= "../code/src/libraries/Common/Shader.cpp#line=74";
+	elementOf ?ShaderBinaryLanguage;
+	manifestsAs Transient.
+
+	
+/* The code to execute on the GPU */
+//++?shaderObject : Artifact;
+//++	= "glwiki::GLSL_Object#Program_objects";
+//++	elementOf ?ShaderBinaryLanguage;
+//++	hasRole Shader;
+//++    manifestsAs Transient.
+shader ~= "../code/src/libraries/Common/Shader.cpp#line=6";
+	conformsTo shaderFiles;
+	partOf shaderProgram.
+	
+
+/* In and outgoing vertices of the vertex shader */
+vertexIn ~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=4-5".
+vertexOut ~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=12-13".
+//++ vertexShader(vertexIn) |-> vertexOut.
+	
+
+
+//
+// Artifacts in the Pipeline. They are only accessible in the different shaders and not part of the OpenGL App.
+//
+
+/* The vertex position in world coordinates, used for rasterization. */
+//++?glPosition : Artifact;
+//++	= "glwiki::Vertex_Shader#Outputs";
+//++	manifestsAs Transient;
+//++	elementOf GlslVec4.
+glPosition ^defines shader;
+	~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=12".
+
+	
+/* The color value from the vertex. It's interpolated by the rasterizer for the fragment shader. */
+//++?passValue : Artifact;
+//++	= "glwiki::Type_Qualifier_(GLSL)#Shader_stage_inputs_and_outputs";
+//++	partOf ?OpenGLPipeline;
+//++	elementOf GLSL;
+//++	manifestsAs Transient.
+passColor ^defines shader;
+	~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=7";
+	~= "../code/src/shaders/Example/ex01_simpleTriangle.frag#line=4".
+
+
+/* Shader output color for the framebuffer. */
+pixel ^defines shader;
+	~= "../code/src/shaders/Example/ex01_simpleTriangle.frag#line=7".
+
+

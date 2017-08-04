@@ -63,8 +63,8 @@ TemplateLanguage < Language;
     = "wikipedia::Template_processor".
 LogLanguage < DocumentLanguage;
     = "wikipedia::Logfile".
-GraphicsLanguage < Language;
-    = "wikipedia::Graphics".
+ShadingLanguage < GraphicsLanguage;
+	= "wikipedia::Shading_language".
 
 
 /* Subset according to set theory. This is only used when only a subset can be processed 

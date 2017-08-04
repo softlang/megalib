@@ -1,0 +1,60 @@
+module opengl.PipelineFragmentProcessing
+
+import opengl.PipelineRasterization where {
+	[ 
+	  ?fragmentsFsIn / ?fragments,
+	  ?fragmentsFsOut / ?fragments
+	]
+}
+
+
+/*
+@Description:
+	Process fragments from the rasterization process and set its color value. The fragment shader is executed in this stage to define the color values or to discard fragments.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Fragment_Shader
+*/
+fragmentProcessing : ?StorageLanguage -> ?StorageLanguage.
+
+
+/*
+@Description:
+	A specific location on the monitor with a color value.
+	
+@Rationale:
+	https://en.wikipedia.org/wiki/Pixel
+*/
+Pixel : Role;
+	= "wikipedia::Pixel".
+	
+/* A concrete pixel value. */
+?pixel : Artifact;
+	= "glwiki::Fragment_Shader#Outputs";
+	elementOf ?StorageLanguage;
+	manifestsAs Transient;
+	hasRole Pixel.
+	
+fragmentProcessing(?fragments) |-> ?pixel.
+fragmentProcessing ^composedOf glPipeline.
+fragmentProcessing concretizes FragmentProcessing.
+?OpenGLPipeline implements fragmentProcessing.
+
+
+/*
+@Description:
+	Execute the fragment shader for each pixel and process them.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Fragment_Shader
+*/
+FragmentShading : AbstractProcess;
+	= "glwiki::Fragment_Shader";
+	//refines SIMT; //TODO
+	^uses ?OpenGLPipeline.
+
+fragmentShader : ?StorageLanguage -> ?StorageLanguage.
+fragmentShader(?fragmentsFsIn) |-> ?fragmentsFsOut.
+fragmentShader concretizes FragmentShading.
+fragmentShader ^composedOf fragmentProcessing.
+?OpenGLPipeline implements fragmentShader.

@@ -1,0 +1,27 @@
+module opengl.PipelinePixelProcessing
+
+import opengl.Pipeline where {
+	[ 
+	  ?fboTexture / ?texture,
+	  ?fbo / ?framebuffer
+	]
+}
+
+import opengl.PipelineFragmentProcessing
+
+
+/*
+@Description:
+	Input are the processed pixel from the fragment shader. They are written to the color texture of the active framebuffer. (After blending, depth test, multisampling, ...)
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Per-Sample_Processing
+*/
+pixelProcessing : ?StorageLanguage -> ?TextureStorageLanguage.
+
+?fboTexture partOf ?fbo.
+
+pixelProcessing(?pixel) |-> ?fboTexture.
+pixelProcessing ^composedOf glPipeline.
+pixelProcessing concretizes PixelProcessing.
+?OpenGLPipeline implements pixelProcessing.

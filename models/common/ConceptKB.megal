@@ -36,6 +36,8 @@ PipeFilter : ArchitecturalPattern;
     = "http://www.dossier-andreas.net/software_architecture/pipe_and_filter.html".
 GraphicsPipeline : ArchitecturalPattern; //TODO: maybe specialization of PipeFilter
     = "https://en.wikipedia.org/wiki/Graphics_pipeline".
+MemoryHierarchy : ArchitecturalPattern;
+	= "wikipedia::Memory_hierarchy".
 
 /* Paradigms */
 ParallelProgramming : Paradigm;
@@ -222,10 +224,12 @@ Parsing : AbstractProcess;
     aspectOf MetaProgramming.
 ParserGeneration : AbstractProcess;
     = "101wiki::Parser_generation".
+UnifiedShaderModel : AbstractProcess;
+	= "wikipedia::Unified_shader_model".
 HTTP : Protocol;
     = "wikipedia::HTTP".
 HTTPS : Protocol ;
-    = "wikipedia::HTTPS".
+    = "wikipedia::HTTPS". 
     
 /* Known constructs that imply a certain setup and purpose of up to multiple involved artifacts */
 Semaphore : Construct; //A flag to control access to a resource in the context of concurrent programs.
@@ -362,6 +366,9 @@ Parser : Role;
     ="101wiki::Parser".
 AST : Role; 
    = "https://en.wikipedia.org/wiki/Abstract_syntax_tree".
+Invariant : Role; 
+ 		= "wikipedia::Invariant_(computer_science)".
+
     
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";
@@ -443,3 +450,8 @@ Decorator-AbstractDecorator : Role;
 Decorator-ConcreteDecorator : Role;
     = "wikipedia::Decorator_pattern";
     participantOf DecoratorPattern.
+    
+/* Concepts that need further classification */
+SIMT : Concept; 
+	= "wikipedia::Single_instruction,_multiple_threads";
+	aspectOf ParallelProgramming.   

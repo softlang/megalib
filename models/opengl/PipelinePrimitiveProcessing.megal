@@ -1,63 +1,163 @@
 module opengl.PipelinePrimitiveProcessing
 
-import opengl.Pipeline
-	
+import opengl.PipelineVertexProcessing
+import opengl.PipelineTessellation where {
+	[ 
+	  ?verticesTessellation / ?verticesTesOut
+	]
+}
 	
 
-/* generate new vertices between the incoming vertices. */
-Primitive : ValueLanguage;
-	subsetOf GlslVec4Array.
-PrimitiveArray : ValueLanguage;
-	subsetOf GlslVec4Array.
+/*
+@Description:
+	Optional stage to modify or generate new primitives based on incoming primitives. If no geometry shader is set, vertices are combined to primitives and send to the rasterization. If the tessellation shader was executed, its generated vertices are processed. Instead of tessellation's hardware accelleration, primitives in the geometry shader are mostly generated without hardware accelleration.
 	
-primitiveProcessing : GlslVec4Array -> PrimitiveArray.
-?vertices : Artifact;
-	elementOf GlslVec4Array;
-	hasRole Value.
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Post-Processing
+*/
+primitiveProcessing : ?StorageLanguage -> ?StorageLanguage.
+
+/*
+@Description:
+	Specification how to render the vertices, e.g. as triangles, points or lines.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Primitive
+*/
+GlPrimitive : Role;
+	= "glwiki::Primitive".
+
+/* The generated primitives from primitiveProcessing. */
 ?primitives : Artifact;
-	elementOf PrimitiveArray;
-	hasRole Value.
+	= "glwiki::Vertex_Specification#Primitives";
+	elementOf ?StorageLanguage;
+	manifestsAs Transient;
+	hasRole GlPrimitive.
+	
+/* Vertices from vertex shading */
 primitiveProcessing(?vertices) |-> ?primitives.
 
+/* Vertices from tessellation */
+primitiveProcessing(?verticesTessellation) |-> ?primitives.
+
+primitiveProcessing ^composedOf glPipeline.
+primitiveProcessing concretizes PrimitiveProcessing.
+?OpenGLPipeline implements primitiveProcessing.
 
 
-// combine multiple vertices to a "Patch", eg. a triangle, line or point
+
+/*
+@Description:
+	Combine multiple vertices to a primitive, eg. a triangle, line or point. Same as in tessellation. 
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Primitive_Assembly
+*/
 PrimitiveAssembly : AbstractProcess;
-	= "https://www.khronos.org/opengl/wiki/Primitive_Assembly";
-	^uses OpenGLPipeline.
+	= "glwiki::Primitive_Assembly";
+	^uses ?OpenGLPipeline.
 
 
-// calls the geometry shader multiple times to process one primitive more than once
+/*
+@Description:
+	Optional process for instanced rendering. Calls the geometry shader multiple times to process one primitive multiple times with different data.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Geometry_Shader#Instancing
+*/
 PrimitiveInstancing : AbstractProcess;
+	= "glwiki::Geometry_Shader#Instancing";
 	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=408";
-	^uses OpenGLPipeline.
+	^uses ?OpenGLPipeline.
 	
 	
-// receives a primitive and generates new primitives
-GeometryShader : AbstractProcess;
-	= "https://www.khronos.org/opengl/wiki/Geometry_Shader";
-	^uses OpenGLPipeline.
+/*
+@Description:
+	Receives a primitive and generates new primitives. Executes the geometry shader.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Geometry_Shader
+*/
+GeometryShading : AbstractProcess;
+	= "glwiki::Geometry_Shader";
+	= "https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_geometry_shader4.txt";
+	// refines SIMT; //TODO
+	^uses ?OpenGLPipeline.
+
+/*
+@Description:
+	Process primitives and generate new ones.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Geometry_Shader
+*/
+geometryShader : ?StorageLanguage -> ?StorageLanguage.
+?primitivesGsIn : Artifact;
+	elementOf ?StorageLanguage;
+	manifestsAs Transient;
+	hasRole GlPrimitive.
+?primitivesGsOut : Artifact;
+	elementOf ?StorageLanguage;
+	manifestsAs Transient;
+	hasRole GlPrimitive.
+geometryShader(?primitivesGsIn) |-> ?primitivesGsOut.
+geometryShader concretizes GeometryShading.
+geometryShader ^composedOf primitiveProcessing.
+?OpenGLPipeline implements geometryShader.
 
 	
-// gather vertex attributes
+//
+// Fixed function stages
+//
+
+/*
+@Description:
+	Optional step for vertex attribute interpolation. In this process, no attributes are interpolated. E.g. or a color value, a triangle as a uniform color.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Primitive#Provoking_vertex
+*/
 FlatShading : AbstractProcess;
+	= "https://www.khronos.org/opengl/wiki/Primitive#Provoking_vertex";
 	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=424";
-	^uses OpenGLPipeline.
+	^uses ?OpenGLPipeline.
 
 
-// TODO
+/*
+@Description:
+	Important step in the OpenGL pipeline. Vertices are devided by their fourth component (4-component vector xyz = position; w = homogenous coordinate). This is used to correct a perspective projection.
+
+@Rationale:
+	For information about perspective projection see https://en.wikipedia.org/wiki/3D_projection#Perspective_projection
+*/
 PerspectiveDivision : AbstractProcess;
+	= "glwiki::Vertex_Post-Processing#Perspective_divide";
 	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=428";
-	^uses OpenGLPipeline.
+	^uses ?OpenGLPipeline.
 	
 
-// TODO
+/*
+@Description:
+	Necessary if multiple viewports are bound and the geometry shaders renders to a specific one.
+	
+@Rationale:
+	https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_viewport_array.txt
+	https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=429
+*/
 ControlViewport : AbstractProcess;
 	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=429";
-	^uses OpenGLPipeline.
+	^uses ?OpenGLPipeline.
 
 
-// clip primitives at view frustum
+/*
+@Description:
+	Clip primitives at the view frustum.
+	
+@Rationale:
+	https://en.wikipedia.org/wiki/Clipping_(computer_graphics)
+	https://www.opengl.org/archives/resources/faq/technical/clipping.htm
+*/
 PrimitiveClipping : AbstractProcess;
+	= "glwiki::Vertex_Post-Processing#Clipping";
 	= "https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=426";
-	^uses OpenGLPipeline.
+	^uses ?OpenGLPipeline.
