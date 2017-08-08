@@ -1,18 +1,15 @@
 module antlr.demo.checker.ListenerForParserError
 
-import antlr.demo.checker.Core
 import antlr.ListenerForParserError where {
 	[
 		checker / ?App,
 		MegaL / ?InputLanguage, 
 		checkerGrammar / ?grammar,
-		checkerLexer / ?ANTLRJavaLexer, 
-		checkerParser / ?ANTLRJavaParser, 
-		checkerParserFiles / ?ANTLRJavaParserFiles, 
-		checkerLexerFiles / ?ANTLRJavaLexerFiles,
+		checkerParserFiles / ?parserFiles, 
+		checkerLexerFiles / ?lexerFiles,
 		?someMegaModel / ?input,
-		CheckerErrorListener / ?ErrorListener,
-		?parserObjectWithListenersAfterApplication / ?parserObjectWithErrorListenerAfterApplication
+		checkerParserErrorListener0 / ?parserErrorListener0,
+		checkerParserErrorListener2 / ?parserErrorListener2
 	]
 } 
 
@@ -24,3 +21,13 @@ An ErrorListener will be attached to the parser. When Errors are detected, the c
 @Rationale:
 See linked files to Github for better highlighting 
 */
+checker = "https://github.com/softlang/megalib".
+
+/*
+@Description:
+    Concrete lexer and parsers are generated.
+@Rationale:
+    TODO: We need linking to a local project
+*/
+checkerLexerFiles = "https://github.com/softlang/megalib/tree/master/checker".
+checkerParserFiles = "https://github.com/softlang/megalib/tree/master/checker".

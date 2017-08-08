@@ -19,3 +19,8 @@ A parser-listener is attached to the parser
 @Rationale:
 See linked files to Github for better highlighting 
 */
+megaLParserListener0 ~= "https://github.com/softlang/megalib".
+megaLParserObject0 ~= "https://github.com/softlang/megalib".
+megaLParserObject1 ~= "https://github.com/softlang/megalib".
+megaLParserObject2 ~= "https://github.com/softlang/megalib".
+megaLParserListener2 ~= "https://github.com/softlang/megalib".

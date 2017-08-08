@@ -21,8 +21,7 @@ for more information about listeners in ANTLR or listeners in general, see modul
 @Rationale:
 See http://www.antlr.org/api/Java/org/antlr/v4/runtime/ANTLRErrorListener.html
 */	
-ErrorListenerLanguage
-	="ANTLRJAVARUN::ANTLRErrorListener.java".
+ErrorListenerLanguage = "ANTLRJAVARUN::ANTLRErrorListener.java".
 
 /*
 @Description:

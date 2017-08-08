@@ -1,7 +1,6 @@
 module antlr.App
 
-
-import antlr.CodeGeneration
+import antlr.Core
 
 /*
 @Description:
