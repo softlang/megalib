@@ -2,6 +2,7 @@ module antlr.demo.checker.Checking
 
 import antlr.demo.checker.App
 import antlr.demo.checker.ListenerForParserError
+import antlr.demo.checker.ListenerForParser
 
 /*
 @Description:
@@ -33,10 +34,12 @@ Checker implements checkModel.
 */
 getErrors: ErrorListenerLanguage -> JVMString.
 checker implements getErrors.
-?errors : Artifact;
+checkerParserErrorListener2 ~= "MEGALIB::".
+errors : Artifact;
+    ~= "MEGALIB::";
 	manifestsAs Transient;
 	elementOf JVMString.
-getErrors(?checkerParserErrorListener2) |-> ?errors.
+getErrors(checkerParserErrorListener2) |-> errors.
 
 /*
 @Description:
@@ -48,11 +51,11 @@ getErrors(?checkerParserErrorListener2) |-> ?errors.
 */
 MegaModelObjectLanguage : ValueLanguage;
     = "MEGALIB::tree/master/checker/src/org/java/megalib/models";
-	subsetOf JVMObject.
+	subsetOf JVMObjectLanguage.
 ?megaModel : Artifact;
 	manifestsAs Transient;
 	elementOf MegaModelObjectLanguage.
-getMegaModel : ANTLRListenerObjectsLanguage -> MegaModelObjectLanguage.
+getMegaModel : ParserListenerLanguage -> MegaModelObjectLanguage.
 checker implements getMegaModel.
 getMegaModel (?returnedANTLRParserListeners) |-> (?megaModel).
 
