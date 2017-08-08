@@ -63,7 +63,7 @@ TemplateLanguage < Language;
     = "wikipedia::Template_processor".
 LogLanguage < DocumentLanguage;
     = "wikipedia::Logfile".
-ShadingLanguage < GraphicsLanguage;
+ShadingLanguage < Language;
 	= "wikipedia::Shading_language".
 
 

@@ -7,51 +7,57 @@ Concept < Entity;
     = "https://github.com/softlang/megalib/wiki/Concept-Classification".
 
 /* Concept Types, see https://github.com/softlang/megalib/wiki/Concept-Classification */
-ArchitecturalPattern < Entity;
+ArchitecturalPattern < Concept;
     = "wikipedia::Architectural_pattern".
 DesignPattern < ArchitecturalPattern;
     = "wikipedia::Software_design_pattern".
 
-Paradigm < Entity ;
+Paradigm < Concept ;
     = "wikipedia::Programming_paradigm".
 
-ProgrammingDomain < Entity;
+ProgrammingDomain < Concept;
     = "wikipedia::Domain_(software_engineering)".
 subdomainOf < ProgrammingDomain # ProgrammingDomain; 
     = "wikipedia::Domain_(software_engineering)".
 
-TechnologySpace < Entity;
+TechnologySpace < Concept;
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
 subspaceOf < TechnologySpace # TechnologySpace;
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
     
-AbstractProcess < Entity; //or execution model
+AbstractProcess < Concept; //or execution model
     = "wikipedia::Abstract_process".
 Protocol < AbstractProcess; 
     = "wikipedia::Communications_protocol".
 Algorithm < AbstractProcess;
     = "wikipedia::Algorithm".
 
-Construct < Entity;
+Construct < Concept;
     = "wikipedia::Language_construct";
     = "wikipedia::Category:Programming_constructs".
 
-Role < Entity;
+Role < Concept;
     = "wikipedia::Artifact_(software_development)";
     = "wikipedia::Terminology".
     
+aspectOf < Concept # Concept; //to be removed
+    = "oxfordDict::aspect".
+/*
 aspectOf < Construct # Paradigm; 
     = "oxfordDict::aspect".
 aspectOf < Construct # ProgrammingDomain. 
 aspectOf < AbstractProcess # ProgrammingDomain.
 aspectOf < Role # ProgrammingDomain.
 aspectOf < Role # TechnologySpace.
+*/
 
+refines < Concept # Concept. //to be removed
+/*
 refines < AbstractProcess # AbstractProcess.
 refines < Construct # Construct.
 refines < Paradigm # Paradigm. 
 refines < Role # Role. 
-
+*/
 
 participantOf < Role # ArchitecturalPattern;
     = "wikipedia::Architectural_pattern".
