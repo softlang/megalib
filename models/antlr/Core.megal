@@ -11,7 +11,7 @@ import stringtemplate.Core
 */
 ANTLRGITHUB :: "https://github.com/antlr/antlr4/blob/master".
 ANTLRJAVARUN :: "https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/Java/src/org/antlr/v4/runtime".
-ANTLR : ParserGenerator; 
+ANTLR : Framework; 
 	= "https://github.com/antlr/antlr4";
     uses ParserGeneration;
 	uses Java.
