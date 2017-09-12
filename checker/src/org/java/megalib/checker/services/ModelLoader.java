@@ -153,7 +153,7 @@ public class ModelLoader {
                                                                + ".megal"));
             l = (ImportListener) parse(pdata, new ImportListener());
             if(!p.equals(l.getName()))
-                throw new ParserException("Error : Identified wrong capitalization in 'import " + p + "'");
+                throw new ParserException("Error at Import Resolution: Identified wrong spelling in 'import " + p + "'. Expected '"+l.getName()+"'");
             imports.addAll(l.getImports());
             processed.add(l.getName());
             toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject())
