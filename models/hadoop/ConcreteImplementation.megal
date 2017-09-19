@@ -1,0 +1,37 @@
+module hadoop.ConcreteImplementation
+
+import hadoop.HadoopMapReduce where {
+    [ SequenceFileInputFormat / ?InputFormat,
+      DoubleWritable / ?OutputFormat,
+      totalMapper / ?mapper,
+      totalReducer / ?reducer,
+      MapFunction / ?mapImplementation,
+      ReduceFunction / ?reduceImplementation,
+      inputFile / ?inputFiles,
+      outputFile / ?outputFiles,
+      mapContext / ?posMapState,
+      reduceContext / ?posReduceState,
+      context / ?preState
+    ]
+}
+/* 
+Describing the 101 Total/Cut implementation of hadoop
+*/
+SequenceFileInputFormat ~= "https://github.com/101companies/101repo/blob/master/contributions/hadoop/src/org/softlang/operations/Total.java#L68".
+
+DoubleWritable ~= "https://github.com/101companies/101repo/blob/master/contributions/hadoop/src/org/softlang/operations/Total.java#L84".
+
+totalMapper ~= "https://github.com/101companies/101repo/blob/master/contributions/hadoop/src/org/softlang/operations/Total.java#L25".
+totalReducer~= "https://github.com/101companies/101repo/blob/master/contributions/hadoop/src/org/softlang/operations/Total.java#L44".
+
+MapFunction ~= "https://github.com/101companies/101repo/blob/master/contributions/hadoop/src/org/softlang/operations/Total.java#L34".
+ReduceFunction ~= "https://github.com/101companies/101repo/blob/master/contributions/hadoop/src/org/softlang/operations/Total.java#L47".
+
+inputFile ~= "sampleCompany/companies";
+		  ~= "sampleCompany/departments";
+		  ~= "sampleCompany/employees".	
+outputFile ~= "/part-r-00000".
+context ~= "https://github.com/101companies/101repo/blob/master/contributions/hadoop/src/org/softlang/operations/Total.java#L29".
+
+mapContext ~= "https://github.com/101companies/101repo/blob/master/contributions/hadoop/src/org/softlang/operations/Total.java#L37".
+reduceContext ~= "https://github.com/101companies/101repo/blob/master/contributions/hadoop/src/org/softlang/operations/Total.java#L53".
