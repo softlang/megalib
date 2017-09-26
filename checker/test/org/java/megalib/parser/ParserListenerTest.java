@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.java.megalib.checker.services.ModelLoader;
 import org.java.megalib.models.Function;
-import org.java.megalib.models.Module;
 import org.java.megalib.models.Relation;
 import org.junit.Test;
 
@@ -27,10 +26,8 @@ public class ParserListenerTest {
     public void preludeIsParsed() {
         ModelLoader ml = new ModelLoader();
         assertEquals(0, ml.getTypeErrors().size());
-        assertEquals(6, ml.getModel().getModules().size());
-        Module m = ml.getModel().getModules().get(5);
-        assertEquals(18, m.getBlocks().size());
-        m.getBlocks().forEach(b -> assertTrue(b.getText().startsWith("/*") && b.getText().endsWith("*/")));
+        assertEquals(62, ml.getModel().getBlocks().size());
+        ml.getModel().getBlocks().forEach(b -> assertTrue(b.getText().startsWith("/*") && b.getText().endsWith("*/")));
     }
 
     @Test
@@ -41,9 +38,9 @@ public class ParserListenerTest {
         Map<String, String> subtypes = ml.getModel().getSubtypesMap();
 
         assertFalse(subtypes.containsKey("DerivedType"));
-        assertTrue(ml.getTypeErrors()
-                   .contains("Error at DerivedType: The declared supertype is not a subtype of Entity"));
+        
         assertEquals(1, ml.getTypeErrors().size());
+        assertEquals("Testblock0>> Error at DerivedType: The declared supertype is not a subtype of Entity",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -52,7 +49,7 @@ public class ParserListenerTest {
         String input = "/**/Type < Entity. " + "Entity < Type.";
         ml.loadString(input);
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at Entity < Type: Entity is a MegaL keyword."));
+        assertEquals("Testblock0>> Error at Entity < Type: Entity is a MegaL keyword.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -65,7 +62,6 @@ public class ParserListenerTest {
         assertTrue(subtypes.containsKey("DerivedType"));
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals("Artifact", subtypes.get("DerivedType"));
-        assertEquals(7, ml.getModel().getModules().size());
     }
 
     @Test
@@ -89,7 +85,7 @@ public class ParserListenerTest {
 
         assertTrue(subtypes.containsKey("DerivedType"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at DerivedType: Multiple inheritance is not allowed."));
+        assertEquals("Testblock0>> Error at DerivedType: Multiple inheritance is not allowed.",ml.getTypeErrors().get(0));
         assertEquals("Technology", subtypes.get("DerivedType"));
     }
 
@@ -101,7 +97,7 @@ public class ParserListenerTest {
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
         assertFalse(imap.containsKey("Entity"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at Entity: The root type `Entity' cannot be instantiated."));
+        assertEquals("Testblock0>> Error at Entity: The root type `Entity' cannot be instantiated.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -113,8 +109,7 @@ public class ParserListenerTest {
 
         assertFalse(imap.containsKey("Instance"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors()
-                   .contains("Error at Instance: The instantiated type is not (transitive) subtype of Entity."));
+        assertEquals("Testblock0>> Error at Instance: The instantiated type is not (transitive) subtype of Entity.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -126,7 +121,7 @@ public class ParserListenerTest {
 
         assertFalse(imap.containsKey("Artifact"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at Artifact: It is instance and type at the same time."));
+        assertEquals("Testblock0>> Error at Artifact: It is instance and type at the same time.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -138,7 +133,7 @@ public class ParserListenerTest {
 
         assertEquals("Technology", imap.get("t"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at t: Multiple types cannot be assigned to the same instance."));
+        assertEquals("Testblock0>> Error at t: Multiple types cannot be assigned to the same instance.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -189,8 +184,7 @@ public class ParserListenerTest {
 
         assertFalse(actual.containsKey("Relation"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors()
-                   .contains("Error at declaration of Relation: Its domain TypeOne is not subtype of Entity."));
+        assertEquals("Testblock0>> Error at declaration of Relation: Its domain TypeOne is not subtype of Entity.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -202,8 +196,7 @@ public class ParserListenerTest {
 
         assertFalse(actual.containsKey("Relation"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors()
-                   .contains("Error at declaration of Relation: Its range TypeTwo is not subtype of Entity."));
+        assertEquals("Testblock0>> Error at declaration of Relation: Its range TypeTwo is not subtype of Entity.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -215,8 +208,7 @@ public class ParserListenerTest {
 
         assertTrue(actual.containsKey("Relation"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors()
-                   .contains("Error at declaration of Relation: It is declared twice with the same types."));
+        assertEquals("Testblock0>> Error at declaration of Relation: It is declared twice with the same types.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -238,7 +230,7 @@ public class ParserListenerTest {
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at instance of r: r is not declared."));
+        assertEquals("Testblock0>> Error at instance of r: r is not declared.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -251,7 +243,7 @@ public class ParserListenerTest {
         assertTrue(actual.containsKey("subsetOf"));
         assertTrue(actual.get("subsetOf").contains(new Relation("a", "b")));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error: 'a subsetOf b' already exists."));
+        assertEquals("Testblock0>> Error: 'a subsetOf b' already exists.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -263,8 +255,7 @@ public class ParserListenerTest {
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors()
-                   .contains("Error at instance of subsetOf: 'a subsetOf b' does not fit any declaration."));
+        assertEquals("Testblock0>> Error at instance of subsetOf: 'a subsetOf b' does not fit any declaration.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -276,8 +267,7 @@ public class ParserListenerTest {
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors()
-                   .contains("Error at instance of subsetOf: 'b subsetOf a' does not fit any declaration."));
+        assertEquals("Testblock0>> Error at instance of subsetOf: 'b subsetOf a' does not fit any declaration.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -291,8 +281,7 @@ public class ParserListenerTest {
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors()
-                   .contains("Error at instance of subsetOf: 'a subsetOf b' fits multiple declarations."));
+        assertEquals("Testblock0>> Error at instance of subsetOf: 'a subsetOf b' fits multiple declarations.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -304,7 +293,7 @@ public class ParserListenerTest {
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at relationship 'subsetOf': a is not instantiated."));
+        assertEquals("Testblock0>> Error at relationship 'subsetOf': a is not instantiated.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -316,7 +305,7 @@ public class ParserListenerTest {
         Relation r = new Relation("a", "b");
         assertFalse(actual.get("subsetOf").contains(r));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at relationship 'subsetOf': b is not instantiated."));
+        assertEquals("Testblock0>> Error at relationship 'subsetOf': b is not instantiated.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -339,7 +328,7 @@ public class ParserListenerTest {
         assertFalse(actual.containsKey("f"));
 
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at f's declaration: The domain a was not declared."));
+        assertEquals("Testblock0>> Error at f's declaration: The domain a was not declared.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -351,7 +340,7 @@ public class ParserListenerTest {
         assertFalse(actual.containsKey("f"));
 
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at f's declaration: The range b was not declared."));
+        assertEquals("Testblock0>> Error at f's declaration: The range b was not declared.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -362,8 +351,8 @@ public class ParserListenerTest {
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
         assertEquals(2, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at f's declaration: The domain a was not declared."));
-        assertTrue(ml.getTypeErrors().contains("Error at f's declaration: The range a was not declared."));
+        assertEquals("Testblock0>> Error at f's declaration: The domain a was not declared.",ml.getTypeErrors().get(0));
+        assertEquals("Testblock0>> Error at f's declaration: The range a was not declared.",ml.getTypeErrors().get(1));
     }
 
     @Test
@@ -374,7 +363,7 @@ public class ParserListenerTest {
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at f's declaration: The range a was not declared."));
+        assertEquals("Testblock0>> Error at f's declaration: The range a was not declared.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -386,7 +375,7 @@ public class ParserListenerTest {
         assertFalse(actual.containsKey("f"));
 
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at f's declaration: Grammar is not a language."));
+        assertEquals("Testblock0>> Error at f's declaration: Grammar is not a language.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -397,7 +386,7 @@ public class ParserListenerTest {
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors().contains("Error at f's declaration: Grammar is not a language."));
+        assertEquals("Testblock0>> Error at f's declaration: Grammar is not a language.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -430,8 +419,7 @@ public class ParserListenerTest {
 
         assertTrue(actual.isEmpty());
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors()
-                   .contains("Error at application of f: A declaration has to be stated beforehand."));
+        assertEquals("Testblock0>> Error at application of f: A declaration has to be stated beforehand.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -465,8 +453,7 @@ public class ParserListenerTest {
         assertTrue(actual.containsKey("f"));
         assertEquals(1, actual.get("f").size());
         assertEquals(1, ml.getTypeErrors().size());
-        assertTrue(ml.getTypeErrors()
-                     .contains("Error at application of f with inputs [a, b, d] and outputs [b, a]: It already exists."));
+        assertEquals("Testblock0>> Error at application of f with inputs [a, b, d] and outputs [b, a]: It already exists.",ml.getTypeErrors().get(0));
 
     }
 
@@ -479,7 +466,7 @@ public class ParserListenerTest {
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
         assertTrue(actual.isEmpty());
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at application of f: a is not instance of Artifact.", ml.getTypeErrors().get(0));
+        assertEquals("Testblock0>> Error at application of f: a is not instance of Artifact.", ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -491,7 +478,7 @@ public class ParserListenerTest {
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
         assertTrue(actual.isEmpty());
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at application of f: b is not an instance of Artifact.", ml.getTypeErrors().get(0));
+        assertEquals("Testblock0>> Error at application of f: b is not an instance of Artifact.", ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -504,7 +491,7 @@ public class ParserListenerTest {
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
         assertTrue(actual.isEmpty());
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at application of f with inputs [a1, a1] and outputs [a2]: It does not fit any declaration",
+        assertEquals("Testblock0>> Error at application of f with inputs [a1, a1] and outputs [a2]: It does not fit any declaration",
                      ml.getTypeErrors().get(0));
     }
 
@@ -518,7 +505,7 @@ public class ParserListenerTest {
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
         assertTrue(actual.isEmpty());
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at application of f with inputs [a1, a2] and outputs [a1]: It does not fit any declaration",
+        assertEquals("Testblock0>> Error at application of f with inputs [a1, a2] and outputs [a1]: It does not fit any declaration",
                      ml.getTypeErrors().get(0));
     }
 
@@ -552,7 +539,7 @@ public class ParserListenerTest {
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Error at relationship 'elementOf': XYZ is not instantiated.", ml.getTypeErrors().get(0));
+        assertEquals("Testblock0>> Error at relationship 'elementOf': XYZ is not instantiated.", ml.getTypeErrors().get(0));
     }
 
     @Test

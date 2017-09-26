@@ -4,8 +4,8 @@
 package org.softlang.megalib.visualizer;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.stream.Collectors;
+
+import org.apache.commons.io.FileUtils;
 import org.java.megalib.checker.services.ModelLoader;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.parser.ParserException;
@@ -68,7 +68,7 @@ public class ModelReader {
 
     private String readFile() throws ModelReaderException {
         try {
-            return Files.lines(options.getFilePath()).collect(Collectors.joining("\n"));
+        	return FileUtils.readFileToString(options.getFilePath().toFile());
         } catch (IOException ex) {
             throw new ModelReaderException(ex);
         }

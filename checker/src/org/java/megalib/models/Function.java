@@ -7,6 +7,8 @@ public class Function {
 	private List<String> inputs;
 	private List<String> outputs;
 	
+	private Block block;
+	
 	public Function(List<String> inputs, List<String> outputs) {
 		this.inputs = inputs;
 		this.outputs=outputs;
@@ -18,6 +20,14 @@ public class Function {
 
 	public List<String> getOutputs() {
 		return Collections.unmodifiableList(outputs);
+	}
+	
+	public Block getBlock(){
+		return block;
+	}
+	
+	public void setBlock(Block b){
+		this.block = b;
 	}
 	
 	@Override

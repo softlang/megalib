@@ -26,7 +26,7 @@ public class MegaModel {
 
     private Set<String> removableAbstract;
 
-    private List<Module> modules;
+    private List<Block> blocks;
 
     public MegaModel() {
         subtypeOfMap = new HashMap<>();
@@ -39,15 +39,15 @@ public class MegaModel {
         substitutedLanguages = new HashSet<>();
         removableAbstract = new HashSet<>();
         namespaceMap = new HashMap<>();
-        modules = new ArrayList<>();
+        blocks = new ArrayList<>();
     }
 
-    public void addModule(Module m) {
-        modules.add(m);
+    public void addBlock(Block m) {
+        blocks.add(m);
     }
 
-    public List<Module> getModules() {
-        return Collections.unmodifiableList(modules);
+    public List<Block> getBlocks() {
+        return Collections.unmodifiableList(blocks);
     }
 
     public Map<String, String> getSubtypesMap() {
@@ -73,12 +73,13 @@ public class MegaModel {
         return Collections.unmodifiableMap(relationDeclarationMap);
     }
 
-    public void addRelationDeclaration(String name, String subject, String object) {
+    public void addRelationDeclaration(String name, String subject, String object, Block block) {
         Set<Relation> set = new HashSet<>();
         if (relationDeclarationMap.containsKey(name)) {
             set = relationDeclarationMap.get(name);
         }
         Relation decl = new Relation(subject, object);
+        block.addRelationDeclaration(name, decl);
         set.add(decl);
         relationDeclarationMap.put(name, set);
     }
@@ -87,7 +88,7 @@ public class MegaModel {
         return Collections.unmodifiableMap(relationshipMap);
     }
 
-    public void addRelationInstance(String name, String subject, String object) {
+    public void addRelationInstance(String name, String subject, String object, Block block) {
         Set<Relation> set = new HashSet<>();
         if(relationshipMap.containsKey(name)){
             set = relationshipMap.get(name);
@@ -101,13 +102,15 @@ public class MegaModel {
         }
         set.add(i);
         relationshipMap.put(name, set);
+        
+        block.addRelationInstance(name, i);
     }
 
     public Map<String,Set<Function>> getFunctionDeclarations() {
         return Collections.unmodifiableMap(functionDeclarations);
     }
 
-    public void addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs) {
+    public void addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs, Block block) {
         instanceOfMap.put(functionName, "Function");
         Set<Function> declset = new HashSet<>();
         if(functionDeclarations.containsKey(functionName)){
@@ -116,13 +119,15 @@ public class MegaModel {
         Function f = new Function(inputs, outputs);
         declset.add(f);
         functionDeclarations.put(functionName, declset);
+        
+        block.addFunctionDeclaration(functionName, f);
     }
 
     public Map<String, Set<Function>> getFunctionApplications() {
         return Collections.unmodifiableMap(functionApplications);
     }
 
-    public void addFunctionApplication(String name, List<String> inputs, List<String> outputs) {
+    public void addFunctionApplication(String name, List<String> inputs, List<String> outputs, Block block) {
         Function app = new Function(inputs, outputs);
         Set<Function> set = new HashSet<>();
         if (functionApplications.containsKey(name)) {
@@ -130,6 +135,8 @@ public class MegaModel {
         }
         set.add(app);
         functionApplications.put(name, set);
+        
+        block.addFunctionApplication(name, app);
     }
 
     public boolean isInstanceOf(String entity, String type) {

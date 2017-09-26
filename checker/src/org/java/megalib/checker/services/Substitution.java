@@ -51,16 +51,14 @@ public class Substitution {
         newFunctions.entrySet().stream()
                     .forEach(e -> e.getValue()
                                    .forEach(f -> {
-                                       model.addFunctionDeclaration(e.getKey(), f.getInputs(), f.getOutputs());
-                                       block.addFunctionDeclaration(e.getKey(), f.getInputs(), f.getOutputs());
+                                       model.addFunctionDeclaration(e.getKey(), f.getInputs(), f.getOutputs(),block);
                                    }));
         newFunctions.clear();
         model.getFunctionApplications().entrySet().parallelStream()
              .forEach(entry -> entry.getValue().forEach(f -> substituteFunction(entry.getKey(), f)));
         newFunctions.entrySet().stream()
                     .forEach(e -> e.getValue().forEach(f -> {
-                        model.addFunctionApplication(e.getKey(), f.getInputs(),f.getOutputs());
-                        block.addFunctionApplication(e.getKey(), f.getInputs(),f.getOutputs());
+                        model.addFunctionApplication(e.getKey(), f.getInputs(),f.getOutputs(),block);
                     }));
         return model;
     }
@@ -74,14 +72,12 @@ public class Substitution {
             if(substByGroup.containsKey(r.getObject())){
                 for(String substingSubj : substByGroup.get(substituted)){
                     for(String substingObj : substByGroup.get(r.getObject())){
-                        model.addRelationInstance(rname, substingSubj, substingObj);
-                        block.addRelationInstance(rname, substingSubj, substingObj);
+                        model.addRelationInstance(rname, substingSubj, substingObj,block);
                     }
                 }
             }else{
                 for(String substingSubj : substByGroup.get(substituted)){
-                    model.addRelationInstance(rname, substingSubj, r.getObject());
-                    block.addRelationInstance(rname, substingSubj, r.getObject());
+                    model.addRelationInstance(rname, substingSubj, r.getObject(),block);
                 }
             }
         }
@@ -89,14 +85,12 @@ public class Substitution {
             if(substByGroup.containsKey(r.getSubject())){
                 for(String substingObj : substByGroup.get(substituted)){
                     for(String substingSubj : substByGroup.get(r.getSubject())){
-                        model.addRelationInstance(rname, substingSubj, substingObj);
-                        block.addRelationInstance(rname, substingSubj, substingObj);
+                        model.addRelationInstance(rname, substingSubj, substingObj,block);
                     }
                 }
             }else{
                 for(String substingObj : substByGroup.get(substituted)){
-                    model.addRelationInstance(rname, r.getSubject(), substingObj);
-                    block.addRelationInstance(rname, r.getSubject(), substingObj);
+                    model.addRelationInstance(rname, r.getSubject(), substingObj,block);
                 }
             }
         }

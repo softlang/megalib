@@ -3,6 +3,7 @@ package org.java.megalib.models;
 public class Relation {
 	private String subject;
 	private String object;
+	private Block block;
 	
 	public Relation(String s, String o){
 		subject = s;
@@ -15,6 +16,18 @@ public class Relation {
 	
 	public String getObject(){
 		return object;
+	}
+	
+	public Block getBlock(){
+		return block;
+	}
+	
+	public void setBlock(Block b){
+		block = b;
+	}
+	
+	public String getModule(){
+		return block.getModule();
 	}
 	
 	@Override

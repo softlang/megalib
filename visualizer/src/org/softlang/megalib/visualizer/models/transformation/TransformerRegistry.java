@@ -18,8 +18,12 @@ public class TransformerRegistry {
     }
 
     public static Transformer getInstance(VisualizerOptions options) {
-        return TRANSFORMERS.entrySet().stream().filter(e -> e.getKey().equals(options.getTransformationType()))
-                           .map(Entry::getValue).findFirst().orElseThrow(IllegalStateException::new).apply(options);
+        return TRANSFORMERS.entrySet().stream()
+        				   .filter(e -> e.getKey().equals(options.getTransformationType()))
+                           .map(Entry::getValue)
+                           .findFirst()
+                           .orElseThrow(IllegalStateException::new)
+                           .apply(options);
     }
 
     public static List<String> getRegisteredTransformerNames() {

@@ -27,83 +27,83 @@ public class TypeCheck {
         return Collections.unmodifiableList(errors);
     }
 
-    public boolean addNamespace(String name, String link, MegaModel m) {
+    public boolean addNamespace(String name, String link, MegaModel m, String blockid) {
         if(!errors.isEmpty())
             return false;
         Optional<String> o = Optional.ofNullable(m.getNamespace(name));
-        o.ifPresent(l -> errors.add("Error at namespace " + name + ":: \"" + link + "\": Already defined namespace."));
+        o.ifPresent(l -> errors.add(blockid+">> Error at namespace " + name + ":: \"" + link + "\": Already defined namespace."));
         return errors.isEmpty();
     }
 
-    public boolean addSubtypeOf(String subtype, String type, MegaModel m) {
+    public boolean addSubtypeOf(String subtype, String type, MegaModel m, String blockid) {
         if(!errors.isEmpty())
             return false;
         if (subtype.equals("Entity")) {
-            errors.add("Error at " + subtype + " < " + type + ": Entity is a MegaL keyword.");
+            errors.add(blockid+">> Error at " + subtype + " < " + type + ": Entity is a MegaL keyword.");
         }
         if (!(m.getSubtypesMap().containsKey(type) || type.equals("Entity"))) {
-            errors.add("Error at " + subtype + ": The declared supertype is not a subtype of Entity");
+            errors.add(blockid+">> Error at " + subtype + ": The declared supertype is not a subtype of Entity");
         }
         if (m.getSubtypesMap().containsKey(subtype)) {
-            errors.add("Error at " + subtype + ": Multiple inheritance is not allowed.");
+            errors.add(blockid+">> Error at " + subtype + ": Multiple inheritance is not allowed.");
         }
         return errors.isEmpty();
     }
 
-    public boolean addInstanceOf(String instance, String type, MegaModel m) {
+    public boolean addInstanceOf(String instance, String type, MegaModel m, String blockid) {
         if(!errors.isEmpty())
             return false;
         if (m.getSubtypesMap().containsKey(instance)) {
-            errors.add("Error at " + instance + ": It is instance and type at the same time.");
+            errors.add(blockid+">> Error at " + instance + ": It is instance and type at the same time.");
         }
         if (instance.equals("Entity")) {
-            errors.add("Error at " + instance + ": The root type `Entity' cannot be instantiated.");
+            errors.add(blockid+">> Error at " + instance + ": The root type `Entity' cannot be instantiated.");
         }
         if (!m.getSubtypesMap().containsKey(type) || type.equals("Entity")) {
-            errors.add("Error at " + instance + ": The instantiated type is not (transitive) subtype of Entity.");
+            errors.add(blockid+">> Error at " + instance + ": The instantiated type is not (transitive) subtype of Entity.");
         }
         if (m.getInstanceOfMap().containsKey(instance)) {
         	if(!m.isSubtypeOf(type,m.getInstanceOfMap().get(instance))){
-                errors.add("Error at " + instance + ": Multiple types cannot be assigned to the same instance.");
+                errors.add(blockid+">> Error at " + instance + ": Multiple types cannot be assigned to the same instance.");
         	}
         }else if(m.getInstanceOfMap().keySet().parallelStream()
             .anyMatch(i -> i.toLowerCase().equals(instance.toLowerCase()))){
-            errors.add("Error at "+ instance+ ": This ID is already given to another instance, possible with a different capitalization.");
+            errors.add(blockid+">> Error at "+ instance+ ": This ID is already given to another instance, possible with a different capitalization.");
         }
         return errors.isEmpty();
     }
 
-    public boolean addRelationDeclaration(String name, String sType, String oType, MegaModel m) {
+    public boolean addRelationDeclaration(String name, String sType, String oType, MegaModel m, String blockid) {
         if(!errors.isEmpty())
             return false;
         if (!(m.getSubtypesMap().containsKey(sType))) {
-            errors.add("Error at declaration of " + name + ": Its domain " + sType + " is not subtype of Entity.");
+            errors.add(blockid+">> Error at declaration of " + name + ": Its domain " + sType + " is not subtype of Entity.");
         }
         if (!(m.getSubtypesMap().containsKey(oType))) {
-            errors.add("Error at declaration of " + name + ": Its range " + oType + " is not subtype of Entity.");
+            errors.add(blockid+">> Error at declaration of " + name + ": Its range " + oType + " is not subtype of Entity.");
         }
         Relation decl = new Relation(sType, oType);
         if (m.getRelationshipDeclarationMap().containsKey(name)) {
             if (m.getRelationshipDeclarationMap().get(name).contains(decl)) {
-                errors.add("Error at declaration of " + name + ": It is declared twice with the same types.");
+                errors.add(blockid+">> Error at declaration of " + name + ": It is declared twice with the same types.");
             }
         }
         return errors.isEmpty();
     }
 
-    public boolean addRelationInstance(String name, String subject, String object, MegaModel m) {
+    public boolean addRelationInstance(String name, String subject, String object, MegaModel m, String blockid) {
         if(!errors.isEmpty())
             return false;
 
         if(name.equals("=") || name.equals("~="))
-            return addLink(subject, object.replaceAll("\"", ""), m);
+            return addLink(subject, object.replaceAll("\"", ""), m, blockid);
 
         if (!m.getInstanceOfMap().containsKey(subject)) {
-            errors.add("Error at relationship '" + name + "': " + subject + " is not instantiated.");
+            errors.add(blockid+">> Error at relationship '" + name + "': " + subject + " is not instantiated.");
         }
 
         if (!m.getInstanceOfMap().containsKey(object)) {
-            errors.add("Error at relationship '" + name + "': " + object + " is not instantiated.");
+            errors.add(blockid+">> Error at relationship '" + name + "': " + object + " is not instantiated.");
         }
         if(name.startsWith("^")){
             name = name.substring(1);
@@ -114,13 +114,13 @@ public class TypeCheck {
         Relation i = new Relation(subject, object);
         if (m.getRelationships().containsKey(name)) {
             if (m.getRelationships().get(name).contains(i)) {
-                errors.add("Error: '" + subject + " " + name + " " + object
+                errors.add(blockid+">> Error: '" + subject + " " + name + " " + object
                            + "' already exists.");
             }
         }
 
         if (!m.getRelationshipDeclarationMap().containsKey(name)) {
-            errors.add("Error at instance of " + name + ": " + name + " is not declared.");
+            errors.add(blockid+">> Error at instance of " + name + ": " + name + " is not declared.");
         }
 
         // Abort here, if things aren't instantiated
@@ -154,57 +154,57 @@ public class TypeCheck {
             }
         }
         if (count == 0) {
-            errors.add("Error at instance of " + name + ": '" + subject + " " + name + " " + object
+            errors.add(blockid+">> Error at instance of " + name + ": '" + subject + " " + name + " " + object
                        + "' does not fit any declaration.");
         }
         if (count > 1) {
-            errors.add("Error at instance of " + name + ": '" + subject + " " + name + " " + object
+            errors.add(blockid+">> Error at instance of " + name + ": '" + subject + " " + name + " " + object
                        + "' fits multiple declarations.");
         }
         return errors.isEmpty();
     }
 
-    public boolean addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs, MegaModel m) {
+    public boolean addFunctionDeclaration(String functionName, List<String> inputs, List<String> outputs, MegaModel m, String blockid) {
         if(!errors.isEmpty())
             return false;
         for (String i : inputs) {
             String type = m.getInstanceOfMap().get(i);
             if (type == null) {
-                errors.add("Error at " + functionName + "'s declaration" + ": The domain " + i + " was not declared.");
+                errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": The domain " + i + " was not declared.");
                 continue;
             }
             if (!m.isSubtypeOf(type, "Language")) {
-                errors.add("Error at " + functionName + "'s declaration" + ": " + i + " is not a language.");
+                errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": " + i + " is not a language.");
             }
         }
         for (String o : outputs) {
             String type = m.getInstanceOfMap().get(o);
             if (type == null) {
-                errors.add("Error at " + functionName + "'s declaration" + ": The range " + o + " was not declared.");
+                errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": The range " + o + " was not declared.");
                 continue;
             }
             if (!m.isSubtypeOf(type, "Language")) {
-                errors.add("Error at " + functionName + "'s declaration" + ": " + o + " is not a language.");
+                errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": " + o + " is not a language.");
             }
         }
         return errors.isEmpty();
     }
 
-    public boolean addFunctionApplication(String name, List<String> inputs, List<String> outputs, MegaModel m) {
+    public boolean addFunctionApplication(String name, List<String> inputs, List<String> outputs, MegaModel m, String blockid) {
         if(!errors.isEmpty())
             return false;
         if (!m.getFunctionDeclarations().containsKey(name)) {
-            errors.add("Error at application of " + name + ": A declaration has to be stated beforehand.");
+            errors.add(blockid+">> Error at application of " + name + ": A declaration has to be stated beforehand.");
             return false;
         }
         for(String i : inputs){
             if(!m.isInstanceOf(i, "Artifact")){
-                errors.add("Error at application of " + name + ": " + i + " is not instance of Artifact.");
+                errors.add(blockid+">> Error at application of " + name + ": " + i + " is not instance of Artifact.");
             }
         }
         for(String o : outputs){
             if(!m.isInstanceOf(o, "Artifact")){
-                errors.add("Error at application of " + name + ": " + o + " is not an instance of Artifact.");
+                errors.add(blockid+">> Error at application of " + name + ": " + o + " is not an instance of Artifact.");
             }
         }
 
@@ -214,7 +214,7 @@ public class TypeCheck {
         }
         Function app = new Function(inputs, outputs);
         if (set.contains(app)) {
-            errors.add("Error at application of " + name + " with inputs " + app.getInputs() + " " + "and outputs "
+            errors.add(blockid+">> Error at application of " + name + " with inputs " + app.getInputs() + " " + "and outputs "
                     + app.getOutputs() + ": It already exists.");
         }
 
@@ -249,18 +249,18 @@ public class TypeCheck {
             }
         }
         if(fitcount == 0){
-            errors.add("Error at application of " + name + " with inputs " + app.getInputs() + " " + "and outputs "
+            errors.add(blockid+">> Error at application of " + name + " with inputs " + app.getInputs() + " " + "and outputs "
                     + app.getOutputs() + ": It does not fit any declaration");
         }
         return errors.isEmpty();
     }
 
-    public boolean addLink(String subject, String link, MegaModel m) {
+    public boolean addLink(String subject, String link, MegaModel m, String blockid) {
         if(!errors.isEmpty())
             return false;
         if(!(m.getInstanceOfMap().containsKey(subject) || m.getSubtypesMap().containsKey(subject)
              || m.getRelationshipDeclarationMap().containsKey(subject))){
-            errors.add("Error at linking " + subject + ". Declaration/Instantiation is missing.");
+            errors.add(blockid+">> Error at linking " + subject + ". Declaration/Instantiation is missing.");
         }
         if(link.contains("::")){
             String ns = link.split("::")[0];
@@ -268,17 +268,17 @@ public class TypeCheck {
             if(o.isPresent()){
                 link = link.replace(ns + "::", o.get() + "/");
             }else{
-                errors.add("Error at linking " + subject + ". Namespace '" + ns + "' does not exist.");
+                errors.add(blockid+">> Error at linking " + subject + ". Namespace '" + ns + "' does not exist.");
             };
         }
         Set<Relation> dlinks = m.getRelationships().get("=");
         Set<Relation> blinks = m.getRelationships().get("~=");
         if(dlinks != null && dlinks.contains(new Relation(subject, link))){
-            errors.add("Error at linking " + subject + " to " + link
+            errors.add(blockid+">> Error at linking " + subject + " to " + link
                        + ". This informative link has already been assigned");
         }
         if(blinks != null && blinks.contains(new Relation(subject, link))){
-            errors.add("Error at linking " + subject + " to " + link + ". This binding has already been assigned");
+            errors.add(blockid+">> Error at linking " + subject + " to " + link + ". This binding has already been assigned");
         }
         return errors.isEmpty();
     }
