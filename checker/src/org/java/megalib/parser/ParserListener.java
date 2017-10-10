@@ -53,7 +53,7 @@ public class ParserListener extends MegalibBaseListener {
 
     @Override
     public void enterBlock(BlockContext ctx) {
-        block = new Block(blockid, ctx.getChild(0).getText(), module);
+        block = new Block(blockid, ctx.getChild(0).getText(), module,model);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ParserListener extends MegalibBaseListener {
 
     @Override
     public void enterSubstitutionGroup(SubstitutionGroupContext ctx) {
-        block = new Block(blockid, "",module);
+        block = new Block(blockid, "",module,model);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class ParserListener extends MegalibBaseListener {
         }
         while(it.next().getText().equals(";")){
             ParseTree r = it.next();
-            assert (r.getChildCount() == 2);
+            assert r.getChildCount() == 2;
             String p = r.getChild(0).getText();
             String l = r.getChild(1).getText();
             if(typeCheck.addRelationInstance(p, sub, l, model,module+"block"+blockid)){
@@ -129,11 +129,11 @@ public class ParserListener extends MegalibBaseListener {
         it.next(); // skip colon
         String t = it.next().getText();
         if(typeCheck.addInstanceOf(s, t, model,module+"block"+blockid)){
-            model.addInstanceOf(s, t);
+            model.addInstanceOf(s, t,block);
         }
         while(it.next().getText().equals(";")){
             ParseTree r = it.next();
-            assert (r.getChildCount() == 2);
+            assert r.getChildCount() == 2;
             String p = r.getChild(0).getText();
             String o = r.getChild(1).getText();
             if(p.startsWith("^")){
@@ -162,7 +162,7 @@ public class ParserListener extends MegalibBaseListener {
         }
         while(it.next().getText().equals(";")){
             ParseTree rule = it.next();
-            assert (rule.getChildCount() == 2);
+            assert rule.getChildCount() == 2;
             String sym = rule.getChild(0).getText();
             String l = rule.getChild(1).getText();
             if(typeCheck.addRelationInstance(sym, r, l, model,module+"block"+blockid)){
@@ -176,7 +176,7 @@ public class ParserListener extends MegalibBaseListener {
         Iterator<ParseTree> it = context.children.iterator();
         String s = it.next().getText();
         ParseTree rule = it.next();
-        assert (rule.getChildCount() == 2);
+        assert rule.getChildCount() == 2;
         String p = rule.getChild(0).getText();
         String o = rule.getChild(1).getText();
         if(p.startsWith("^")){
@@ -191,7 +191,7 @@ public class ParserListener extends MegalibBaseListener {
         }
         while(it.next().getText().equals(";")){
             rule = it.next();
-            assert (rule.getChildCount() == 2);
+            assert rule.getChildCount() == 2;
             p = rule.getChild(0).getText();
             o = rule.getChild(1).getText();
             if(p.startsWith("^")){

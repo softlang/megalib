@@ -16,15 +16,19 @@ public class Block {
     private Map<String,Set<Relation>> relationshipMap;
     private Map<String,Set<Function>> functionDeclarations;
     private Map<String,Set<Function>> functionApplications;
+    private Map<String, String> instanceOfMap;
+	private MegaModel model;
 
-    public Block(int id, String text, String module){
+    public Block(int id, String text, String module, MegaModel model){
         this.id = id;
         this.text = text;
         this.module = module;
+        this.model = model;
         relationDeclarationMap = new HashMap<>();
         relationshipMap = new HashMap<>();
         functionDeclarations = new HashMap<>();
         functionApplications = new HashMap<>();
+        instanceOfMap = new HashMap<>();
     }
 
     public int getId() {
@@ -34,7 +38,7 @@ public class Block {
     public String getText() {
         return text;
     }
-    
+
     public String getModule(){
     	return module;
     }
@@ -50,7 +54,7 @@ public class Block {
         }
         set.add(decl);
         relationDeclarationMap.put(name, set);
-        
+
         decl.setBlock(this);
     }
 
@@ -65,7 +69,7 @@ public class Block {
         }
         set.add(i);
         relationshipMap.put(name, set);
-        
+
         i.setBlock(this);
     }
 
@@ -80,7 +84,7 @@ public class Block {
         }
         declset.add(f);
         functionDeclarations.put(functionName, declset);
-        
+
         f.setBlock(this);
     }
 
@@ -95,7 +99,15 @@ public class Block {
         }
         set.add(app);
         functionApplications.put(name, set);
-        
+
         app.setBlock(this);
     }
+
+    public Map<String, String> getInstanceOfMap(){
+    	return Collections.unmodifiableMap(instanceOfMap);
+    }
+
+	public void addInstanceOf(String instance, String type) {
+		instanceOfMap.put(instance, type);
+	}
 }

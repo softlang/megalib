@@ -6,13 +6,13 @@ package org.softlang.megalib.visualizer.cli;
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.softlang.megalib.visualizer.Visualizer;
 import org.softlang.megalib.visualizer.VisualizerOptions;
 import org.softlang.megalib.visualizer.exceptions.CommandLineException;
 import org.softlang.megalib.visualizer.models.Graph;
-import org.softlang.megalib.visualizer.models.GraphFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.softlang.megalib.visualizer.models.ModelToGraph;
 
 /**
  *
@@ -57,7 +57,7 @@ public class CommandLineTest {
         cli.parse(data);
         VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());
 
-        Graph graph = new GraphFactory(options).create();
+        Graph graph = new ModelToGraph(options).createGraph();
 
         Visualizer visualizer = new Visualizer(options);
         visualizer.plotModel(graph);

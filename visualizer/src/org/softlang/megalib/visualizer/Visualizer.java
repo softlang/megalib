@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import org.softlang.megalib.visualizer.exceptions.MegaModelVisualizerException;
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.transformation.Transformer;
@@ -30,8 +31,7 @@ public class Visualizer {
 
     public File plotModel(Graph graph) {
         try {
-            return Files.write(Paths.get(options.getModelName() + "."
-                                         + FileExtensionFactory.get(options.getTransformationType())),
+            return Files.write(Paths.get(options.getModelName() + "."+ "dot"),
                                transformer.transform(graph).getBytes(StandardCharsets.UTF_8))
                         .toFile();
         } catch (IOException ex) {

@@ -3,13 +3,13 @@
  */
 package org.softlang.megalib.visualizer;
 
-import java.util.Set;
+import java.util.List;
 
 import org.java.megalib.parser.ParserException;
 import org.softlang.megalib.visualizer.cli.CommandLine;
 import org.softlang.megalib.visualizer.exceptions.MegaModelVisualizerException;
 import org.softlang.megalib.visualizer.models.Graph;
-import org.softlang.megalib.visualizer.models.GraphFactory;
+import org.softlang.megalib.visualizer.models.ModelToGraph;
 import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
 
 /**
@@ -25,12 +25,12 @@ public class Main {
                 .parse(args);
             VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());
 
-            Graph graph = new GraphFactory(options).create();
+            Graph graph = new ModelToGraph(options).createGraph();
             Visualizer visualizer = new Visualizer(options);
             visualizer.plotModel(graph);
-            
-            Set<Graph> graphs = new GraphFactory(options).createSepView();
-            visualizer.plotBlocks(graphs);
+
+            List<Graph> graphs = new ModelToGraph(options).createGraphs();
+            graphs.forEach(visualizer::plotModel);
 
             System.out.println("Visualization complete.");
         } catch (MegaModelVisualizerException ex) {

@@ -40,7 +40,7 @@ public class Substitution {
     public MegaModel substituteGroup() {
         substByGroup.forEach((key, set) -> set.forEach(v -> {
             if(!model.getInstanceOfMap().containsKey(v)){
-                model.addInstanceOf(v, model.getInstanceOfMap().get(key));
+                model.addInstanceOf(v, model.getInstanceOfMap().get(key),block);
             }
         }));
         substByGroup.keySet().forEach(k -> model.getRelationships().keySet()

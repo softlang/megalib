@@ -62,11 +62,9 @@ public class MegaModel {
         return Collections.unmodifiableMap(instanceOfMap);
     }
 
-    public void addInstanceOf(String instance, String type) {
-        if (instance.startsWith("?")) {
-            removableAbstract.add(instance);
-        }
+    public void addInstanceOf(String instance, String type, Block block) {
         instanceOfMap.put(instance, type);
+        block.addInstanceOf(instance,type);
     }
 
     public Map<String, Set<Relation>> getRelationshipDeclarationMap() {
@@ -102,7 +100,7 @@ public class MegaModel {
         }
         set.add(i);
         relationshipMap.put(name, set);
-        
+
         block.addRelationInstance(name, i);
     }
 
@@ -119,7 +117,7 @@ public class MegaModel {
         Function f = new Function(inputs, outputs);
         declset.add(f);
         functionDeclarations.put(functionName, declset);
-        
+
         block.addFunctionDeclaration(functionName, f);
     }
 
@@ -135,13 +133,14 @@ public class MegaModel {
         }
         set.add(app);
         functionApplications.put(name, set);
-        
+
         block.addFunctionApplication(name, app);
     }
 
     public boolean isInstanceOf(String entity, String type) {
-        if (!instanceOfMap.containsKey(entity))
-            return false;
+        if (!instanceOfMap.containsKey(entity)) {
+			return false;
+		}
         String temp = instanceOfMap.get(entity);
         return temp.equals(type) ? true : isSubtypeOf(temp, type);
     }
@@ -149,8 +148,9 @@ public class MegaModel {
     public boolean isSubtypeOf(String subtype, String type) {
         String temp = subtype;
         while (!temp.equals(type)) {
-            if(temp.equals("Entity") || !subtypeOfMap.containsKey(temp))
-                return false;
+            if(temp.equals("Entity") || !subtypeOfMap.containsKey(temp)) {
+				return false;
+			}
             temp = subtypeOfMap.get(temp);
         }
         return true;
@@ -164,8 +164,9 @@ public class MegaModel {
     public boolean isSubsetOf(String subset, String superset) {
         String temp = subset;
         while(!temp.equals(superset)){
-            if(!subsetOfMap.containsKey(temp))
-                return false;
+            if(!subsetOfMap.containsKey(temp)) {
+				return false;
+			}
             temp = subsetOfMap.get(temp);
         }
         return true;
@@ -173,36 +174,6 @@ public class MegaModel {
 
     public Set<String> getSubstitutedLanguages() {
         return Collections.unmodifiableSet(substitutedLanguages);
-    }
-
-    public void cleanUpAbstraction() {
-        for (String e : removableAbstract) {
-            cleanUpAbstractInstance(e);
-        }
-    }
-
-    private void cleanUpAbstractInstance(String e) {
-        instanceOfMap.remove(e);
-        subsetOfMap.remove(e);
-
-        Map<String, Set<Relation>> relmap = new HashMap<>();
-        for(String name : relationshipMap.keySet()){
-            Set<Relation> rels = relationshipMap.get(name).parallelStream()
-                    .filter((r -> !r.getSubject().equals(e)
-                            && !r.getObject().equals(e)))
-                    .collect(Collectors.toSet());
-            relmap.put(name, rels);
-        }
-        relationshipMap = relmap;
-
-        Map<String, Set<Function>> fAppmap = new HashMap<>();
-        for (String name : functionApplications.keySet()) {
-            Set<Function> fs = functionApplications.get(name).parallelStream()
-                    .filter(f -> !f.getInputs().contains(e) && !f.getOutputs().contains(e))
-                    .collect(Collectors.toSet());
-            fAppmap.put(name, fs);
-        }
-        functionApplications = fAppmap;
     }
 
     public Set<String> getLinks(String name) {
@@ -227,8 +198,9 @@ public class MegaModel {
     }
 
     public boolean containsRelationship(String source, String predicate, String target) {
-        if(!relationshipMap.containsKey(predicate))
-            return false;
+        if(!relationshipMap.containsKey(predicate)) {
+			return false;
+		}
         return relationshipMap.get(predicate).parallelStream()
                               .anyMatch(r -> r.getSubject().equals(source) && r.getObject().equals(target));
     }

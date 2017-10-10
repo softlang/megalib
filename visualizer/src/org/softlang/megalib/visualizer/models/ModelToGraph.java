@@ -3,14 +3,15 @@
  */
 package org.softlang.megalib.visualizer.models;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import org.java.megalib.models.Block;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
-import org.softlang.megalib.visualizer.exceptions.MegaModelVisualizerException;
 import org.softlang.megalib.visualizer.ModelReader;
 import org.softlang.megalib.visualizer.VisualizerOptions;
 
@@ -18,59 +19,56 @@ import org.softlang.megalib.visualizer.VisualizerOptions;
  *
  * @author Dmitri Nikonov <dnikonov at uni-koblenz.de>
  */
-public class GraphFactory {
+public class ModelToGraph {
 
-    private VisualizerOptions options;
+    private MegaModel model;
+	private VisualizerOptions options;
 
-    private ModelReader reader;
-
-    private MegaModel baseModel;
-
-    private MegaModel resolveableModel;
-
-    public GraphFactory(VisualizerOptions options) {
-        this.options = options;
-        reader = new ModelReader(options);
-        resolveableModel = reader.readFull();
+    public ModelToGraph(VisualizerOptions options) {
+    	this.options = options;
+        model = new ModelReader(options).readFull();
     }
 
-    public Graph create() throws MegaModelVisualizerException {
-        
-
-        Graph graph = createGraph(options.getModelName(), baseModel);
-        return graph;
-    }
-
-    private Graph createGraph(String name, MegaModel model) {
-        Graph graph = new Graph(name);
+    public Graph createGraph() {
+        Graph graph = new Graph(options.getModelName());
         createNodes(model, graph);
         createEdges(model, graph);
 
         return graph;
     }
 
+    public List<Graph> createGraphs() {
+    	List<Graph> graphs = new LinkedList<>();
+    	for(Block b : model.getBlocks()) {
+    		Graph graph = new Graph(b.getModule()+b.getId());
+    		//instance nodes
+    		b.getInstanceOfMap().entrySet().stream()
+    		 .map(entry -> createNode(entry.getKey(),entry.getValue(),model))
+    		 .forEach(graph::add);
+    		b.getFunctionDeclarations().forEach((name,funcs)-> graph.add(createNode(name,"FunctionDecl",model)));
+    		b.getFunctionApplications().forEach((name,funcs)-> graph.add(createNode(name,"FunctionApp",model)));
+    		b.getRelationships().entrySet().parallelStream()
+              .filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
+              .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
+    		b.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunctionDeclarations(graph, name, functions));
+    		b.getFunctionApplications().forEach((name, functions) -> createEdgesByFunctionApplications(graph, name, functions));
+    		graphs.add(graph);
+    	}
+
+		return graphs;
+	}
+
     private void createNodes(MegaModel model, Graph graph) {
-        createNodesByInstances(model, graph);
-        createNodesByFunctions(model, graph);
-    }
-
-    private void createNodesByInstances(MegaModel model, Graph graph) {
-        List<Node> nodes = model.getInstanceOfMap().entrySet().stream()
-            .map(entry -> createNode(entry.getKey(), entry.getValue(), model))
-            .collect(Collectors.toList());
-        nodes.forEach(graph::add);
-    }
-
-    private void createNodesByFunctions(MegaModel model, Graph graph) {
+    	model.getInstanceOfMap().entrySet().stream()
+             .map(entry -> createNode(entry.getKey(), entry.getValue(), model))
+             .forEach(graph::add);
         model.getFunctionDeclarations().forEach((name, actions) -> graph.add(createNode(name, "FunctionDeclaration", model)));
-        model.getFunctionApplications().forEach((name, actions) -> graph.add(createNode(("#" + name), "FunctionApplication", model)));
+        model.getFunctionApplications().forEach((name, actions) -> graph.add(createNode("#" + name, "FunctionApplication", model)));
     }
 
     private Node createNode(String name, String type, MegaModel model) {
         Node result = new Node(type, name, getFirstInstanceLink(model, name));
-
         applyInstanceHierarchy(result);
-
         return result;
     }
 
@@ -78,7 +76,7 @@ public class GraphFactory {
         String type = node.getType();
         while (type != null && !type.isEmpty()) {
             node.getInstanceHierarchy().add(type);
-            type = resolveableModel.getSubtypesMap().get(type);
+            type = model.getSubtypesMap().get(type);
         }
     }
 
@@ -101,8 +99,8 @@ public class GraphFactory {
 
     private void createEdgesByFunctionApplications(Graph graph, String functionName, Set<Function> funcs) {
         funcs.forEach(f -> {
-            createEdgesByFunction(graph, ("#" + functionName), f);
-            createEdge(graph, ("#" + functionName), functionName, "applicationOf");
+            createEdgesByFunction(graph, "#" + functionName, f);
+            createEdge(graph, "#" + functionName, functionName, "applicationOf");
         });
     }
 
@@ -119,25 +117,6 @@ public class GraphFactory {
     private void createEdge(Graph graph, String from, String to, String relation) {
         Node fromNode = graph.get(from);
         Node toNode = graph.get(to);
-
-        if (toNode == null) {
-            toNode = lazyCreateImportedNode(graph, to);
-        }
-
         fromNode.connect(relation, toNode);
     }
-
-    private Node lazyCreateImportedNode(Graph graph, String name) {
-        // This method is executed when a destination node is not found in the simple model.
-        // The resolveableModel is the complete megamodel instance and an import node is to be created
-        // If there is still no node available, throw an exception
-        if(!resolveableModel.getInstanceOfMap().containsKey(name))
-            throw new MegaModelVisualizerException("Could not resolve node " + name);
-        String type = resolveableModel.getInstanceOfMap().get(name);
-        Node result = createNode(name, type, resolveableModel);
-        graph.add(result);
-
-        return result;
-    }
-
 }

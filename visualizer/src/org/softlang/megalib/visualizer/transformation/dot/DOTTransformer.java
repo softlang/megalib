@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.softlang.megalib.visualizer.FileExtensionFactory;
+
 import org.softlang.megalib.visualizer.VisualizerOptions;
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.Node;
@@ -42,8 +42,9 @@ public class DOTTransformer extends Transformer {
 
     @Override
     public String transform(Graph g) {
-        if (g == null)
-            throw new IllegalArgumentException();
+        if (g == null) {
+			throw new IllegalArgumentException();
+		}
 
         return process(g);
     }
@@ -71,8 +72,9 @@ public class DOTTransformer extends Transformer {
         // Traverse the configuration hierarchy to determine if there is a configuration item present
         // Hence: name -> type -> supertype (until finished) -> default configuration
         for (String key : getKeyHierarchy(node)) {
-            if (config.contains(key) && config.get(key).contains(attribute))
-                return config.get(key);
+            if (config.contains(key) && config.get(key).contains(attribute)) {
+				return config.get(key);
+			}
         }
         return DEFAULT_CONFIG;
     }
