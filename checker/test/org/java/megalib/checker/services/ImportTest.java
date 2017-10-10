@@ -1,11 +1,12 @@
 package org.java.megalib.checker.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.java.megalib.checker.services.ModelLoader;
-import org.java.megalib.checker.services.WellformednessCheck;
+import org.java.megalib.models.Block;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,6 +37,17 @@ public class ImportTest {
         assertTrue(ml.getModel().isInstanceOf("?a1", "Artifact"));
         assertTrue(ml.getModel().isInstanceOf("?a2", "Artifact"));
         assertTrue(ml.getModel().isInstanceOf("f", "Function"));
+    }
+
+    @Test
+    public void testBlockWisdom() {
+    	//every relationship knows its block and every block knows subject and object
+    	ml.getModel().getRelationships().values().forEach(set -> set.forEach(r -> {
+    		Block b = r.getBlock();
+    		assertNotNull(b);
+    		assertNotNull(b.getInstanceOfMap().get(r.getSubject()));
+    		assertNotNull(b.getInstanceOfMap().get(r.getObject()));
+    	}));
     }
 
 }

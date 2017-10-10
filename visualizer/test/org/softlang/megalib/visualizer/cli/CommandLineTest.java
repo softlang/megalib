@@ -13,6 +13,8 @@ import org.softlang.megalib.visualizer.VisualizerOptions;
 import org.softlang.megalib.visualizer.exceptions.CommandLineException;
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.ModelToGraph;
+import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
+import org.softlang.megalib.visualizer.transformation.dot.DOTTransformer;
 
 /**
  *
@@ -51,16 +53,18 @@ public class CommandLineTest {
 
     @Test
     public void testWebBrowser() {
-        CommandLine cli = new CommandLine(Arrays.asList("graphviz", "testtype"));
+    	TransformerRegistry.registerTransformer("dot", (VisualizerOptions options)
+   		     -> new DOTTransformer(options));
+        CommandLine cli = new CommandLine(Arrays.asList("graphviz", "dot"));
 
-        String data[] = {"-f", "../models/webbrowser/Webbrowser.megal", "-t", "graphviz"};
+        String data[] = {"-f", "../models/webbrowser/Webbrowser.megal", "-t", "dot"};
         cli.parse(data);
         VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());
 
         Graph graph = new ModelToGraph(options).createGraph();
 
         Visualizer visualizer = new Visualizer(options);
-        visualizer.plotModel(graph);
+        visualizer.plotGraph(graph);
 
         System.out.println("Visualization complete.");
     }

@@ -28,12 +28,6 @@ public class DOTTransformer extends Transformer {
         .put("color", "black")
         .put("shape", "oval");
 
-    // static {
-    // Transformer.registerTransformer("graphviz", (VisualizerOptions options)
-    // -> new DOTTransformer(options));
-    // FileExtensionFactory.registerFileExtension("graphviz", "dot");
-    // }
-
     private TransformerConfiguration config = new DOTConfigurationBuilder().buildConfiguration();
 
     public DOTTransformer(VisualizerOptions options) {

@@ -40,6 +40,9 @@ public class ModelToGraph {
     public List<Graph> createGraphs() {
     	List<Graph> graphs = new LinkedList<>();
     	for(Block b : model.getBlocks()) {
+    		if(b.getModule().startsWith("common")) {
+				continue;
+			}
     		Graph graph = new Graph(b.getModule()+b.getId());
     		//instance nodes
     		b.getInstanceOfMap().entrySet().stream()

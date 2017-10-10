@@ -137,6 +137,10 @@ public class MegaModel {
         block.addFunctionApplication(name, app);
     }
 
+    public String getType(String entity) {
+		return instanceOfMap.get(entity);
+	}
+
     public boolean isInstanceOf(String entity, String type) {
         if (!instanceOfMap.containsKey(entity)) {
 			return false;

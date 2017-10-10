@@ -3,12 +3,6 @@
  */
 package org.softlang.megalib.visualizer.models.transformation;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.softlang.megalib.visualizer.VisualizerOptions;
 import org.softlang.megalib.visualizer.models.Graph;
 

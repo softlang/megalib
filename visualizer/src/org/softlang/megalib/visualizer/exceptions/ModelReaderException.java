@@ -9,7 +9,9 @@ package org.softlang.megalib.visualizer.exceptions;
  */
 public class ModelReaderException extends MegaModelVisualizerException {
 
-    public ModelReaderException(String message) {
+	private static final long serialVersionUID = 1L;
+
+	public ModelReaderException(String message) {
         super(message);
     }
 

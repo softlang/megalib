@@ -63,6 +63,8 @@ public class Block {
     }
 
     public void addRelationInstance(String name, Relation i) {
+    	instanceOfMap.put(i.getSubject(), model.getType(i.getSubject()));
+    	instanceOfMap.put(i.getObject(), model.getType(i.getObject()));
         Set<Relation> set = new HashSet<>();
         if(relationshipMap.containsKey(name)){
             set = relationshipMap.get(name);
@@ -78,6 +80,9 @@ public class Block {
     }
 
     public void addFunctionDeclaration(String functionName, Function f) {
+    	f.getInputs().forEach(l -> instanceOfMap.put(l, model.getType(l)));
+    	f.getOutputs().forEach(l -> instanceOfMap.put(l, model.getType(l)));
+
         Set<Function> declset = new HashSet<>();
         if(functionDeclarations.containsKey(functionName)){
             declset = functionDeclarations.get(functionName);
@@ -93,6 +98,8 @@ public class Block {
     }
 
     public void addFunctionApplication(String name, Function app) {
+    	app.getInputs().forEach(a -> instanceOfMap.put(a, model.getType(a)));
+    	app.getOutputs().forEach(a -> instanceOfMap.put(a, model.getType(a)));
         Set<Function> set = new HashSet<>();
         if(functionApplications.containsKey(name)){
             set = functionApplications.get(name);

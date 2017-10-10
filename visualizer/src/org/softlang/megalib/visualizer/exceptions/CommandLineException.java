@@ -9,7 +9,9 @@ package org.softlang.megalib.visualizer.exceptions;
  */
 public class CommandLineException extends MegaModelVisualizerException {
 
-    public CommandLineException(String message) {
+	private static final long serialVersionUID = 1L;
+
+	public CommandLineException(String message) {
         super(message);
     }
 

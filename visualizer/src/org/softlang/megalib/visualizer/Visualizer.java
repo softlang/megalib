@@ -3,13 +3,11 @@
  */
 package org.softlang.megalib.visualizer;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.softlang.megalib.visualizer.exceptions.MegaModelVisualizerException;
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.transformation.Transformer;
 import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
@@ -22,20 +20,16 @@ public class Visualizer {
 
     private Transformer transformer;
 
-    private VisualizerOptions options;
-
     public Visualizer(VisualizerOptions options) {
-        this.options = options;
         transformer = TransformerRegistry.getInstance(options);
     }
 
-    public File plotModel(Graph graph) {
+    public void plotGraph(Graph graph) {
         try {
-            return Files.write(Paths.get(options.getModelName() + "."+ "dot"),
-                               transformer.transform(graph).getBytes(StandardCharsets.UTF_8))
-                        .toFile();
+            Files.write(Paths.get("output/"+graph.getName() + "."+ "dot"),
+                               transformer.transform(graph).getBytes(StandardCharsets.UTF_8));
         } catch (IOException ex) {
-            throw new MegaModelVisualizerException(ex);
+        	ex.printStackTrace();
         }
     }
 
