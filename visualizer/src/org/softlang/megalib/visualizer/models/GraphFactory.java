@@ -31,11 +31,11 @@ public class GraphFactory {
     public GraphFactory(VisualizerOptions options) {
         this.options = options;
         reader = new ModelReader(options);
+        resolveableModel = reader.readFull();
     }
 
     public Graph create() throws MegaModelVisualizerException {
-        baseModel = reader.read();
-        resolveableModel = reader.readFull();
+        
 
         Graph graph = createGraph(options.getModelName(), baseModel);
         return graph;

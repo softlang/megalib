@@ -28,7 +28,7 @@ public class Visualizer {
         transformer = TransformerRegistry.getInstance(options);
     }
 
-    public File plotFile(Graph graph) {
+    public File plotModel(Graph graph) {
         try {
             return Files.write(Paths.get(options.getModelName() + "."
                                          + FileExtensionFactory.get(options.getTransformationType())),

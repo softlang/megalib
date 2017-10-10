@@ -3,6 +3,8 @@
  */
 package org.softlang.megalib.visualizer;
 
+import java.util.Set;
+
 import org.java.megalib.parser.ParserException;
 import org.softlang.megalib.visualizer.cli.CommandLine;
 import org.softlang.megalib.visualizer.exceptions.MegaModelVisualizerException;
@@ -24,9 +26,11 @@ public class Main {
             VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());
 
             Graph graph = new GraphFactory(options).create();
-
             Visualizer visualizer = new Visualizer(options);
-            visualizer.plotFile(graph);
+            visualizer.plotModel(graph);
+            
+            Set<Graph> graphs = new GraphFactory(options).createSepView();
+            visualizer.plotBlocks(graphs);
 
             System.out.println("Visualization complete.");
         } catch (MegaModelVisualizerException ex) {

@@ -60,7 +60,7 @@ public class CommandLineTest {
         Graph graph = new GraphFactory(options).create();
 
         Visualizer visualizer = new Visualizer(options);
-        visualizer.plotFile(graph);
+        visualizer.plotModel(graph);
 
         System.out.println("Visualization complete.");
     }
