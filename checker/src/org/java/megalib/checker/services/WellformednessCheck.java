@@ -65,7 +65,8 @@ public class WellformednessCheck {
                                  + " must begin with a lower case letter.");
                 }
             }else{
-                if(name.substring(0, 1).equals(name.substring(0, 1).toLowerCase())){
+                if(!entry.getValue().equals("Link")
+                		&& name.substring(0, 1).equals(name.substring(0, 1).toLowerCase())){
                     warnings.add("The " + entry.getValue() + " ID " + name
                                  + " must begin with an upper case letter.");
                 }
@@ -88,18 +89,19 @@ public class WellformednessCheck {
     }
 
     private void concreteInstanceChecks(String e) {
+    	if(model.isInstanceOf(e, "Link")) {
+			return;
+		}
         Map<String,String> map = model.getInstanceOfMap();
         if(map.get(e).equals("Technology")){
             warnings.add("State a specific subtype of Technology for " + e + ".");
         }
         if(model.isInstanceOf(e, "Technology")){
-            Optional<Set<Relation>> o = Optional.ofNullable(model.getRelationships().get("uses"))
+            Optional.ofNullable(model.getRelationships().get("uses"))
                     .filter(set -> set.parallelStream()
-                                      .anyMatch(r -> r.getSubject().equals(e)
-                                                      && model.isInstanceOf(r.getObject(), "Language")));
-            if(!o.isPresent()){
-                warnings.add("State a used language for " + e);
-            }
+                                      .noneMatch(r -> r.getSubject().equals(e)
+                                                      && model.isInstanceOf(r.getObject(), "Language")))
+                    .ifPresent(set -> warnings.add("State a used language for " + e));
         }
         if(map.get(e).equals("Language")){
             warnings.add("State a specific subtype of Language for " + e + ".");
@@ -112,7 +114,6 @@ public class WellformednessCheck {
                 if(bindcount < 1){
                     warnings.add("Binding missing for Artifact " + e + ".");
                 }
-
         }else{
             Optional<Set<Relation>> o = Optional.ofNullable(model.getRelationships().get("="))
                                                 .filter(set -> set.parallelStream()
@@ -142,8 +143,9 @@ public class WellformednessCheck {
      * part-hood relationship.
      */
     private void partOfCheck() {
-        if(!model.getRelationships().containsKey("partOf"))
-            return;
+        if(!model.getRelationships().containsKey("partOf")) {
+			return;
+		}
         Set<Relation> partOfs = model.getRelationships().get("partOf");
         Set<String> subjects = new HashSet<>();
         for(Relation p : partOfs){
@@ -161,8 +163,9 @@ public class WellformednessCheck {
      * that is not a fragment.
      */
     private void fragmentPartOfCheck() {
-        if(!model.getRelationships().containsKey("manifestsAs"))
-            return;
+        if(!model.getRelationships().containsKey("manifestsAs")) {
+			return;
+		}
         List<String> fragments = model.getRelationships().get("manifestsAs").parallelStream()
                                       .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
                                       .collect(Collectors.toList());
@@ -178,8 +181,9 @@ public class WellformednessCheck {
      * All composite fragments do not have any part that is not a fragment.
      */
     private void partOfFragmentCheck() {
-        if(!model.getRelationships().containsKey("manifestsAs"))
-            return;
+        if(!model.getRelationships().containsKey("manifestsAs")) {
+			return;
+		}
         Set<String> fset = model.getRelationships().get("manifestsAs").parallelStream()
                                 .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
                                 .collect(Collectors.toSet());
@@ -198,8 +202,9 @@ public class WellformednessCheck {
     }
 
     private void transientIsInputOrOutput() {
-        if(!model.getRelationships().containsKey("manifestsAs"))
-            return;
+        if(!model.getRelationships().containsKey("manifestsAs")) {
+			return;
+		}
 
         Set<String> tset = model.getRelationships().get("manifestsAs").parallelStream()
                                 .filter(r -> r.getObject().equals("Transient") && !isPart(r.getSubject()))
@@ -219,8 +224,9 @@ public class WellformednessCheck {
     }
 
     private boolean isPart(String t) {
-        if(!model.getRelationships().containsKey("partOf"))
-            return false;
+        if(!model.getRelationships().containsKey("partOf")) {
+			return false;
+		}
         Set<Relation> partOfs = model.getRelationships().get("partOf");
         return !partOfs.parallelStream().noneMatch(r -> r.getSubject().equals(t));
     }
@@ -246,8 +252,9 @@ public class WellformednessCheck {
     }
 
     private void cyclicRelationChecks(String name) {
-        if(!model.getRelationships().containsKey(name))
-            return;
+        if(!model.getRelationships().containsKey(name)) {
+			return;
+		}
         Set<Relation> rels = model.getRelationships().get(name);
         Set<String> subjects;
         Set<String> objects;

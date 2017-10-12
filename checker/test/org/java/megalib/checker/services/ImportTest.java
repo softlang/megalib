@@ -28,6 +28,7 @@ public class ImportTest {
     @Test
     public void testNoWarnings() {
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        c.getWarnings().forEach(System.out::println);
         assertEquals(0, c.getWarnings().size());
     }
 
@@ -43,10 +44,13 @@ public class ImportTest {
     public void testBlockWisdom() {
     	//every relationship knows its block and every block knows subject and object
     	ml.getModel().getRelationships().values().forEach(set -> set.forEach(r -> {
-    		Block b = r.getBlock();
-    		assertNotNull(b);
-    		assertNotNull(b.getInstanceOfMap().get(r.getSubject()));
-    		assertNotNull(b.getInstanceOfMap().get(r.getObject()));
+    		if(!ml.getModel().getSubtypesMap().containsKey(r.getSubject())
+    				&&!ml.getModel().getRelationshipDeclarationMap().containsKey(r.getSubject())) {
+    			Block b = r.getBlock();
+    			assertNotNull(b);
+    			assertNotNull(b.getInstanceOfMap().get(r.getSubject()));
+    			assertNotNull(b.getInstanceOfMap().get(r.getObject()));
+    		}
     	}));
     }
 

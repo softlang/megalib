@@ -24,8 +24,6 @@ public class MegaModel {
     private Map<String,String> namespaceMap;
     private Set<String> substitutedLanguages;
 
-    private Set<String> removableAbstract;
-
     private List<Block> blocks;
 
     public MegaModel() {
@@ -37,7 +35,6 @@ public class MegaModel {
         functionDeclarations = new HashMap<>();
         functionApplications = new HashMap<>();
         substitutedLanguages = new HashSet<>();
-        removableAbstract = new HashSet<>();
         namespaceMap = new HashMap<>();
         blocks = new ArrayList<>();
     }
@@ -93,6 +90,7 @@ public class MegaModel {
         }
         if(name.equals("~=") || name.equals("=")){
             object = object.replaceAll("\"", "");
+            addInstanceOf(object, "Link",block);
         }
         Relation i = new Relation(subject, object);
         if(name.equals("subsetOf")){
