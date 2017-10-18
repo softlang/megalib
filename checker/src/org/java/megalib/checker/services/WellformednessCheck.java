@@ -97,11 +97,12 @@ public class WellformednessCheck {
             warnings.add("State a specific subtype of Technology for " + e + ".");
         }
         if(model.isInstanceOf(e, "Technology")){
-            Optional.ofNullable(model.getRelationships().get("uses"))
+            Optional<?> o = Optional.ofNullable(model.getRelationships().get("uses"))
                     .filter(set -> set.parallelStream()
-                                      .noneMatch(r -> r.getSubject().equals(e)
-                                                      && model.isInstanceOf(r.getObject(), "Language")))
-                    .ifPresent(set -> warnings.add("State a used language for " + e));
+                                      .anyMatch(r -> r.getSubject().equals(e)
+                                                      && model.isInstanceOf(r.getObject(), "Language")));
+            if(!o.isPresent())
+               warnings.add("State a used language for " + e);
         }
         if(map.get(e).equals("Language")){
             warnings.add("State a specific subtype of Language for " + e + ".");
