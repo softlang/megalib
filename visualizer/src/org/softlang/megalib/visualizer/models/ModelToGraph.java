@@ -102,8 +102,8 @@ public class ModelToGraph {
 
     private void createEdgesByFunctionApplications(Graph graph, String functionName, Set<Function> funcs) {
         funcs.forEach(f -> {
-            createEdgesByFunction(graph, "#" + functionName, f);
-            createEdge(graph, "#" + functionName, functionName, "applicationOf");
+            createEdgesByFunction(graph, functionName, f);
+            createEdge(graph, functionName, functionName, "applicationOf");
         });
     }
 
@@ -120,6 +120,8 @@ public class ModelToGraph {
     private void createEdge(Graph graph, String from, String to, String relation) {
         Node fromNode = graph.get(from);
         Node toNode = graph.get(to);
+        if(fromNode == null)
+        	System.out.println("1");
         fromNode.connect(relation, toNode);
     }
 }

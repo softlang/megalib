@@ -3,7 +3,6 @@
  */
 package org.softlang.megalib.visualizer.models;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -93,11 +92,11 @@ public class Graph implements Iterable<Node> {
         return true;
     }
 
-    public Collection<Node> getNodes() {
-        return nodes.values();
+    public Map<String, Node> getNodes() {
+        return nodes;
     }
 
-    public Collection<Edge> getEdges() {
+    public Set<Edge> getEdges() {
         Set<Edge> edges = new HashSet<>();
         forEachEdge(edges::add);
 
