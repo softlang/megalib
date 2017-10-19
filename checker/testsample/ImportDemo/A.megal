@@ -1,6 +1,6 @@
 module A 
 
-/**/
+/* Samples A*/
 ?Program : Application.
 ?spec : Artifact;
     partOf ?Program;

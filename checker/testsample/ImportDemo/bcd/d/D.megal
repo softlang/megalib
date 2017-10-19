@@ -2,7 +2,7 @@ module bcd.d.D
 
 import bcd.C 
 
-/* */
+/* Samples D */
 f : HTML5 -> HTML5.
 f(?a1) |-> ?a2.
 ?Program implements f.

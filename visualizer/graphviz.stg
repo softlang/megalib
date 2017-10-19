@@ -1,6 +1,8 @@
-graph(name, nodes, edges) ::= <<digraph <name> {
+graph(name, nodes, edges, text) ::= <<digraph <name> {
     rankdir = LR;
-
+    labelloc=b
+    label="<text>"
+	
     <if(nodes)>
     // all nodes
     <nodes:node(); separator="\n">
@@ -13,4 +15,4 @@ graph(name, nodes, edges) ::= <<digraph <name> {
 }>>
  
 node(n) ::= "\"<n.name>\" [shape=\"<n.shape>\" color=\"<n.color>\" label=\"<n.name>\"];"
-edge(e) ::= "\"<e.origin.name>\" -> \"<e.destination.name>\" [label=\"<e.label>\"];"
+edge(e) ::= "\"<e.origin.name>\" -> \"<e.destination.name>\" [label=\"<e.label>\" arrowHead=\"vee\"];"

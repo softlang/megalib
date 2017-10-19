@@ -3,11 +3,12 @@
  */
 package org.softlang.megalib.visualizer.models;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -24,7 +25,7 @@ public class Node {
 
     private LinkedList<String> instanceHierarchy = new LinkedList<>();
 
-    private Map<String, Edge> edges = new LinkedHashMap<>();
+    private Map<String, Set<Edge>> edges = new LinkedHashMap<>();
 
     public Node(String type, String name, String link) {
         this.type = type;
@@ -32,7 +33,7 @@ public class Node {
         this.link = link;
     }
 
-    protected Node(String type, String name, String link, LinkedList<String> instanceHierarchy, Map<String, Edge> edges) {
+    protected Node(String type, String name, String link, LinkedList<String> instanceHierarchy, Map<String, Set<Edge>> edges) {
         this.type = type;
         this.name = name;
         this.link = link;
@@ -41,7 +42,7 @@ public class Node {
     }
 
     public void forEachEdge(Consumer<? super Edge> consumer) {
-        edges.values().forEach(consumer);
+        edges.values().forEach(set -> set.forEach(consumer));
     }
 
     /**
@@ -52,17 +53,12 @@ public class Node {
      * @return the current node
      */
     public Node connect(String relation, Node destination) {
-        edges.put(relation, new Edge(this, destination, relation));
+    	Set<Edge> set = new HashSet<Edge>();
+    	if(edges.containsKey(relation))
+    		set = edges.get(relation);
+    	set.add(new Edge(this, destination, relation));
+        edges.put(relation, set);
         return this;
-    }
-
-    public Optional<Node> disconnect(String relation) {
-        Edge toRemove = edges.values().stream().filter(edge -> edge.getLabel().equals(relation)).findFirst().orElse(null);
-        if (toRemove == null)
-            return Optional.empty();
-        edges.remove(relation, toRemove);
-
-        return Optional.of(toRemove.getDestination());
     }
 
     public void setType(String type) {
@@ -95,7 +91,7 @@ public class Node {
         return instanceHierarchy;
     }
 
-    public Map<String, Edge> getEdges() {
+    public Map<String, Set<Edge>> getEdges() {
         return edges;
     }
 

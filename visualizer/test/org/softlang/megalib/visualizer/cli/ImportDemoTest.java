@@ -55,5 +55,20 @@ public class ImportDemoTest {
 		
 		assertEquals(5,g1.getEdges().size());
 	}
+	
+	@Test
+	public void testGraph4() {
+		Graph g4 = graphs.get(3);
+		Map<String, Node> nodes = g4.getNodes();
+		
+		assertTrue(nodes.containsKey("f"));
+		assertTrue(nodes.containsKey("HTML5"));
+		assertTrue(nodes.containsKey("?a1"));
+		assertTrue(nodes.containsKey("?a2"));
+		assertTrue(nodes.containsKey("?Program"));
+		assertEquals(5,nodes.size());
+		g4.getEdges().forEach(e -> System.out.println(e.getLabel()+", "+e.getDestination().getName()));
+		assertEquals(5,g4.getEdges().size());
+	}
 
 }

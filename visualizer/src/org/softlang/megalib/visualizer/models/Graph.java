@@ -18,16 +18,23 @@ import java.util.function.Consumer;
 public class Graph implements Iterable<Node> {
 
     private String name;
+    private String text;
 
     private Map<String, Node> nodes = new TreeMap<>();
 
-    Graph(String name) {
+    Graph(String name, String text) {
         this.name = name;
+        this.text = text;
     }
 
     public String getName() {
         return name;
     }
+    
+    public String getText() {
+		// TODO Auto-generated method stub
+		return text;
+	}
 
     /**
      * Adds a node to the graph. If a node with the same name is present, the old one gets overwritten by the new node.

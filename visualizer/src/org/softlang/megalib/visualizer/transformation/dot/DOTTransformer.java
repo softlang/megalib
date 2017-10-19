@@ -50,10 +50,11 @@ public class DOTTransformer extends Transformer {
         List<DOTNode> nodes = new LinkedList<>();
 
         g.forEachNode(n -> nodes.add(createDOTNode(n)));
-
+        
         template.add("name", options.getModelName());
         template.add("nodes", nodes);
         template.add("edges", g.getEdges());
+        template.add("text", g.getText());
 
         return template.render();
     }

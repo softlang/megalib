@@ -3,6 +3,7 @@
  */
 package org.softlang.megalib.visualizer.models;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class ModelToGraph {
     }
 
     public Graph createGraph() {
-        Graph graph = new Graph(options.getModelName());
+        Graph graph = new Graph(options.getModelName(),"The complete Megamodel for "+options.getModelName());
         createNodes(model, graph);
         createEdges(model, graph);
 
@@ -43,18 +44,18 @@ public class ModelToGraph {
     		if(b.getModule().startsWith("common")) {
 				continue;
 			}
-    		Graph graph = new Graph(b.getModule()+b.getId());
+    		Graph graph = new Graph(b.getModule()+b.getId(),b.getText().substring(2, b.getText().length()-2));
     		//instance nodes
     		b.getInstanceOfMap().entrySet().stream()
     		 .map(entry -> createNode(entry.getKey(),entry.getValue(),model))
     		 .forEach(graph::add);
     		b.getFunctionDeclarations().forEach((name,funcs)-> graph.add(createNode(name,"FunctionDecl",model)));
     		b.getFunctionApplications().forEach((name,funcs)-> graph.add(createNode(name,"FunctionApp",model)));
-    		b.getRelationships().entrySet().parallelStream()
+    		b.getRelationships().entrySet().stream()
               .filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
               .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
-    		b.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunctionDeclarations(graph, name, functions));
-    		b.getFunctionApplications().forEach((name, functions) -> createEdgesByFunctionApplications(graph, name, functions));
+    		b.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+    		b.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
     		graphs.add(graph);
     	}
 
@@ -89,27 +90,23 @@ public class ModelToGraph {
     }
 
     private void createEdges(MegaModel model, Graph graph) {
-        model.getRelationships().entrySet().parallelStream()
+        model.getRelationships().entrySet().stream()
              .filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
              .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
-        model.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunctionDeclarations(graph, name, functions));
-        model.getFunctionApplications().forEach((name, functions) -> createEdgesByFunctionApplications(graph, name, functions));
+        model.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+        model.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
     }
 
-    private void createEdgesByFunctionDeclarations(Graph graph, String functionName, Set<Function> funcs) {
-        funcs.forEach(f -> createEdgesByFunction(graph, functionName, f));
+    private void createEdgesByFunction(Graph graph, String functionName, Set<Function> funcs) {
+    	Iterator<Function> it = funcs.iterator();
+    	for(int i=0; it.hasNext(); i++) {
+                createEdgesByFunction(graph, functionName, it.next(),i);
+    	}
     }
 
-    private void createEdgesByFunctionApplications(Graph graph, String functionName, Set<Function> funcs) {
-        funcs.forEach(f -> {
-            createEdgesByFunction(graph, functionName, f);
-            createEdge(graph, functionName, functionName, "applicationOf");
-        });
-    }
-
-    private void createEdgesByFunction(Graph graph, String functionName, Function f) {
-        f.getInputs().forEach(input -> createEdge(graph, functionName, input, "functionInput"));
-        f.getOutputs().forEach(output -> createEdge(graph, functionName, output, "functionOutput"));
+    private void createEdgesByFunction(Graph graph, String functionName, Function f, int i) {
+        f.getInputs().forEach(input -> createEdge(graph, functionName, input, "functionInput_"+i));
+        f.getOutputs().forEach(output -> createEdge(graph, functionName, output, "functionOutput_"+i));
     }
 
     private void createEdgesByRelations(Graph graph, String relationName, Set<Relation> relations) {
@@ -118,10 +115,14 @@ public class ModelToGraph {
     }
 
     private void createEdge(Graph graph, String from, String to, String relation) {
-        Node fromNode = graph.get(from);
-        Node toNode = graph.get(to);
-        if(fromNode == null)
-        	System.out.println("1");
-        fromNode.connect(relation, toNode);
+        try{
+        	Node fromNode = graph.get(from);
+        	Node toNode = graph.get(to);
+        	fromNode.connect(relation, toNode);
+        }catch(Exception e) {
+        	System.out.println(graph.getName()+": "+from+"--"+relation+"-->"+to);
+        	e.printStackTrace();
+        	System.exit(1);
+        }
     }
 }

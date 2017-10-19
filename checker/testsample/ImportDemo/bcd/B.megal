@@ -1,7 +1,8 @@
 module bcd.B
 
 import A
-/* A derived artifact */
+
+/* Samples B */
 ?a2 : Artifact;
     elementOf HTML5;
     hasRole WebResource;
