@@ -32,13 +32,13 @@ public class ModelToGraph {
 
     public Graph createGraph() {
         Graph graph = new Graph(options.getModelName(),"The complete Megamodel for "+options.getModelName());
-        createNodes(model, graph);
-        createEdges(model, graph);
+        createNodes(graph);
+        createEdges(graph);
 
         return graph;
     }
 
-    public List<Graph> createGraphs() {
+    public List<Graph> createBlockGraphs() {
     	List<Graph> graphs = new LinkedList<>();
     	for(Block b : model.getBlocks()) {
     		if(b.getModule().startsWith("common")) {
@@ -62,7 +62,7 @@ public class ModelToGraph {
 		return graphs;
 	}
 
-    private void createNodes(MegaModel model, Graph graph) {
+    private void createNodes(Graph graph) {
     	model.getInstanceOfMap().entrySet().stream()
              .map(entry -> createNode(entry.getKey(), entry.getValue(), model))
              .forEach(graph::add);
@@ -89,7 +89,7 @@ public class ModelToGraph {
                        .orElse("");
     }
 
-    private void createEdges(MegaModel model, Graph graph) {
+    private void createEdges(Graph graph) {
         model.getRelationships().entrySet().stream()
              .filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
              .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
@@ -115,14 +115,8 @@ public class ModelToGraph {
     }
 
     private void createEdge(Graph graph, String from, String to, String relation) {
-        try{
-        	Node fromNode = graph.get(from);
-        	Node toNode = graph.get(to);
-        	fromNode.connect(relation, toNode);
-        }catch(Exception e) {
-        	System.out.println(graph.getName()+": "+from+"--"+relation+"-->"+to);
-        	e.printStackTrace();
-        	System.exit(1);
-        }
+        Node fromNode = graph.get(from);
+        Node toNode = graph.get(to);
+        fromNode.connect(relation, toNode);
     }
 }

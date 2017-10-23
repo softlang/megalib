@@ -3,6 +3,7 @@
  */
 package org.softlang.megalib.visualizer.transformation.dot;
 
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,9 +43,15 @@ public class DOTTransformer extends Transformer {
 
         return process(g);
     }
+    
+    private STGroup loadTemplateFromResource() {
+    	String resource = "graphviz.stg";
+    	URL u = this.getClass().getResource(resource);
+    	return new STGroupFile(u, "UTF-8", '<', '>');
+	}
 
     private String process(Graph g) {
-        STGroup templateGroup = new STGroupFile("graphviz.stg");
+        STGroup templateGroup = loadTemplateFromResource();
         ST template = templateGroup.getInstanceOf("graph");
 
         List<DOTNode> nodes = new LinkedList<>();
@@ -59,7 +66,9 @@ public class DOTTransformer extends Transformer {
         return template.render();
     }
 
-    private String getConfigValue(Node node, String attribute) {
+    
+
+	private String getConfigValue(Node node, String attribute) {
         return getConfigItem(node, attribute).get(attribute);
     }
 

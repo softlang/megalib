@@ -3,12 +3,8 @@
  */
 package org.softlang.megalib.visualizer.transformation.dot;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Optional;
+import java.net.URL;
 import java.util.Properties;
 
 import org.softlang.megalib.visualizer.models.transformation.ConfigurationBuilder;
@@ -22,34 +18,16 @@ public class DOTConfigurationBuilder implements ConfigurationBuilder {
 
     @Override
     public TransformerConfiguration buildConfiguration() {
-        Properties props = loadFromFile().orElseGet(this::loadFromClassPath);
+        Properties props = loadFromClassPath();
         return propertiesToConfiguration(props);
-    }
-
-    private Optional<Properties> loadFromFile() {
-        // Check if a graphviz.properties file exists
-        // Otherwise load the default properties resources provided by this project's resources
-        Path filePath = Paths.get("graphviz.properties");
-        if (!filePath.toFile().exists()) {
-            return Optional.empty();
-        }
-        Properties prop = new Properties();
-
-        try {
-            prop.load(new FileInputStream(filePath.toFile()));
-
-            return Optional.of(prop);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private Properties loadFromClassPath() {
         Properties prop = new Properties();
         try {
-            InputStream stream = getClass().getClassLoader().getResourceAsStream("graphviz.properties");
-            prop.load(stream);
-
+        	String resource = "graphviz.properties";
+        	URL u = this.getClass().getResource(resource);
+        	prop.load(u.openStream());
             return prop;
         } catch (IOException e) {
             throw new RuntimeException(e);

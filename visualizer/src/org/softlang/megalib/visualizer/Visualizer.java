@@ -3,10 +3,10 @@
  */
 package org.softlang.megalib.visualizer;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.transformation.Transformer;
@@ -26,8 +26,10 @@ public class Visualizer {
 
     public void plotGraph(Graph graph) {
         try {
-            Files.write(Paths.get("output/"+graph.getName() + "."+ "dot"),
-                               transformer.transform(graph).getBytes(StandardCharsets.UTF_8));
+        	File o = new File("../visualizer/output");
+        	o.mkdir();
+        	File f = new File("../visualizer/output/"+graph.getName()+".dot");
+            Files.write(f.toPath(),transformer.transform(graph).getBytes(StandardCharsets.UTF_8));
         } catch (IOException ex) {
         	ex.printStackTrace();
         }

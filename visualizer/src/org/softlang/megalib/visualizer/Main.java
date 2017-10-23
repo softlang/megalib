@@ -32,7 +32,7 @@ public class Main {
             //Graph graph = new ModelToGraph(options).createGraph();
             //visualizer.plotGraph(graph);
 
-            List<Graph> graphs = new ModelToGraph(options).createGraphs();
+            List<Graph> graphs = new ModelToGraph(options).createBlockGraphs();
             graphs.forEach(visualizer::plotGraph);
 
             System.out.println("Visualization complete.");

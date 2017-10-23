@@ -32,7 +32,7 @@ public class ImportDemoTest {
 	    cli.parse(data);
 	    VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());
 	    vis = new Visualizer(options);
-	    graphs = new ModelToGraph(options).createGraphs();
+	    graphs = new ModelToGraph(options).createBlockGraphs();
 	    graphs.forEach(vis::plotGraph);
 	}
 	
@@ -67,7 +67,6 @@ public class ImportDemoTest {
 		assertTrue(nodes.containsKey("?a2"));
 		assertTrue(nodes.containsKey("?Program"));
 		assertEquals(5,nodes.size());
-		g4.getEdges().forEach(e -> System.out.println(e.getLabel()+", "+e.getDestination().getName()));
 		assertEquals(5,g4.getEdges().size());
 	}
 

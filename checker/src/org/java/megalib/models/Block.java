@@ -63,10 +63,11 @@ public class Block {
     }
 
     public void addRelationInstance(String name, Relation i) {
-    	if(!model.getSubtypesMap().containsKey(i.getSubject())
-    			&& !model.getRelationshipDeclarationMap().containsKey(i.getSubject())) {
-			instanceOfMap.put(i.getSubject(), model.getType(i.getSubject()));
+    	if(model.getSubtypesMap().containsKey(i.getSubject())
+    			|| model.getRelationshipDeclarationMap().containsKey(i.getSubject())) {
+			return;
 		}
+    	instanceOfMap.put(i.getSubject(), model.getType(i.getSubject()));
     	instanceOfMap.put(i.getObject(), model.getType(i.getObject()));
         Set<Relation> set = new HashSet<>();
         if(relationshipMap.containsKey(name)){
