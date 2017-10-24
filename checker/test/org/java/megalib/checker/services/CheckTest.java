@@ -119,7 +119,7 @@ public class CheckTest {
     }
 
     @Test
-    public void checkArtifactElementOf() throws ParserException, IOException {
+    public void checkFileElementOf() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?a : Artifact. " + "?a hasRole MvcModel. " + "?a manifestsAs File.";
         ml.loadString(input);
@@ -127,6 +127,16 @@ public class CheckTest {
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings().contains("Language missing for artifact ?a"));
+    }
+    
+    @Test
+    public void checkFolderElementOf() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "/**/?a : Artifact. " + "?a hasRole MvcModel. " + "?a manifestsAs Folder.";
+        ml.loadString(input);
+        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        assertEquals(0, ml.getTypeErrors().size());
+        assertEquals(0, c.getWarnings().size());
     }
 
     @Test

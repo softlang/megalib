@@ -82,7 +82,9 @@ public class WellformednessCheck {
         map.keySet().stream().filter(e -> model.isInstanceOf(e, "Artifact")).forEach(e -> {
             Optional<Boolean> o = Optional.ofNullable(model.getRelationships().get("elementOf"))
                                           .map(s -> s.parallelStream().noneMatch(r -> r.getSubject().equals(e)));
-            if(o.orElse(true)){
+            Optional<Boolean> o2 = Optional.ofNullable(model.getRelationships().get("manifestsAs"))
+                    .map(s -> s.parallelStream().noneMatch(r -> r.getSubject().equals(e) && r.getObject().equals("Folder")));
+            if(o.orElse(true) && o2.orElse(true)){
                 warnings.add("Language missing for artifact " + e);
             }
         });
