@@ -5,8 +5,7 @@ import antlr.App
 
 /*
 @Description:
-    several artifacts are actually generated. At first, the lexer implementation is generated.
-    Second, the parser implementation is generated.
+    The lexer implementation is generated.
 @Rationale:
     See parser call in demo
 */
@@ -21,14 +20,21 @@ import antlr.App
 	manifestsAs File+;
     hasRole Lexer;
     partOf ?App.
+generateLexer : G4 -> ANTLRJava .
+ANTLR implements generateLexer.
+generateLexer(?grammar) |-> ?lexerFiles .
+
+/*
+@Description:
+    The parser implementation is generated.
+@Rationale:
+    See parser call in demo
+*/
 ?parserFiles : Artifact;
 	elementOf ANTLRJava;
 	manifestsAs File+;
     hasRole Parser;
     partOf ?App.
-generateLexer : G4 -> ANTLRJava .
 generateParser : G4 -> ANTLRJava .
-ANTLR implements generateLexer;
-    implements generateParser.
-generateLexer(?grammar) |-> ?lexerFiles .
+ANTLR implements generateParser.
 generateParser(?grammar) |-> ?parserFiles .
