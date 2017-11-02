@@ -46,7 +46,7 @@ public class ModelToGraph {
 			}
     		Graph graph = new Graph(b.getModule()+b.getId(),b.getText().substring(2, b.getText().length()-2));
     		//instance nodes
-    		b.getInstanceOfMap().entrySet().stream()
+    		b.getInstanceOfMap().entrySet().stream().filter(entry-> !entry.getValue().equals("Link"))
     		 .map(entry -> createNode(entry.getKey(),entry.getValue(),model))
     		 .forEach(graph::add);
     		b.getFunctionDeclarations().forEach((name,funcs)-> graph.add(createNode(name,"FunctionDecl",model)));
@@ -64,6 +64,7 @@ public class ModelToGraph {
 
     private void createNodes(Graph graph) {
     	model.getInstanceOfMap().entrySet().stream()
+    	     .filter(entry-> !entry.getValue().equals("Link"))
              .map(entry -> createNode(entry.getKey(), entry.getValue(), model))
              .forEach(graph::add);
         model.getFunctionDeclarations().forEach((name, actions) -> graph.add(createNode(name, "FunctionDeclaration", model)));

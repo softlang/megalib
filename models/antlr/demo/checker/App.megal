@@ -3,7 +3,7 @@ module antlr.demo.checker.App
 import antlr.App where { 
     [ MegaL / ?InputLanguage,
       Checker / ?App,
-      checkerAntlrJar / ?antlrJar      ] }
+      checkerAntlrJar / ?antlrJar] }
 
 
 /*

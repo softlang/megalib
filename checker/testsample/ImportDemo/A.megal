@@ -1,7 +1,10 @@
 module A 
 
-/* Samples A*/
-?Program : Application.
+/* @Description: Samples A
+   @Rationale: Testing A
+*/
+?Program : Application;
+    = "http://softlang.org".
 ?spec : Artifact;
     partOf ?Program;
     elementOf HTML5;

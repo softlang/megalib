@@ -61,7 +61,14 @@ public class DOTTransformer extends Transformer {
         template.add("name", options.getModelName());
         template.add("nodes", nodes);
         template.add("edges", g.getEdges());
-        template.add("text", g.getText());
+        String text = g.getText();
+        text = text.replaceAll("\"", "'");
+        text = text.replaceAll("@Description:", "");
+        int to = text.indexOf("@Rationale");
+        if(to!=-1){
+        	text = text.substring(0, to-1);
+        }
+        template.add("text", text.trim());
 
         return template.render();
     }
