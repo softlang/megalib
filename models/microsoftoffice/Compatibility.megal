@@ -32,23 +32,20 @@ MicrosoftOfficeCompatibility : Plugin;
     implements convert.
 
 /* Most parts of the actual XSD schemas for the new office format are available online. */
-MicrosoftOfficeOpenXMLSchema : Artifact;
+MicrosoftOfficeOpenXMLSchema : File+;
     ~= "https://msdn.microsoft.com/en-us/library/dd979954(v=office.12).aspx";
     elementOf XSD;
     hasRole Schema;
-    manifestsAs File+;
     defines MicrosoftOfficeOpenXML.
 
 /* In a concrete use case a user would load a document written in
 the XML based format. If the plugin is installed in the used Microsoft Office 2003,
 the document is converted and can then be edited. */
-?aNewOfficeFile : Artifact;
+?aNewOfficeFile : File;
     elementOf MicrosoftOfficeOpenXML;
     hasRole Document;
-    manifestsAs File;
     conformsTo MicrosoftOfficeOpenXMLSchema.
-?anOldOfficeFile : Artifact;
+?anOldOfficeFile : File;
     elementOf CFBF;
-    hasRole Document;
-    manifestsAs File.
+    hasRole Document.
 convert(?aNewOfficeFile) |-> ?anOldOfficeFile .
