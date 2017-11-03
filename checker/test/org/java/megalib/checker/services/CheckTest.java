@@ -95,8 +95,8 @@ public class CheckTest {
     @Test
     public void checkFunctionImplementation() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?L : ProgrammingLanguage. " + "f : ?L -> ?L. " + "?a : Artifact. " + "?a elementOf ?L. "
-                       + "?a hasRole MvcModel." + "?a manifestsAs File. " + "f(?a)|->?a.";
+        String input = "/**/?L : ProgrammingLanguage. " + "f : ?L -> ?L. " + "?a : File. " + "?a elementOf ?L. "
+                       + "?a hasRole MvcModel. " + "f(?a)|->?a.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
 
@@ -108,8 +108,8 @@ public class CheckTest {
     @Test
     public void checkFunctionApplication() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?L : ProgrammingLanguage. " + "f : ?L -> ?L. " + "?a : Artifact. " + "?a elementOf ?L. "
-                       + "?a hasRole MvcModel. " + "?a manifestsAs File. " + "?T : Library. " + "?T uses ?L. "
+        String input = "/**/?L : ProgrammingLanguage. " + "f : ?L -> ?L. " + "?a : File. " + "?a elementOf ?L. "
+                       + "?a hasRole MvcModel. " + "?T : Library. " + "?T uses ?L. "
                        + "?T implements f.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
@@ -121,7 +121,7 @@ public class CheckTest {
     @Test
     public void checkFileElementOf() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?a : Artifact. " + "?a hasRole MvcModel. " + "?a manifestsAs File.";
+        String input = "/**/?a : File. " + "?a hasRole MvcModel. ";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
@@ -132,7 +132,7 @@ public class CheckTest {
     @Test
     public void checkFolderElementOf() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?a : Artifact. " + "?a hasRole MvcModel. " + "?a manifestsAs Folder.";
+        String input = "/**/?a : Folder. " + "?a hasRole MvcModel. ";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
@@ -140,7 +140,7 @@ public class CheckTest {
     }
 
     @Test
-    public void checkArtifactManifestsAs() throws ParserException, IOException {
+    public void checkArtifactOptionalManifestation() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?L : ProgrammingLanguage. " + "?a : Artifact. " + "?a elementOf ?L. "
                        + "?a hasRole MvcModel. ";
@@ -153,8 +153,7 @@ public class CheckTest {
     @Test
     public void checkAbstractArtifactHasRole() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?L : ProgrammingLanguage. " + "?a : Artifact. " + "?a elementOf ?L. "
-                       + "?a manifestsAs File.";
+        String input = "/**/?L : ProgrammingLanguage. " + "?a : File. " + "?a elementOf ?L. ";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
@@ -164,7 +163,7 @@ public class CheckTest {
     @Test
     public void checkArtifactHasRole() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/?L : ProgrammingLanguage. a : Artifact; ~= \"http://softlang.org/\". a elementOf ?L. a manifestsAs File.";
+        String input = "/**/?L : ProgrammingLanguage. a : File; ~= \"http://softlang.org/\". a elementOf ?L.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
@@ -199,7 +198,7 @@ public class CheckTest {
     @Test
     public void checkLinkIntoJar() throws ParserException, IOException{
     	ModelLoader ml = new ModelLoader();
-        String input = "/**/a : Artifact; ~= \"file://checker.jar/org/main/antlr/techdocgrammar/Megalib.g4\"; elementOf Java; manifestsAs File.";
+        String input = "/**/a : File; ~= \"file://checker.jar/org/main/antlr/techdocgrammar/Megalib.g4\"; elementOf Java.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
@@ -209,7 +208,7 @@ public class CheckTest {
     @Test
     public void checkRelativeLinkUp() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/a : Artifact; ~= \"file://../checker\"; elementOf Java; manifestsAs File.";
+        String input = "/**/a : File; ~= \"file://../checker\"; elementOf Java.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
@@ -219,7 +218,7 @@ public class CheckTest {
     @Test
     public void checkNoLinkTransient() throws ParserException, IOException {
         ModelLoader ml = new ModelLoader();
-        String input = "/**/a : Artifact; elementOf Java; manifestsAs Transient.";
+        String input = "/**/a : Transient; elementOf Java.";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
@@ -232,7 +231,7 @@ public class CheckTest {
     @Test
     public void checkComplexFunApp() throws ParserException, IOException{
     	ModelLoader ml = new ModelLoader();
-        String input = "/**/a : Artifact; ~= \"softlang.org\"; elementOf Java; manifestsAs Transient. f : Java # Java # Java -> Java # Java # Java. "
+        String input = "/**/a : Transient; ~= \"softlang.org\"; elementOf Java. f : Java # Java # Java -> Java # Java # Java. "
                        + "?T : Technology; implements f. f(a,a,a) |-> (a,a,a).";
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel(),true);

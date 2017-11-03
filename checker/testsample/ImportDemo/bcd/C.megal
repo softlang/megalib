@@ -4,7 +4,6 @@ import bcd.B
 import A
 
 /* Samples C*/
-?a1 : Artifact;
+?a1 : Transient;
     elementOf HTML5;
-    hasRole WebResource;
-    manifestsAs Transient.
+    hasRole WebResource.

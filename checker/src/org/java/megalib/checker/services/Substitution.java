@@ -114,7 +114,7 @@ public class Substitution {
                                            .collect(Collectors.toList());
                     List<String> outputs = f.getOutputs().parallelStream().map(o -> o.equals(s) ? substing : o)
                                             .collect(Collectors.toList());
-                    Function fnew = new Function(inputs, outputs);
+                    Function fnew = new Function(inputs, outputs,f.isDecl);
                     newset.add(fnew);
                 }
             }

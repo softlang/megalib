@@ -92,6 +92,7 @@ public class ParserListener extends MegalibBaseListener {
         }
         substCheck.getErrors().forEach(e -> typeCheck.addError(e));
         substByGroup.clear();
+        model.addBlock(block);
         blockid++;
     }
 

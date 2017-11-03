@@ -8,10 +8,12 @@ public class Function {
 	private List<String> outputs;
 	
 	private Block block;
+	public boolean isDecl;
 	
-	public Function(List<String> inputs, List<String> outputs) {
+	public Function(List<String> inputs, List<String> outputs, boolean isDecl) {
 		this.inputs = inputs;
 		this.outputs=outputs;
+		this.isDecl = isDecl;
 	}
 
 	public List<String> getInputs() {

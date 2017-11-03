@@ -3,7 +3,6 @@ module bcd.B
 import A
 
 /* Samples B */
-?a2 : Artifact;
+?a2 : Transient;
     elementOf HTML5;
-    hasRole WebResource;
-    manifestsAs Transient.
+    hasRole WebResource.

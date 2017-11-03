@@ -8,6 +8,18 @@ import common.LanguageKB
 /* Digital entities classified by relating to their language, role and manifestation. */
 Artifact < Entity;
     = "wikipedia::Artifact_(software_development)".
+File < Artifact; 
+    = "wikipedia::Computer_file".
+File+ < Artifact; 
+    = "wikipedia::Computer_file".
+Folder < Artifact; 
+    = "wikipedia::Directory_(computing)".
+Transient < Artifact; 
+    = "wikipedia::Transient_(computer_programming)".
+Transient+ < Artifact; 
+    = "wikipedia::Transient_(computer_programming)".
+Fragment < Artifact;  
+    = "wikipedia::Snippet_(programming)".
 hasRole < Artifact # Role; 
     = "wikipedia::Terminology".
 defines < Artifact # Language; 
@@ -28,23 +40,7 @@ refersTo < Artifact # Artifact;  // Experimental!
 represents < Artifact # Artifact; // Experimental! 
     = "researchgate::243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 
-/* Manifestation types of artifacts, where most are self-explanatory */
-Manifestation < Entity;
-    = "oxfordDict::manifestation".
-File : Manifestation; 
-    = "wikipedia::Computer_file".
-File+ : Manifestation; 
-    = "wikipedia::Computer_file".
-Folder : Manifestation; 
-    = "wikipedia::Directory_(computing)".
-Transient : Manifestation; 
-    = "wikipedia::Transient_(computer_programming)".
-Transient+ : Manifestation; 
-    = "wikipedia::Transient_(computer_programming)".
-Fragment : Manifestation;  
-    = "wikipedia::Snippet_(programming)".
-manifestsAs < Artifact # Manifestation;
-    = "oxfordDict::manifestation".
+
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
@@ -144,13 +140,8 @@ artifact is deployed.
 
 Node < Entity; 
     = "wikipedia::Node_(networking)#Distribute".
-Hardware < Entity; 
-    = "wikipedia::Computer_hardware".
-composedOf < Node # Hardware.
 deployedAt < Artifact # Node; 
     = "wikipedia::Software_deployment".
-deployedAt < Artifact # Hardware.
-
 
 /* Part-of relationships */
 partOf < Artifact # Artifact;

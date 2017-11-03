@@ -5,9 +5,8 @@ module A
 */
 ?Program : Application;
     = "http://softlang.org".
-?spec : Artifact;
+?spec : File;
     partOf ?Program;
     elementOf HTML5;
     hasRole Specification;
-    manifestsAs File;
     defines HTML5.

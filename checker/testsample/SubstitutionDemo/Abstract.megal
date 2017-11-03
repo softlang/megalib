@@ -1,47 +1,43 @@
 module Abstract
 
-/* Serializer */
+/* @Description: Some Serializer */
 ?PL : ProgrammingLanguage;
     encodedAs Text;
     facilitates ObjectOrientedProgramming.
 ?Serializer : Library;
     uses ?PL;
-    implements ?PL;
     facilitates Serialization.
 
 /* Object serialization */
 ?OL : ValueLanguage;
-    encodes Object.
+    encodes Object;
+    ^implements ?Serializer.
 ?D : DataExchangeLanguage;
     encodedAs Text;
     encodedAs Markup.
 f : ?OL -> ?D.
 
-/* conformance to data types in an OO program */
+/* Conformance to data types in an OO program */
 ?Project : Application;
     uses ?PL;
     reuses ?Serializer;
     uses Serialization.
-?program : Artifact;
+?program : File+;
     elementOf ?PL;
     hasRole Schema;
     hasRole POJO;
-    manifestsAs File+;
     defines ?OL.
-?object : Artifact;
+?object : Transient;
     elementOf ?OL;
-    manifestsAs Transient;
-    hasRole Database;
     conformsTo ?program.
 
 /* Actual serialization */
 ?DS : DataExchangeLanguage;
     subsetOf ?D.
 ?program defines ?DS.
-?data : Artifact;
+?data : File;
     elementOf ?DS;
     hasRole Database;
-    manifestsAs File;
     correspondsTo ?object.
 f(?object) |-> ?data.
 ?Serializer implements f.

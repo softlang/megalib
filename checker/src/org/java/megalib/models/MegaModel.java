@@ -112,7 +112,7 @@ public class MegaModel {
         if(functionDeclarations.containsKey(functionName)){
             declset = functionDeclarations.get(functionName);
         }
-        Function f = new Function(inputs, outputs);
+        Function f = new Function(inputs, outputs,true);
         declset.add(f);
         functionDeclarations.put(functionName, declset);
 
@@ -124,7 +124,7 @@ public class MegaModel {
     }
 
     public void addFunctionApplication(String name, List<String> inputs, List<String> outputs, Block block) {
-        Function app = new Function(inputs, outputs);
+        Function app = new Function(inputs, outputs,false);
         Set<Function> set = new HashSet<>();
         if (functionApplications.containsKey(name)) {
             set = functionApplications.get(name);
@@ -205,6 +205,14 @@ public class MegaModel {
 		}
         return relationshipMap.get(predicate).parallelStream()
                               .anyMatch(r -> r.getSubject().equals(source) && r.getObject().equals(target));
+    }
+    
+    public Set<String> getEntitiesByType(String type){
+    	return getInstanceOfMap().entrySet()
+		   .parallelStream()
+		   .filter(e -> isInstanceOf(e.getKey(), type))
+		   .map(e -> e.getKey())
+		   .collect(Collectors.toSet());
     }
 
 }

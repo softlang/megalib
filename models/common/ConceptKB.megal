@@ -232,44 +232,41 @@ HTTPS : Protocol ;
     = "wikipedia::HTTPS". 
     
 /* Known constructs that imply a certain setup and purpose of up to multiple involved artifacts */
-Semaphore : Construct; //A flag to control access to a resource in the context of concurrent programs.
-    = "wikipedia::Semaphore_(programming)";
-    aspectOf ConcurrentProgramming.
+
 Annotation : Construct;
     = "wikipedia::Annotation";
     aspectOf ObjectOrientedProgramming.
 SoftwareInterface : Construct;
 	= "wikipedia::Interface_(computing)".
-Cluster : Construct;
+    
+   
+/* Frequently appearing roles that single artifacts may have. */
+Monad : Role; // propose a Monad construct
+   = "https://en.wikipedia.org/wiki/Monad_(functional_programming)";
+   aspectOf FunctionalProgramming.
+Semaphore : Role; //A flag to control access to a resource in the context of concurrent programs.
+    = "wikipedia::Semaphore_(programming)";
+    aspectOf ConcurrentProgramming.
+Cluster : Role;
  	= "http://de.slideshare.net/bosswebtech/cluster-computing-11382951";
  	= "http://gridbus.csse.unimelb.edu.au/papers/ic_cluster.pdf";
  	aspectOf DistributedProgramming.
-ClusterManager : Construct;
+ClusterManager : Role;
  	= "wikipedia::Cluster_manager";
  	aspectOf DistributedProgramming.
-ResourceManagement : Construct; 
+ResourceManagement : Role; 
 	="wikipedia::Resource_management_(computing)".
 //A DataFrame is a Dataset organized into named columns.
-DataFrame : Construct;
+DataFrame : Role;
 	="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html".
-Graph : Construct;
+Graph : Role;
     = "wikipedia::Graph_(discrete_mathematics)".
-Object : Construct;
+Object : Role;
     = "wikipedia::Object_(computer_science)".
-Tree : Construct;
+Tree : Role;
     = "wikipedia::Tree_(graph_theory)".
-Expression : Construct; //Propose a language of expression not yet evaluated to values (compile-time)
+Expression : Role; //Propose a language of expression not yet evaluated to values (compile-time)
    = "wikipedia::Expression_(computer_science)".
-/* A monadid datatype is used to chain certain types of computations.
-It can be used for complex computations like Parsers or IO.
-A monad provides at least two function:
-   1. A return function for wrapping values into a monadic datatype.
-   2. A bind function to chain monadic computations.*/
-Monad : Construct; // propose a Monad construct
-   = "https://en.wikipedia.org/wiki/Monad_(functional_programming)";
-   aspectOf FunctionalProgramming.
-
-/* Frequently appearing roles that single artifacts may have. */
 Configuration : Role;   //settings statements.
     = "wikipedia::Configuration_file".
 BuildScript : Role; //Scripts for deploying software such as ANT or Maven files

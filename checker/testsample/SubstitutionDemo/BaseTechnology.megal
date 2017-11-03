@@ -4,14 +4,11 @@ module BaseTechnology
 MyPL : ProgrammingLanguage;
     = "http://www.softlang.org/";
     encodedAs Text.
-    
 Platformx : Platform;
     = "http://www.softlang.org/";
     uses MyPL;
     implements MyPL.
-
-myProgram1 : Artifact;
+myProgram1 : File;
     ~= "http://www.softlang.org/";
-    manifestsAs File;
     elementOf MyPL.
     

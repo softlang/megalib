@@ -9,7 +9,7 @@ import Abstract where {
     ?myolobject / ?object, 
     MyOL / ?OL ]
 }
-/**/
+/*@Description: */
 MySerializer = "http://www.softlang.org/";
     implements ?D.
 MyOL = "http://www.softlang.org/".

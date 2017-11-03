@@ -93,9 +93,10 @@ supports < Language # ProgrammingDomain.
 
 /* A language has constructs that allow programming in a certain mindset */
 facilitates < Language # Paradigm.
+facilitates < Language # Construct.
+encodes < Language # Role . //Experimental
 facilitates < Language # AbstractProcess .
-facilitates < Language # Construct. // !!Experimental!!
-encodes < Language # Construct. //!!Experimental!!
+
 
 
 /* A language family consists of multiple related languages.

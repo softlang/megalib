@@ -26,7 +26,7 @@ public class ParserListenerTest {
     public void preludeIsParsed() {
         ModelLoader ml = new ModelLoader();
         assertEquals(0, ml.getTypeErrors().size());
-        assertEquals(62, ml.getModel().getBlocks().size());
+        assertEquals(60, ml.getModel().getBlocks().size());
         ml.getModel().getBlocks().forEach(b -> assertTrue(b.getText().startsWith("/*") && b.getText().endsWith("*/")));
     }
 
@@ -148,17 +148,16 @@ public class ParserListenerTest {
 
     @Test
     public void addInstanceOfArtifact() throws ParserException, IOException {
-        String input = "/**/a : Artifact; " + "elementOf Python; "
-                + "hasRole MvcModel; " + "manifestsAs File.";
+        String input = "/**/a : File; " + "elementOf Python; "
+                + "hasRole MvcModel.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
         Map<String, String> imap = ml.getModel().getInstanceOfMap();
         assertTrue(imap.containsKey("a"));
-        assertEquals("Artifact", imap.get("a"));
+        assertEquals("File", imap.get("a"));
         assertTrue(ml.getModel().getRelationships().get("elementOf").contains(new Relation("a", "Python")));
         assertTrue(ml.getModel().getRelationships().get("hasRole").contains(new Relation("a", "MvcModel")));
-        assertTrue(ml.getModel().getRelationships().get("manifestsAs").contains(new Relation("a", "File")));
     }
 
     @Test
@@ -484,8 +483,8 @@ public class ParserListenerTest {
     @Test
     public void addFunctionApplicationUnfitDomain() throws ParserException, IOException {
         String input = "/**/l1 : DataExchangeLanguage. " + "l2 : DataExchangeLanguage. "
-                + "f : l1 # l2 -> l2. " + "a1 : Artifact. " + "a1 elementOf l1. " + "a1 hasRole MvcModel. "
-                + "a1 manifestsAs File. " + "a2 : Artifact. " + "a2 elementOf l2. " + "f(a1,a1)|->a2.";
+                + "f : l1 # l2 -> l2. " + "a1 : File. " + "a1 elementOf l1. " + "a1 hasRole MvcModel. "
+                + "a2 : Artifact. " + "a2 elementOf l2. " + "f(a1,a1)|->a2.";
         ModelLoader ml = new ModelLoader();
         ml.loadString(input);
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();

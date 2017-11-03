@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.java.megalib.models.Block;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.Relation;
 import org.junit.Before;
@@ -26,7 +27,7 @@ public class SubstitutionTest {
     public void setUp() throws IOException {
         ml = new ModelLoader();
         ml.loadFile("testsample/SubstitutionDemo/App.megal");
-        ml.getTypeErrors().forEach(w -> System.out.println(w));
+        assertEquals(0,ml.getTypeErrors().size());
     }
 
     @Test
@@ -111,32 +112,30 @@ public class SubstitutionTest {
 
     @Test
     public void testProgramInstance() {
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("?program"));
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("?myplprogram"));
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("myProgram1"));
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("myProgram2"));
+        assertEquals("File+", ml.getModel().getInstanceOfMap().get("?program"));
+        assertEquals("File+", ml.getModel().getInstanceOfMap().get("?myplprogram"));
+        assertEquals("File", ml.getModel().getInstanceOfMap().get("myProgram1"));
+        assertEquals("File+", ml.getModel().getInstanceOfMap().get("myProgram2"));
     }
 
     @Test
     public void testProgram1Relations() {
-        Relation r = new Relation("myProgram1", "File");
-        assertTrue(ml.getModel().getRelationships().get("manifestsAs").contains(r));
-
+        assertEquals("File",ml.getModel().getType("myProgram1"));
         Set<Relation> rs = ml.getModel().getRelationships().get("elementOf");
         rs = rs.parallelStream().filter(t -> t.getSubject().equals("myProgram1")).collect(Collectors.toSet());
         assertEquals(1, rs.size());
-        r = new Relation("myProgram1", "MyPL");
+        Relation r = new Relation("myProgram1", "MyPL");
         assertTrue(ml.getModel().getRelationships().get("elementOf").contains(r));
     }
 
     @Test
     public void testObjectInstance() {
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("?object"));
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("?myolobject"));
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("myObject11"));
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("myObject12"));
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("myObject21"));
-        assertEquals("Artifact", ml.getModel().getInstanceOfMap().get("myObject22"));
+        assertEquals("Transient", ml.getModel().getInstanceOfMap().get("?object"));
+        assertEquals("Transient", ml.getModel().getInstanceOfMap().get("?myolobject"));
+        assertEquals("Transient", ml.getModel().getInstanceOfMap().get("myObject11"));
+        assertEquals("Transient", ml.getModel().getInstanceOfMap().get("myObject12"));
+        assertEquals("Transient", ml.getModel().getInstanceOfMap().get("myObject21"));
+        assertEquals("Transient", ml.getModel().getInstanceOfMap().get("myObject22"));
     }
 
     @Test
@@ -148,7 +147,7 @@ public class SubstitutionTest {
         List<String> outputs = new ArrayList<>();
         inputs.add("?OL");
         outputs.add("?D");
-        Function f = new Function(inputs, outputs);
+        Function f = new Function(inputs, outputs,true);
         assertTrue(decls.contains(f));
     }
 
@@ -161,7 +160,7 @@ public class SubstitutionTest {
         List<String> outputs = new ArrayList<>();
         outputs.add("?D");
         inputs.add("MyOL");
-        Function f = new Function(inputs, outputs);
+        Function f = new Function(inputs, outputs,true);
         assertTrue(decls.contains(f));
     }
 
@@ -174,7 +173,7 @@ public class SubstitutionTest {
         List<String> outputs = new ArrayList<>();
         inputs.add("MyOL");
         outputs.add("MyD1");
-        Function f = new Function(inputs, outputs);
+        Function f = new Function(inputs, outputs,true);
         assertTrue(decls.contains(f));
     }
 
@@ -187,8 +186,16 @@ public class SubstitutionTest {
         List<String> outputs = new ArrayList<>();
         inputs.add("MyOL");
         outputs.add("MyD2");
-        Function f = new Function(inputs, outputs);
+        Function f = new Function(inputs, outputs,true);
         assertTrue(decls.contains(f));
     }
+    
+    @Test
+	public void substitutionBlockTest() {
+		Object[] blocks = ml.getModel().getBlocks().parallelStream().filter(b -> !b.getModule().startsWith("common.")).toArray();
+		Block b = (Block) blocks[5];
+		assertEquals("Technology",b.getModule());
+		assertEquals(0,b.getId());
+	}
 
 }

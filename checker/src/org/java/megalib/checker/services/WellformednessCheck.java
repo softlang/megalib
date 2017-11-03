@@ -82,9 +82,7 @@ public class WellformednessCheck {
         map.keySet().stream().filter(e -> model.isInstanceOf(e, "Artifact")).forEach(e -> {
             Optional<Boolean> o = Optional.ofNullable(model.getRelationships().get("elementOf"))
                                           .map(s -> s.parallelStream().noneMatch(r -> r.getSubject().equals(e)));
-            Optional<Boolean> o2 = Optional.ofNullable(model.getRelationships().get("manifestsAs"))
-                    .map(s -> s.parallelStream().noneMatch(r -> r.getSubject().equals(e) && r.getObject().equals("Folder")));
-            if(o.orElse(true) && o2.orElse(true)){
+            if(o.orElse(true) && !model.isInstanceOf(e, "Folder")){
                 warnings.add("Language missing for artifact " + e);
             }
         });
@@ -166,12 +164,7 @@ public class WellformednessCheck {
      * that is not a fragment.
      */
     private void fragmentPartOfCheck() {
-        if(!model.getRelationships().containsKey("manifestsAs")) {
-			return;
-		}
-        List<String> fragments = model.getRelationships().get("manifestsAs").parallelStream()
-                                      .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
-                                      .collect(Collectors.toList());
+        Set<String> fragments = model.getEntitiesByType("Fragment");
         for(String f : fragments){
             if(model.getRelationships().get("partOf").parallelStream()
                     .noneMatch(r -> r.getSubject().equals(f))){
@@ -184,13 +177,8 @@ public class WellformednessCheck {
      * All composite fragments do not have any part that is not a fragment.
      */
     private void partOfFragmentCheck() {
-        if(!model.getRelationships().containsKey("manifestsAs")) {
-			return;
-		}
-        Set<String> fset = model.getRelationships().get("manifestsAs").parallelStream()
-                                .filter(r -> r.getObject().equals("Fragment")).map(r -> r.getSubject())
-                                .collect(Collectors.toSet());
-        for(String f : fset){
+        Set<String> fset = model.getEntitiesByType("Fragment");
+        for(String f : model.getEntitiesByType("Fragment")){
             Set<String> parts = model.getRelationships().get("partOf").parallelStream()
                                      .filter(r -> r.getObject().equals(f)).map(r -> r.getSubject())
                                      .collect(Collectors.toSet());
@@ -205,13 +193,7 @@ public class WellformednessCheck {
     }
 
     private void transientIsInputOrOutput() {
-        if(!model.getRelationships().containsKey("manifestsAs")) {
-			return;
-		}
-
-        Set<String> tset = model.getRelationships().get("manifestsAs").parallelStream()
-                                .filter(r -> r.getObject().equals("Transient") && !isPart(r.getSubject()))
-                                .map(r -> r.getSubject()).collect(Collectors.toSet());
+    	Set<String> tset = model.getEntitiesByType("Transient");
         Set<String> iovalues = new HashSet<>();
         Set<Function> pairs = new HashSet<>();
         model.getFunctionApplications().forEach((k, v) -> pairs.addAll(v));
@@ -224,14 +206,6 @@ public class WellformednessCheck {
             warnings.add("The following transients are neither input nor output of a function application: "
                          + tset.toString());
         }
-    }
-
-    private boolean isPart(String t) {
-        if(!model.getRelationships().containsKey("partOf")) {
-			return false;
-		}
-        Set<Relation> partOfs = model.getRelationships().get("partOf");
-        return !partOfs.parallelStream().noneMatch(r -> r.getSubject().equals(t));
     }
 
     private void cyclicSubtypingChecks() {

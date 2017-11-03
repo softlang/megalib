@@ -212,7 +212,7 @@ public class TypeCheck {
         if (m.getFunctionApplications().containsKey(name)) {
             set = m.getFunctionApplications().get(name);
         }
-        Function app = new Function(inputs, outputs);
+        Function app = new Function(inputs, outputs,false);
         if (set.contains(app)) {
             errors.add(blockid+">> Error at application of " + name + " with inputs " + app.getInputs() + " " + "and outputs "
                     + app.getOutputs() + ": It already exists.");
