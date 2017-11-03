@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><graphml xmlns="http://graphml.graphdrawing.org/xmlns" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<key id="vertex_label_key" for="node" attr.name="Vertex Label" attr.type="string"/>
+<graph edgedefault="undirected">
+<node id="v1">
+<data key="vertex_label_key">Hello</data>
+</node>
+<node id="v2">
+<data key="vertex_label_key">Hello</data>
+</node>
+<node id="v3">
+<data key="vertex_label_key">Hello</data>
+</node>
+<node id="v4">
+<data key="vertex_label_key">Hello</data>
+</node>
+<edge id="1" source="v1" target="v2"/>
+<edge id="2" source="v2" target="v3"/>
+<edge id="3" source="v3" target="v4"/>
+<edge id="4" source="v4" target="v1"/>
+</graph>
+</graphml>
