@@ -12,19 +12,17 @@ add content to this metamodel, for example through EMF's default editor. */
 EcoreXmi : DataExchangeLanguage;
     = "emfJavaDoc::ecore/xmi/XmiResource.html";
     subsetOf XMI.
-?ecoreModel : Artifact;
+?ecoreModel : File;
     elementOf EcoreXmi;
-    hasRole MdeMetamodel;
-    manifestsAs File.
+    hasRole MdeMetamodel.
     
 /* (De-)serialization functions are provided by a specific resource factory */
 serialize : ResourceLanguage -> XMI.
 deserialize : XMI -> ResourceLanguage.
-xmiResourceFactoryImpl : Artifact;
-    ~= "platform::org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl.java"
-    manifestsAs File;
+xmiResourceFactoryImpl : File;
+    ~= "platform::org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl.java";
     elementOf Java.
-?xmiResourceFactory : Artifact;
+?xmiResourceFactory : Transient;
     partOf resourceFactoryRegistry;
     elementOf JVMObject;
     conformsTo xmiResourceFactoryImpl;
@@ -34,13 +32,12 @@ xmiResourceFactoryImpl : Artifact;
 /* With this factory the persistence functions can be applied */
 //?dslResource : Transient; see persistence.Base
 //?dslEObject : Transient; see persistence.Base
-?dslFile : Artifact;
+?dslFile : File;
     correspondsTo ?dslResource;
     elementOf XMI.
-?dslXmiElement : Artifact;
+?dslXmiElement : Fragment;
     correspondsTo ?dslEObject;
     elementOf XMI;
-    manifestsAs Fragment;
     partOf ?dslFile.
 deserialize(?dslFile) |-> ?dslResource.
 serialize(?dslResource) |-> ?dslFile.
@@ -53,8 +50,7 @@ Emf.EcoreXmi : Plugin;
     partOf Emf.ECore;
     facilitates Persistence;
     implements EcoreXmi.
-ecoreXMIJar : Artifact;
+ecoreXMIJar : File;
     ~= "platform::org.eclipse.emf.ecore.xmi_*.jar";
     elementOf Jar;
-    manifestsAs File;
     ^deployedAs Emf.EcoreXmi.

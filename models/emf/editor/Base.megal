@@ -5,7 +5,6 @@ import emf.model.Base
 /* With an editor we create visual representation with which we can interact. */
 showEObject : EObject -> ?EditorUILanguage ???
 //++?eObject
-?editorUI : Artifact;
-    elementOf JVMObject;
-    manifestsAs Transient.
+?editorUI : Transient;
+    elementOf JVMObject.
 showEObject(?eObject) |-> ?editorUI.

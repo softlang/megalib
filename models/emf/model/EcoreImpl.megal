@@ -13,8 +13,6 @@ import emf.model.Impl where {
 //++EObjectLanguage : ValueLanguage
 //++ecoreMetaModel : Artifact
 //++    defines EObjectLanguage
-//++ ?ecoreResource : Artifact
-//++    manifestsAs Transient
-//++ ?ecoreEObject : Artifact
+//++ ?ecoreResource : Transient
+//++ ?ecoreEObject : Transient
 //++    partOf ecoreResource
-//++    manifestsAs Transient

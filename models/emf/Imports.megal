@@ -13,30 +13,26 @@ Java.AnnotatedInterfaces : ProgrammingLanguage;
     = "http://www.informit.com/store/emf-eclipse-modeling-framework-9780321331885"; //described in the book
     subsetOf Java.
 EMF implements Java.AnnotatedInterfaces.
-?annotatedJavaFiles : Artifact;
+?annotatedJavaFiles : File+;
     elementOf Java.AnnotatedInterfaces;
     hasRole SourceCode;
     hasRole Interface;
-    manifestsAs File+;
     uses Annotation.
-?resultingEcore : Artifact;
+?resultingEcore : File;
     elementOf EcoreXMI;
     hasRole MdeMetamodel;
-    manifestsAs File;
     correspondsTo ?annotatedJavaFiles.
 importJava : Java.AnnotatedInterfaces -> EcoreXMI.
 importJava(?annotatedJavaFiles) |-> ?resultingEcore.
 EMF implements importJava.
 
 /* EMF can import XSD schemas and translate them into Ecore */
-?xsdSchema : Artifact;
+?xsdSchema : File+;
     elementOf XSD;
     hasRole Schema;
-    manifestsAs File+.
-?resultingEcore : Artifact;
+?resultingEcore : File;
     elementOf EcoreXMI;
     hasRole MdeMetamodel;
-    manifestsAs File;
     correspondsTo ?xsdSchema.
 importXSD : XSD -> EcoreXMI.
 importXSD(?xsdSchema) |-> ?resultingEcore.
@@ -50,14 +46,12 @@ project one may also start off by importing a class
 diagram created via Rose.
 EMF was actually bootstrapped from Rose. */
 EMF implements Rose.MDL.
-?roseDiagram : Artifact;
+?roseDiagram : File;
     elementOf Rose.MDL;
-    hasRole Schema;
-    manifestsAs File.
-?resultingEcore : Artifact;
+    hasRole Schema.
+?resultingEcore : File;
     elementOf EcoreXMI;
-    hasRole MdeMetamodel;
-    manifestsAs File.
+    hasRole MdeMetamodel.
 importRose : Rose.MDL -> EcoreXMI.
 importRose(?roseDiagram) |-> ?resultingEcore.
 exportRose : EcoreXMI -> RoseMdl .

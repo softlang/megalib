@@ -21,8 +21,6 @@ FSMLModelPlugin ~= "FSMLNS::".
 //++fsmlJavaModel : Artifact
 //++    defines EObjectFSML
 fsmlJavaModel ~= "FSMLNS::src/org/softlang/metalib/emf/fsml/fsml".
-//++ ?fsmlResource : Artifact
-//++    manifestsAs Transient
-//++ ?fsmlEObject : Artifact
+//++ ?fsmlResource : Transient
+//++ ?fsmlEObject : Transient
 //++    partOf fsmlResource
-//++    manifestsAs Transient

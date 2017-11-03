@@ -31,21 +31,19 @@ Emf.ECore : Plugin;
     partOf Emf;
     uses Java.
 ecorePluginNS :: "platform::org.eclipse.emf.ecore.source_*.jar".
-ecorePluginJar : Artifact;
+ecorePluginJar : File;
     ~= "ecorePluginNS::";
     elementOf Jar;
-    manifestsAs File;
     hasRole Plugin;
     ^deployedAs Emf.ECore.
 EObjectLanguage : ValueLanguage; //instances of EObject etc.
     = "ecorePluginNS::org/eclipse/emf/ecore/EObject";
     = "emfJavaDoc::ecore/EObject.html";
     subsetOf JVMObjects.
-ecoreMetaModel : Artifact;
+ecoreMetaModel : File+;
     ~= "ecorePluginNS::org/eclipse/emf/ecore";
     elementOf Java;
     hasRole MdeMetamodel;
     partOf Emf.ECore;
-    manifestsAs File+;
     conformsTo ecoreMetaModel;
     defines EObjectLanguage.

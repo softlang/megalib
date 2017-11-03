@@ -21,8 +21,7 @@ in every model at runtime. */
 //++ 	conformsTo ecoreMetaModel;
 //++ 	defines EObjectLanguage.
 
-?eObject : Artifact;
-    manifestsAs Transient;
+?eObject : Transient;
     elementOf EObjectLanguage;
     conformsTo ecoreMetaModel;
     hasRole MdeModel.
@@ -30,28 +29,23 @@ in every model at runtime. */
 /* Further, any such EObject instance is part of a resource that corresponds to a 
 serialized file and the resource is part of a resource set. Any resource set can 
 be accessed through a registry. This way, Resource Management is supported.  */
-resourceSetClass : Artifact;
+resourceSetClass : File;
 	~= "ecorePluginNS::org/eclipse/emf/ecore/resource/ResourceSet.java"; 
-    manifestsAs File;
 	elementOf Java.
 ResourceLanguage : ValueLanguage;
     = "http://download.eclipse.org/modeling/emf/emf/javadoc/2.5.0/org/eclipse/emf/ecore/resource/Resource.html";
     subsetOf JVMObjects.
-resourceClass : Artifact;
+resourceClass : File;
 	~= "ecorePluginNS::org/eclipse/emf/ecore/resource/Resource.java"; 
-    manifestsAs File;
     defines ResourceLanguage;
 	elementOf Java.
-?resourceFactoryRegistry : Artifact;
-    manifestsAs Transient;
+?resourceFactoryRegistry : Transient;
     elementOf JVMObjects.
-?resourceSet : Artifact;
-    manifestsAs Transient;
+?resourceSet : Transient;
     elementOf JVMObjects;
 	conformsTo resourceSetClass;
 	partOf ?resourceFactoryRegistry.    
-?resource : Artifact;
+?resource : Transient;
     partOf ?resourceSet;
     ^partOf ?eObject;
-    elementOf ResourceLanguage;
-    manifestsAs Transient.
+    elementOf ResourceLanguage.

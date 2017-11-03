@@ -3,34 +3,29 @@ module emf.model.CustomValidationFSMLImpl
 import emf.model.FSMLImpl
 
 /* TODO: It might also be interesting to abstract this */
-validationFragment : Artifact;
+validationFragment : Fragment;
     ~= "FSMLNS::src/org/softlang/metalib/emf/fsml/fsml/impl/FSMImpl.java#line=86-100";
     elementOf Java;
     hasRole Constraint;
-    manifestsAs Fragment;
     partOf fsmlJavaModel. 
 DiagnosticChainLanguage : ValueLanguage;
     = "emfJavaDoc::common/util/DiagnosticChain.html";
     = "eclipseHelp::?topic=%2Forg.eclipse.emf.doc%2Freferences%2Foverview%2FEMF.Validation.html";
     ^implements Emf.ECore.
-DiagnosticChainClass : Artifact;
+DiagnosticChainClass : File;
     ~= "platform::org.eclipse.emf.common_*.jar/org/eclipse/emf/common/util/DiagnosticChain.java";
     elementOf Java;
-    manifestsAs File;
     defines DiagnosticChainLanguage.
-?diagnosticChain0 : Artifact;
+?diagnosticChain0 : Transient;
     elementOf DiagnosticChainLanguage;
-    hasRole Log;
-    manifestsAs Transient.
-?diagnosticChain1 : Artifact;
+    hasRole Log.
+?diagnosticChain1 : Transient;
     elementOf DiagnosticChainLanguage;
-    hasRole Log;
-    manifestsAs Transient.
+    hasRole Log
 EBoolean : ValueLanguage;
     subsetOf EObjectLanguage.
-?eBooleanResult : Artifact;
-    elementOf EBoolean;
-    manifestsAs Transient.
+?eBooleanResult : Transient;
+    elementOf EBoolean.
 //++ fsmlEObject : Artifact
 //++    elementOf EObjectFSML
 validation : EObjectFSML # DiagnosticChainLanguage -> EBoolean # DiagnosticChainLanguage.

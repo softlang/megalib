@@ -13,22 +13,19 @@ The containing project may be used as an Eclipse plugin. */
     uses Java.
 ?EObjectDSL : ValueLanguage;
 	subsetOf EObjectLanguage.
-?dslJavaModel : Artifact;
+?dslJavaModel : File+;
     partOf ?DSLModelPlugin;
 	elementOf Java;
 	hasRole MdeMetamodel;
-	manifestsAs File+;
 	defines ?EObjectDSL.
 
 /* Any runtime instance is an elementOf of the DSL runtime
 objects and conformsTo to the Java model. It is a part of a resource. */
-//++ ?dslResource : Artifact
+//++ ?dslResource : Transient
 //++    elementOf ResourceLanguage
 //++    conformsTo Resource
-//++    manifestsAs Transient
-//++ ?dslEObject : Artifact
+//++ ?dslEObject : Transient
 //++    partOf ?dslResource
-//++    manifestsAs Transient
 //++    hasRole MdeModel
 //++    elementOf EObjectLanguage
 ?dslEObject elementOf ?EObjectDSL;

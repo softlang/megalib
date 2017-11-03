@@ -5,11 +5,9 @@ import emf.model.Base
 //++ ?eObject : Transient
 
 /* Resource factory registry */
-resourceFactoryRegistryImpl : Artifact;
+resourceFactoryRegistryImpl : File;
     ~= "";
-    manifestsAs File;
     elementOf Java.
-?resourceFactoryRegistry : Artifact;
-    manifestsAs Transient;
+?resourceFactoryRegistry : Transient;
     elementOf JVMObject;
     conformsTo resourceFactoryRegistryImpl.

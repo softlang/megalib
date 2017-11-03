@@ -12,20 +12,17 @@ import emf.editor.Base
 import emf.model.Impl
 import emf.edit.Impl
 
-//++ ?dslEObject : Artifact
-//++ manifestsAs Transient
+//++ ?dslEObject : Transient
 ?EditorUIDSL : ValueLanguage;
-    subsetOf ???
-?dslUI : Artifact;
-    manifestsAs Transient;
+    subsetOf JVMObjectLanguage.
+?dslUI : Transient;
     correspondsTo ?dslEObject;
     elementOf ?dslEditorUI.
 
 showEObject : ?EObjectDSL -> ?EditorUIDSL.
 showEObject(?dslEObject) |-> ?dslUI.
 
-?dslEditor : Artifact;
-    manifestsAs Transient;
+?dslEditor : Transient;
     defines showEObject;
     uses label;
     uses children.

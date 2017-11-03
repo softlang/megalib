@@ -39,10 +39,9 @@ CodeGeneratorPlugin : Plugin;
     partOf EMF;
     implements generateJava;
     reuses Jet.
-codeGeneratorJar : Artifact;
+codeGeneratorJar : File;
     ~= "platform::org.eclipse.emf.codegen_*.jar";
-    elementOf Jar;
-    manifestsAs File.
+    elementOf Jar.
 
 /* The generated Java is added to the project that may serve as 
 another Eclipse plugin */
@@ -56,9 +55,8 @@ generateJava (?GenmodelEObject) |-> ?dslJavaModel.
 and a generated model class */
 //++ ?dslJavaModelClass : Artifact
 //++	partOf ?dslJavaModel
-//++ ?ecoreFile : Artifact
-//++ ?ecoreEClass : Artifact
-//++ manifestsAs Fragment
+//++ ?ecoreFile : File
+//++ ?ecoreEClass : Fragment
 ?ecoreEClass correspondsTo ?dslJavaModelClass.
 //++ partOf ?ecoreFile
 
@@ -69,16 +67,13 @@ add code to it. If any added or manually changed code is marked with
 copies the annotated fragments. */
 reload : GeneratorXmi # Java -> Java.
 Emf.CodeGenerator implements reload.  
-?dslImplementation0 : Artifact;
+?dslImplementation0 : File+;
     elementOf EcoreJava;
-    hasRole MdeMetamodel;
-    manifestsAs File+.
+    hasRole MdeMetamodel.
 generateJava(?generator,?ecoreModel) |-> ?dslImplementation0.
-?dslImplementation1 : Artifact;
+?dslImplementation1 : File+;
+    elementOf Java.
+?dslCustomFragment : Fragment;
     elementOf Java;
-    manifestsAs File+.
-?dslCustomFragment : Artifact;
-    elementOf Java;
-    partOf ?dslImplementation1;
-    manifestsAs Fragment.
+    partOf ?dslImplementation1.
 reload(?generator, ?dslImplementation1) |-> ?dslImplementation1.    

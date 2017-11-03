@@ -14,15 +14,13 @@ StandaloneTurnstilePlugin : Plugin;
     uses Java;
     reuses FSMLModelPlugin.
 
-standaloneTurnstileClasspath : Artifact;
+standaloneTurnstileClasspath :File;
     ~="turnstile::.classpath";
-    elementOf ClasspathLanguage;
-    manifestsAs File.
+    elementOf ClasspathLanguage.
 
-requiredPluginsClasspathEntry : Artifact;
+requiredPluginsClasspathEntry : Fragment;
     ~="turnstile::.classpath#line5";
     elementOf ClasspathLanguage;
-    manifestsAs Fragment;
     partOf StandaloneTurnstileClasspath.
 
 //++ resourceSet : Artifact

@@ -6,9 +6,8 @@ import emf.scenario.GenerateDSL
 
 /* The edit plugin is the bridge between model and editor 
 (and eclipse?) */
-?dslEditJar : Artifact;
-  elementOf Jar;
-  manifestsAs File.
+?dslEditJar : File;
+  elementOf Jar.
 ?DSLEdit : Plugin;
   reuses ?DSLModelPlugin;
   reuses EMF.EditPlugin;
@@ -21,8 +20,7 @@ EmfEditJava : ProgrammingLanguage;
 /* code generation to be imported */
 generateEdit : GeneratorXmi -> EmfEditJava .
 EMF.CodeGenerator implements generateEdit.
-?dslEditCode : Artifact;
+?dslEditCode : File+;
     elementOf EmfEditJava;
-    manifestsAs File+;
     partOf ?dslEditJar.
 generateEdit(?dslGenModel) |-> ?dslEditCode .

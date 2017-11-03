@@ -18,9 +18,7 @@ GenmodelModelPlugin ~= "genModelEcoreNS::".
 //++genmodelJavaModel : Artifact
 //++    defines EObjectGenmodelLanguage
 genmodelJavaModel ~= "EcoreModelPluginNS::org/eclipse/emf/ecore".
-//++ ?genmodelResource : Artifact
-//++    manifestsAs Transient
-//++ ?genmodelEObject : Artifact
+//++ ?genmodelResource : Transient
+//++ ?genmodelEObject : Transient
 //++    partOf genmodelResource
-//++    manifestsAs Transient
 
