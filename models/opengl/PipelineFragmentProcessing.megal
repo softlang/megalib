@@ -29,10 +29,9 @@ Pixel : Role;
 	= "wikipedia::Pixel".
 	
 /* A concrete pixel value. */
-?pixel : Artifact;
+?pixel : Transient;
 	= "glwiki::Fragment_Shader#Outputs";
 	elementOf ?StorageLanguage;
-	manifestsAs Transient;
 	hasRole Pixel.
 	
 fragmentProcessing(?fragments) |-> ?pixel.

@@ -23,10 +23,9 @@ GPU : Hardware;
     See https://www.opengl.org/
 	or https://en.wikipedia.org/wiki/OpenGL
 */
-OpenGL : Artifact; //TODO Framework/API
+OpenGL : File+; //TODO Framework/API
 	~= "https://www.opengl.org/documentation/current_version/";
 	= "wikipedia::OpenGL";
-    manifestsAs File+;
     hasRole Specification.
 ?OpenGLDriver : API;
 	= "glwiki::Getting_Started#Downloading_OpenGL";
@@ -99,18 +98,16 @@ glCompileShader : GLSL -> ?ShaderBinaryLanguage.
 ?GLSLCompiler implements glCompileShader.
 
 /* The shader code encoded as a string. */
-?shaderCode : Artifact;
+?shaderCode : Transient;
 	elementOf GLSL;
-	hasRole Shader;
-	manifestsAs Transient.
+	hasRole Shader.
 	
 /* The compiled shader object. */
-?shaderObject : Artifact;
+?shaderObject : Transient;
 	= "glwiki::GLSL_Object#Program_objects";
 	elementOf ?ShaderBinaryLanguage;
 	conformsTo ?shaderCode;
-	hasRole Shader;
-    manifestsAs Transient.
+	hasRole Shader.
 	
 glCompileShader(?shaderCode) |-> ?shaderObject.
 	

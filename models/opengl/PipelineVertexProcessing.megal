@@ -28,10 +28,9 @@ GlVertex : Role;
 	https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Stream
 	//TODO information about transformation
 */
-?vertices : Artifact;
+?vertices : Transient;
 	= "glwiki::Vertex_Specification#Vertex_Stream";
 	elementOf ?StorageLanguage;
-	manifestsAs Transient;
 	hasRole GlVertex.
 	
 /*
@@ -77,13 +76,11 @@ VertexShading : AbstractProcess;
 	https://www.khronos.org/opengl/wiki/Vertex_Shader
 */
 vertexShader : ?StorageLanguage -> ?StorageLanguage.
-?verticesVsIn : Artifact;
+?verticesVsIn : Transient;
 	elementOf ?StorageLanguage;
-	manifestsAs Transient;
 	hasRole GlVertex.
-?verticesVsOut : Artifact;
+?verticesVsOut : Transient;
 	elementOf ?StorageLanguage;
-	manifestsAs Transient;
 	hasRole GlVertex.
 vertexShader(?verticesVsIn) |-> ?verticesVsOut.
 vertexShader concretizes VertexShading.
@@ -99,32 +96,27 @@ vertexShader ^composedOf vertexProcessing.
 
 // Inputs
 /* A unique ID per vertex. */
-?glVertexID : Artifact;
+?glVertexID : Transient;
 	= "glwiki::Vertex_Shader#Other_inputs";
-	manifestsAs Transient;
 	elementOf GlslInt.
 /* In instaced rendering, meshes are rendered multiple times with different transformation matrices. This ID defines the instance, the vertex is processed in. */
-?glIstanceID : Artifact; 
+?glIstanceID : Transient; 
 	= "glwiki::Vertex_Shader#Other_inputs";
-	manifestsAs Transient;
 	elementOf GlslInt.
 
 // Outputs
 /* The position of the vertex. (required output of the vertex shader) */
-?glPosition : Artifact;
+?glPosition : Transient;
 	= "glwiki::Vertex_Shader#Outputs";
-	manifestsAs Transient;
 	elementOf GlslVec4.
 /* If rendering points instead of triangles, this value describes the diameter of the point in pixel for the rasterizer. */
-?glPointSize : Artifact;
+?glPointSize : Transient;
 	= "glwiki::Vertex_Shader#Outputs";
 	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glPointSize.xhtml";
-	manifestsAs Transient;
 	elementOf GlslFloat.
 /* The clipping distance of this vertex, e.g. minimal distance to the camera to discard the rasterization. */
-?glClipDistance : Artifact;
+?glClipDistance : Transient;
 	= "glwiki::Vertex_Shader#Outputs";
 	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_ClipDistance.xhtml";
-	manifestsAs Transient;
 	elementOf GlslFloatArray.
 	

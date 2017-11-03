@@ -29,10 +29,9 @@ GlFragment : Role;
 @Rationale:
 	https://www.khronos.org/opengl/wiki/Fragment
 */
-?fragments : Artifact;
+?fragments : Transient;
 	= "glwiki::Fragment";
 	elementOf ?StorageLanguage;
-	manifestsAs Transient;
 	hasRole GlFragment.
 	
 rasterization(?primitives) |-> ?fragments.

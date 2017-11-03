@@ -28,10 +28,9 @@ GlPrimitive : Role;
 	= "glwiki::Primitive".
 
 /* The generated primitives from primitiveProcessing. */
-?primitives : Artifact;
+?primitives : Transient;
 	= "glwiki::Vertex_Specification#Primitives";
 	elementOf ?StorageLanguage;
-	manifestsAs Transient;
 	hasRole GlPrimitive.
 	
 /* Vertices from vertex shading */
@@ -92,13 +91,11 @@ GeometryShading : AbstractProcess;
 	https://www.khronos.org/opengl/wiki/Geometry_Shader
 */
 geometryShader : ?StorageLanguage -> ?StorageLanguage.
-?primitivesGsIn : Artifact;
+?primitivesGsIn : Transient;
 	elementOf ?StorageLanguage;
-	manifestsAs Transient;
 	hasRole GlPrimitive.
-?primitivesGsOut : Artifact;
+?primitivesGsOut : Transient;
 	elementOf ?StorageLanguage;
-	manifestsAs Transient;
 	hasRole GlPrimitive.
 geometryShader(?primitivesGsIn) |-> ?primitivesGsOut.
 geometryShader concretizes GeometryShading.

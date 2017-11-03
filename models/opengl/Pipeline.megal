@@ -53,10 +53,9 @@ Pipeline : AbstractProcess;
 @Rationale:
 	https://www.khronos.org/opengl/wiki/Buffer_Object
 */
-?buffer : Artifact;
+?buffer : Transient;
 	= "glwiki::Buffer_Object";
-	elementOf ?StorageLanguage;
-	manifestsAs Transient.
+	elementOf ?StorageLanguage.
 	
 	
 /*
@@ -66,10 +65,9 @@ Pipeline : AbstractProcess;
 @Rationale:
 	https://www.khronos.org/opengl/wiki/Texture
 */
-?texture : Artifact;
+?texture : Transient;
 	= "glwiki::Texture";
-	elementOf ?TextureStorageLanguage;
-	manifestsAs Transient.
+	elementOf ?TextureStorageLanguage.
 	
 
 /*
@@ -80,11 +78,10 @@ Pipeline : AbstractProcess;
 	https://www.khronos.org/opengl/wiki/Default_Framebuffer
 	https://www.khronos.org/opengl/wiki/Framebuffer_Object
 */
-?framebuffer : Artifact;
+?framebuffer : Transient;
 	= "glwiki::Default_Framebuffer";
 	= "glwiki::Framebuffer_Object";
-	elementOf ?TextureStorageLanguage;
-	manifestsAs Transient.
+	elementOf ?TextureStorageLanguage.
 	
 
 /*
@@ -94,10 +91,9 @@ Pipeline : AbstractProcess;
 @Rationale:
 	https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object
 */
-?vertexArrayObject : Artifact;
+?vertexArrayObject : Transient;
 	= "glwiki::Vertex_Specification#Vertex_Array_Object";
-	elementOf ?StorageLanguage;
-	manifestsAs Transient.
+	elementOf ?StorageLanguage.
 	
 	
 /*
@@ -107,12 +103,11 @@ Pipeline : AbstractProcess;
 @Rationale:
 	https://www.khronos.org/opengl/wiki/glVertexAttribPointer
 */
-?vertexAttributeArray : Artifact;
+?vertexAttributeArray : Transient;
 	= "glwiki::GLAPI/glEnableVertexAttribArray";
 	= "glwiki::GLAPI/glVertexAttribPointer";
 	partOf ?vertexArrayObject;
-	elementOf GLSL;
-	manifestsAs Transient.
+	elementOf GLSL.
 	
 
 /*
@@ -122,11 +117,10 @@ Pipeline : AbstractProcess;
 @Rationale:
 	https://www.khronos.org/opengl/wiki/Type_Qualifier_(GLSL)#Shader_stage_inputs_and_outputs
 */
-?passValue : Artifact;
+?passValue : Transient;
 	= "glwiki::Type_Qualifier_(GLSL)#Shader_stage_inputs_and_outputs";
 	partOf ?OpenGLPipeline;
-	elementOf GLSL;
-	manifestsAs Transient.
+	elementOf GLSL.
 	
 
 //

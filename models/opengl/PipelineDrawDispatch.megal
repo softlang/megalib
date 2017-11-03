@@ -26,11 +26,10 @@ ParameterSet : Role;
 @Rationale:
 	https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=46
 */
-?queryObject : Artifact;
+?queryObject : Transient;
 	= "glspec::glspec44.core.pdf#page=46";
 	elementOf ?StorageLanguage;
-	hasRole ParameterSet;
-	manifestsAs Transient.
+	hasRole ParameterSet.
 
 /*
 @Description:
@@ -39,11 +38,10 @@ ParameterSet : Role;
 @Rationale:
 	https://www.khronos.org/registry/OpenGL/specs/gl/glspec44.core.pdf#page=347
 */
-?drawCall : Artifact;
+?drawCall : Transient;
 	= "glspec::glspec44.core.pdf#page=347";
 	elementOf GlslArray;
-	consistentWith ?queryObject;
-	manifestsAs Transient.
+	consistentWith ?queryObject.
 
 
 /*

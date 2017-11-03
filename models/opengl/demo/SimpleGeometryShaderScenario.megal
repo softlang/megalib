@@ -77,10 +77,9 @@ OpenGLApp : Application;
     reuses GLEW.
 
 /* An application using OpenGL to render a triangle. Two other triangles are created on the GPU in the geometry shader. */
-deployedOpenGLApp : Artifact;
+deployedOpenGLApp : File;
 	~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp";
 	elementOf C++;
-	manifestsAs File;
 	hasRole Executable;
 	^deployedAs OpenGLApp.
 
@@ -138,21 +137,19 @@ vaaColors ~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#lines=1
 //fragmentShader ~= "../code/src/shaders/Example/ex02_simpleGeometryShader.frag#line=9".
 
 /* The shader code */
-shaderFiles : Artifact;
+shaderFiles : File+;;
 	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert";
 	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.geom";
 	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.frag";
     elementOf GLSL;
-    manifestsAs File+;
     hasRole Shader.
 	
 
 /* A shader program object. This is linked to the pipeline and contains the executable shader code. */
-shaderProgram : Artifact;
+shaderProgram : Transient;
 	~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#line=67";
 	~= "../code/src/libraries/Common/Shader.cpp#line=74";
-	elementOf ?ShaderBinaryLanguage;
-	manifestsAs Transient.
+	elementOf ?ShaderBinaryLanguage.
 
 	
 /* The code to execute on the GPU */
@@ -168,9 +165,8 @@ vertexOut ~= "../code/src/shaders/Example/ex01_simpleTriangle.vert#line=12-13".
 
 
 /* Primitives in the geometry shader process. */
-//++?primitivesGsIn : Artifact; // same for primitivesGsOut
+//++?primitivesGsIn : Transient; // same for primitivesGsOut
 //++	elementOf ?StorageLanguage;
-//++	manifestsAs Transient;
 //++	hasRole GlPrimitive.
 primitiveIn ~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert#line=8".
 primitiveOut ~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert#line=10".
