@@ -28,7 +28,7 @@ public class Explore {
 
 		// add edges to create a circuit
 		DefaultWeightedEdge e = g.addEdge(v1, v2);
-		g.
+		
 		g.addEdge(v2, v3);
 		g.addEdge(v3, v4);
 		g.addEdge(v4, v1);
