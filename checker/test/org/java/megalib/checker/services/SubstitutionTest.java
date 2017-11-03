@@ -85,9 +85,9 @@ public class SubstitutionTest {
         assertFalse(ml.getModel().getRelationships().get("uses")
                       .contains(new Relation("MySerializer", "?PL")));
         assertTrue(ml.getModel().getRelationships().get("implements")
-                     .contains(new Relation("?Serializer", "?PL")));
+                     .contains(new Relation("?Serializer", "?OL")));
         assertTrue(ml.getModel().getRelationships().get("implements")
-                     .contains(new Relation("MySerializer", "MyPL")));
+                     .contains(new Relation("MySerializer", "MyOL")));
     }
 
     @Test
