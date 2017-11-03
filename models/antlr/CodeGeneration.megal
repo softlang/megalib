@@ -9,15 +9,13 @@ import antlr.App
 @Rationale:
     See parser call in demo
 */
-?grammar : Artifact; 
-	manifestsAs File+;
+?grammar : File+; 
 	elementOf G4;
 	hasRole Grammar;
     defines ?InputLanguage;
     partOf ?App.
-?lexerFiles : Artifact;
+?lexerFiles : File+;
 	elementOf ANTLRJava;
-	manifestsAs File+;
     hasRole Lexer;
     partOf ?App.
 generateLexer : G4 -> ANTLRJava .
@@ -30,9 +28,8 @@ generateLexer(?grammar) |-> ?lexerFiles .
 @Rationale:
     See parser call in demo
 */
-?parserFiles : Artifact;
+?parserFiles : File+;
 	elementOf ANTLRJava;
-	manifestsAs File+;
     hasRole Parser;
     partOf ?App.
 generateParser : G4 -> ANTLRJava .

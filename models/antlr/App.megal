@@ -16,8 +16,7 @@ import antlr.Core
 	reuses ANTLR; 
     implements ?InputLanguage;
 	uses Java.
-?antlrJar : Artifact;
+?antlrJar : File;
     partOf ?App;
     elementOf Jar;
-    manifestsAs File;
     ^deployedAs ANTLR.

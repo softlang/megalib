@@ -30,26 +30,21 @@ A concrete scenario could have participants as follows.
 @Rationale: 
 See substituting Applications
 */
-?subject0 : Artifact;
+?subject0 : Transient;
     elementOf ?SubjectLanguage;
-    hasRole Subject;
-    manifestsAs Transient.
-?subject1 : Artifact;
+    hasRole Subject.
+?subject1 : Transient;
     elementOf ?SubjectLanguage;
-    hasRole Subject;
-    manifestsAs Transient.
-?subject2 : Artifact;
+    hasRole Subject.
+?subject2 : Transient;
     elementOf ?SubjectLanguage;
-    hasRole Subject;
-    manifestsAs Transient.
-?listener0 : Artifact;
+    hasRole Subject.
+?listener0 : Transient;
     elementOf ?ListenerLanguage;
-    hasRole Observer;
-    manifestsAs Transient.
-?listener2 : Artifact;
+    hasRole Observer.
+?listener2 : Transient;
     elementOf ?ListenerLanguage;
-    hasRole Observer;
-    manifestsAs Transient.
+    hasRole Observer.
 addListener(?subject0, ?listener0) |-> ?subject1.	  
 //something happens between function usages of addListener and getListeners
 getListeners(?subject2) |-> ?listener2.

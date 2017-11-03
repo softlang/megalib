@@ -35,9 +35,8 @@ Checker implements checkModel.
 getErrors: ErrorListenerLanguage -> JVMString.
 checker implements getErrors.
 checkerParserErrorListener2 ~= "MEGALIB::".
-errors : Artifact;
+errors : Transient;
     ~= "MEGALIB::";
-	manifestsAs Transient;
 	elementOf JVMString.
 getErrors(checkerParserErrorListener2) |-> errors.
 
@@ -52,8 +51,7 @@ getErrors(checkerParserErrorListener2) |-> errors.
 MegaModelObjectLanguage : ValueLanguage;
     = "MEGALIB::tree/master/checker/src/org/java/megalib/models";
 	subsetOf JVMObjectLanguage.
-?megaModel : Artifact;
-	manifestsAs Transient;
+?megaModel : Transient;
 	elementOf MegaModelObjectLanguage.
 getMegaModel : ParserListenerLanguage -> MegaModelObjectLanguage.
 checker implements getMegaModel.
@@ -67,7 +65,6 @@ getMegaModel (?returnedANTLRParserListeners) |-> (?megaModel).
 */
 getWarnings: MegaModelObjectLanguage -> JVMList.
 checker implements getWarnings.
-?warnings : Artifact;
-	manifestsAs Transient;
+?warnings : Transient;
 	elementOf JVMList.
 getWarnings(?megaModel) |-> ?warnings.

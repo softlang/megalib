@@ -38,9 +38,8 @@ ANTLRJava : ProgrammingLanguage;
 @Rationale:
     See provided link for javaTemplate
 */
-javaTemplate : Artifact;
+javaTemplate : File;
     ~= "ANTLRGITHUB::tool/resources/org/antlr/v4/tool/templates/codegen/Java/Java.stg";
     elementOf StringTemplateLanguage;
-    manifestsAs File;
     hasRole Template;
     defines ANTLRJava.

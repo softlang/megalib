@@ -11,8 +11,7 @@ import antlr.App
     any grammar that ANTLR is supposed to process 
     and any input file that shall be parsed.
 */
-?input : Artifact;
-	manifestsAs File;
+?input : File;
 	elementOf ?InputLanguage;
 	conformsTo ?grammar. 
 	
@@ -29,8 +28,7 @@ TokenStreamLanguage : ValueLanguage;
 lex : ?InputLanguage -> TokenStreamLanguage.
 ?App implements lex;
     uses LexicalAnalysis.
-?tokenstream : Artifact;
-	manifestsAs Transient;
+?tokenstream : Transient;
 	elementOf TokenStreamLanguage.
 lex(?input) |-> ?tokenstream.
 
@@ -49,8 +47,7 @@ parse : TokenStreamLanguage -> ConcreteSyntaxTreeLanguage.
 ?App implements parse;
     uses Parsing.
 
-?concreteSyntaxTree : Artifact;
-	manifestsAs Transient;
+?concreteSyntaxTree : Transient;
 	elementOf ConcreteSyntaxTreeLanguage.
 parse(?tokenstream) |-> (?concreteSyntaxTree).
 
@@ -66,11 +63,9 @@ LexerLanguage : ValueLanguage;
 ParserLanguage : ValueLanguage;
 	="https://github.com/antlr/antlr4/blob/master/doc/parser-rules.md";
 	subsetOf JVMObjectLanguage.
-antlrLexer : Artifact;
+antlrLexer : File;
 	~="https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/Lexer.java";
-    elementOf Java;
-    manifestsAs File.
-antlrParser : Artifact;
+    elementOf Java.
+antlrParser : File;
 	~="https://github.com/antlr/antlr4/blob/master/runtime/Java/src/org/antlr/v4/runtime/Parser.java";
-    elementOf Java;
-    manifestsAs File.
+    elementOf Java.
