@@ -32,7 +32,9 @@ public class ImportDemoTest {
 	    cli.parse(data);
 	    VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());
 	    vis = new Visualizer(options);
-	    graphs = new ModelToGraph(options).createBlockGraphs();
+	    ModelToGraph mtg = new ModelToGraph(options);
+	    assertTrue(mtg.loadModel());
+	    graphs = mtg.createBlockGraphs();
 	    graphs.forEach(vis::plotGraph);
 	}
 	
@@ -50,10 +52,9 @@ public class ImportDemoTest {
 		assertTrue(nodes.containsKey("?spec"));
 		assertTrue(nodes.containsKey("HTML5"));
 		assertTrue(nodes.containsKey("Specification"));
-		assertTrue(nodes.containsKey("File"));
-		assertEquals(5,nodes.size());
+		assertEquals(4,nodes.size());
 		
-		assertEquals(5,g1.getEdges().size());
+		assertEquals(4,g1.getEdges().size());
 	}
 	
 	@Test

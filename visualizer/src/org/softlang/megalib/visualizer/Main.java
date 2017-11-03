@@ -31,7 +31,10 @@ public class Main {
             Visualizer visualizer = new Visualizer(options);
             //Graph graph = new ModelToGraph(options).createGraph();
             //visualizer.plotGraph(graph);
-
+            ModelToGraph mtg = new ModelToGraph(options);
+            if(!mtg.loadModel()) {
+            	mtg.getTypeErrors().forEach(e -> System.out.println(e));
+            }
             List<Graph> graphs = new ModelToGraph(options).createBlockGraphs();
             graphs.forEach(visualizer::plotGraph);
 

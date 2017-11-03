@@ -3,17 +3,18 @@
  */
 package org.softlang.megalib.visualizer.models;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.java.megalib.checker.services.ModelLoader;
 import org.java.megalib.models.Block;
 import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
-import org.softlang.megalib.visualizer.ModelReader;
 import org.softlang.megalib.visualizer.VisualizerOptions;
 
 /**
@@ -24,16 +25,35 @@ public class ModelToGraph {
 
     private MegaModel model;
 	private VisualizerOptions options;
+	private ModelLoader loader;
 
     public ModelToGraph(VisualizerOptions options) {
     	this.options = options;
-        model = new ModelReader(options).readFull();
+    }
+    
+    public boolean loadModel() {
+    	loader = new ModelLoader();
+        try {
+        	model = loader.getModel();
+			return loader.loadFile(options.getFilePath().toAbsolutePath().toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
     }
 
     public Graph createGraph() {
         Graph graph = new Graph(options.getModelName(),"The complete Megamodel for "+options.getModelName());
-        createNodes(graph);
-        createEdges(graph);
+        model.getInstanceOfMap().entrySet().stream().filter(entry-> !entry.getValue().equals("Link"))
+		 .map(entry -> createNode(entry.getKey(),entry.getValue(),model))
+		 .forEach(graph::add);
+        model.getFunctionDeclarations().forEach((name,funcs)-> graph.add(createNode(name,"Function",model)));
+        model.getFunctionApplications().forEach((name,funcs)-> graph.add(createNode(name,"Function",model)));
+        model.getRelationships().entrySet().stream()
+         .filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
+         .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
+        model.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+        model.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
 
         return graph;
     }
@@ -41,16 +61,16 @@ public class ModelToGraph {
     public List<Graph> createBlockGraphs() {
     	List<Graph> graphs = new LinkedList<>();
     	for(Block b : model.getBlocks()) {
-    		if(b.getModule().startsWith("common")) {
+    		if(b.getModule().startsWith("common.")) {
 				continue;
 			}
-    		Graph graph = new Graph(b.getModule()+b.getId(),b.getText().substring(2, b.getText().length()-2));
+    		Graph graph = new Graph(b.getModule()+b.getId(),b.getText());
     		//instance nodes
     		b.getInstanceOfMap().entrySet().stream().filter(entry-> !entry.getValue().equals("Link"))
     		 .map(entry -> createNode(entry.getKey(),entry.getValue(),model))
     		 .forEach(graph::add);
-    		b.getFunctionDeclarations().forEach((name,funcs)-> graph.add(createNode(name,"FunctionDecl",model)));
-    		b.getFunctionApplications().forEach((name,funcs)-> graph.add(createNode(name,"FunctionApp",model)));
+    		b.getFunctionDeclarations().forEach((name,funcs)-> graph.add(createNode(name,"Function",model)));
+    		b.getFunctionApplications().forEach((name,funcs)-> graph.add(createNode(name,"Function",model)));
     		b.getRelationships().entrySet().stream()
               .filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
               .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
@@ -61,15 +81,6 @@ public class ModelToGraph {
 
 		return graphs;
 	}
-
-    private void createNodes(Graph graph) {
-    	model.getInstanceOfMap().entrySet().stream()
-    	     .filter(entry-> !entry.getValue().equals("Link"))
-             .map(entry -> createNode(entry.getKey(), entry.getValue(), model))
-             .forEach(graph::add);
-        model.getFunctionDeclarations().forEach((name, actions) -> graph.add(createNode(name, "FunctionDeclaration", model)));
-        model.getFunctionApplications().forEach((name, actions) -> graph.add(createNode("#" + name, "FunctionApplication", model)));
-    }
 
     private Node createNode(String name, String type, MegaModel model) {
         Node result = new Node(type, name, getFirstInstanceLink(model, name));
@@ -90,14 +101,6 @@ public class ModelToGraph {
                        .orElse("");
     }
 
-    private void createEdges(Graph graph) {
-        model.getRelationships().entrySet().stream()
-             .filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
-             .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
-        model.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
-        model.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
-    }
-
     private void createEdgesByFunction(Graph graph, String functionName, Set<Function> funcs) {
     	Iterator<Function> it = funcs.iterator();
     	for(int i=0; it.hasNext(); i++) {
@@ -106,8 +109,13 @@ public class ModelToGraph {
     }
 
     private void createEdgesByFunction(Graph graph, String functionName, Function f, int i) {
-        f.getInputs().forEach(input -> createEdge(graph, functionName, input, "functionInput_"+i));
-        f.getOutputs().forEach(output -> createEdge(graph, functionName, output, "functionOutput_"+i));
+    	if(f.isDecl) {
+    		f.getInputs().forEach(input -> createEdge(graph, input,functionName, "domainOf_"+i));
+    		f.getOutputs().forEach(output -> createEdge(graph, functionName,output, "hasRange_"+i));
+    	}else {
+    		f.getInputs().forEach(input -> createEdge(graph, input,functionName, "inputOf_"+i));
+    		f.getOutputs().forEach(output -> createEdge(graph, functionName,output, "hasOutput_"+i));
+    	}
     }
 
     private void createEdgesByRelations(Graph graph, String relationName, Set<Relation> relations) {
@@ -120,4 +128,8 @@ public class ModelToGraph {
         Node toNode = graph.get(to);
         fromNode.connect(relation, toNode);
     }
+
+	public List<String> getTypeErrors() {
+		return loader.getTypeErrors();
+	}
 }

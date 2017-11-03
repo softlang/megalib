@@ -87,6 +87,7 @@ public class DOTTransformer extends Transformer {
 				return config.get(key);
 			}
         }
+        System.out.println("Default for "+node.getName()+":"+node.getType()+" at "+attribute);
         return DEFAULT_CONFIG;
     }
 

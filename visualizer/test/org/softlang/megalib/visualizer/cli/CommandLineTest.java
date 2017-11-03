@@ -3,6 +3,8 @@
  */
 package org.softlang.megalib.visualizer.cli;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -61,7 +63,9 @@ public class CommandLineTest {
         cli.parse(data);
         VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());
 
-        Graph graph = new ModelToGraph(options).createGraph();
+        ModelToGraph mtg = new ModelToGraph(options);
+	    assertTrue(mtg.loadModel());
+	    Graph graph = mtg.createGraph();
 
         Visualizer visualizer = new Visualizer(options);
         visualizer.plotGraph(graph);

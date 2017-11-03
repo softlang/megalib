@@ -1,19 +1,9 @@
 package org.softlang.megalib.visualizer.transformation.yed;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.ext.ExportException;
-import org.jgrapht.ext.GraphMLExporter;
-import org.jgrapht.ext.IntegerComponentNameProvider;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleGraph;
-
 public class Explore {
 
 	public static void main(String[] args) {
-		UndirectedGraph<String, DefaultWeightedEdge> g = new SimpleGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+		/*UndirectedGraph<String, DefaultWeightedEdge> g = new SimpleGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 
 		String v1 = "v1";
 		String v2 = "v2";
@@ -45,5 +35,6 @@ public class Explore {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
+		*/
 	}
 }

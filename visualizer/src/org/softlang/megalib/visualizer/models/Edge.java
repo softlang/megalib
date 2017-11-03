@@ -17,7 +17,7 @@ public class Edge {
 
     private String label;
 
-    Edge(Node origin, Node destination, String label) {
+    public Edge(Node origin, Node destination, String label) {
         this.origin = origin;
         this.destination = destination;
         this.label = label;
