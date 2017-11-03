@@ -20,41 +20,35 @@ StringTemplateObject : ValueLanguage;
     subsetOf JVMObjectLanguage .
 wrap : StringTemplateLanguage -> StringTemplateObject.
 StringTemplate implements wrap.
-?template : Artifact;
+?template : File;
     elementOf StringTemplateLanguage;
-    hasRole Template;
-    manifestsAs File.
-?stObject1 : Artifact;
+    hasRole Template.
+?stObject1 : Transient;
     elementOf StringTemplateObject;
     hasRole Template;
-    hasRole Wrapper;
-    manifestsAs Transient.
+    hasRole Wrapper.
 wrap(?template) |-> ?stObject1.
    
 /* The template can then be filled with concrete values by calling the toString method 
 of an input object */
 setVar : JVMString # JVMObjectLanguage # StringTemplateObject -> StringTemplateObject.
 StringTemplate implements setVar.
-?variable : Artifact;
+?variable : Transient;
     elementOf JVMString;
-    manifestsAs Transient;
     hasRole Identifier.
-?value : Artifact;
-    elementOf JVMObjectLanguage;
-    manifestsAs Transient.
-?stObject2 : Artifact;
+?value : Transient;
+    elementOf JVMObjectLanguage.
+?stObject2 : Transient;
     elementOf StringTemplateObject;
     hasRole Template;
-    hasRole Wrapper;
-    manifestsAs Transient.
+    hasRole Wrapper.
 setVar(?variable,?value,?stObject1) |-> ?stObject2 .
 
 /* The render function can then be used to unwrap the produced String */
 render : StringTemplateObject -> JVMString.
 StringTemplate implements render.
-?prettyPrintedString : Artifact;
-    elementOf JVMString;
-    manifestsAs Transient.
+?prettyPrintedString : Transient;
+    elementOf JVMString.
 render(?stObject2) |-> ?prettyPrintedString.
 
 
