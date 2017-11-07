@@ -51,38 +51,31 @@ ScopevisioClient : SoftwareSuite;
 /* When the user accesses a functionality in the client, the client sends
 a SOAP message to the corresponding service's address. The actual computation 
 is executed at the server side and the result is send back as a SOAP message */
-?httpsrequest : Artifact;
+?httpsrequest : Transient;
     elementOf HTTPRequest;
-    hasRole Message;
-    manifestsAs Transient.
-?soapRequest : Artifact;
+    hasRole Message.
+?soapRequest : Fragment;
     elementOf SOAP;
     hasRole Message;
-    manifestsAs Fragment;
     partOf ?httpsrequest.
-?serviceAddress : Artifact;
+?serviceAddress : Fragment;
     hasRole Reference;
     elementOf URI;
-    manifestsAs Fragment;
     partOf ?soapRequest.
-?productName : Artifact;
+?productName : Fragment;
     hasRole Reference;
     elementOf URI;
-    manifestsAs Fragment;
     partOf ?serviceAddress.
-?serviceName : Artifact;
+?serviceName : Fragment;
     hasRole Reference;
     elementOf URI;
-    manifestsAs Fragment;
     partOf ?serviceAddress.
-?httpResponse : Artifact;
+?httpResponse : Transient;
     hasRole Message;
-    elementOf HTTPResponse;
-    manifestsAs Transient.
-?contentResponse : Artifact;
+    elementOf HTTPResponse.
+?contentResponse : Fragment;
     hasRole Message;
     elementOf SOAP;
-    manifestsAs Fragment;
     partOf ?httpResponse.
 communicate : HTTPRequest # URI -> HTTPResponse.
 communicate(?httpsrequest, ?serviceAddress) |-> ?httpResponse.
@@ -93,14 +86,12 @@ OpenScope implements communicate.
 /* Somewhere a user has to have a configuration that states
 which services he payed for and is able to access. */
 ?UnknownConfigurationLanguage : ConfigurationLanguage.
-?selectedServices : Artifact;
-    manifestsAs File;
+?selectedServices : File;
     hasRole Configuration;
     elementOf ?UnknownConfigurationLanguage;
     partOf ScopevisioClient.
-?scopevisio : Artifact; //Archives and Folders do not have any elementOf relationship
+?scopevisio : File; //Archives and Folders do not have any elementOf relationship
     elementOf PE;
-    manifestsAs File;
     hasRole Executable;
     ^deployedAs ScopevisioClient.
 

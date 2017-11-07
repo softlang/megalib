@@ -21,10 +21,9 @@ HibernateCFG : ConfigurationLanguage;
     = "https://docs.oracle.com/cd/E13224_01/wlw/docs103/guide/ormworkbench/hibernate-tutorial/tutHibernate9.html";
     subsetOf XML.
 Hibernate implements HibernateCFG.
-?config : Artifact;
+?config : File;
     elementOf HibernateCFG;
-    hasRole Configuration;
-    manifestsAs File.
+    hasRole Configuration.
 //TODO: How to say that it defines the actual ObjectRelationalMapping
 
 /* In the following use case we want to illustrate important

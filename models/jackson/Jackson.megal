@@ -1,6 +1,6 @@
 module jackson.Jackson
 
-import java.JavaPlatform
+import javaPlatform.JavaPlatform
 
 /* Jackson realizes data binding between JSON and Java objects. */
 Jackson : Library;
@@ -36,19 +36,16 @@ Jackson.ObjectMapper implements readValue.
 
 /* A concrete scenario for (de-) serialization thus needs a POJO, a Java object
 and a JSON String. */
-?javaClass : Artifact;
+?javaClass : File;
     elementOf Java;
-    hasRole POJO;
-    manifestsAs File.
-?model : Artifact;
+    hasRole POJO.
+?model : Transient;
     elementOf JVMObject;
     hasRole Value;
-    manifestsAs Transient;
     conformsTo ?javaClass.
-?jsonFile : Artifact ;
+?jsonFile : File ;
     elementOf JSON;
     hasRole Value;
-    manifestsAs File;
     correspondsTo ?model.
 readValue(?jsonFile, ?javaClass) |-> ?model.
 writeValue(?model) |-> ?jsonFile.

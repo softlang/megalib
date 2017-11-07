@@ -2,7 +2,8 @@ module common.ConceptKB
 
 import common.Concept
 
-/* Design pattern */
+/* All concepts that are general so far. */
+// Design pattern 
 ObserverPattern : DesignPattern;
     = "wikipedia::Observer_pattern".
 AdapterPattern : DesignPattern;
@@ -16,7 +17,7 @@ TemplateMethodPattern : DesignPattern;
 DecoratorPattern : DesignPattern;
     = "wikipedia::Decorator_pattern".
 
-/* Architectural pattern */
+// Architectural pattern 
 ModelViewController : ArchitecturalPattern;
     = "wikipedia::Model-view-controller".
 ClientServer : ArchitecturalPattern;
@@ -39,7 +40,7 @@ GraphicsPipeline : ArchitecturalPattern; //TODO: maybe specialization of PipeFil
 MemoryHierarchy : ArchitecturalPattern;
 	= "wikipedia::Memory_hierarchy".
 
-/* Paradigms */
+// Paradigm
 ParallelProgramming : Paradigm;
     = "wikipedia::Parallel_computing".
 ConcurrentProgramming : Paradigm; // Programming in a way that enables and manages parallel execution
@@ -57,7 +58,7 @@ AspectOrientedProgramming : Paradigm; //Seperation of cross-cutting concerns
 LogicProgramming : Paradigm; //programming based on formal logic
     = "wikipedia::Logic_programming".
 
-/* Programming Domains */
+// Programming Domains
 GeneralPurposeProgramming : ProgrammingDomain; // The study on applications in general.
     = "wikipedia::General-purpose_programming_language".
 MetaProgramming : ProgrammingDomain; // The study on processing programs with support for language implementation 
@@ -114,7 +115,7 @@ GUIProgramming : ProgrammingDomain;
     = "wikipedia::Graphical_user_interface".
 
  
-/* Technological spaces */
+// Technological spaces 
 BuildAutomationWare : TechnologySpace;
     = "wikipedia::List_of_build_automation_software".
 MDEWare : TechnologySpace;
@@ -145,7 +146,7 @@ ClusterManagementWare : TechnologySpace;
 GraphWare : TechnologySpace;
     = "wikipedia::Category:Application-specific_graphs".
 
-/* Abstract Processes */
+// Abstract Processes 
 PrettyPrinting : AbstractProcess; 
     = "http://101companies.org/wiki/Pretty_printing".
 TemplateProcessing : AbstractProcess;
@@ -231,8 +232,7 @@ HTTP : Protocol;
 HTTPS : Protocol ;
     = "wikipedia::HTTPS". 
     
-/* Known constructs that imply a certain setup and purpose of up to multiple involved artifacts */
-
+// language constructs
 Annotation : Construct;
     = "wikipedia::Annotation";
     aspectOf ObjectOrientedProgramming.
@@ -240,7 +240,7 @@ SoftwareInterface : Construct;
 	= "wikipedia::Interface_(computing)".
     
    
-/* Frequently appearing roles that single artifacts may have. */
+// Roles as terms that certain artifacts are denoted by.
 Monad : Role; // propose a Monad construct
    = "https://en.wikipedia.org/wiki/Monad_(functional_programming)";
    aspectOf FunctionalProgramming.
@@ -448,7 +448,7 @@ Decorator-ConcreteDecorator : Role;
     = "wikipedia::Decorator_pattern";
     participantOf DecoratorPattern.
     
-/* Concepts that need further classification */
+// Concepts that need further classification 
 SIMT : Concept; 
 	= "wikipedia::Single_instruction,_multiple_threads";
 	aspectOf ParallelProgramming.   

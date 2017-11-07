@@ -2,18 +2,10 @@ module common.LanguageKB
 
 import common.Language 
 
-/* PDF file format has frequent appearence everywhere. */
-PDF : DocumentLanguage;
-    = "http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf";
-    = "wikipedia::Portable_Document_Format".
+/* All languages that are general so far. */
 
-/* Meta Object Facility is an OMG standard for Model driven engineering.
-UML instantiates MOF. */
-CMOF : SchemaLanguage;
-    = "wikipedia::Meta-Object_Facility".
-EMOF : SchemaLanguage;
-    = "http://www.omg.org/spec/MOF/";
-    subsetOf CMOF.
+// Meta Object Facility is an OMG standard for Model driven engineering.
+// UML instantiates MOF. 
 UML : SoftwareDesignLanguage;
     = "http://www.uml.org/";
     = "http://www.omg.org/spec/UML/2.5/";
@@ -26,7 +18,7 @@ UML.ClassDiagram : SoftwareDesignLanguage;
     = "wikipedia::Class_diagram";
     subsetOf UML.
  
-/* Structured Query Language falls apart in a set for defining schematic information, querying and updating */
+// Structured Query Language falls apart in a set for defining schematic information, querying and updating 
 SQL : DatabaseManagementLanguage;
     = "wikipedia::SQL";
     belongsTo SQLWare;
@@ -41,10 +33,10 @@ SQLDML : TransformationLanguage;
     = "wikipedia::SQL#Data_manipulation";
     subsetOf SQL.
  
-/* XML is a markup language invented by W3C. The specification
-is available online in an HTML version and can be viewed using
-a browser. There are multiple languages that can be used to define 
-schemas for XML. */
+// XML is a markup language invented by W3C. The specification
+// is available online in an HTML version and can be viewed using
+// a browser. There are multiple languages that can be used to define 
+// schemas for XML. 
 XML : DataExchangeLanguage;
     = "wikipedia::XML";
     = "http://www.w3schools.com/xml/";
@@ -71,20 +63,20 @@ RelaxNGCompact : SchemaLanguage;
     = "http://relaxng.org/spec-20011203.html";
     dialectOf RelaxNGXML.
 
-/* XMI is an OMG standard for exchanging models. */
+// XMI is an OMG standard for exchanging models.
 XMI : DataExchangeLanguage;
     = "wikipedia::XML_Metadata_Interchange";
     = "http://www.omg.org/spec/XMI/2.5.1/PDF";
     subsetOf XML.
 
-/* JSON exchange format */
+// JSON exchange format 
 JSON : DataExchangeLanguage;
     = "wikipedia::JSON";
     belongsTo JSONWare.
 JSONSchema : SchemaLanguage;
     = "wikipedia::JSON#JSON_Schema".
 
-/* Common web languages */
+// Common web languages 
 JavaScript : ProgrammingLanguage;
     = "wikipedia::JavaScript";
     supports WebApplicationDevelopment.
@@ -125,9 +117,7 @@ SOAP : MessageLanguage;
     embeddedInto HTTPRequest;
     embeddedInto HTTPResponse.
 
-/* C is an imperative programming language that influenced
-C++, which extends the procedural style by object orientation
-and other paradigms. */
+// C-Family
 C++ : ProgrammingLanguage;
     = "wikipedia::C%2B%2B".
 C : ProgrammingLanguage;
@@ -137,7 +127,7 @@ ObjectiveC : ProgrammingLanguage;
 CMake : BuildScriptLanguage;
     = "wikipedia::CMake".
 
-/* JVM related languages */
+// JVM related languages 
 Java : ProgrammingLanguage;
     = "http://docs.oracle.com/javase/specs/jls/se8/jls8.pdf";
     belongsTo JavaWare;
@@ -154,14 +144,14 @@ Scala : ProgrammingLanguage;
 C# : ProgrammingLanguage;
     = "wikipedia::C_Sharp_(programming_language)".
     
-/* jar container format */
+// jar container format 
 Zip : ContainerLanguage;
     = "wikipedia::Zip_(file_format)".
 Jar : ContainerLanguage; 
     = "wikipedia::JAR_(file_format)";
     dialectOf Zip.
     
-/* The python programming language */    
+// The python programming language 
 Python : ProgrammingLanguage;
     = "https://docs.python.org/2/reference/";
     facilitates ObjectOrientedProgramming;
@@ -169,27 +159,24 @@ Python : ProgrammingLanguage;
     facilitates AspectOrientedProgramming;
     supports GeneralPurposeProgramming.
     
-/* Ruby is a Script language. Thus it is used for writing programs,
-but is more frequently interpreted than compiled. */
+// Script languages are programming languages
+// that are more frequently interpreted than compiled. 
 Ruby : ProgrammingLanguage;
     = "https://www.ruby-lang.org/en/".
-
-/* Perl */
 Perl : ProgrammingLanguage;
     = "wikipedia::Perl".
-
-/* Haskell */
 Haskell : ProgrammingLanguage;
    = "https://www.haskell.org/onlinereport/haskell2010/";
    facilitates FunctionalProgramming;
    supports GeneralPurposeProgramming.
     
-/* Linux' Shell script language */
+// Linux' Shell script language 
 Bash : CommandLineLanguage;
 	= "wikipedia::Bash_(Unix_shell)".
     
-/*
-The path to a file is called a file path
-*/	
-FilePath : ReferenceLanguage;
+// The language of all file paths
+FilePathLanguage : ReferenceLanguage;
 	= "wikipedia::Path_(computing)".
+PDF : DocumentLanguage;
+    = "http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf";
+    = "wikipedia::Portable_Document_Format".

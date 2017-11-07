@@ -1,3 +1,7 @@
+# Model status
+
+This model is currently deprecated and needs maintenance.
+
 # Current model advice
 
 ## Suggested order for reading these Files:

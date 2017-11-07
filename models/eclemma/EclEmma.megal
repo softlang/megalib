@@ -1,4 +1,4 @@
-module eclipse.eclemma.EclEmma
+module eclemma.EclEmma
 
 import java.JavaPlatform
 import eclipse.Core

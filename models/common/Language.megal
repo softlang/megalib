@@ -120,7 +120,6 @@ Visual : Notation;
     = "wikipedia::Data_visualization".
 Markup : Notation;
     = "wikipedia::Markup_language".
-mappedTo < Language # Language. //TODO: This needs a link... 
 
 TypeSystem < Entity;
     = "wikipedia::Type_system".

@@ -60,14 +60,11 @@ OwnCloudClient : Application;
     uses CMake;
     partOf OwnCloud.
 ?webServer : Node. //TODO: Not precise enough, the node uses Windows where owncloud is plugged into the filesystem?
-?serverAppFiles : Artifact;
+?serverAppFiles : File+;
     elementOf C++;
-    manifestsAs File+;
     hasRole Executable;
     ^deployedAs OwnCloudServer;
     deployedAt ?webServer.
-?userFiles1 : UserFiles.
-?userFiles2 : UserFiles.
 
 /* A file is uploaded in the first file system and then downloaded due to the synchronization
 process by the second client. The sharing policy states that synchronization for this file
@@ -94,8 +91,7 @@ OwnCloud implements share.
 ?serverurl1 : Artifact;
     elementOf URL;
     hasRole Reference;
-    manifestsAs Fragment;
-    partOf ?userFiles1. //don't know where
+    manifestsAs Fragment. //don't know where
 ?serverurl2 : Artifact;
     elementOf URL;
     hasRole Reference;

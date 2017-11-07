@@ -20,13 +20,11 @@ may provide.
 
 @Rationale: TODO
 */
-?incommingHttpRequest : Artifact;
-  elementOf HTTPRequest;
-  manifestsAs Transient.
-?incommingHttpRequestURL : Artifact;
+?incommingHttpRequest : Transient;
+  elementOf HTTPRequest.
+?incommingHttpRequestURL : Transient;
   hasRole Identifier;
-  elementOf URL;
-  manifestsAs Transient.
+  elementOf URL.
 extractUrlFromHttpRequest(?incommingHttpRequest) |-> ?incommingHttpRequestURL.
 
 
@@ -39,11 +37,9 @@ answered with an HTTPResponse containing HTML and Javascript Code.
 */
 sendResponse : HTML5 -> HTTPResponse.
 Puma implements sendResponse.
-?html5 : Artifact;
+?html5 : Transient;
   hasRole WebResource;
-  elementOf HTML5;
-  manifestsAs Transient.
-?outgoingHttpResponse : Artifact;
-  elementOf HTTPResponse;
-  manifestsAs Transient.
+  elementOf HTML5.
+?outgoingHttpResponse : Transient;
+  elementOf HTTPResponse.
 sendResponse(?html5) |-> ?outgoingHttpResponse.

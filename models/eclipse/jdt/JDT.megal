@@ -1,13 +1,9 @@
-module eclipse.java.JDT
-
-
+module eclipse.jdt.JDT
 
 import eclipse.Core where {
     [javaEditor / ?editor 
      javaUI / ?ui ]
 }
-
-platform :: ?
 
 /* The most famous and standard plugin for Eclipse is the Java IDE. */
 JDT : Plugin;
@@ -16,6 +12,5 @@ JDT : Plugin;
     reuses JavaSEHotSpot;
     uses Java;
     implements Java.
-
-javaEditor ~= "platform::org.eclipse.jdt/org/eclipse/jdt/JavaEditor.java";
+javaEditor ~= "org.eclipse.jdt/org/eclipse/jdt/JavaEditor.java";
     partOf JDT.

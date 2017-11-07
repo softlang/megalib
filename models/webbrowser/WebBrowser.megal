@@ -16,7 +16,3 @@ module webbrowser.WebBrowser
 ?WebGraphicsEngine : Library;
     partOf ?WebBrowser;
     facilitates Rendering.
-
-//TODO: further Storyline
-//- From URL to Request to Response to HTML to rendered view
-//- Mozilla

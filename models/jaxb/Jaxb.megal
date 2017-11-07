@@ -32,14 +32,12 @@ BindingCompiler implements JAXB.Java;
     implements generation.
 ?XML.Subset : DataExchangeLanguage;
     subsetOf XML.
-?xmlSchema : Artifact;
+?xmlSchema : File+;
     elementOf XSD;
-    manifestsAs File+;
     hasRole Schema;
     defines ?XML.Subset.
-?javaModel : Artifact;
+?javaModel : File+;
     elementOf JAXB.Java;
-    manifestsAs File+;
     hasRole Schema;
     //uses Annotation;
     correspondsTo ?xmlSchema.
@@ -59,14 +57,12 @@ BindingFramework : Framework;
     uses Validation;
     implements marshall;
     implements unmarshall.
-?anObjectGraph : Artifact;
+?anObjectGraph : Transient;
     elementOf JVMObject;
-    manifestsAs Transient;
     hasRole Value;
     conformsTo ?javaModel.
-?anXMLDoc : Artifact;
+?anXMLDoc : File;
     elementOf ?XML.Subset;
-    manifestsAs File;
     hasRole Database;
     conformsTo ?xmlSchema;
     correspondsTo ?anObjectGraph.
