@@ -1,4 +1,4 @@
-module java.JavaPlatform
+module javaplatform.JavaPlatform
 
 /* We cover the components top down. The largest independent technology would
 be the JDK. It comes with several tools for programmers, such as the javac compiler.
@@ -57,11 +57,9 @@ which is compiled into Java byte code, which is then interpreted using
 runtime data handled by the JVM. */
 compileJava : Java -> JavaByteCode.
 JavaC implements compileJava.
-?javaFiles : Artifact;
-    elementOf Java;
-    manifestsAs File+.
-?classFiles : Artifact;
-    elementOf JavaByteCode;
-    manifestsAs File+.
+?javaFiles : File+;
+    elementOf Java.
+?classFiles : File+;
+    elementOf JavaByteCode.
 compileJava(?javaFiles) |-> ?classFiles.
 //TODO: Cannot state eval, cannot express system state changes.
