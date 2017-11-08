@@ -1,1 +1,1 @@
-java -jar ../visualizer/visualizer.jar %1 %2 %3 %4
+java -jar ../visualizer/visual.jar %1 %2 %3 %4

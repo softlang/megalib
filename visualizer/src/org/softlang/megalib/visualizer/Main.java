@@ -32,13 +32,15 @@ public class Main {
             //Graph graph = new ModelToGraph(options).createGraph();
             //visualizer.plotGraph(graph);
             ModelToGraph mtg = new ModelToGraph(options);
-            if(!mtg.loadModel()) {
+            boolean success = mtg.loadModel();
+            if(!success) {
             	mtg.getTypeErrors().forEach(e -> System.out.println(e));
-            }
-            List<Graph> graphs = new ModelToGraph(options).createBlockGraphs();
-            graphs.forEach(visualizer::plotGraph);
+            }else {
+            	List<Graph> graphs = mtg.createBlockGraphs();
+            	graphs.forEach(visualizer::plotGraph);
 
-            System.out.println("Visualization complete.");
+            	System.out.println("Visualization complete.");
+            }
         } catch (MegaModelVisualizerException ex) {
             System.err.println(ex.getMessage());
             System.exit(1);

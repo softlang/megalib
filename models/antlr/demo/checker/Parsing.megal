@@ -1,0 +1,20 @@
+module antlr.demo.checker.Parsing
+
+import antlr.demo.checker.App
+import antlr.Parsing where {
+    [
+      megalModel / ?input,
+      MegaL / ?InputLanguage,
+      Checker / ?App,
+      megalTokenStream / ?tokenstream,
+      megalConcreteSyntaxTree / ?concreteSyntaxTree
+    ]
+}
+
+/*
+@Description: The model is received as a string and is lexed, and parsed.
+@Rationale: CST cannot be seen well in the checker's code.
+*/
+megalModel ~= "https://github.com/softlang/megalib/blob/master/checker/src/org/java/megalib/checker/services/ModelLoader.java#L111".
+megalTokenStream ~= "https://github.com/softlang/megalib/blob/master/checker/src/org/java/megalib/checker/services/ModelLoader.java#L115".
+megalConcreteSyntaxTree ~=  "https://github.com/softlang/megalib/blob/master/checker/src/org/java/megalib/checker/services/ModelLoader.java#L117".

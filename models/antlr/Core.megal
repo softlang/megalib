@@ -2,10 +2,10 @@ module antlr.Core
 
 import stringtemplate.Core
 
-/*
-@Description:
+/*  @Description:
     ANTLR is a "parser-generator". Thus, it is a framework used to generate parsers.
-@Rationale:
+    ANTLR uses stringtemplate for code generation. 
+    @Rationale:
     See https://github.com/antlr/antlr4
     Simplification as we only focus on the java runtime.
 */
@@ -15,14 +15,6 @@ ANTLR : Framework;
 	= "https://github.com/antlr/antlr4";
     uses ParserGeneration;
 	uses Java.
-
-/* 
-@Description: 
-    ANTLR essentially implements two languages, one for grammars and the Java subset 
-    produced as output of the code generation process. 
-@Rationale:
-    See https://github.com/antlr/antlr4/doc/grammars.md
-*/
 G4 : GrammarLanguage;
 	="ANTLRGITHUB::doc/grammars.md";
     ="ANTLRGITHUB::doc/lexer-rules.md";
@@ -30,14 +22,6 @@ G4 : GrammarLanguage;
 ANTLRJava : ProgrammingLanguage;
 	= "ANTLRGITHUB::tool/resources/org/antlr/v4/tool/templates/codegen/Java/Java.stg";
 	subsetOf Java.
-    //^implements ANTLR. Actually not
-    
-/* 
-@Description:
-    Actually ANTLR uses stringtemplate for code generation 
-@Rationale:
-    See provided link for javaTemplate
-*/
 javaTemplate : File;
     ~= "ANTLRGITHUB::tool/resources/org/antlr/v4/tool/templates/codegen/Java/Java.stg";
     elementOf StringTemplateLanguage;

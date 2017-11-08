@@ -1,8 +1,9 @@
 module antlr.demo.checker.ListenerForParserError
 
+import antlr.demo.checker.App
 import antlr.ListenerForParserError where {
 	[
-		checker / ?App,
+		Checker / ?App,
 		MegaL / ?InputLanguage, 
 		checkerGrammar / ?grammar,
 		checkerParserFiles / ?parserFiles, 
@@ -16,18 +17,10 @@ import antlr.ListenerForParserError where {
 
 /*
 @Description:
-An ErrorListener will be attached to the parser. When Errors are detected, the checker will quit and return an errorMessage.
+Concrete lexer and parsers are generated.
 
 @Rationale:
-See linked files to Github for better highlighting 
+Files are generated using Maven build.
 */
-checker = "https://github.com/softlang/megalib".
-
-/*
-@Description:
-    Concrete lexer and parsers are generated.
-@Rationale:
-    TODO: We need linking to a local project
-*/
-checkerLexerFiles = "https://github.com/softlang/megalib/tree/master/checker".
-checkerParserFiles = "https://github.com/softlang/megalib/tree/master/checker".
+checkerLexerFiles = "https://github.com/softlang/megalib/blob/master/checker/pom.xml#L41-L55".
+checkerParserFiles = "https://github.com/softlang/megalib/blob/master/checker/pom.xml#L41-L55".

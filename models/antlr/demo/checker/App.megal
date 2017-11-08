@@ -17,4 +17,4 @@ MEGALIB :: "https://github.com/softlang/megalib".
 MegaL : KnowledgeRepresentationLanguage;
     = "MEGALIB::wiki".
 Checker = "MEGALIB::blob/master/checker/src/org/java/megalib/checker".
-checkerAntlrJar ~= "MEGALIB::".
+checkerAntlrJar ~= "MEGALIB::blob/master/checker/checker.jar".

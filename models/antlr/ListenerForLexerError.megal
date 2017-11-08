@@ -33,9 +33,9 @@ ErrorListeners are attached to the Lexer.
 @Rationale:
 See samples
 */
-lex : ?InputLanguage # LexerLanguage -> TokenStreamLanguage # LexerLanguage. 
-?App implements lex.
-lex(?input, ?lexerObject1) |-> (?tokenstream, ?lexerObject2).
+lexWithErrorHandle : ?InputLanguage # LexerLanguage -> TokenStreamLanguage # LexerLanguage. 
+?App implements lexWithErrorHandle.
+lexWithErrorHandle(?input, ?lexerObject1) |-> (?tokenstream, ?lexerObject2).
 
 /*
 @Description:

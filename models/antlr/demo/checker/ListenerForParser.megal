@@ -1,11 +1,10 @@
 module antlr.demo.checker.ListenerForParser
 
-import antlr.demo.checker.App
 import antlr.ListenerForParser where{
 	[
 		megaLParserListener0 / ?parserListener0,
 		megaLParserObject0 / ?parserObject0,
-		megaLParserObject1 / parserObject1,
+		megaLParserObject1 / ?parserObject1,
 		megaLParserObject2 / ?parserObject2,
 		megaLParserListener2 / ?parserListener2
 	]
