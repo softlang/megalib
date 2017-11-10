@@ -29,6 +29,7 @@ public class SubstitutionTest {
     public void setUp() throws IOException {
         ml = new ModelLoader();
         ml.loadFile("testsample/SubstitutionDemo/App.megal");
+        ml.getTypeErrors().forEach(w-> System.out.println(w));
         assertEquals(0,ml.getTypeErrors().size());
     }
 
@@ -68,6 +69,7 @@ public class SubstitutionTest {
         assertTrue(ml.getTypeErrors().isEmpty());
         assertTrue(ml.getModel().getInstanceOfMap().containsKey("MyProject1"));
         WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(0, c.getWarnings().size());
     }
 
@@ -144,7 +146,7 @@ public class SubstitutionTest {
     public void testFDeclAbstract() {
         assertEquals("Function", ml.getModel().getInstanceOfMap().get("f"));
         Set<Function> decls = ml.getModel().getFunctionDeclarations().get("f");
-        assertEquals(6, decls.size());
+        assertEquals(3, decls.size());
         List<String> inputs = new ArrayList<>();
         List<String> outputs = new ArrayList<>();
         inputs.add("?OL");
@@ -154,23 +156,10 @@ public class SubstitutionTest {
     }
 
     @Test
-    public void testFDeclTechnology() {
-        assertEquals("Function", ml.getModel().getInstanceOfMap().get("f"));
-        Set<Function> decls = ml.getModel().getFunctionDeclarations().get("f");
-        assertEquals(6, decls.size());
-        List<String> inputs = new ArrayList<>();
-        List<String> outputs = new ArrayList<>();
-        outputs.add("?D");
-        inputs.add("MyOL");
-        Function f = new Function(inputs, outputs,true);
-        assertTrue(decls.contains(f));
-    }
-
-    @Test
     public void testFDecl1App() {
         assertEquals("Function", ml.getModel().getInstanceOfMap().get("f"));
         Set<Function> decls = ml.getModel().getFunctionDeclarations().get("f");
-        assertEquals(6, decls.size());
+        assertEquals(3, decls.size());
         List<String> inputs = new ArrayList<>();
         List<String> outputs = new ArrayList<>();
         inputs.add("MyOL");
@@ -183,7 +172,7 @@ public class SubstitutionTest {
     public void testFDecl2App() {
         assertEquals("Function", ml.getModel().getInstanceOfMap().get("f"));
         Set<Function> decls = ml.getModel().getFunctionDeclarations().get("f");
-        assertEquals(6, decls.size());
+        assertEquals(3, decls.size());
         List<String> inputs = new ArrayList<>();
         List<String> outputs = new ArrayList<>();
         inputs.add("MyOL");
@@ -199,7 +188,8 @@ public class SubstitutionTest {
     
     @Test
     public void testAbstractDeleteApp0FunApp() {
-    	assertEquals(3,ml.getModel().getFunctionApplications().get("f").size());
+    	Set<Function> set = ml.getModel().getFunctionApplications().get("f");
+    	assertEquals(7,set.size());
     }
     
     @Test

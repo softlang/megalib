@@ -35,15 +35,24 @@ correspondsTo < Artifact # Artifact;
     = "oxfordDict::correspond".
 consistentWith < Artifact # Artifact; 
     = "wikipedia::Consistency".
-refersTo < Artifact # Artifact;  // Experimental! 
-    = "wikipedia::Uniform_Resource_Identifier".
 represents < Artifact # Artifact; // Experimental! 
     = "researchgate::243771569_In_Search_of_a_Basic_Principle_for_Model_Driven_Engineering".
 
-
+Reference < Entity;
+    = "wikipedia::Reference_(computer_science)".
+refersTo < Artifact # Artifact;
+    = "wikipedia::Uniform_Resource_Identifier".
+decOccurs < Reference # Artifact;
+    = "wikipedia::Declaration_(computer_programming)".
+refOccurs < Reference # Artifact;
+    = "wikipedia::Declaration_(computer_programming)".
+encodes < Fragment # Reference;
+    = "https://www.w3schools.com/tags/ref_urlencode.asp".
 
 /* A mapping from an ordered list of input languages to an ordered list of output languages. */
 Function < Entity;
+    = "wikipedia::Function_(mathematics)".
+defines < Artifact # Function;
     = "wikipedia::Function_(mathematics)".
     
 /* TODO: Discussion needed on experimenting with Data flow */

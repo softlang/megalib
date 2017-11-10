@@ -7,10 +7,9 @@ import Abstract where {
     ?PLProject / ?Project,
     ?myplprogram / ?program,
     ?myolobject / ?object,
-    ?mydata / ?data,
-    MyOL / ?OL ]
+    ?mydata / ?data
+    ]
 }
 /*@Description: */
 MySerializer = "http://www.softlang.org/";
     implements ?D.
-MyOL = "http://www.softlang.org/".

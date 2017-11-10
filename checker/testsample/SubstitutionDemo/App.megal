@@ -5,6 +5,7 @@ import Technology where {
      myProgram1 / ?myplprogram,
      myObject11 / ?myolobject,
      myObject12 / ?myolobject,
+     MyOL / ?OL,
      MyD1 / ?D,
      MyDS1 / ?DS,
      mydata11 / ?mydata ];
@@ -13,12 +14,14 @@ import Technology where {
      myProgram2 / ?myplprogram,
      myObject21 / ?myolobject,
      myObject22 / ?myolobject,
+     MyOL / ?OL,
      MyD2 / ?D,
      MyDS2 / ?DS,
      mydata21 / ?mydata,
      mydata22 / ?mydata ]
 }
 /**/
+MyOL = "http://www.softlang.org/".
 MyProject1 = "http://softlang.wikidot.com/".
 myObject11 ~= "http://softlang.wikidot.com/".
 myObject12 ~= "http://softlang.wikidot.com/".

@@ -190,7 +190,6 @@ public class CheckTest {
         ml.loadString(input);
         WellformednessCheck c = new WellformednessCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
-        c.getWarnings().forEach(w -> System.out.println(w));
         assertEquals(1, c.getWarnings().size());
         assertEquals("Cannot resolve link to ?L: http://www.nowebsitehere.de", c.getWarnings().get(0));
     }

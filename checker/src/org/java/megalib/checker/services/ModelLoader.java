@@ -88,7 +88,10 @@ public class ModelLoader {
         try {
             resolveImports(data, abspath);
             System.out.println("Loading:");
-            todos.forEach(t -> System.out.println(" " + t));
+            todos.forEach(t -> {
+            	if(!t.startsWith("common")) 
+            		System.out.println(" " + t);
+            });
             System.out.println();
             while (!todos.isEmpty()) {
                 String p = todos.poll();

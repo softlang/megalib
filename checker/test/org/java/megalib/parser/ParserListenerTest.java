@@ -26,8 +26,8 @@ public class ParserListenerTest {
     public void preludeIsParsed() {
         ModelLoader ml = new ModelLoader();
         assertEquals(0, ml.getTypeErrors().size());
-        assertEquals(60, ml.getModel().getBlocks().size());
-        ml.getModel().getBlocks().forEach(b -> assertTrue(b.getText().startsWith("/*") && b.getText().endsWith("*/")));
+        assertEquals(37, ml.getModel().getBlocks().size());
+        ml.getModel().getBlocks().forEach(b -> assertTrue(b.getText().startsWith("/*") && b.getText().endsWith("*/"))); //TODO
     }
 
     @Test

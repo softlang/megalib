@@ -1,5 +1,6 @@
 package org.java.megalib.checker.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -95,40 +96,62 @@ public class Substitution {
 			model.getFunctionDeclarations().entrySet().stream().forEach(entry-> 
 				initMap.put(entry.getKey(), entry.getValue().stream()
     					        .filter(f -> {
-    					        	return f.getInputs().removeAll(substByGroup.keySet()) || f.getOutputs().removeAll(substByGroup.keySet());
+    					        	return new ArrayList<>(f.getInputs()).removeAll(substByGroup.keySet()) || new ArrayList<>(f.getOutputs()).removeAll(substByGroup.keySet());
     					        })
     					        .collect(Collectors.toSet())));
     	}else {
     		model.getFunctionApplications().entrySet().stream().forEach(entry-> 
 				initMap.put(entry.getKey(), entry.getValue().stream()
-					        .filter(f -> f.getInputs().removeAll(substByGroup.keySet()) 
-					        			|| f.getOutputs().removeAll(substByGroup.keySet()))
+					        .filter(f -> {
+					        	return new ArrayList<>(f.getInputs()).removeAll(substByGroup.keySet()) || new ArrayList<>(f.getOutputs()).removeAll(substByGroup.keySet());
+					        })
 					        .collect(Collectors.toSet())));
     	}
 		
     	for(String name : initMap.keySet()) {
     		Set<Function> resultFun = new HashSet<>();
     		for(Function f : initMap.get(name)) {
-    			Set<Function> tempFun = new HashSet<>();
-    			tempFun.add(f);
+    			Set<Function> ftempFun = new HashSet<>();
+    			ftempFun.add(f);
     			for(int i=0; i<f.getInputs().size();i++) {
     				String subst = f.getInputs().get(i);
     				if(substByGroup.containsKey(subst)) {
     					Set<Function> newTempFun = new HashSet<>();
     					for(String by : substByGroup.get(subst)) {
-    						List<String> tempInputs = f.getInputs();
-    						tempInputs.set(i, by);
-    						Function ftemp = new Function(tempInputs, f.getOutputs(), isDec);
-    						newTempFun.add(ftemp);
+    						for(Function ftemp : ftempFun) {
+    							List<String> tempInputs = new ArrayList<>(ftemp.getInputs());
+    							tempInputs.set(i, by);
+    							Function newftemp = new Function(tempInputs, ftemp.getOutputs(), isDec);
+    							newTempFun.add(newftemp);
+    						}
     					}
-    					tempFun.clear();
-    					tempFun.addAll(newTempFun);
+    					ftempFun.clear();
+    					ftempFun.addAll(newTempFun);
     				}
     			}
-    			for(String in : f.getInputs()) {
-    				
+    			for(int i=0; i<f.getOutputs().size();i++) {
+    				String subst = f.getOutputs().get(i);
+    				if(substByGroup.containsKey(subst)) {
+    					Set<Function> newTempFun = new HashSet<>();
+    					for(String by : substByGroup.get(subst)) {
+    						for(Function ftemp : ftempFun) {
+    							List<String> tempOutputs = new ArrayList<>(ftemp.getOutputs());
+    							tempOutputs.set(i, by);
+    							Function newftemp = new Function(ftemp.getInputs(), tempOutputs, isDec);
+    							newTempFun.add(newftemp);
+    						}
+    					}
+    					ftempFun.clear();
+    					ftempFun.addAll(newTempFun);
+    				}
     			}
+    			resultFun.addAll(ftempFun);
     		}
+    		resultMap.put(name, resultFun);
+    		if(isDec)
+    			resultMap.forEach((fname,set)-> set.forEach(f -> model.addFunctionDeclaration(fname, f.getInputs(), f.getOutputs(), block)));
+    		else
+    			resultMap.forEach((fname,set)-> set.forEach(f -> model.addFunctionApplication(fname, f.getInputs(), f.getOutputs(), block)));
     	}
     }
 

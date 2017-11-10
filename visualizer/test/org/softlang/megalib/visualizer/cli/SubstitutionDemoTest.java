@@ -92,9 +92,9 @@ public class SubstitutionDemoTest {
 		assertEquals("Technology0",g1.getName());
 		
 		Map<String, Node> nmap = g1.getNodes();
-		assertEquals(16,nmap.size());
+		assertEquals(15,nmap.size());
 		Set<Edge> edges = g1.getEdges();
-		assertEquals(22,edges.size());
+		assertEquals(21,edges.size());
 	}
 
 }
