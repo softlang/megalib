@@ -6,7 +6,8 @@ import Abstract where {
     MyPL / ?PL, //?PL cannot be substituted more than once in this case!
     ?PLProject / ?Project,
     ?myplprogram / ?program,
-    ?myolobject / ?object, 
+    ?myolobject / ?object,
+    ?mydata / ?data,
     MyOL / ?OL ]
 }
 /*@Description: */

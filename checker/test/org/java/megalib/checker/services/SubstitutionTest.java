@@ -5,7 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -188,6 +190,16 @@ public class SubstitutionTest {
         outputs.add("MyD2");
         Function f = new Function(inputs, outputs,true);
         assertTrue(decls.contains(f));
+    }
+    
+    @Test
+    public void testAbstractDeleteApp0Correspondences() {
+    	assertFalse(ml.getModel().getRelationships().get("correspondsTo").contains(new Relation("mydata11","?object")));
+    }
+    
+    @Test
+    public void testAbstractDeleteApp0FunApp() {
+    	assertEquals(3,ml.getModel().getFunctionApplications().get("f").size());
     }
     
     @Test

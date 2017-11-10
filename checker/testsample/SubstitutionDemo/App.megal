@@ -7,7 +7,7 @@ import Technology where {
      myObject12 / ?myolobject,
      MyD1 / ?D,
      MyDS1 / ?DS,
-     mydata11 / ?data ];
+     mydata11 / ?mydata ];
      
     [MyProject2 / ?PLProject,
      myProgram2 / ?myplprogram,
@@ -15,8 +15,8 @@ import Technology where {
      myObject22 / ?myolobject,
      MyD2 / ?D,
      MyDS2 / ?DS,
-     mydata21 / ?data,
-     mydata22 / ?data ]
+     mydata21 / ?mydata,
+     mydata22 / ?mydata ]
 }
 /**/
 MyProject1 = "http://softlang.wikidot.com/".

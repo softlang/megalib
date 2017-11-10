@@ -1,11 +1,10 @@
 package org.java.megalib.checker.services;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.java.megalib.models.Block;
@@ -18,13 +17,11 @@ public class Substitution {
     private MegaModel model;
     private Block block;
     private Map<String,Set<String>> substByGroup;
-    private Map<String,Set<Function>> newFunctions;
 
     public Substitution(MegaModel model, Map<String,Set<String>> substByGroup, Block block){
         this.model = model;
         this.block = block;
         this.substByGroup = substByGroup;
-        newFunctions = new ConcurrentHashMap<>();
     }
 
     /**
@@ -38,93 +35,101 @@ public class Substitution {
      * @return
      */
     public MegaModel substituteGroup() {
-        substByGroup.forEach((key, set) -> set.forEach(v -> {
+        copyReplaceInstances();
+        copyReplaceRelNetwork();
+        copyReplaceFunNetwork(true);
+        copyReplaceFunNetwork(false);
+        return model;
+    }
+
+	private void copyReplaceInstances() {
+		substByGroup.forEach((key, set) -> set.forEach(v -> {
             if(!model.getInstanceOfMap().containsKey(v)){
                 model.addInstanceOf(v, model.getInstanceOfMap().get(key),block);
             }
         }));
-        substByGroup.keySet().forEach(k -> model.getRelationships().keySet()
-                                                .forEach(rname -> substituteEntityIn(k, rname)));
+	}
 
-        model.getFunctionDeclarations().entrySet().parallelStream()
-             .forEach(entry -> entry.getValue().forEach(f -> substituteFunction(entry.getKey(), f)));
-        newFunctions.entrySet().stream()
-                    .forEach(e -> e.getValue()
-                                   .forEach(f -> {
-                                       model.addFunctionDeclaration(e.getKey(), f.getInputs(), f.getOutputs(),block);
-                                   }));
-        newFunctions.clear();
-        model.getFunctionApplications().entrySet().parallelStream()
-             .forEach(entry -> entry.getValue().forEach(f -> substituteFunction(entry.getKey(), f)));
-        newFunctions.entrySet().stream()
-                    .forEach(e -> e.getValue().forEach(f -> {
-                        model.addFunctionApplication(e.getKey(), f.getInputs(),f.getOutputs(),block);
-                    }));
-        return model;
-    }
-
-    private void substituteEntityIn(String substituted, String rname) {
-        Set<Relation> sstream = model.getRelationships().get(rname).parallelStream()
-                                     .filter(r -> r.getSubject().equals(substituted)).collect(Collectors.toSet());
-        Set<Relation> ostream = model.getRelationships().get(rname).parallelStream()
-                                     .filter(r -> r.getObject().equals(substituted)).collect(Collectors.toSet());
-        for(Relation r : sstream){
-            if(substByGroup.containsKey(r.getObject())){
-                for(String substingSubj : substByGroup.get(substituted)){
-                    for(String substingObj : substByGroup.get(r.getObject())){
-                        model.addRelationInstance(rname, substingSubj, substingObj,block);
-                    }
-                }
-            }else{
-                for(String substingSubj : substByGroup.get(substituted)){
-                    model.addRelationInstance(rname, substingSubj, r.getObject(),block);
-                }
-            }
-        }
-        for(Relation r : ostream){
-            if(substByGroup.containsKey(r.getSubject())){
-                for(String substingObj : substByGroup.get(substituted)){
-                    for(String substingSubj : substByGroup.get(r.getSubject())){
-                        model.addRelationInstance(rname, substingSubj, substingObj,block);
-                    }
-                }
-            }else{
-                for(String substingObj : substByGroup.get(substituted)){
-                    model.addRelationInstance(rname, r.getSubject(), substingObj,block);
-                }
-            }
-        }
-    }
-
-    private void substituteFunction(String name, Function pf) {
-        Set<String> substituted = new HashSet<>();
-        substituted.addAll(pf.getInputs().parallelStream().filter(l -> substByGroup.containsKey(l))
-                             .collect(Collectors.toSet()));
-        substituted.addAll(pf.getOutputs().parallelStream().filter(l -> substByGroup.containsKey(l))
-                             .collect(Collectors.toSet()));
-        List<Function> fset = new ArrayList<>();
-        List<Function> newset = new ArrayList<>();
-        fset.add(pf);
-        for(String s : substituted){
-
-            for(Function f : fset){
-                for(String substing : substByGroup.get(s)){
-
-                    List<String> inputs = f.getInputs().parallelStream().map(i -> i.equals(s) ? substing : i)
-                                           .collect(Collectors.toList());
-                    List<String> outputs = f.getOutputs().parallelStream().map(o -> o.equals(s) ? substing : o)
-                                            .collect(Collectors.toList());
-                    Function fnew = new Function(inputs, outputs,f.isDecl);
-                    newset.add(fnew);
-                }
-            }
-            fset.clear();
-            fset.addAll(newset);
-        }
-        if(newFunctions.containsKey(name)){
-            fset.addAll(newFunctions.get(name));
-        }
-        newFunctions.put(name, fset.stream().collect(Collectors.toSet()));
+    private void copyReplaceRelNetwork() {
+    	HashMap<String,Set<Relation>> resultMap = new HashMap<>();
+		for(String name : model.getRelationships().keySet()) {
+			Set<Relation> resultRelations = new HashSet<>();
+			for(Relation r : model.getRelationships().get(name)) {
+				if(substByGroup.containsKey(r.getSubject())) {
+					Set<Relation> tempresult = new HashSet<>();
+					for(String by : substByGroup.get(r.getSubject())) {
+						tempresult.add(new Relation(by, r.getObject()));
+					}
+					
+					if(substByGroup.containsKey(r.getObject())) {
+						//crossproduct
+						for(Relation tr : tempresult) {
+							for(String by : substByGroup.get(r.getObject())) {
+								resultRelations.add(new Relation(tr.getSubject(), by));
+							}
+						}
+					}else {
+						resultRelations.addAll(tempresult);
+					}
+				}
+				if(!substByGroup.containsKey(r.getSubject())&&substByGroup.containsKey(r.getObject())) {
+					for(String by : substByGroup.get(r.getObject())) {
+						resultRelations.add(new Relation(r.getSubject(), by));
+					}
+				}
+			}
+			resultMap.put(name, resultRelations);
+		}
+		for(String name : resultMap.keySet()) {
+			for(Relation r : resultMap.get(name)) {
+				model.addRelationInstance(name, r.getSubject(), r.getObject(), block);
+			}
+		}
+	}
+    
+    private void copyReplaceFunNetwork(boolean isDec) {
+    	HashMap<String,Set<Function>> resultMap = new HashMap<>();
+    	
+    	Map<String, Set<Function>> initMap = new HashMap<>();
+		if(isDec) {
+			model.getFunctionDeclarations().entrySet().stream().forEach(entry-> 
+				initMap.put(entry.getKey(), entry.getValue().stream()
+    					        .filter(f -> {
+    					        	return f.getInputs().removeAll(substByGroup.keySet()) || f.getOutputs().removeAll(substByGroup.keySet());
+    					        })
+    					        .collect(Collectors.toSet())));
+    	}else {
+    		model.getFunctionApplications().entrySet().stream().forEach(entry-> 
+				initMap.put(entry.getKey(), entry.getValue().stream()
+					        .filter(f -> f.getInputs().removeAll(substByGroup.keySet()) 
+					        			|| f.getOutputs().removeAll(substByGroup.keySet()))
+					        .collect(Collectors.toSet())));
+    	}
+		
+    	for(String name : initMap.keySet()) {
+    		Set<Function> resultFun = new HashSet<>();
+    		for(Function f : initMap.get(name)) {
+    			Set<Function> tempFun = new HashSet<>();
+    			tempFun.add(f);
+    			for(int i=0; i<f.getInputs().size();i++) {
+    				String subst = f.getInputs().get(i);
+    				if(substByGroup.containsKey(subst)) {
+    					Set<Function> newTempFun = new HashSet<>();
+    					for(String by : substByGroup.get(subst)) {
+    						List<String> tempInputs = f.getInputs();
+    						tempInputs.set(i, by);
+    						Function ftemp = new Function(tempInputs, f.getOutputs(), isDec);
+    						newTempFun.add(ftemp);
+    					}
+    					tempFun.clear();
+    					tempFun.addAll(newTempFun);
+    				}
+    			}
+    			for(String in : f.getInputs()) {
+    				
+    			}
+    		}
+    	}
     }
 
 }
