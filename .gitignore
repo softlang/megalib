@@ -10,3 +10,4 @@ MegaMetrics/
 bin/
 target/
 visualizer/output/
+output/
