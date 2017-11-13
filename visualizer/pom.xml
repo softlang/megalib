@@ -34,6 +34,12 @@
 			<artifactId>ST4</artifactId>
 			<version>4.0.8</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/guru.nidi/graphviz-java -->
+		<dependency>
+    		<groupId>guru.nidi</groupId>
+    		<artifactId>graphviz-java</artifactId>
+    		<version>0.2.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>

@@ -8,9 +8,15 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
+import org.apache.commons.io.FileUtils;
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.transformation.Transformer;
 import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
+
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.MutableGraph;
+import guru.nidi.graphviz.parse.Parser;
 
 /**
  *
@@ -26,10 +32,16 @@ public class Visualizer {
 
     public void plotGraph(Graph graph) {
         try {
-        	File o = new File("../visualizer/output");
+        	File o = new File("../output/png/");
         	o.mkdir();
-        	File f = new File("../visualizer/output/"+graph.getName()+".dot");
+        	o = new File("../output/dot/");
+        	o.mkdir();
+        	String path = "../output/dot/"+graph.getName()+".dot";
+        	File f = new File(path);
             Files.write(f.toPath(),transformer.transform(graph).getBytes(StandardCharsets.UTF_8));
+            
+            MutableGraph g = Parser.read(FileUtils.openInputStream(f));
+            Graphviz.fromGraph(g).render(Format.PNG).toFile(new File("../output/png/"+graph.getName()+".png"));
         } catch (IOException ex) {
         	ex.printStackTrace();
         }
