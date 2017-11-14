@@ -1,5 +1,6 @@
 package org.softlang.megalib.visualizer.models.transformation;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 import org.softlang.megalib.visualizer.VisualizerOptions;
 
 public class TransformerRegistry {
-    private static final Map<String,Function<VisualizerOptions,? extends Transformer>> TRANSFORMERS = new TreeMap<>();
+    private static final Map<String,Function<VisualizerOptions,? extends Transformer>> TRANSFORMERS = new HashMap<>();
 
     public static void registerTransformer(String name,
                                            Function<VisualizerOptions,? extends Transformer> creatingFunc) {

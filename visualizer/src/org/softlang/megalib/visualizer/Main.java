@@ -12,10 +12,6 @@ import org.softlang.megalib.visualizer.models.ModelToGraph;
 import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
 import org.softlang.megalib.visualizer.transformation.dot.DOTTransformer;
 
-/**
- *
- * @author Dmitri Nikonov <dnikonov at uni-koblenz.de>
- */
 public class Main {
 
     public static void main(String[] args) {

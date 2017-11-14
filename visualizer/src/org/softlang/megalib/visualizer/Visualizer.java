@@ -18,30 +18,26 @@ import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.parse.Parser;
 
-/**
- *
- * @author Dmitri Nikonov <dnikonov at uni-koblenz.de>
- */
 public class Visualizer {
 
     private Transformer transformer;
+	private String fileEnding;
 
     public Visualizer(VisualizerOptions options) {
+    	fileEnding = options.getTransformationType();
         transformer = TransformerRegistry.getInstance(options);
     }
 
     public void plotGraph(Graph graph) {
         try {
-        	File o = new File("../output/png/");
-        	o.mkdir();
-        	o = new File("../output/dot/");
-        	o.mkdir();
-        	String path = "../output/dot/"+graph.getName()+".dot";
+        	String path = "../output/"+graph.getName().replaceAll("\\.", "/")+"."+fileEnding;
         	File f = new File(path);
+        	f.getParentFile().mkdirs();
             Files.write(f.toPath(),transformer.transform(graph).getBytes(StandardCharsets.UTF_8));
-            
-            MutableGraph g = Parser.read(FileUtils.openInputStream(f));
-            Graphviz.fromGraph(g).render(Format.PNG).toFile(new File("../output/png/"+graph.getName()+".png"));
+            if(fileEnding.equals("dot")) {
+            	MutableGraph g = Parser.read(FileUtils.openInputStream(f));
+                Graphviz.fromGraph(g).render(Format.PNG).toFile(new File("../output/"+graph.getName().replaceAll("\\.", "/")+".png"));
+            }
         } catch (IOException ex) {
         	ex.printStackTrace();
         }

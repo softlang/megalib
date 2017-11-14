@@ -17,10 +17,6 @@ import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
 import org.softlang.megalib.visualizer.VisualizerOptions;
 
-/**
- *
- * @author Dmitri Nikonov <dnikonov at uni-koblenz.de>
- */
 public class ModelToGraph {
 
     private MegaModel model;
@@ -43,7 +39,7 @@ public class ModelToGraph {
     }
 
     public Graph createGraph() {
-        Graph graph = new Graph(options.getModelName(),"The complete Megamodel for "+options.getModelName());
+        Graph graph = new Graph(options.getModelName()+"Complete","The complete Megamodel for "+options.getModelName());
         model.getInstanceOfMap().entrySet().stream().filter(entry-> !entry.getValue().equals("Link"))
 		 .map(entry -> createNode(entry.getKey(),entry.getValue(),model))
 		 .forEach(graph::add);
