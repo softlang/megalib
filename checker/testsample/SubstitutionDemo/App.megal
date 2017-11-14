@@ -1,6 +1,6 @@
-module App
+module SubstitutionDemo.App
 
-import Technology where {
+import SubstitutionDemo.Technology where {
     [MyProject1 / ?PLProject,
      myProgram1 / ?myplprogram,
      myObject11 / ?myolobject,

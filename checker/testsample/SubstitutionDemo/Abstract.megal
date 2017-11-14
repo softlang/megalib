@@ -1,4 +1,4 @@
-module Abstract
+module SubstitutionDemo.Abstract
 
 /* @Description: Some Serializer */
 ?PL : ProgrammingLanguage;

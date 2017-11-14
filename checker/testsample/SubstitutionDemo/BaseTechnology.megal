@@ -1,4 +1,4 @@
-module BaseTechnology
+module SubstitutionDemo.BaseTechnology
 
 /**/
 MyPL : ProgrammingLanguage;

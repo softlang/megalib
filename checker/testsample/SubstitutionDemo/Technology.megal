@@ -1,7 +1,7 @@
-module Technology
+module SubstitutionDemo.Technology
 
-import BaseTechnology
-import Abstract where {
+import SubstitutionDemo.BaseTechnology
+import SubstitutionDemo.Abstract where {
     [ MySerializer / ?Serializer,
     MyPL / ?PL, //?PL cannot be substituted more than once in this case!
     ?PLProject / ?Project,
@@ -10,6 +10,7 @@ import Abstract where {
     ?mydata / ?data
     ]
 }
+
 /*@Description: */
 MySerializer = "http://www.softlang.org/";
     implements ?D.
