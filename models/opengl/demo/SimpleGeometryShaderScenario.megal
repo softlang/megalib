@@ -1,4 +1,4 @@
-module opengl.scenarios.SimpleGeometryShaderScenario
+module opengl.demo.SimpleGeometryShaderScenario
 
 //import opengl.scenarios.Simple2DTriangleScenario where {
 //	[ 	  
@@ -137,7 +137,7 @@ vaaColors ~= "../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#lines=1
 //fragmentShader ~= "../code/src/shaders/Example/ex02_simpleGeometryShader.frag#line=9".
 
 /* The shader code */
-shaderFiles : File+;;
+shaderFiles : File+;
 	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.vert";
 	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.geom";
 	~= "../code/src/shaders/Example/ex02_simpleGeometryShader.frag";

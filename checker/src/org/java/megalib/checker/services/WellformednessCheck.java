@@ -202,13 +202,36 @@ public class WellformednessCheck {
             iovalues.addAll(p.getOutputs());
         }
         tset.removeAll(iovalues);
+        
         if(!tset.isEmpty()){
-            warnings.add("The following transients are neither input nor output of a function application: "
-                         + tset.toString());
+        	HashSet<String> warningSet = new HashSet<>(tset);
+        	
+        	for(String t : tset) {
+        		if(!transitivePartOfIO(t,iovalues)) {
+        			warningSet.add(t);
+        		}
+        	}
+        	if(!warningSet.isEmpty()) {
+        		warnings.add("The following transients are neither input nor output of a function application: "
+                         + warningSet.toString());
+        	}
         }
     }
 
-    private void cyclicSubtypingChecks() {
+    private boolean transitivePartOfIO(String t, Set<String> iovalues) {
+		while(!iovalues.contains(t)) {
+			final String temp = new String(t);
+			Optional<String> parent = model.getRelationships().get("partOf").parallelStream().filter(r -> r.getSubject().equals(temp)).findFirst().map(r -> r.getObject());
+			if(parent.isPresent()) {
+				t = parent.get();
+			}else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void cyclicSubtypingChecks() {
         Map<String,String> map = new HashMap<>();
         map.putAll(model.getSubtypesMap());
         while(true){

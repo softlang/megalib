@@ -4,16 +4,6 @@ module opengl.Platform
 glwiki :: "https://www.khronos.org/opengl/wiki".
 glspec :: "https://www.khronos.org/registry/OpenGL/specs/gl".
 
-/* 
-@Description: The driver written in some language
-
-@Rationale: See provided links
-*/
-GPU : Hardware;
-	= "wikipedia::Graphics_processing_unit".
-?DriversLanguage : MachineLanguage; 
-	= "wikipedia::Device_driver";
-	encodedAs Binary.
 
 /* 
 @Description:
@@ -23,16 +13,20 @@ GPU : Hardware;
     See https://www.opengl.org/
 	or https://en.wikipedia.org/wiki/OpenGL
 */
-OpenGL : File+; //TODO Framework/API
+openGL : File+; //TODO Framework/API
 	~= "https://www.opengl.org/documentation/current_version/";
 	= "wikipedia::OpenGL";
+    elementOf HTML5;
     hasRole Specification.
+?DriversLanguage : MachineLanguage; 
+	= "wikipedia::Device_driver";
+	encodedAs Binary.
 ?OpenGLDriver : API;
 	= "glwiki::Getting_Started#Downloading_OpenGL";
 	= "wikipedia::#Video_card#Graphic_drivers";
-	uses ?DriverLanguage;
+	uses ?DriversLanguage;
 	hasRole DeviceDriver;
-	compliesTo OpenGL.	
+	compliesTo openGL.	
 
 /* 
 @Description:
@@ -82,8 +76,8 @@ GLSL : ShadingLanguage; //TODO: Component?
 ?GLSLCompiler : Compiler;
 	= "https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/";
 	= "wikipedia::OpenGL_Shading_Language#Compilation_and_execution";
-	partOf ?GraphicsDriver;
-	uses ?DriverLanguage;
+	partOf ?OpenGLDriver;
+	uses ?DriversLanguage;
 	implements GLSL.
 	
 	

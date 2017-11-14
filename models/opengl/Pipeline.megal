@@ -141,7 +141,7 @@ glDrawElements : ?StorageLanguage # ?StorageLanguage -> ?TextureStorageLanguage.
 glDrawElements(?vertexArrayObject, ?buffer) |-> ?framebuffer.
 glDrawElements ^composedOf glPipeline.
 
-?GraphicsDriver implements glDrawElements.
+?OpenGLDriver implements glDrawElements.
 
 
 /* 
@@ -155,7 +155,7 @@ glDrawArrays : ?StorageLanguage -> ?TextureStorageLanguage.
 glDrawArrays(?vertexArrayObject) |-> ?framebuffer.
 glDrawArrays ^composedOf glPipeline.
 
-?GraphicsDriver implements glDrawArrays.
+?OpenGLDriver implements glDrawArrays.
 
 
 //

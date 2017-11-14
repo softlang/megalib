@@ -337,6 +337,8 @@ SystemState : Role; //an artifact may represent the system state.
 	= "wikipedia::State_(computer_science)".
 DriverProgram : Role;
 	= "wikipedia::Scala_(programming_language)". //TODO: Better link
+DeviceDriver : Role;
+    = "wikipedia::Device_driver".
 DataStream : Role;
 	= "wikipedia::Data_stream".
 Worker : Role;

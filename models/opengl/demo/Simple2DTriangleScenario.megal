@@ -1,4 +1,4 @@
-module opengl.scenarios.Simple2DTriangleScenario
+module opengl.demo.Simple2DTriangleScenario
 
 import opengl.Platform where {
 	[ 
@@ -43,6 +43,7 @@ import opengl.PipelinePixelProcessing where {
 	
 /* An application using OpenGL. */
 OpenGLApp : Application;
+    = "../code/src/executables/Ex01_SimpleTriangle/main.cpp";
 	uses C++;
     reuses GLEW.
 
