@@ -5,9 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -196,7 +194,7 @@ public class SubstitutionTest {
 	public void substitutionBlockTest() {
 		Object[] blocks = ml.getModel().getBlocks().parallelStream().filter(b -> !b.getModule().startsWith("common.")).toArray();
 		Block b = (Block) blocks[5];
-		assertEquals("Technology",b.getModule());
+		assertEquals("SubstitutionDemo.Technology",b.getModule());
 		assertEquals(0,b.getId());
 	}
 

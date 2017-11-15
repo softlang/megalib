@@ -221,7 +221,11 @@ public class WellformednessCheck {
     private boolean transitivePartOfIO(String t, Set<String> iovalues) {
 		while(!iovalues.contains(t)) {
 			final String temp = new String(t);
-			Optional<String> parent = model.getRelationships().get("partOf").parallelStream().filter(r -> r.getSubject().equals(temp)).findFirst().map(r -> r.getObject());
+			Optional<String> parent = Optional.ofNullable(model.getRelationships().get("partOf"))
+											  .flatMap(set -> set.parallelStream()
+													             .filter(r -> r.getSubject().equals(temp))
+													             .findFirst())
+											  .map(r -> r.getObject());
 			if(parent.isPresent()) {
 				t = parent.get();
 			}else {

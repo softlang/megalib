@@ -40,6 +40,8 @@ represents < Artifact # Artifact; // Experimental!
 
 Reference < Entity;
     = "wikipedia::Reference_(computer_science)".
+hasReference < Artifact # Reference;
+    = "wikipedia::Reference_(computer_science)".
 refersTo < Artifact # Artifact;
     = "wikipedia::Uniform_Resource_Identifier".
 decOccurs < Reference # Artifact;

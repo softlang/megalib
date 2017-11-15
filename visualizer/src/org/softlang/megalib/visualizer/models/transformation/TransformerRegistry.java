@@ -3,8 +3,7 @@ package org.softlang.megalib.visualizer.models.transformation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -19,12 +18,9 @@ public class TransformerRegistry {
     }
 
     public static Transformer getInstance(VisualizerOptions options) {
-        return TRANSFORMERS.entrySet().stream()
-        				   .filter(e -> e.getKey().equals(options.getTransformationType()))
-                           .map(Entry::getValue)
-                           .findFirst()
-                           .orElseThrow(IllegalStateException::new)
-                           .apply(options);
+        return Optional.ofNullable(TRANSFORMERS.get(options.getTransformationType()))
+                .map(t -> t.apply(options))
+                .orElseThrow(() -> new IllegalArgumentException());
     }
 
     public static List<String> getRegisteredTransformerNames() {
