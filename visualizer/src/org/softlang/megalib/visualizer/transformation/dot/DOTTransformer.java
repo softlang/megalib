@@ -6,6 +6,7 @@ package org.softlang.megalib.visualizer.transformation.dot;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,13 +63,13 @@ public class DOTTransformer extends Transformer {
         template.add("nodes", nodes);
         template.add("edges", g.getEdges());
         String text = g.getText();
+        text = text.replace("/*", "");
+    	text = text.replaceAll("\\r", "");
+    	text = text.replaceAll("\\n", "\\\\n");
         text = text.replaceAll("\"", "'");
-        text = text.replaceAll("@Description:", "");
-        int to = text.indexOf("@Rationale");
-        if(to!=-1){
-        	text = text.substring(0, to-1);
-        }
-        template.add("text", text.trim());
+        text = text.replace("@Description:", "");
+        text = Pattern.compile("@Rationale(.*?)\\*/", Pattern.DOTALL).matcher(text).replaceAll("").trim();
+        template.add("text", text);
 
         return template.render();
     }

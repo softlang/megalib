@@ -20,7 +20,11 @@ import SubstitutionDemo.Technology where {
      mydata21 / ?mydata,
      mydata22 / ?mydata ]
 }
-/**/
+/*
+@Description: All artifacts in the
+final demo application.
+@Rationale: We use this block here to test
+multiline comments. */
 MyOL = "http://www.softlang.org/".
 MyProject1 = "http://softlang.wikidot.com/".
 myObject11 ~= "http://softlang.wikidot.com/".

@@ -95,7 +95,7 @@ public class SubstitutionDotVisualizerTest {
 	}
 	
 	@Test
-	public void testGraph6() {
+	public void testGraph5() {
 		Graph g1 = graphs.get(5);
 		assertEquals("SubstitutionDemo.Technology0",g1.getName());
 		
@@ -103,6 +103,12 @@ public class SubstitutionDotVisualizerTest {
 		assertEquals(15,nmap.size());
 		Set<Edge> edges = g1.getEdges();
 		assertEquals(21,edges.size());
+	}
+	
+	@Test
+	public void testGraph9() {
+		Graph g = graphs.get(9);
+		assertEquals("SubstitutionDemo.App2",g.getName());
 	}
 
 }
