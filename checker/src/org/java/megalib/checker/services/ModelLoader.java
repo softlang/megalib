@@ -87,12 +87,11 @@ public class ModelLoader {
     private boolean loadCompleteModelFrom(String data, String abspath) {
         try {
             resolveImports(data, abspath);
-            System.out.println("Loading:");
-            todos.forEach(t -> {
-            	if(!t.startsWith("common")) 
-            		System.out.println(" " + t);
-            });
-            System.out.println();
+            if(!abspath.contains("common")) {
+            	System.out.println("Loading:");
+            	todos.forEach(t -> System.out.println(" "+t));
+            	System.out.println();
+            }
             while (!todos.isEmpty()) {
                 String p = todos.poll();
                 p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
