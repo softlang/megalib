@@ -1,7 +1,10 @@
 module antlr.demo.checker.CodeGeneration
 
 import antlr.CodeGeneration where {
-    [  megaLGrammar / ?grammar,
+    [  MegaL / ?InputLanguage,
+       Checker / ?App,
+       checkerAntlrJar / ?antlrJar,
+       megaLGrammar / ?grammar,
        megaLLexerFiles / ?lexerFiles,
        megaLParserFiles / ?parserFiles
     ]
