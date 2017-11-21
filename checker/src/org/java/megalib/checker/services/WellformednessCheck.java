@@ -48,7 +48,7 @@ public class WellformednessCheck {
         cyclicRelationChecks("conformsTo");
         model.getFunctionDeclarations().keySet().forEach(f -> checkFunction(f));
         if(!nocon){
-            checkLinks();
+        	checkNonPreludeLinks();
         }
     }
 
@@ -300,18 +300,29 @@ public class WellformednessCheck {
         }
     }
 
-    private void checkLinks() {
+    private void checkNonPreludeLinks() {
         Set<Relation> links = model.getRelationships().get("=");
         if(model.getRelationships().containsKey("~=")){
             links.addAll(model.getRelationships().get("~="));
         }
         links.parallelStream().forEach(r -> {
-        	if(!Linker.isResolvable(r.getObject(), model)){
+        	if(!model.getSubtypesMap().containsKey(r.getSubject())
+        			&& !model.getRelationshipDeclarationMap().containsKey(r.getSubject())
+        			&& !r.getModule().startsWith("common")
+        			&& !Linker.isResolvable(r.getObject(), model)){
             	warnings.add("Cannot resolve link to "+r.getSubject()+": "+r.getObject());
             }
         });
     }
 
+    void checkAllLinks() {
+    	 Set<Relation> links = model.getRelationships().get("=");
+    	 links.parallelStream().forEach(r -> {
+         	if(!Linker.isResolvable(r.getObject(), model)){
+             	warnings.add("Cannot resolve link to "+r.getSubject()+": "+r.getObject());
+             }
+         });
+    }
 
 
     public List<String> getWarnings() {

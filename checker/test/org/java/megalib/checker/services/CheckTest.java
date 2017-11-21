@@ -21,6 +21,8 @@ public class CheckTest {
         MegaModel m = ml.getModel();
         WellformednessCheck c = new WellformednessCheck(m);
         assertEquals(0, c.getWarnings().size());
+        c.checkAllLinks();
+        assertEquals(0,c.getWarnings().size());
     }
 
     @Test
