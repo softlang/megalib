@@ -3,7 +3,7 @@ module antlr.Core
 import stringtemplate.Core
 
 /*  @Description:
-    ANTLR is a "parser-generator". Thus, it is a framework used to generate parsers.
+    ANTLR is a "parser-generator". Its grammar format has a ".g4" file ending.
     ANTLR uses stringtemplate for code generation. 
     @Rationale:
     See https://github.com/antlr/antlr4
@@ -13,7 +13,8 @@ ANTLRGITHUB :: "https://github.com/antlr/antlr4/blob/master".
 ANTLRJAVARUN :: "https://github.com/antlr/antlr4/blob/46b3aa98cc8d8b6908c2cabb64a9587b6b973e6c/runtime/Java/src/org/antlr/v4/runtime".
 ANTLR : Framework; 
 	= "https://github.com/antlr/antlr4";
-    uses ParserGeneration;
+	reuses StringTemplate;
+    facilitates ParserGeneration;
 	uses Java.
 G4 : GrammarLanguage;
 	="ANTLRGITHUB::doc/grammars.md";

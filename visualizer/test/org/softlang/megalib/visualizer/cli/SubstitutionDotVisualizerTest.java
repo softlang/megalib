@@ -28,10 +28,10 @@ public class SubstitutionDotVisualizerTest {
 	@Before
 	public void setUp() {
 		TransformerRegistry.registerTransformer("dot", (VisualizerOptions options)
-	   		     -> new DOTTransformer(options));
-	    CommandLine cli = new CommandLine(Arrays.asList("dot"));
-
-	    String data[] = {"-f", "../checker/testsample/SubstitutionDemo/App.megal", "-t", "dot"};
+				-> new DOTTransformer(options));
+		CommandLine cli = new CommandLine(Arrays.asList("dot"));
+		
+		String data[] = {"-f", "../checker/testsample/SubstitutionDemo/App.megal", "-t", "dot"};
 	    cli.parse(data);
 	    options = VisualizerOptions.of(cli.getRequiredArguments());
 	    ModelToGraph mtg = new ModelToGraph(options);
