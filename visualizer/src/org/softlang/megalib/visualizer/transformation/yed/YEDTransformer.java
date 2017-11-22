@@ -11,7 +11,8 @@ import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry
 
 /**
  *
- * @author Dmitri Nikonov <dnikonov at uni-koblenz.de>
+ * open options:
+ *  Gephi, jgrapht
  */
 public class YEDTransformer extends Transformer {
 
