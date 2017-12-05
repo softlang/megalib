@@ -51,20 +51,20 @@ refOccurs < Reference # Artifact;
 encodes < Fragment # Reference;
     = "https://www.w3schools.com/tags/ref_urlencode.asp".
 
-/* A mapping from an ordered list of input languages to an ordered list of output languages. */
+// A mapping from an ordered list of input languages to an ordered list of output languages. 
 Function < Entity;
     = "wikipedia::Function_(mathematics)".
 defines < Artifact # Function;
     = "wikipedia::Function_(mathematics)".
     
-/* TODO: Discussion needed on experimenting with Data flow */
+// TODO: Discussion needed on experimenting with Data flow
 concretizes < Function # AbstractProcess. 
 defines < Artifact # Artifact; //Code declares and defines Transients
     = "wikipedia::Declaration_(computer_programming)".
 composedOf < Function # Function. //Function composition
 
 
-/* A technology is reusable 'third party' Software. See Wiki */
+// A technology is reusable 'third party' Software. See Wiki 
 System < Entity;
     = "wikipedia::Software_system".
 Technology < System;
@@ -108,70 +108,61 @@ ParserGenerator < Framework;
 Parser < Application;
   = "101wiki::Parser".
     
-/* Relationship of system components to components of architectural pattern 
-Any system that has such a role is a part of a larger system that uses the pattern*/
+// Relationship of system components to components of architectural pattern 
+//Any system that has such a role is a part of a larger system that uses the pattern
 hasRole < System # Role.
 
-/* Implementation relationships */
+// Implementation relationships 
 implements < System # Function;  
     = "wikipedia::Implementation".
 implements < System # Language.  
 
-/* A technology or a language can facilitate the usage or realization of a conceptual description. */
+// A technology or a language can facilitate the usage or realization of a conceptual description. */
 facilitates < Technology # ArchitecturalPattern.
 facilitates < Technology # AbstractProcess.
-facilitates < Technology # Construct.
+facilitates < Technology # Role.
 
-/* A software system may help in a problem context */
+// A software system may help in a problem context 
 supports < System # ProgrammingDomain;
     = "wikipedia::Software_feature". //needs better link
 
-/* Technologies and languages may be frequently used in a technological context. 
-Specifically mapping technologies can bridge to other technological spaces. */
+// Technologies and languages may be frequently used in a technological context. 
+// Specifically mapping technologies can bridge to other technological spaces. 
 belongsTo < System # TechnologySpace.
 bridgesTo < System # TechnologySpace.
 
 
-/* A technology is managed by an artifact that serves as a repository. */
-managedBy < Technology # Artifact; 
+// A technology is managed by an artifact that serves as a repository. 
+managedBy < System # Artifact; 
     = "wikipedia::Software_repository".
 
-/* In a usage scenario the technology is locally deployed as an artifact. */
+// In a usage scenario the technology is locally deployed as an artifact. 
 deployedAs < System # Artifact; 
     = "wikipedia::Software_deployment".
     
-/* Compliance to a specification */
+
 compliesTo < System # Artifact;
     = "wikipedia::Regulatory_compliance".
     
-/* One might further want to specify on which physical component the    
-artifact is deployed. 
-
-!!!This block is highly experimental!!!*/
-
+//part of physical node
 Node < Entity; 
     = "wikipedia::Node_(networking)#Distribute".
 deployedAt < Artifact # Node; 
     = "wikipedia::Software_deployment".
 
-/* Part-of relationships */
 partOf < Artifact # Artifact;
     = "oxfordDict::part".
 partOf < Artifact # System.
 partOf < System # System.
 
-/* A language is used in the sense that some part is a member of the language. */
+// A language is used in the sense that some part is a member of the language. 
 uses < System # Language;
     = "wikipedia::Computer_programming".
 
-/* Something uses a concept, if its implementation or structure is informalle conform to the concept's 
-definition. Most times, this is synonymous to 
-realization. */
+// Something uses a concept, if it complies to concept's definition.
 uses < System # ArchitecturalPattern.
 uses < System # AbstractProcess.
 uses < System # Construct.
 
-/* Systems, technologies and artifacts can be reused. There is always a reference from the using
-entity to the used entity. Maybe rename to reuses */
 reuses < System # System;
     = "wikipedia::Code_reuse".
