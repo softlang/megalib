@@ -26,7 +26,7 @@ public class ParserListenerTest {
     public void preludeIsParsed() {
         ModelLoader ml = new ModelLoader();
         assertEquals(0, ml.getTypeErrors().size());
-        assertEquals(37, ml.getModel().getBlocks().size());
+        assertEquals(6, ml.getModel().getBlocks().size());
         ml.getModel().getBlocks().forEach(b -> assertTrue(b.getText().startsWith("/*") && b.getText().endsWith("*/"))); //TODO
     }
 
@@ -374,7 +374,7 @@ public class ParserListenerTest {
         assertFalse(actual.containsKey("f"));
 
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Testblock0>> Error at f's declaration: Grammar is not a language.",ml.getTypeErrors().get(0));
+        assertEquals("Testblock0>> Error at f's declaration: Grammar is neither language nor subtype of Artifact.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -385,7 +385,7 @@ public class ParserListenerTest {
         Map<String,Set<Function>> actual = ml.getModel().getFunctionDeclarations();
         assertFalse(actual.containsKey("f"));
         assertEquals(1, ml.getTypeErrors().size());
-        assertEquals("Testblock0>> Error at f's declaration: Grammar is not a language.",ml.getTypeErrors().get(0));
+        assertEquals("Testblock0>> Error at f's declaration: Grammar is neither language nor subtype of Artifact.",ml.getTypeErrors().get(0));
     }
 
     @Test
@@ -407,6 +407,14 @@ public class ParserListenerTest {
         assertTrue(actual.containsKey("f"));
 
         assertEquals(0, ml.getTypeErrors().size());
+    }
+    
+    @Test
+    public void addFunctionDeclWithFile() throws ParserException, IOException{
+    		String input = "/**/a : ProgrammingLanguage. f : a # File -> File.";
+    		ModelLoader ml = new ModelLoader();
+    		ml.loadString(input);
+    		assertEquals(0,ml.getTypeErrors().size());
     }
 
     @Test
@@ -518,6 +526,16 @@ public class ParserListenerTest {
         Map<String, Set<Function>> actual = ml.getModel().getFunctionApplications();
         assertTrue(actual.containsKey("f"));
         assertEquals(0, ml.getTypeErrors().size());
+    }
+    
+    @Test
+    public void addFunctionApplicationOfFile() throws ParserException, IOException {
+    		String input = "/**/ a : ProgrammingLanguage . f : a # File -> File. "
+    				+ "b : ProgrammingLanguage. f1 : File; elementOf b. f2 : File; elementOf a. "
+    				+ "f3 : File; elementOf b. f(f2,f1)|->f3.";
+    		ModelLoader ml = new ModelLoader();
+    		ml.loadString(input);
+    		assertEquals(0,ml.getTypeErrors().size());
     }
 
     @Test(expected = FileNotFoundException.class)

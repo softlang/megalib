@@ -2,11 +2,13 @@ module common.Concept
 
 import common.Namespaces
 
-/* Supertype, if you do not know how to classify a concept */
+/* 
+Concept classification ontology
+See https://github.com/softlang/megalib/wiki/Concept-Classification 
+*/
 Concept < Entity;
     = "https://github.com/softlang/megalib/wiki/Concept-Classification".
 
-/* Concept Types, see https://github.com/softlang/megalib/wiki/Concept-Classification */
 ArchitecturalPattern < Concept;
     = "wikipedia::Architectural_pattern".
 DesignPattern < ArchitecturalPattern;
@@ -42,22 +44,8 @@ Role < Concept;
     
 aspectOf < Concept # Concept; //to be removed
     = "oxfordDict::aspect".
-/*
-aspectOf < Construct # Paradigm; 
-    = "oxfordDict::aspect".
-aspectOf < Construct # ProgrammingDomain. 
-aspectOf < AbstractProcess # ProgrammingDomain.
-aspectOf < Role # ProgrammingDomain.
-aspectOf < Role # TechnologySpace.
-*/
 
 refines < Concept # Concept. //to be removed
-/*
-refines < AbstractProcess # AbstractProcess.
-refines < Construct # Construct.
-refines < Paradigm # Paradigm. 
-refines < Role # Role. 
-*/
 
 participantOf < Role # ArchitecturalPattern;
     = "wikipedia::Architectural_pattern".

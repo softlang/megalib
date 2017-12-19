@@ -1,19 +1,20 @@
 module common.Namespaces
 
-/* Encyclopedia and Dictionary namespaces */
+/* A collection of frequently used namespaces */
+// Encyclopedia and Dictionary namespaces 
 101wiki :: "https://101wiki.softlang.org".
 wikipedia :: "https://en.wikipedia.org/wiki".
 oxfordDict :: "https://en.oxforddictionaries.com/definition".
 
-/* Tutorial pages */
+// Tutorial pages 
 vogella :: "http://www.vogella.com/tutorials/".
 
-/* Organization namespaces */
+// Organization namespaces 
 w3school :: "http://www.w3schools.com".
 w3c :: "https://www.w3.org".
 oracledocs :: "https://docs.oracle.com/".
 
-/* Research namespaces */
+// Research namespaces 
 researchgate :: "https://www.researchgate.net/publication".
 elsevierJournal :: "https://www.journals.elsevier.com".
 springerLink :: "http://link.springer.com/article".

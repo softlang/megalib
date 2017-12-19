@@ -66,49 +66,28 @@ LogLanguage < DocumentLanguage;
 ShadingLanguage < Language;
 	= "wikipedia::Shading_language".
 
-
-/* Subset according to set theory. This is only used when only a subset can be processed 
-as function input or only a subset is implemented by a technology. */
 subsetOf < Language # Language;
     = "wikipedia::Subset".
-    
-/* One language may be embedded into another. */
 embeddedInto < Language # Language;
     = "https://wiki.haskell.org/Embedded_domain_specific_language".
-
-/* A language may be a small variation of another language */
 dialectOf < Language # Language;
     = "wikipedia::Dialect_(computing)".
-
-/* A language's evolution is inspired by other languages */
 influencedBy < Language # Language;
     = "https://exploringdata.github.io/vis/programming-languages-influence-network/". 
 
-/* A language belongs to a set of technical solutions in application scenarios */
 belongsTo < Language # TechnologySpace;
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
-
-/* A language offers support for the context of a well known problem space */
 supports < Language # ProgrammingDomain.
-
-/* A language has constructs that allow programming in a certain mindset */
 facilitates < Language # Paradigm.
 facilitates < Language # Construct.
 encodes < Language # Role . //Experimental
 facilitates < Language # AbstractProcess .
 
-
-
-/* A language family consists of multiple related languages.
-A language family has one ascendant and multiple descendants.
-Descendants are languages that are influenced by the ascendant.*/
 LanguageFamily < Entity;
     = "wikipedia::Category:Programming_language_families".
 ascendantOf < Language # LanguageFamily.
 descendantOf < Language # LanguageFamily.
 
-/* Artifacts of one language may be encoded in other languages following other 
-kinds of notation etc. */
 Notation < Entity;
     = "wikipedia::File_format". //not really a good link
 encodedAs < Language # Notation. // !!Experimental!!

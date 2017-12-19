@@ -114,7 +114,6 @@ StreamProcessing : ProgrammingDomain; //TODO: ProgrammingDomain vs classified as
 GUIProgramming : ProgrammingDomain;
     = "wikipedia::Graphical_user_interface".
 
- 
 // Technological spaces 
 BuildAutomationWare : TechnologySpace;
     = "wikipedia::List_of_build_automation_software".
@@ -239,7 +238,6 @@ Annotation : Construct;
 SoftwareInterface : Construct;
 	= "wikipedia::Interface_(computing)".
     
-   
 // Roles as terms that certain artifacts are denoted by.
 Monad : Role; // propose a Monad construct
    = "https://en.wikipedia.org/wiki/Monad_(functional_programming)";
@@ -368,7 +366,6 @@ AST : Role;
 Invariant : Role; 
  		= "wikipedia::Invariant_(computer_science)".
 
-    
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";
     participantOf ModelViewController.
@@ -396,7 +393,6 @@ Adaptee : Role;
     = "wikipedia::Adapter_pattern";
     participantOf AdapterPattern.
     
-
 AbstractFactory : Role;
     = "wikipedia::Abstract_factory_pattern";
     participantOf AbstractFactoryPattern.
@@ -410,7 +406,6 @@ ConcreteProduct : Role;
     = "wikipedia::Abstract_factory_pattern";
     participantOf AbstractFactoryPattern.
     
-
 AbstractCommand : Role;
     = "wikipedia::Command_pattern";
     participantOf CommandPattern.

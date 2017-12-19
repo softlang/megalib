@@ -32,7 +32,6 @@ public class Graph implements Iterable<Node> {
     }
     
     public String getText() {
-		// TODO Auto-generated method stub
 		return text;
 	}
 

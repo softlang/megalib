@@ -169,22 +169,26 @@ public class TypeCheck {
             return false;
         for (String i : inputs) {
             String type = m.getInstanceOfMap().get(i);
-            if (type == null) {
-                errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": The domain " + i + " was not declared.");
-                continue;
-            }
-            if (!m.isSubtypeOf(type, "Language")) {
-                errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": " + i + " is not a language.");
+            if(!m.isSubtypeOf(i, "Artifact")) {
+            		if (type == null) {
+            			errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": The domain " + i + " was not declared.");
+            			continue;
+            		}
+            		if (!m.isSubtypeOf(type, "Language")) {
+            			errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": " + i + " is neither language nor subtype of Artifact.");
+            		}
             }
         }
         for (String o : outputs) {
             String type = m.getInstanceOfMap().get(o);
-            if (type == null) {
-                errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": The range " + o + " was not declared.");
-                continue;
-            }
-            if (!m.isSubtypeOf(type, "Language")) {
-                errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": " + o + " is not a language.");
+            if(!m.isSubtypeOf(o, "Artifact")) {
+            		if (type == null) {
+            			errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": The range " + o + " was not declared.");
+            			continue;
+            		}
+            		if (!m.isSubtypeOf(type, "Language")) {
+            			errors.add(blockid+">> Error at " + functionName + "'s declaration" + ": " + o + " is neither language nor subtype of Artifact.");
+            		}
             }
         }
         return errors.isEmpty();
@@ -226,11 +230,13 @@ public class TypeCheck {
         int fitcount = 0;
         for(Function decl : m.getFunctionDeclarations().get(name)){
             boolean fits = true;
-            if(decl.getInputs().size() != inputs.size() || decl.getOutputs().size() != outputs.size()){
+            if(decl.getInputs().size() != inputs.size() 
+            		|| decl.getOutputs().size() != outputs.size()){
                 continue;
             }
             for(int i=0; i<inputs.size();i++){
-                if(!m.isElementOf(inputs.get(i), decl.getInputs().get(i))){
+                if(!m.isElementOf(inputs.get(i), decl.getInputs().get(i))
+                		&& !m.isInstanceOf(inputs.get(i), decl.getInputs().get(i))){
                     fits = false;
                     break;
                 }
@@ -239,7 +245,8 @@ public class TypeCheck {
                 continue;
             }
             for(int i = 0; i < outputs.size(); i++){
-                if(!m.isElementOf(outputs.get(i), decl.getOutputs().get(i))){
+                if(!m.isElementOf(outputs.get(i), decl.getOutputs().get(i))
+                		&& !m.isInstanceOf(outputs.get(i),decl.getOutputs().get(i))){
                     fits = false;
                     break;
                 }

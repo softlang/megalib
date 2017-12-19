@@ -33,11 +33,11 @@ public class Visualizer {
         	String path = "../output/"+graph.getName().replaceAll("\\.", "/")+"."+fileEnding;
         	File f = new File(path);
         	f.getParentFile().mkdirs();
-            Files.write(f.toPath(),transformer.transform(graph).getBytes(StandardCharsets.UTF_8));
-            if(fileEnding.equals("dot")) {
+        Files.write(f.toPath(),transformer.transform(graph).getBytes(StandardCharsets.UTF_8));
+        if(fileEnding.equals("dot")) {
             	MutableGraph g = Parser.read(FileUtils.openInputStream(f));
-                Graphviz.fromGraph(g).render(Format.PNG).toFile(new File("../output/"+graph.getName().replaceAll("\\.", "/")+".png"));
-            }
+            Graphviz.fromGraph(g).render(Format.PNG).toFile(new File("../output/"+graph.getName().replaceAll("\\.", "/")+".png"));
+        }
         } catch (IOException ex) {
         	ex.printStackTrace();
         }

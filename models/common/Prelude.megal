@@ -5,7 +5,7 @@ import common.ConceptKB
 import common.Language
 import common.LanguageKB
 
-/* Digital entities classified by relating to their language, role and manifestation. */
+/* The core ontology based on the concept and language ontologies */
 Artifact < Entity;
     = "wikipedia::Artifact_(software_development)".
 File < Artifact; 
