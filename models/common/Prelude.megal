@@ -62,6 +62,7 @@ concretizes < Function # AbstractProcess.
 defines < Artifact # Artifact; //Code declares and defines Transients
     = "wikipedia::Declaration_(computer_programming)".
 composedOf < Function # Function. //Function composition
+composedOf < AbstractProcess # AbstractProcess.
 
 
 // A technology is reusable 'third party' Software. See Wiki 
