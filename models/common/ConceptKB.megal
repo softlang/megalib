@@ -290,7 +290,8 @@ Specification : Role; //Defines some other conceptual entity in either half-form
 Log : Role; //Contains runtime information that is additionally gathered.
     = "wikipedia::Logfile".
 DescriptiveModel : Role;  //A model that describes existing software
-    = "http://www.businessdictionary.com/definition/descriptive-model.html".
+    = "http://www.businessdictionary.com/definition/descriptive-model.html";
+    = "https://link.springer.com/chapter/10.1007/3-540-34518-3_9".
 TransformationRule : Role; //A definition for a text- or model-transformation that declares data manipulations.
     = "http://101companies.org/wiki/Transformation".
 Executable : Role; //Any artifact that is executed and not only used.
