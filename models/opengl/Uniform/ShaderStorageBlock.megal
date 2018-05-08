@@ -1,0 +1,37 @@
+module opengl.Uniform.ShaderStorageBlock
+
+import opengl.Core
+
+/*
+@Description: 
+	A shader storage block is a data block inside a shader program.
+	The block as well as a buffer object is bound to a buffer binding index.
+	Then the data stored in the buffer can be accessed in the shader code.
+    There are two main differences between uniform blocks and shader storage blocks.
+    Shader storage blocks can be written to and the size limit is higher than for uniform blocks. 
+    An arbitrary buffer used for a shader storage block is called "Shader Storage Buffer Object".
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object
+*/
+ShaderStorageBufferObject : Role;
+	= "glwiki::Shader_Storage_Buffer_Object".
+
+?program : Transient.
+?attachedShaders : Transient+.
+?buffer : Transient;
+	hasRole ShaderStorageBufferObject.
+
+//A buffer can be bound to an index
+?bufferBinding : Transient;
+	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindBufferBase.xhtml";
+	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindBufferRange.xhtml";
+	elementOf UnsignedIntLanguage;
+	refersTo ?buffer.
+
+//The shader storage block declaration must be identical in all shaders.
+?shaderStorageBlock : Transient;
+    = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glShaderStorageBlockBinding.xhtml";
+	= "glwiki::Shader_Storage_Buffer_Object";
+	partOf ?program;
+	consistentWith ?attachedShaders;
+	refersTo ?bufferBinding.

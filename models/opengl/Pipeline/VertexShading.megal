@@ -1,0 +1,53 @@
+module opengl.Pipeline.VertexShading 
+
+import opengl.Pipeline.Pipeline
+import opengl.Pipeline.VertexSpecification
+import opengl.GLSL
+
+/*
+@Description:
+	Start of rendering pipeline. Execute Vertex Shader to transform vertices.
+	For more information see PipelineVertexProcessing.megal
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Processing
+*/
+VertexShading : AbstractProcess;
+	= "glwiki::Vertex_Processing";
+	^uses ?OpenGLPipeline.
+
+?vertexShader : Transient;
+	elementOf ?OpenGLObjectLanguage.
+
+/*
+@Description:
+	The output of the vertex shader.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Shader#Outputs
+*/
+?verticesVSOut : Transient;
+	= "glwiki::Vertex_Shader#Outputs";
+	elementOf ?VertexPassLanguage;
+	hasRole Vertex.
+
+/* The vertex position in world coordinates, used for rasterization. */
+glPosition : Transient;
+	= "glwiki::Vertex_Shader#Outputs";
+	partOf ?verticesVSOut;
+	^defines ?vertexShader;
+	elementOf GLSL.
+
+/*
+@Description:
+	The vertex shader function. It processes vertices to modify them, e.g. for view transformation.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Shader
+*/
+vertexShading : ?VertexLanguage -> ?VertexPassLanguage.
+vertexShading(?vertices) |-> ?verticesVSOut.
+vertexShading concretizes VertexShading.
+vertexShading ^defines ?vertexShader;
+	^composedOf glPipeline;
+	^implements ?OpenGLPipeline.

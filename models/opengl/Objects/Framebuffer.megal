@@ -1,0 +1,37 @@
+module opengl.Objects.Framebuffer
+
+import opengl.Object where {
+    [?framebuffer / ?object]
+}
+
+/*
+@Description:
+    The framebuffer object is used for rendering and consists of multiple textures (e.g. color, depth). If no other framebuffer object is specified, the OpenGL pipeline will render into the default one. The default one is created at OpenGL context creation.
+    
+@Rationale:
+    https://www.khronos.org/opengl/wiki/Default_Framebuffer
+    https://www.khronos.org/opengl/wiki/Framebuffer_Object
+*/
+?framebuffer : Transient;
+    = "glwiki::Default_Framebuffer";
+    = "glwiki::Framebuffer_Object".
+
+/*
+@Description: Framebuffer attachments is are objects, that the framebuffer can write into. These are typically textures.
+
+@Rationale:
+    https://www.khronos.org/opengl/wiki/Framebuffer_Object#Framebuffer_Object_Structure
+*/
+FramebufferAttachment : Role;
+    = "Framebuffer_Object#Framebuffer_Object_Structure".
+
+/*
+@Description:
+    Several textures can be attached to a framebuffer.
+@Rationale:
+    https://www.khronos.org/opengl/wiki/Framebuffer_Object#Attaching_Images
+*/
+?attachedTextures : Transient+;
+    = "glwiki::Framebuffer_Object#Attaching_Images";
+    elementOf ?OpenGLObjectLanguage;
+    hasRole FramebufferAttachment.

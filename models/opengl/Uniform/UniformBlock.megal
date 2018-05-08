@@ -1,0 +1,34 @@
+module opengl.Uniform.UniformBlock
+
+import opengl.Core
+
+/*
+@Description: 
+	A uniform block is a data block inside a shader program.
+	The block as well as a buffer object is bound to a buffer binding index.
+	Then the data stored in the buffer can be accessed in the shader code.
+	An arbitrary buffer, that is used for a uniform block binding is called "Uniform Buffer Object".
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Uniform_Buffer_Object
+*/
+UniformBufferObject : Role;
+	= "glwiki::Uniform_Buffer_Object".
+
+?program : Transient.
+?attachedShaders : Transient+.
+?buffer : Transient;
+	hasRole UniformBufferObject.
+
+//A buffer can be bound to an index
+?bufferBinding : Transient;
+	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindBufferBase.xhtml";
+	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindBufferRange.xhtml";
+	elementOf UnsignedIntLanguage;
+	refersTo ?buffer.
+
+//The uniform block declaration must be identical in all shaders.
+?uniformBlock : Transient;
+	= "glwiki::Uniform_Buffer_Object";
+	partOf ?program;
+	consistentWith ?attachedShaders;
+	refersTo ?bufferBinding.

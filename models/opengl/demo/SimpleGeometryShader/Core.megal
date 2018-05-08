@@ -1,0 +1,15 @@
+module opengl.demo.SimpleGeometryShader.Core
+
+import opengl.Core
+	
+/* An application using OpenGL. */
+OpenGLApp : Application;
+	uses C++;
+    reuses GLEW.
+
+/* An application using OpenGL to render a triangle. The color is given for each vertex and is interpolated for the triangle. */
+deployedOpenGLApp : File;
+	~= "file://../code/src/executables/Ex02_SimpleGeometryShader/main.cpp";
+	elementOf C++;
+	hasRole Executable;
+	^deployedAs OpenGLApp.

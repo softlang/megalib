@@ -1,0 +1,23 @@
+module opengl.BindingPoints.BufferBindingPoint
+
+import opengl.BindingPoint
+
+/* buffers can be bound to several binding points */
+BufferbindingPointLanguage : ValueLanguage;
+    subsetOf BindingPointLanguage.
+
+GLAtomicCounterBuffer : Transient;
+    = "glwiki::Atomic_Counter";
+    elementOf BufferbindingPointLanguage.
+
+GLElementArrayBuffer : Transient;
+    = "glwiki::Vertex_Specification#Index_buffers";
+    elementOf BufferbindingPointLanguage.
+
+GLArrayBuffer : Transient;
+    = "glwiki::Vertex_Specification#Vertex_Buffer_Object";
+    elementOf BufferbindingPointLanguage.
+
+GLShaderStorageBuffer : Transient;
+    = "glwiki::Shader_Storage_Buffer_Object";
+    elementOf BufferbindingPointLanguage.

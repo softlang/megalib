@@ -1,0 +1,74 @@
+module opengl.demo.Simple2DTriangle.Pipeline.Pipeline
+
+import opengl.demo.Simple2DTriangle.Objects
+import opengl.Pipeline.Pipeline
+import opengl.Pipeline.VertexSpecification where{
+    [
+        GL-TRIANGLES / ?primitiveType,
+        vertexBuffer / ?arrayBuffer,
+        colorBuffer / ?arrayBuffer,
+        vertexArray / ?vertexArray,
+        vertices / ?vertices
+    ]
+}
+import opengl.Pipeline.VertexShading where {
+    [
+        vertexShader / ?vertexShader,
+        verticesVSOut / ?verticesVSOut
+    ]
+}
+import opengl.Pipeline.VertexPostProcessing where {
+    [
+        verticesVSOut / ?verticesIn
+    ]
+}
+import opengl.Pipeline.PrimitiveAssembly
+import opengl.Pipeline.Rasterization
+import opengl.Pipeline.FragmentProcessing where {
+    [
+        fragmentShader / ?fragmentShader,
+        fragmentsFSOut / ?fragmentsFSOut
+    ]
+}
+import opengl.Pipeline.PerSampleProcessing where {
+    [
+        defaultFramebuffer / ?fbo,
+        defaultFramebufferTexture / ?fboTextures
+    ]
+}
+
+/*
+    Entities used in the pipeline.
+*/
+
+//selected primitive type for rendering
+GL-TRIANGLES ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#lines=142".
+
+/* In and outgoing vertices of the vertex shader */
+vertices ~= "file://../code/src/shaders/Examples/ex01_simpleTriangle.vert#line=4-5".
+verticesVSOut ~= "file://../code/src/shaders/Examples/ex01_simpleTriangle.vert#line=12-13".
+// ++vertexShading(vertices) |-> verticesVSOut.
+    
+// //
+// // Artifacts in the Pipeline. They are only accessible in the different shaders and not part of the OpenGL App.
+// //
+
+// /* The vertex position in world coordinates, used for rasterization. */
+// //++?glPosition : Transient;
+// //++ = "glwiki::Vertex_Shader#Outputs";
+// //++ partOf verticesVSOut.
+glPosition ~= "file://../code/src/shaders/Examples/ex01_simpleTriangle.vert#line=12".
+
+/* The color value from the vertex. It's interpolated by the rasterizer for the fragment shader. */
+passColor : Transient;
+    = "glwiki::Type_Qualifier_(GLSL)#Shader_stage_inputs_and_outputs";
+    partOf verticesVSOut;
+    elementOf GLSL;
+    ^defines vertexShader.
+passColor ~= "file://../code/src/shaders/Examples/ex01_simpleTriangle.vert#line=7".
+passColor ~= "file://../code/src/shaders/Examples/ex01_simpleTriangle.frag#line=4".
+
+/* Shader output color for the framebuffer. */
+fragmentsFSOut ~= "file://../code/src/shaders/Examples/ex01_simpleTriangle.frag#line=7".
+
+glPipeline(vertexArray) |-> defaultFramebufferTexture.

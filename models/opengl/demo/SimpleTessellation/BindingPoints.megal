@@ -1,0 +1,31 @@
+module opengl.demo.Simple2DTriangle.BindingPoints
+
+import opengl.BindingPoints.BufferBindingPoint
+import opengl.BindingPoints.VertexArrayBindingPoint
+import opengl.demo.Simple2DTriangle.Objects
+
+/*
+    The state of the opengl context changes at different stages in the application.
+*/
+
+//The intial state, at context creation.
+intialState : Transient;
+    ~= "file://../code/src/executables/Ex04_SimpleTessellation/main.cpp#line=46";
+    elementOf StateLanguage.
+
+//The vertexBuffer is bound.
+state1 : Transient;
+    ~= "file://../code/src/executables/Ex04_SimpleTessellation/main.cpp#line=87";
+    elementOf StateLanguage.
+    
+bind(intialState,GLArrayBuffer,vertexBuffer) |-> state1.
+
+//The vertexArray is bound.
+state2 : Transient;
+    ~= "file://../code/src/executables/Ex04_SimpleTessellation/main.cpp#line=94";
+    elementOf StateLanguage.
+    
+bind(state1,vertexArrayBindingPoint,vertexArray) |-> state2.
+
+//There a no more states in this demo. It uses the fact that only this one vertexArray is
+//used when rendering. This means that the state is already correct for the render loop.

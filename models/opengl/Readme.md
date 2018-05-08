@@ -1,13 +1,30 @@
-# Model Status
+## Status of the megamodel
 
-This model explains the OpenGLAPI that complies to the OpenGL spec.
-It links to various toy programs that specifically show the modeled aspects.
 
-# Reverse Engineering Source
 
-Official documentation on https://www.khronos.org/opengl/wiki/
+## Suggested Reading Order
 
-# TODO
-
-* Cover the whole pipeline
-* Check coverage at documentation.
+- Core
+- Object
+- State
+- BindingPoint
+- GLSL
+- Objects/*
+  - Buffer
+  - VertexArray
+  - Shader
+  - Program
+  - Texture
+  - Framebuffer
+- Pipeline/*
+  - VertexSpecification
+  - VertexShading
+  - Tessellation
+  - GeometryProcessing
+  - VertexPostProcessing
+  - PrimitiveAssembly
+  - Rasterization
+  - FragmentProcessing
+  - PerSampleProcessing
+  - ComputeProcessing
+- Uniform/*

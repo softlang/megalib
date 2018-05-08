@@ -1,0 +1,44 @@
+module opengl.Pipeline.ComputeProcessing
+
+import opengl.Pipeline.Pipeline
+
+/*
+@Description:
+	Executes generic computations through the use of compute shaders.	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Compute_Shader
+*/
+ComputeProcessing : AbstractProcess;
+	= "glspec::glspec44.core.pdf#page=491";
+	= "glwiki::Compute_Shader".
+
+?computeShader : Transient;
+	elementOf ?OpenGLObjectLanguage.
+
+//The compute shader is dispatched and invoked multiple times.
+//The number of invocations is given by the number of workgroups that should be invoked.
+GroupcountLanguage : ValueLanguage.
+?groupCount : Transient;
+	elementOf GroupcountLanguage.
+
+//The output of the compute shader ist fairly arbitrary. You can process any data in the compute shader.
+?OutputLanguage : ValueLanguage.
+?computeOutput : Transient;
+	elementOf ?OutputLanguage.
+
+/*
+@Description:
+	Execute arbitrary computations with the OpenGL device. 
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Compute_Shader
+*/
+glDispatchCompute : ?OpenGLObjectLanguage # GroupcountLanguage -> ?OutputLanguage.
+glDispatchCompute
+	= "glwiki::Compute_Shader";
+	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glDispatchCompute.xhtml";
+	concretizes ComputeProcessing;
+	^defines ?computeShader.
+
+glDispatchCompute(?computeShader,?groupCount) |-> ?computeOutput.
+?OpenGLDriver implements glDispatchCompute.

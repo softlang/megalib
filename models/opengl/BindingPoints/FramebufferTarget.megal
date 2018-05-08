@@ -1,0 +1,30 @@
+module opengl.BindingPoints.FramebufferTarget
+
+import opengl.BindingPoint
+
+/*
+@Description:
+    A framebuffer can be bound to a framebuffer target. The targets specify into which
+    framebuffer will be drawn and from which framebuffer will be read.
+@Rationale:
+    https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindFramebuffer.xhtml
+*/
+
+?FramebufferTargetLanguage : ValueLanguage;
+    = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindFramebuffer.xhtml";
+    subsetOf BindingPointLanguage.
+
+/* specifies a framebuffer for reading operations */ 
+GLREADFRAMEBUFFER : Transient;
+    = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindFramebuffer.xhtml";
+    elementOf ?FramebufferTargetLanguage.
+
+/* specifies a framebuffer for rendering operations */ 
+GLDRAWFRAMEBUFFER : Transient;
+    = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindFramebuffer.xhtml";
+    elementOf ?FramebufferTargetLanguage.
+
+/* specifies a framebuffer for both reading and drawing operations */ 
+GLFRAMEBUFFER : Transient;
+    = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindFramebuffer.xhtml";
+    elementOf ?FramebufferTargetLanguage.

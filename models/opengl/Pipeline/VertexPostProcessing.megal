@@ -1,0 +1,51 @@
+module opengl.Pipeline.VertexPostProcessing
+
+import opengl.Pipeline.Pipeline
+
+/*
+@Description:
+    Vertex Post-Processing is a pipeline stage that performs clipping, perspective divison 
+    and viewport transformation on the incoming vertices.
+@Rationale:
+    https://www.khronos.org/opengl/wiki/Vertex_Post-Processing
+*/
+VertexPostProcessing : AbstractProcess;
+    = "glwiki::Vertex_Post-Processing";
+    ^uses ?OpenGLPipeline.
+
+/* The input vertices are clipped at the edge of the viewport (the visible area) */
+Clipping : AbstractProcess;
+    = "glwiki::Vertex_Post-Processing#Clipping";
+    ^composedOf VertexPostProcessing.
+
+/* The input vertex positions are converted from homogeneous coordinates to normalized device coordinates. */
+PerspectiveDivide : AbstractProcess;
+    = "glwiki::Vertex_Post-Processing#Perspective_divide";
+    ^composedOf VertexPostProcessing.
+
+/* The vertices are transformed into window coordinates. */
+ViewportTransform : AbstractProcess;
+    = "glwiki::Vertex_Post-Processing#Viewport_transform";
+    ^composedOf VertexPostProcessing.
+
+?verticesIn : Transient;
+    elementOf ?VertexPassLanguage.
+
+?processedVertices : Transient;
+    elementOf ?VertexPassLanguage;
+    hasRole Vertex.
+
+/*
+@Description:
+    Vertex Post-Processing is a pipeline stage that performs clipping, perspective divison 
+    and viewport transformation on the incoming vertices.
+@Rationale:
+    https://www.khronos.org/opengl/wiki/Vertex_Post-Processing
+*/
+vertexPostProcessing : ?VertexPassLanguage -> ?VertexPassLanguage.
+vertexPostProcessing(?verticesIn) |-> ?processedVertices.
+vertexPostProcessing 
+    = "glwiki::Vertex_Post-Processing";
+    concretizes VertexPostProcessing;
+    ^composedOf glPipeline;
+    ^implements ?OpenGLPipeline.

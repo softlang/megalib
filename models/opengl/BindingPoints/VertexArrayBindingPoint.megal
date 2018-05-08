@@ -1,0 +1,16 @@
+module opengl.BindingPoints.VertexArrayBindingPoint
+
+import opengl.BindingPoint
+
+/*
+@Description:
+    The vertex array binding point specifies which vertex array will be used for vertex processing.
+    Several opengl functions use the currently bound vertex array.
+    There is only one vertex array binding point.
+@Rationale:
+    https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindVertexArray.xhtml
+*/
+vertexArrayBindingPoint : Transient;
+    = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindVertexArray.xhtml";
+    elementOf BindingPointLanguage.
+    

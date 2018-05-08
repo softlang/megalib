@@ -1,0 +1,90 @@
+module opengl.GLSL
+
+import opengl.Core
+/* 
+@Description:
+    The OpenGL Shading Language used in OpenGL shaders. Like other shading languages it isn't limited to shading operations and can be used for general purpose programming in compute shaders.
+
+@Rationale:
+    See https://en.wikipedia.org/wiki/OpenGL_Shading_Language
+*/
+GLSL : ShadingLanguage;
+    = "https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.40.pdf";
+    = "wikipedia::OpenGL_Shading_Language";
+    supports GraphicsProgramming;
+    facilitates ConcurrentProgramming;
+    influencedBy C;
+    encodedAs Text.
+
+/* 
+@Description:
+    Compiles GLSL Code into machine code for the specific GPU. The machine code is graphics card specific and uses the available instructions of the GPU. The graphics driver implements the compiler.
+    
+@Rationale:
+    https://en.wikipedia.org/wiki/OpenGL_Shading_Language#Compilation_and_execution
+*/
+?GLSLCompiler : Compiler;
+    = "https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/";
+    = "wikipedia::OpenGL_Shading_Language#Compilation_and_execution";
+    partOf ?OpenGLDriver;
+    implements GLSL.
+
+//
+//  Basic types
+//
+GlslInt : ValueLanguage; // 32 Bit integer
+    = "glwiki::Data_Type_(GLSL)#Scalars";
+    ^implements ?GLSLCompiler.
+
+GlslUint : ValueLanguage; // 32 Bit unsigned integer
+    = "glwiki::Data_Type_(GLSL)#Scalars";
+    ^implements ?GLSLCompiler.
+
+GlslFloat : ValueLanguage; // 32 Bit floating point value
+    = "glwiki::Data_Type_(GLSL)#Scalars";
+    ^implements ?GLSLCompiler.
+
+GlslBool : ValueLanguage; // 8 Bit boolean
+    = "glwiki::Data_Type_(GLSL)#Scalars";
+    ^implements ?GLSLCompiler.
+
+    
+//
+//  Arrays
+//
+GlslArray : ValueLanguage;
+    = "glwiki::Data_Type_(GLSL)#Arrays";
+    ^implements ?GLSLCompiler.
+
+    
+GlslVec4 : ValueLanguage; // 4 component float value (vector)
+    = "glwiki::Data_Type_(GLSL)#Vectors";
+    subsetOf GlslArray;
+    subsetOf GlslFloat.
+
+GlslVec4Array : ValueLanguage; // GlslArray of vec4
+    = "glwiki::Data_Type_(GLSL)#Arrays";
+    subsetOf GlslArray;
+    subsetOf GlslVec4.
+    
+GlslFloatArray : ValueLanguage; // GlslArray of float
+    = "glwiki::Data_Type_(GLSL)#Arrays";
+    subsetOf GlslArray;
+    subsetOf GlslFloat.
+    
+
+// Texture - Contains additional information and provides optimized functions compared to GlslArrays */
+/* 1D array of values. */
+GlslTexture1D : ValueLanguage;
+    = "glwiki::Texture";
+    subsetOf GlslArray.
+    
+/* 2D array of values. */
+GlslTexture2D : ValueLanguage;
+    = "glwiki::Texture";
+    subsetOf GlslArray.
+
+/* 3D array of values. */
+GlslTexture3D : ValueLanguage;
+    = "glwiki::Texture";
+    subsetOf GlslArray.

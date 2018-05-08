@@ -1,0 +1,22 @@
+module opengl.demo.SimpleComputeShader.Uniform.ShaderStorageBlock
+
+import opengl.demo.SimpleComputeShader.Objects
+
+import opengl.Uniform.ShaderStorageBlock where {
+    [
+        shaderProgram / ?program,
+        computeShader / ?attachedShaders,
+        dataBuffer / ?buffer,
+        bufferBinding / ?bufferBinding,
+        shaderStorageBlock / ?shaderStorageBlock
+    ]
+}
+
+/*
+    The shader storage block is defined in the compute shader source.
+*/
+shaderStorageBlock ~= "file://../code/src/shaders/Examples/ex03_simpleCompute.comp#line=3".  
+// the layout(binding = 0) qualifier explicitly binds this shader storage block to the binding point 0.
+bufferBinding ~= "file://../code/src/shaders/Examples/ex03_simpleCompute.comp#line=3".  
+// The function glBindBufferBase assigns the dataBuffer to the given binding point 0. 
+bufferBinding ~= "file://../code/src/executables/Ex03_SimpleComputeShader/main.cpp#line=75".  

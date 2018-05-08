@@ -1,0 +1,27 @@
+module opengl.Objects.VertexArray
+
+import opengl.Object where {
+    [?vertexArray / ?object]
+}
+
+/*
+@Description:
+    The vertex array object stores information about the state as it has information about bound vertex buffers and their sizes.
+    
+@Rationale:
+    https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object
+*/
+?vertexArray : Transient;
+    = "glwiki::Vertex_Specification#Vertex_Array_Object".
+
+/*
+@Description:
+    This array stores information about a specific vertex buffer object bound to the vertex array object.
+    
+@Rationale:
+    https://www.khronos.org/opengl/wiki/glVertexAttribPointer
+*/
+?vertexAttributeArray : Transient+;
+    = "glwiki::GLAPI/glEnableVertexAttribArray";
+    = "glwiki::GLAPI/glVertexAttribPointer";
+    partOf ?vertexArray.

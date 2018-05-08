@@ -1,0 +1,25 @@
+module opengl.Objects.Buffer
+
+import opengl.Object where {
+    [?buffer / ?object]
+}
+
+/*
+@Description:
+    A storage object for data. It can be used for vertex positions or other data.
+*/    
+?buffer : Transient;
+    = "glwiki::Buffer_Object".
+    
+/* 
+@Description:
+    After a buffer is created, buffer storage must be requested to contain the actual data.
+    This is done via glBufferStorage or glBufferData.
+@Rationale:
+    https://www.khronos.org/opengl/wiki/Buffer_Object#Creation
+*/
+?bufferStorage : Transient;
+    = "glwiki::GLAPI/glBufferStorage";
+    = "glwiki::GLAPI/glBufferData";
+    elementOf ?StorageLanguage;
+    partOf ?buffer.

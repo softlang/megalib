@@ -1,0 +1,32 @@
+module opengl.BindingPoint
+
+import opengl.Core
+import opengl.Object
+import opengl.State
+
+/* 
+@Description: The BindingPointLanguage specifies all possible OpenGL binding points. 
+   A binding Point is a part of the GL state, that specifies, which 
+   OpenGLObject is currently used for a specific purpose.
+   Examples are bound textures or buffers. 
+@Rationale: See https://www.khronos.org/opengl/wiki/Layout_Qualifier_(GLSL)#Binding_points
+*/
+BindingPointLanguage : ValueLanguage;
+    subsetOf UnsignedIntLanguage.
+
+/* 
+@Description: Binding an object to a binding point will alter the GL state.
+   As of now, the object is used for a specific task. 
+*/
+bind : StateLanguage # BindingPointLanguage # ?OpenGLObjectLanguage -> StateLanguage.
+?OpenGLDriver implements bind.
+
+/* 
+@Description: Unbinding an object to a binding point will alter the GL state.
+   As of now, the binding point is bound to a "default" object. 
+   This object is different for different binding points.
+@Rationale:
+    https://www.khronos.org/opengl/wiki/OpenGL_Object#Object_zero
+*/
+unbind : StateLanguage # BindingPointLanguage -> StateLanguage.
+?OpenGLDriver implements unbind.

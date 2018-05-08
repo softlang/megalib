@@ -1,0 +1,21 @@
+module opengl.demo.SimpleComputeShader.Pipeline.ComputeProcessing
+
+import opengl.demo.SimpleComputeShader.Objects
+
+import opengl.Pipeline.Pipeline
+import opengl.Pipeline.ComputeProcessing where{
+    [
+        computeShader / ?computeShader,
+        dataBuffer / ?computeOutput,
+        ?OpenGLObjectLanguage / ?OutputLanguage,
+        groupCount / ?groupCount
+    ]
+}
+
+/* entities used in the compute shading process: */
+
+//The group count is (N,1,1)
+groupCount ~= "file://../code/src/executables/Ex03_SimpleComputeShader/main.cpp#line=77".
+
+//++dispatchCompute(computeShader,groupCount) |-> dataBuffer.      
+dataBuffer ~= "file://../code/src/executables/Ex03_SimpleComputeShader/main.cpp#line=77".

@@ -1,0 +1,84 @@
+module opengl.Core
+
+/* This module defines basic components of OpenGL */
+glwiki :: "https://www.khronos.org/opengl/wiki".
+glspec :: "https://www.khronos.org/registry/OpenGL/specs/gl/glspec45.core.pdf".
+
+/* 
+@Description: The driver written in some language
+
+@Rationale: See provided links
+*/
+?DriversLanguage : MachineLanguage; 
+	= "wikipedia::Device_driver";
+	encodedAs Binary.
+
+/* A language that contains all possible "unsigned int" values. 
+   The used type is typically called "GLuint". */ 
+UnsignedIntLanguage : ValueLanguage;
+    = "https://www.khronos.org/opengl/wiki/OpenGL_Type".
+
+/* 
+@Description:
+    An API/Framework for graphics programming and rendering.
+        
+@Rationale:
+    See https://www.opengl.org/
+	or https://en.wikipedia.org/wiki/OpenGL
+*/
+OpenGL : File+;
+	~= "https://www.opengl.org/documentation/current_version/";
+	= "wikipedia::OpenGL";
+    hasRole Specification.
+?OpenGLDriver : DeviceDriver;
+	= "glwiki::Getting_Started#Downloading_OpenGL";
+	= "wikipedia::#Video_card#Graphic_drivers";
+	uses ?DriversLanguage;
+    //uses ObjectOrientedProgramming;
+    //uses Automata-based_programming;
+    supports GraphicsProgramming;
+    supports ParallelComputing;
+    supports StreamProcessing;  
+    hasRole SystemState;  
+	//^managedBy GPU;
+	compliesTo OpenGL.	
+
+/* 
+@Description:
+    A language for OpenGL objects. The actual implementation of the objects is implementation-defined.
+    
+@Rationale:
+    https://www.khronos.org/opengl/wiki/OpenGL_Object
+*/
+?OpenGLObjectLanguage : ValueLanguage;
+    = "glwiki::OpenGL_Object";
+    ^implements ?OpenGLDriver.
+
+/* 
+@Description:
+    A language to store buffers. It's more an abstract language, by following alignment rules specified in the OpenGL specification or specific to the used graphics card. It may be a GlslVec4Array in most of the times, due to alignment of vec3 to vec4, but maybe there will be a graphics card with another storage layout.
+    
+@Rationale:
+    https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferStorage.xhtml
+*/
+?StorageLanguage : ValueLanguage;
+    = "glwiki::Buffer_Object".  
+
+/* 
+@Description:
+    A language to store textures. It has different rules than StorageLanguage. A texture may have mipmaps (smaller versions of the texture) and its memory layout depends on the data layout (e.g. rgb-channels).
+*/
+?TextureStorageLanguage : ValueLanguage;
+    = "glwiki::Texture_Storage".
+
+/* 
+@Description:
+	Provide OpenGL functionality for C/C++ and connect to the graphics driver's API. There are alternatives like "gl3w" and other librarys for other languages like Java to provide OpenGL functionality. 
+	
+@Rationale:
+	See http://glew.sourceforge.net/ and https://www.khronos.org/opengl/wiki/Language_bindings for other bindings.
+*/
+GLEW : Library;
+	= "http://glew.sourceforge.net/";
+	uses C;
+	reuses ?OpenGLDriver.	

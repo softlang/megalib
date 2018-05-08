@@ -1,0 +1,81 @@
+module opengl.Pipeline.Pipeline
+
+import opengl.Core
+
+/* 
+@Description:
+	The OpenGL pipeline processes primitives (namely points, lines and triangles defined by vertices - points in world space). As a result it rasterizes the primitives and returns shaded pixel values.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview
+*/
+glPipeline : ?OpenGLObjectLanguage -> ?OpenGLObjectLanguage.
+glPipeline concretizes Rendering.
+
+/*
+@Description:
+	A pattern for fixed and optional processes that are executed in a specified order.
+	
+@Rationale:
+	https://en.wikipedia.org/wiki/Instruction_pipelining
+*/
+Pipeline : AbstractProcess;
+	= "wikipedia::Instruction_pipelining".
+
+/* 
+@Description:
+	The Pipeline has multiple fixed function processes and programmable stages. The function of these processes and stages are specified later. Here we look at the general process.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview
+*/
+?OpenGLPipeline : Technology;
+	= "glwiki::Rendering_Pipeline_Overview";
+	= "glwiki::Vertex_Rendering#Direct_rendering";
+	uses Pipeline;
+	facilitates GraphicsPipeline;
+	facilitates Rendering;
+	uses PipeFilter;
+	implements glPipeline;
+	partOf ?OpenGLDriver.
+
+/*
+@Description:
+    A vertex buffer object is a buffer object that is used for specifying vertex data.
+    These buffers typically contain positions, surface normals, texture coordinates or
+    other data, that is assigned to each vertex of a geometry model.
+@Rationale:
+    https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Buffer_Object
+*/
+VertexBufferObject : Role;
+    = "glwiki::Vertex_Specification#Vertex_Buffer_Object".
+
+/* A point defined by its position and other attributes. */
+Vertex : Role;
+	= "glwiki::Vertex_Specification".
+
+/*
+@Description: A primitive is a collection of one or move vertices, that defines their topology. The basic primitive types are 
+	points, lines, line strips, triangles, triangle strips, triangle fans, and patches (used for tessellation).
+
+@Rationale: https://www.khronos.org/opengl/wiki/Primitive
+*/
+Primitive : Role;
+	= "glwiki::Primitive".
+
+/*
+@Description:
+	A segment of a primitive related to a pixel area.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Fragment
+*/
+GLFragment : Role;
+	= "glwiki::Fragment".
+
+/*
+@Description:
+	Output language of the vertex shader. These values are passed through the pipeline.
+	Several shader stages can pass on vertex data.
+*/
+?VertexPassLanguage : ValueLanguage.

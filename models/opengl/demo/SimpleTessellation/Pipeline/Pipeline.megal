@@ -1,0 +1,75 @@
+module opengl.demo.Simple2DTriangle.Pipeline.Pipeline
+
+import opengl.demo.Simple2DTriangle.Objects
+import opengl.Pipeline.Pipeline
+import opengl.Pipeline.VertexSpecification where{
+    [
+        GL-PATCHES / ?primitiveType,
+        vertexBuffer / ?arrayBuffer,
+        vertexArray / ?vertexArray,
+        vertices / ?vertices
+    ]
+}
+import opengl.Pipeline.VertexShading where {
+    [
+        vertexShader / ?vertexShader,
+        verticesVSOut / ?verticesVSOut
+    ]
+}
+import opengl.Pipeline.Tessellation where {
+    [
+        tessCtrlShader / ?tessellationControlShader,
+        tessEvalShader / ?tessellationEvaluationShader,
+        verticesVSOut / ?verticesTCIn,
+        verticesTCOut / ?verticesTCOut,
+        verticesTEOut / ?verticesTEOut
+    ]
+}
+import opengl.Pipeline.VertexPostProcessing where {
+    [
+        verticesTEOut / ?verticesIn
+    ]
+}
+import opengl.Pipeline.PrimitiveAssembly
+import opengl.Pipeline.Rasterization
+import opengl.Pipeline.FragmentProcessing where {
+    [
+        fragmentShader / ?fragmentShader,
+        fragmentsFSOut / ?fragmentsFSOut
+    ]
+}
+import opengl.Pipeline.PerSampleProcessing where {
+    [
+        defaultFramebuffer / ?fbo,
+        defaultFramebufferTexture / ?fboTextures
+    ]
+}
+
+/*
+    Entities used in the pipeline.
+*/
+
+//selected primitive type for rendering
+GL-TRIANGLES ~= "file://../code/src/executables/Ex04_SimpleTessellation/main.cpp#lines=142".
+
+// //
+// // Artifacts in the Pipeline. They are only accessible in the different shaders and not part of the OpenGL App.
+// //
+
+/* In and outgoing vertices of the vertex shader */
+vertices ~= "file://../code/src/shaders/Examples/ex04_simpleTessellation.vert#line=4-5".
+verticesVSOut ~= "file://../code/src/shaders/Examples/ex04_simpleTessellation.vert.vert#line=8".
+// ++vertexShading(vertices) |-> verticesVSOut.
+
+verticesTCOut ~= "file://../code/src/shaders/Examples/ex04_simpleTessellation.ctrl#line=8";
+    ~= "file://../code/src/shaders/Examples/ex04_simpleTessellation.eval#line=4".
+glTessLevelInner ~= "file://../code/src/shaders/Examples/ex04_simpleTessellation.ctrl#line=12-13".
+glTessLevelOuter ~= "file://../code/src/shaders/Examples/ex04_simpleTessellation.ctrl#line=14-18".
+
+verticesTEOut ~= "file://../code/src/shaders/Examples/ex04_simpleTessellation.eval#line=7-13".
+glPosition ~= "file://../code/src/shaders/Examples/ex04_simpleTessellation.eval#line=7-13".
+
+/* Shader output color for the framebuffer. */
+fragmentsFSOut ~= "file://../code/src/shaders/Examples/ex04_simpleTessellation.frag#line=6".
+
+glPipeline(vertexArray) |-> defaultFramebufferTexture.

@@ -1,0 +1,72 @@
+module opengl.demo.Simple2DTriangle.BindingPoints
+
+import opengl.BindingPoints.BufferBindingPoint
+import opengl.BindingPoints.VertexArrayBindingPoint
+import opengl.demo.Simple2DTriangle.Objects
+
+/*
+    The state of the opengl context changes at different stages in the application.
+*/
+
+//The intial state, at context creation.
+intialState : Transient;
+    ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=46";
+    elementOf StateLanguage.
+
+//The vertexBuffer is bound.
+state1 : Transient;
+    ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=88";
+    elementOf StateLanguage.
+    
+bind(intialState,GLArrayBuffer,vertexBuffer) |-> state1.
+
+//The colorBuffer is bound.
+state2 : Transient;
+    ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=94";
+    elementOf StateLanguage.
+
+bind(state1,GLArrayBuffer,colorBuffer) |-> state2.
+
+
+//The vertexArray is bound.
+state3 : Transient;
+    ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=102";
+    elementOf StateLanguage.
+    
+bind(state2,vertexArrayBindingPoint,vertexArray) |-> state3.
+
+//The vertexBuffer is bound to associate it to the vertex array attribute 0.
+state4 : Transient;
+    ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=105";
+    elementOf StateLanguage.
+    
+bind(state3,GLArrayBuffer,vertexBuffer) |-> state4.
+
+//The colorBuffer is bound to associate it to the vertex array attribute 1.
+state5 : Transient;
+    ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=117";
+    elementOf StateLanguage.
+
+bind(state4,GLArrayBuffer,colorBuffer) |-> state5.
+
+//The vertexArray is unbound.
+state6 : Transient;
+    ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=121";
+    elementOf StateLanguage.
+    
+unbind(state5,vertexArrayBindingPoint) |-> state6.
+
+//in the main loop:
+//The vertexArray is bound.
+state7 : Transient;
+    ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=139";
+    elementOf StateLanguage.
+    
+bind(state6,vertexArrayBindingPoint,vertexArray) |-> state7.
+
+//The vertexArray is unbound.
+state8 : Transient;
+    ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=145";
+    elementOf StateLanguage.
+    
+unbind(state7,vertexArrayBindingPoint) |-> state8.

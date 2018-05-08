@@ -1,0 +1,36 @@
+module opengl.Pipeline.PrimitiveAssembly
+
+import opengl.Pipeline.Pipeline
+import opengl.Pipeline.VertexPostProcessing
+
+/*
+@Description:
+	The primitive assembly combines vertices into triangles, lines and points.
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Primitive_Assembly
+*/
+PrimitiveAssembly : AbstractProcess;
+	= "glwiki::Primitive_Assembly";
+	^uses ?OpenGLPipeline.
+
+?PrimitiveLanguage : ValueLanguage.
+
+?primitivesOut : Transient;
+	elementOf ?PrimitiveLanguage;
+	hasRole Primitive.
+
+/*
+@Description:
+	The primitive assembly combines the incoming vertex data into primitives like
+	triangles, lines and points.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Primitive_Assembly
+*/
+primitiveAssembly : ?VertexPassLanguage -> ?PrimitiveLanguage.
+primitiveAssembly(?processedVertices) |-> ?primitivesOut.
+primitiveAssembly 
+	= "glwiki::Primitive_Assembly";
+	concretizes PrimitiveAssembly;
+	^composedOf glPipeline;
+	^implements ?OpenGLPipeline.

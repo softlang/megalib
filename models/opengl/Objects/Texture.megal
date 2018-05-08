@@ -1,0 +1,22 @@
+module opengl.Objects.Texture
+
+import opengl.Object where {
+    [?texture / ?object]
+}
+
+/*
+@Description: A texture object contains one or more images in a specific format. 
+    Textures can be used as a data source when rendering, or as a rendering target to render
+    into the texture with a framebuffer.
+*/
+?texture : Transient;
+    = "glwiki::Texture".
+/* 
+@Description:
+    After a texture is created, texture storage must be requested to contain the actual data. The 
+    representation of the data in memory is defined by the graphics driver.
+*/
+?textureStorage : Transient;
+    elementOf ?TextureStorageLanguage;
+    partOf ?texture.
+

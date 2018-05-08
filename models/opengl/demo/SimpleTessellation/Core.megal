@@ -1,0 +1,15 @@
+module opengl.demo.Simple2DTriangle.Core
+
+import opengl.Core
+	
+/* An application using OpenGL. */
+OpenGLApp : Application;
+	uses C++;
+    reuses GLEW.
+
+/* An application using OpenGL to tessellate a quad. */
+deployedOpenGLApp : File;
+	~= "file://../code/src/executables/Ex04_SimpleTessellation/main.cpp";
+	elementOf C++;
+	hasRole Executable;
+	^deployedAs OpenGLApp.

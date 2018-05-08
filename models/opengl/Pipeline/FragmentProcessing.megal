@@ -1,0 +1,49 @@
+module opengl.Pipeline.FragmentProcessing
+
+import opengl.Pipeline.Pipeline
+import opengl.Pipeline.Rasterization where {
+	[?fragmentsFSIn / ?fragmentsOut]
+}
+
+/*
+@Description:
+	Execute Fragment Shader. The shader is executed for each generated pixel and computes a color value for it.
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Fragment_Shader
+*/
+FragmentProcessing : AbstractProcess;
+	= "glspec::glspec44.core.pdf#page=455";
+	^uses ?OpenGLPipeline.
+
+?fragmentShader : Transient.
+
+/*
+@Description: 
+	Output language of the fragment shader.
+*/
+?FragmentValueLanguage : ValueLanguage.
+
+/*
+@Description:
+	The fragment shader output consists of color values that can be stored in a texture.
+*/
+?fragmentsFSOut : Transient;
+	= "glwiki::Fragment_Shader#Outputs";
+	elementOf ?FragmentValueLanguage;
+	hasRole GLFragment.
+
+/*
+@Description:
+	Execute the fragment shader for each pixel and process them.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Fragment_Shader
+*/
+fragmentShading : ?FragmentLanguage -> ?FragmentValueLanguage.
+fragmentShading(?fragmentsFSIn) |-> ?fragmentsFSOut.
+fragmentShading 
+	= "glwiki::Fragment_Shader";
+	concretizes FragmentProcessing;
+	^defines ?fragmentShader;
+	^composedOf glPipeline;
+	^implements ?OpenGLPipeline.

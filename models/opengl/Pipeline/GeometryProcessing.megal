@@ -1,0 +1,53 @@
+module opengl.Pipeline.GeometryProcessing
+
+import opengl.Pipeline.Pipeline
+
+/*
+@Description:
+	Optional: Execute Geometry Shader, to generate new vertices and primitives.
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Geometry_Shader
+*/
+GeometryShading : AbstractProcess;
+	= "glwiki::Geometry_Shader";
+	^uses ?OpenGLPipeline.
+
+?geometryShader : Transient.
+
+/*
+@Description:
+	The previous shader (eg. vertex shader or tessellation evaluation shader) provides the vertex input
+	of the geometry shader.
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Geometry_Shader#Inputs
+*/
+?verticesGSIn : Transient;
+	= "glwiki::Geometry_Shader#Inputs";
+	elementOf ?VertexPassLanguage.
+
+/*
+@Description:
+	Output of the geometry shader. The output is interpreted as one or more primitives.
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Geometry_Shader#Outputs
+*/
+?verticesGSOut : Transient;
+	= "glwiki::Geometry_Shader#Outputs";
+	elementOf ?VertexPassLanguage;
+	hasRole Primitive.
+
+/*
+@Description:
+	The geometry shader can modify and generate output data
+	based on the input data of the incoming primitives.
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Geometry_Shader
+*/
+geometryShading : ?VertexPassLanguage -> ?VertexPassLanguage.
+
+geometryShading(?verticesGSIn) |-> ?verticesGSOut.
+geometryShading  = "glwiki::Geometry_Shader";
+	concretizes GeometryShading;
+	^defines ?geometryShader;
+	^composedOf glPipeline;
+	^implements ?OpenGLPipeline.

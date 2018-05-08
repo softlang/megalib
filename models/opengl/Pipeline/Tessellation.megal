@@ -1,0 +1,129 @@
+module opengl.Pipeline.Tessellation
+
+import opengl.Pipeline.Pipeline
+import opengl.Pipeline.VertexShading where {
+	[?verticesTCIn / ?verticesVSOut]
+}
+
+/*
+@Description:
+	Optional: Execute Tessellation Shader to generate new vertices inside a primitive and transform them.
+	For more information see PipelineTessellation.megal
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Tessellation
+*/
+Tessellation : AbstractProcess;
+	= "glwiki::Tessellation";
+	^uses ?OpenGLPipeline.
+	
+?tessellationControlShader : Transient.
+?tessellationEvaluationShader : Transient.
+
+/*
+@Description: A patch is a collection of vertices that is specifically used for tessellation.
+	A patch is not a normal primitive, as it can contain more than 3 vertices (at least up to 32).
+	This is for example useful for rendering bèzier surfaces, that need 16 control points.
+@Rationale:  
+	https://www.khronos.org/opengl/wiki/Tessellation#Patches
+*/
+
+Patch : Role;
+	= "glwiki::Tessellation#Patches".
+
+/*
+@Description:
+	The input of the tessellation control shader, passed through from the vertex shader.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Tessellation_Control_Shader#Inputs	
+*/
+?verticesTCIn : Transient;
+	= "glwiki::Tessellation_Control_Shader#Inputs";
+	hasRole Patch.
+
+/*
+@Description:
+	Output language of the tessellation control shader.
+	This output consists of vertex data and tessellation settings.
+*/
+?TessellationControlLanguage : ValueLanguage.
+
+/*
+@Description:
+	The output of the tessellation shader, used by the tessellation.
+	The outputs gl_TessLevelOuter and gl_TessLevelInner defines the
+	resolution of the tessellation.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Tessellation_Control_Shader#Outputs	
+*/
+?verticesTCOut : Transient;
+	= "glwiki::Tessellation_Control_Shader#Outputs";
+	elementOf ?TessellationControlLanguage;
+	hasRole Vertex;
+	hasRole Patch.
+
+/*
+@Description:
+	The tessellation control shader defines how many points should be generated.
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Tessellation_Control_Shader
+*/
+tessellationControlShading : ?VertexPassLanguage -> ?TessellationControlLanguage.
+
+tessellationControlShading(?verticesTCIn) |-> ?verticesTCOut.
+tessellationControlShading 
+	= "glwiki::Tessellation_Control_Shader";
+	concretizes Tessellation;
+	^defines ?tessellationControlShader;
+	^composedOf glPipeline;
+	^implements ?OpenGLPipeline.
+
+/*
+@Description: 
+	The two outputs that define the tessellation level.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Tessellation_Control_Shader#Built-in_outputs
+*/
+glTessLevelOuter : Transient;
+	= "glwiki::Tessellation_Control_Shader#Built-in_outputs";
+	partOf ?verticesTCOut;
+	elementOf GLSL;
+	^defines ?tessellationControlShader.
+glTessLevelInner : Transient;
+	= "glwiki::Tessellation_Control_Shader#Built-in_outputs";
+	partOf ?verticesTCOut;
+	elementOf GLSL;
+	^defines ?tessellationControlShader.
+
+/*
+@Description:
+	The output of the tessellation evaluation shader
+*/ 
+?verticesTEOut : Transient;
+	elementOf ?VertexPassLanguage;
+	hasRole Vertex.
+
+/* The vertex position in world coordinates, used for rasterization. */
+glPosition : Transient;
+	= "glwiki::Tessellation_Evaluation_Shader#Outputs";
+	partOf ?verticesTEOut;
+	^defines ?tessellationEvaluationShader.
+	
+/*
+@Description:
+	The tessellation evaluation shader generates output data for every
+	generated point.
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Tessellation_Evaluation_Shader
+*/
+tessellationEvaluationShading : ?TessellationControlLanguage -> ?VertexPassLanguage.
+tessellationEvaluationShading(?verticesTCOut) |-> ?verticesTEOut.
+tessellationEvaluationShading 
+	= "glwiki::Tessellation_Evaluation_Shader";
+	concretizes Tessellation;
+ 	^defines ?tessellationEvaluationShader;
+ 	^composedOf glPipeline;
+ 	^implements ?OpenGLPipeline.

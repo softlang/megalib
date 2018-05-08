@@ -1,0 +1,85 @@
+module opengl.Pipeline.VertexSpecification
+
+import opengl.Pipeline.Pipeline
+
+/*
+@Description: 
+	The vertex specification is the first stage of the pipeline, setting up the necessary objects to render primitives.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Specification
+*/
+VertexSpecification : AbstractProcess;
+	= "glwiki::Vertex_Specification";
+	^uses ?OpenGLPipeline.
+
+/*
+@Description: The primitive type specifies what type of primitive should be rendered.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Primitive
+*/
+PrimitiveTypeLanguage : ValueLanguage;
+	= "glwiki::Primitive";
+	subsetOf UnsignedIntLanguage.
+
+?primitiveType : Transient;
+	elementOf PrimitiveTypeLanguage.
+
+/*
+@Description:
+	Output language of the vertex specification. Consists of vertex attributes that can be passed
+	through to the vertex shader.
+*/
+?VertexLanguage : ValueLanguage.
+
+//?vertexArray : Transient;
+//	elementOf ?OpenGLObjectLanguage.
+?arrayBuffer : Transient+;
+	elementOf ?OpenGLObjectLanguage;
+	hasRole VertexBufferObject.
+?elementBuffer : Transient;
+	elementOf ?OpenGLObjectLanguage.
+
+/*
+@Description:
+	A list of vertices. Each vertex is defined by its unique ID and a 4 dimensional position. The fourth component must be set to 1. Four dimensions are necessary for matrix multiplication to transform the points.
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Stream
+*/
+?vertices : Transient;
+	= "glwiki::Vertex_Specification#Vertex_Stream";
+	elementOf ?VertexLanguage;
+	consistentWith ?arrayBuffer;
+	hasRole Vertex.
+
+/* 
+@Description:
+	This function uses an index buffer and draws the corresponding triangles into the framebuffer. Every element in the index buffer links to a vertex in the vertex buffer, that is bound to the vertex array object. Vertices can be reused for multiple triangles.
+	
+@Rationale:
+	https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glDrawElements.xhtml
+	https://www.khronos.org/opengl/wiki/Vertex_Rendering
+*/
+glDrawElements : PrimitiveTypeLanguage # ?OpenGLObjectLanguage # ?OpenGLObjectLanguage -> ?VertexLanguage.
+glDrawElements(?primitiveType, ?vertexArray, ?elementBuffer) |-> ?vertices.
+glDrawElements ^composedOf glPipeline.
+glDrawElements concretizes VertexSpecification.
+
+?OpenGLDriver implements glDrawElements.
+
+/* 
+@Description:
+	This function renders all vertices from the vertex buffer, bound to the vertex array object.
+	
+@Rationale:
+	https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml
+*/
+glDrawArrays : PrimitiveTypeLanguage # ?OpenGLObjectLanguage -> ?VertexLanguage.
+glDrawArrays(?primitiveType, ?vertexArray) |-> ?vertices.
+glDrawArrays ^composedOf glPipeline.
+glDrawArrays concretizes VertexSpecification.
+
+?OpenGLDriver implements glDrawArrays.
+

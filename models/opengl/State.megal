@@ -1,0 +1,21 @@
+module opengl.State
+
+import opengl.Core
+import opengl.Object
+
+/* The StateLanguage contains all possible states of the OpenGL context. 
+   The graphics driver stores the current state. The GL state encompasses every setting and object. */
+StateLanguage : ValueLanguage;
+	^implements ?OpenGLDriver.
+
+/* A state variable identies a specific functionality of OpenGL that can be enabled or disabled. */
+StateVariableLanguage : ValueLanguage;
+    subsetOf UnsignedIntLanguage;
+    ^implements ?OpenGLDriver.
+
+/* The glEnable/glDisable functions enable or disable certain functions of the GL. */
+glEnable : StateLanguage # StateVariableLanguage -> StateLanguage.
+glDisable : StateLanguage # StateVariableLanguage -> StateLanguage.
+
+?OpenGLDriver implements glEnable.
+?OpenGLDriver implements glDisable.

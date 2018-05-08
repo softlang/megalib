@@ -1,0 +1,24 @@
+module opengl.demo.Simple2DTriangle.Uniform.UniformVariable
+
+import opengl.demo.Simple2DTriangle.Objects
+import opengl.Uniform.UniformVariable where {
+    [
+        shaderProgram / ?program,
+        vertexShader / ?attachedShaders,
+        fragmentShader / ?attachedShaders,
+        timeVariable / ?uniformVariable,
+        timeVariableLocation / ?uniformLocation,
+        timeValue / ?value
+    ]
+}
+
+/*
+    This demo uses a uniform variable called "time".
+*/
+
+//The uniform variable "time" is defined in the fragment shader.
+timeVariable ~= "file://../code/src/shaders/Examples/ex01_simpleTriangle.frag#line=5".
+//The location of the uniform variable is queried 
+timeVariableLocation ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=68".
+//The time in seconds is assigned to the uniform variable.
+timeValue ~= "file://../code/src/executables/Ex01_SimpleTriangle/main.cpp#line=137".

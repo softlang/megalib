@@ -1,0 +1,51 @@
+module opengl.Objects.Shader
+
+import opengl.Object where {
+	[?shader / ?object]
+}
+import opengl.GLSL
+
+/*
+@Description: A shader contains information about compiled code that
+   can be used in an program. The pure shader cannot be executed on the
+   GPU, it can only be attached to a program.
+*/
+?shader : Transient.
+    
+/* The shader code encoded as a string. */
+?shaderSource : Artifact;
+    = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glShaderSource.xhtml";
+    elementOf GLSL;
+    hasRole Shader.
+?shaderSource ^conformsTo ?shader.
+
+/*
+@Description:
+    The machine code of a shader, compiled by the graphics driver to be executed on the GPU. It uses instructions (e.g. addition/multiplication) supported by the graphics card.
+*/
+?ShaderBinaryLanguage : MachineLanguage;
+    encodedAs Binary.
+
+/* 
+@Description:
+    The shader encoded as a platformdependent binary blob. 
+
+@Rationale:
+    https://www.khronos.org/opengl/wiki/GLAPI/glCompileShader
+*/
+?shaderBinary : Transient;
+    = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glShaderBinary.xhtml";
+    elementOf ?ShaderBinaryLanguage;
+    partOf ?shader.
+    
+/*
+@Description:
+    The compilation process for GLSL shader code to GPU instruction code.
+    
+@Rationale:
+    https://www.khronos.org/opengl/wiki/GLAPI/glCompileShader
+*/
+glCompileShader : GLSL -> ?ShaderBinaryLanguage.
+?GLSLCompiler implements glCompileShader.
+    
+glCompileShader(?shaderSource) |-> ?shaderBinary.

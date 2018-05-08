@@ -1,0 +1,20 @@
+module opengl.Objects.Program
+
+import opengl.Object where {
+    [?program / ?object]
+}
+
+/*
+@Description: A program contains one or more shaders. It will be executed in the pipeline. 
+   It encapsulates compiled and linked shaders. The attached shaders are linked into one program.
+
+@Rationale: https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glAttachShader.xhtml
+*/
+
+?program : Transient;
+    = "glwiki::GLSL_Object".
+    
+?attachedShaders : Transient+;
+	= "glwiki::GLAPI/glAttachShader";
+	elementOf ?OpenGLObjectLanguage;
+	partOf ?program.

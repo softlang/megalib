@@ -1,0 +1,20 @@
+module opengl.Object
+
+import opengl.Core
+
+/* 
+    @Description: This module describes the opengl object model. An OpenGL object is a construct, that contains settings, state or data used by the GL
+*/
+
+?object : Transient;
+    = "glwiki::OpenGL_Object";
+    elementOf ?OpenGLObjectLanguage.
+
+/* An OpenGL name identifies an object. 
+   The name itself does not contain any object instance, 
+   it is only useful with a created object. */
+?openGLName : Transient;
+    = "glspec::p25";
+    elementOf UnsignedIntLanguage;
+    hasRole Identifier;
+    refersTo ?object.

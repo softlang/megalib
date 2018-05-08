@@ -1,0 +1,13 @@
+module opengl.BindingPoints.TextureTarget
+
+import opengl.BindingPoint
+
+/*
+@Description:
+    A texture can be bound to a texture target. This way the texture can be used and changed.
+@Rationale:
+    https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindTexture.xhtml
+*/
+?TextureTargetLanguage : ValueLanguage;
+    = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindTexture.xhtml";
+    subsetOf BindingPointLanguage.

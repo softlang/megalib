@@ -1,0 +1,47 @@
+module opengl.Uniform.UniformVariable
+
+import opengl.Core
+
+/*
+	@Description: 
+		A uniform variable is a identifier used in one or more shaders of a program.
+		The value of this variable can be set only by the host program.
+	@Rationale:
+		https://www.khronos.org/opengl/wiki/Uniform_(GLSL)
+*/
+Uniform : Role;
+	= "glwiki::Uniform_(GLSL)".
+
+?program : Transient.
+?attachedShaders : Transient+.
+
+//The declaration of the same uniform variable must be identical in all shaders.
+?uniformVariable : Transient;
+	= "glwiki::Uniform_(GLSL)";
+	elementOf ?StorageLanguage;
+	partOf ?program;
+	consistentWith ?attachedShaders;
+	hasRole Uniform.
+
+//The value assigned to a uniform variable. The real data type is different for all uniform types.
+?UniformValueLanguage : ValueLanguage.
+?value : Transient;
+	elementOf ?UniformValueLanguage.
+
+/*
+	@Description:
+		The uniform location uniquely identifies a uniform variable used in a program.
+*/
+?uniformLocation : Transient;
+	= "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetUniformLocation.xhtml";
+	elementOf UnsignedIntLanguage;
+	refersTo ?uniformVariable;
+	consistentWith ?program.
+
+// The glUniform*-functions are used to set the value of a uniform variable.
+// This is the main means of communication between the host program and the shader program.
+glUniform : UnsignedIntLanguage # ?UniformValueLanguage -> ?StorageLanguage.
+glUniform(?uniformLocation,?value) |-> ?uniformVariable.
+glUniform = "https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glUniform.xhtml".
+
+?OpenGLDriver implements glUniform.

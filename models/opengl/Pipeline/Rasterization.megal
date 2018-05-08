@@ -1,0 +1,48 @@
+module opengl.Pipeline.Rasterization
+
+import opengl.Pipeline.Pipeline
+import opengl.Pipeline.PrimitiveAssembly where {
+	[?primitivesIn / ?primitivesOut]
+}
+
+/* 
+@Description:
+	Execute rasterization process. Primitives are rasterized to pixels.
+	
+@Rationale:
+	Information about the process: https://msdn.microsoft.com/en-us/library/windows/desktop/bb147314(v=vs.85).aspx
+*/
+Rasterization : AbstractProcess;
+	= "glspec::glspec44.core.pdf#page=433";
+	^uses ?OpenGLPipeline.
+
+/*
+@Description:
+	Output language of the Rasterization.
+	The generated fragments consists of a position and interpolated data.
+*/
+?FragmentLanguage : ValueLanguage.
+
+/*
+@Description:
+	The generated fragments from the rasterization. They conform to a specific primitive.
+
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Fragment
+*/
+?fragmentsOut : Transient;
+	hasRole GLFragment;
+	elementOf ?FragmentLanguage.
+
+/*
+@Description:
+	Input are the processed primitives from primitive processing. These are subdivided into fragments (pixel-values). 
+	
+@Rationale:
+	https://en.wikipedia.org/wiki/Rasterisation
+*/
+rasterization : ?PrimitiveLanguage -> ?FragmentLanguage.
+rasterization(?primitivesIn) |-> ?fragmentsOut.
+rasterization concretizes Rasterization;
+	^composedOf glPipeline;
+	^implements ?OpenGLPipeline.

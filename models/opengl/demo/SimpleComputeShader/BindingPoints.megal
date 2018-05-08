@@ -1,0 +1,21 @@
+module opengl.demo.Simple2DTriangle.BindingPoints
+
+import opengl.BindingPoints.BufferBindingPoint
+import opengl.BindingPoints.VertexArrayBindingPoint
+import opengl.demo.Simple2DTriangle.Objects
+
+/*
+    The state of the opengl context changes at different stages in the application.
+*/
+
+//The intial state, at context creation.
+intialState : Transient;
+    ~= "file://../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#line=48";
+    elementOf StateLanguage.
+
+//The dataBuffer is bound.
+state1 : Transient;
+    ~= "file://../code/src/executables/Ex02_SimpleGeometryShader/main.cpp#line=92";
+    elementOf StateLanguage.
+    
+bind(intialState,GLShaderStorageBuffer,dataBuffer) |-> state1.

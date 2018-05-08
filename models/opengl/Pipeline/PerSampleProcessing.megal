@@ -1,0 +1,42 @@
+module opengl.Pipeline.PerSampleProcessing
+
+import opengl.Pipeline.Pipeline
+import opengl.Pipeline.FragmentProcessing
+
+/*
+@Description:
+	Process pixels by executing blending processes and write the final value to the output framebuffer.
+	For more information see PipelinePixelProcessing.megal
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Per-Sample_Processing
+*/
+PerSampleProcessing : AbstractProcess;
+	= "glspec::glspec44.core.pdf#page=466";
+	= "glwiki::Per-Sample_Processing";
+	^uses ?OpenGLPipeline.
+
+?fbo : Transient;
+	elementOf ?OpenGLObjectLanguage.
+?fboTextures : Transient+;
+	elementOf ?OpenGLObjectLanguage.
+/*
+@Description:
+	The data from the fragment shader will be stored in 
+	a framebuffer object.
+*/
+?fboTextures partOf ?fbo.
+
+/*
+@Description:
+	Input are the processed pixel from the fragment shader. They are written to the color texture of the active framebuffer. (After blending, depth test, multisampling, ...)
+	
+@Rationale:
+	https://www.khronos.org/opengl/wiki/Per-Sample_Processing
+*/
+perSampleProcessing : ?FragmentValueLanguage -> ?OpenGLObjectLanguage.
+perSampleProcessing(?fragmentsFSOut) |-> ?fboTextures.
+perSampleProcessing 
+	^composedOf glPipeline;
+	concretizes PerSampleProcessing;
+	^implements ?OpenGLPipeline.
