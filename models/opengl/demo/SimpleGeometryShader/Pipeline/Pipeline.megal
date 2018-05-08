@@ -2,13 +2,21 @@ module opengl.demo.SimpleGeometryShader.Pipeline.Pipeline
 
 import opengl.demo.SimpleGeometryShader.Objects
 
-import opengl.Pipeline.Pipeline
+import opengl.Pipeline.Pipeline where{
+    [
+	DemoOpenGLPipeline / ?OpenGLPipeline,
+        DemoOpenGLObjectLanguage / ?OpenGLObjectLanguage
+    ]
+}
 import opengl.Pipeline.VertexSpecification where{
     [
+        DemoOpenGLPipeline / ?OpenGLPipeline,
+        DemoOpenGLObjectLanguage / ?OpenGLObjectLanguage,
         GL-TRIANGLES / ?primitiveType,
         vertexBuffer / ?arrayBuffer,
         colorBuffer / ?arrayBuffer,
         vertexArray / ?vertexArray,
+        elementBuffer / ?elementBuffer,
         vertices / ?vertices
     ]
 }
@@ -52,6 +60,7 @@ GL-TRIANGLES ~= "file://../code/src/executables/Ex02_SimpleGeometryShader/main.c
 
 // /* In and outgoing vertices of the vertex shader */
 vertices ~= "file://../code/src/shaders/Examples/ex02_simpleTriangle.vert#line=4-5".
+elementBuffer ~= "unknown".
 verticesVSOut ~= "file://../code/src/shaders/Examples/ex02_simpleTriangle.vert#line=12-13".
 // ++vertexShading(vertices) |-> verticesVSOut.
 verticesGSOut ~= "file://../code/src/shaders/Examples/ex02_simpleGeometryShader.geom#line=15".

@@ -41,6 +41,8 @@ Construct < Concept;
 Role < Concept;
     = "wikipedia::Artifact_(software_development)";
     = "wikipedia::Terminology".
+
+composedOf < AbstractProcess # AbstractProcess.
     
 aspectOf < Concept # Concept; //to be removed
     = "oxfordDict::aspect".

@@ -1,6 +1,7 @@
 ## Status of the megamodel
 
-
+Needs refactorings and requires MegaL-internal fixes.
+The demo's structure does not mirror the model structure.
 
 ## Suggested Reading Order
 
