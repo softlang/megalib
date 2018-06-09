@@ -14,6 +14,7 @@ public class TransformerConfiguration {
     public boolean contains(String key) {
         return config.contains(key);
     }
+   
 
     public TransformerConfiguration put(String key, String subKey, String value) {
         ConfigItem<String, String> item = config.contains(key) ? config.get(key) : createConfigItem(key);

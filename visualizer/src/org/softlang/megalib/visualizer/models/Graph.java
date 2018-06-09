@@ -22,7 +22,7 @@ public class Graph implements Iterable<Node> {
 
     private Map<String, Node> nodes = new TreeMap<>();
 
-    Graph(String name, String text) {
+    public Graph(String name, String text) {
         this.name = name;
         this.text = text;
     }
@@ -41,7 +41,7 @@ public class Graph implements Iterable<Node> {
      * @param n the node to be added
      * @return the node added to the graph
      */
-    Node add(Node n) {
+    public Node add(Node n) {
         return nodes.put(n.getName(), n);
     }
 

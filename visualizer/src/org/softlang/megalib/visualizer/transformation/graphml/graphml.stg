@@ -1,0 +1,78 @@
+graph(name, nodes, edges, text) ::= <<\<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+\<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:java="http://www.yworks.com/xml/yfiles-common/1.0/java" xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  \<key for="node" id="d5" yfiles.type="nodegraphics"/>
+  \<key for="graphml" id="d6" yfiles.type="resources"/>
+  \<key for="edge" id="d9" yfiles.type="edgegraphics"/>
+  \<graph edgedefault="directed" id="G">
+  \<data key="d0">\<![CDATA[<text>]]>\</data>
+	
+    <if(nodes)>
+    <nodes:node(); separator="\n">
+    
+    <if(edges)>
+    <edges:edge(); separator="\n">
+    <endif>
+    <endif>
+  \</graph>
+  \<data key="d6">
+    \<y:Resources>
+      \<y:Resource id="1">
+        \<yed:ScaledIcon xScale="1.0" yScale="1.0">
+          \<yed:SvgIcon>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="30"
+   height="30"
+   id="svg3221"
+   version="1.0"&gt;
+  &lt;g id="layer1"&gt;
+    &lt;path
+       style="opacity:1;fill:#e72000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50000000000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="path3253"
+       d="M 22.5,5.1785712 A 19.642857,20.357143 0 1 1 -16.785714,5.1785712 A 19.642857,20.357143 0 1 1 22.5,5.1785712 z"
+       transform="matrix(0.7636364,0,0,0.7368421,12.818182,11.184211)" /&gt;
+    &lt;path
+       transform="matrix(0.5576843,0,0,0.5381164,13.406616,12.213326)"
+       d="M 22.5,5.1785712 A 19.642857,20.357143 0 1 1 -16.785714,5.1785712 A 19.642857,20.357143 0 1 1 22.5,5.1785712 z"
+       id="path3764"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" /&gt;
+    &lt;path
+       transform="matrix(0.3641941,0,0,0.3514153,13.959445,13.180171)"
+       d="M 22.5,5.1785712 A 19.642857,20.357143 0 1 1 -16.785714,5.1785712 A 19.642857,20.357143 0 1 1 22.5,5.1785712 z"
+       id="path3766"
+       style="opacity:1;fill:#ff7828;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.50000000000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" /&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+\</yed:SvgIcon>
+        \</yed:ScaledIcon>
+      \</y:Resource>
+    \</y:Resources>
+  \</data>
+\</graphml>
+
+>>
+ 
+ 
+node(n)	::= <<
+    \<node id="<n.id>">
+      \<data key="d5">
+        \<y:GenericNode configuration="<n.shape>">
+        \<y:Geometry height="70.0" width="<n.width>"/>
+          \<y:Fill color="<n.color>" transparent="false"/>
+          \<y:NodeLabel iconData="<n.icon>" alignment="center" autoSizePolicy="content" horizontalTextPosition="right" iconTextGap="4" verticalTextPosition="center" visible="true"><n.name>\</y:NodeLabel>
+        \</y:GenericNode>
+      \</data>
+    \</node>
+>>
+edge(e) ::= << \<edge id="<e.id>" source="<e.origin>" target="<e.destination>">  
+				\<data key="d9">
+                \<y:PolyLineEdge>	 
+				\<y:EdgeLabel alignment="center" ><e.label>\<y:LabelModel>
+              		\<y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
+            	\</y:LabelModel>   
+            	\</y:EdgeLabel>
+            	\</y:PolyLineEdge>
+                \</data>
+    \</edge>
+    >>

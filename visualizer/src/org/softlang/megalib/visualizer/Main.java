@@ -11,6 +11,7 @@ import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.ModelToGraph;
 import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
 import org.softlang.megalib.visualizer.transformation.dot.DOTTransformer;
+import org.softlang.megalib.visualizer.transformation.graphml.GRAPHMLTransformer;
 
 public class Main {
 
@@ -18,7 +19,11 @@ public class Main {
         try {
         	TransformerRegistry.registerTransformer("dot", (VisualizerOptions options)
         		     -> new DOTTransformer(options));
-
+        	TransformerRegistry.registerTransformer("graphml", (VisualizerOptions options)
+          		     -> new GRAPHMLTransformer(options));
+        	
+        	
+        	
             CommandLine cli = new CommandLine(TransformerRegistry.getRegisteredTransformerNames())
                 .parse(args);
             VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());

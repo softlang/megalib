@@ -12,13 +12,14 @@ import org.softlang.megalib.visualizer.models.Graph;
  */
 public abstract class Transformer {
 
-
-
+	protected TransformerConfiguration config;
     protected VisualizerOptions options;
 
     public Transformer(VisualizerOptions options) {
         this.options = options;
     }
+    
+    public abstract TransformerConfiguration getConfig();
 
     public abstract String transform(Graph g);
 

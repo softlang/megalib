@@ -1,7 +1,7 @@
 /*
  *  All rights reserved.
  */
-package org.softlang.megalib.visualizer.transformation.dot;
+package org.softlang.megalib.visualizer.transformation.graphml;
 
 import java.net.URL;
 import java.util.LinkedList;
@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.softlang.megalib.visualizer.VisualizerOptions;
+import org.softlang.megalib.visualizer.models.Edge;
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.Node;
 import org.softlang.megalib.visualizer.models.transformation.ConfigItem;
@@ -20,25 +21,23 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
-/**
- *
- * @author Dmitri Nikonov <dnikonov at uni-koblenz.de>
- */
-public class DOTTransformer extends Transformer {
+
+public class GRAPHMLTransformer extends Transformer {
 
     private static final ConfigItem<String, String> DEFAULT_CONFIG = new ConfigItem<String, String>()
         .put("color", "black")
         .put("shape", "oval");
 
-    private TransformerConfiguration config = new DOTConfigurationBuilder().buildConfiguration();
+    private TransformerConfiguration config = new GRAPHMLConfigurationBuilder().buildConfiguration();
 
-    public DOTTransformer(VisualizerOptions options) {
+    public GRAPHMLTransformer(VisualizerOptions options) {
         super(options);
     }
 
     public TransformerConfiguration getConfig() {
-	return config;
+    	return config;
     }
+    
     
     @Override
     public String transform(Graph g) {
@@ -50,7 +49,7 @@ public class DOTTransformer extends Transformer {
     }
     
     private STGroup loadTemplateFromResource() {
-    	String resource = "graphviz.stg";
+    	String resource = "graphml.stg";
     	URL u = this.getClass().getResource(resource);
     	return new STGroupFile(u, "UTF-8", '<', '>');
 	}
@@ -59,13 +58,26 @@ public class DOTTransformer extends Transformer {
         STGroup templateGroup = loadTemplateFromResource();
         ST template = templateGroup.getInstanceOf("graph");
 
-        List<DOTNode> nodes = new LinkedList<>();
-
-        g.forEachNode(n -> nodes.add(createDOTNode(n)));
+        List<Node> old_nodes = new LinkedList<>();
+        List<GRAPHMLNode> nodes = new LinkedList<>();
+        List<GRAPHMLEdge> edges = new LinkedList<>();
+        
+        
+        g.forEachNode(n -> old_nodes.add((n)));
+        int i = 0;
+        for( Node n : old_nodes) {
+        	nodes.add(createGRAPHMLNode(n,i));
+        	i++;
+        }
+        i = 0;
+        for( Edge e : g.getEdges()) {
+        	edges.add(new GRAPHMLEdge(e,nodes,i));
+        	i++;
+        }
         
         template.add("name", options.getModelName());
         template.add("nodes", nodes);
-        template.add("edges", g.getEdges());
+        template.add("edges", edges);
         String text = g.getText();
         text = text.replace("/*", "");
     	text = text.replaceAll("\\r", "");
@@ -103,8 +115,8 @@ public class DOTTransformer extends Transformer {
         ).collect(Collectors.toList());
     }
 
-    private DOTNode createDOTNode(Node node) {
-        return new DOTNode(node, getConfigValue(node, "color"), getConfigValue(node, "shape"));
+    private GRAPHMLNode createGRAPHMLNode(Node node, int id) {
+        return new GRAPHMLNode(node, getConfigValue(node, "color"), getConfigValue(node, "shape"), id, getConfigValue(node, "icon"));
     }
 
 }
