@@ -1,0 +1,14 @@
+module gson.demo.studytrails.innerGson.DefaultTypeAdapter
+
+import gson.demo.studytrails.innerGson.TypeTokenCore
+import gson.demo.studytrails.innerGson.GsonMain
+import gson.innergson.DefaultTypeAdapter where {
+[
+gson / ?mainGsonTransient,
+typeTokenAnimalDog / ?typeToken,
+defaultTypeAdapter / ?typeAdapter
+]
+}
+
+/* Leerer Kommentar */
+cc: Artifact.

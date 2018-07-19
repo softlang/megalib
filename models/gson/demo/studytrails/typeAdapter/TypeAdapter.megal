@@ -1,0 +1,17 @@
+module gson.demo.studytrails.typeAdapter.TypeAdapter
+
+import gson.demo.studytrails.typeAdapter.GsonBuilder
+import gson.demo.studytrails.typeAdapter.JavaPlatformReflection
+import gson.TypeAdapter where {
+[
+gson / ?mainGsonTransient,
+datasetTypeAdapter / ?typeAdapter,
+builder2 / ?builderTransientOut,
+builder1 / ?builderTransientIn
+]
+}
+
+/* Entities */
+
+builder1 = "https://github.com/MithilShah/Java-Examples/blob/5ca27ffb11fc8566a31e3affa408046decc8de0f/src/com/studytrails/json/gson/DatasetTypeAdapterExample8.java#L19".
+builder2 = "https://github.com/MithilShah/Java-Examples/blob/5ca27ffb11fc8566a31e3affa408046decc8de0f/src/com/studytrails/json/gson/DatasetTypeAdapterExample8.java#L19".

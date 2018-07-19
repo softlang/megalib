@@ -1,0 +1,17 @@
+module gson.TypeToken
+
+import gson.Core
+import javaplatform.Reflection
+import gson.TypeTokenCore
+
+/* @Description:
+	Creates a typeToken for the given TypeObject.
+   @Rationale: See java-doc: https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/reflect/TypeToken.html#get-java.lang.reflect.Type-
+   */
+
+typeTokenGet: JavaTypeObjectLanguage -> TypeTokenLanguage.
+typeTokenClass defines typeTokenGet.
+GSON implements typeTokenGet.
+
+typeTokenGet(?javaTypeObject) |-> ?typeToken.
+?typeToken conformsTo ?javaTypeObject.

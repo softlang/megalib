@@ -1,9 +1,10 @@
-module javaplatform.JavaPlatform
+module javaplatform.Core
 
-/* We cover the components top down. The largest independent technology would
-be the JDK. It comes with several tools for programmers, such as the javac compiler.
-It also contains the JRE, which then contains the JVM. The JRE might be deployed
-independently. */
+/* @Description: We cover the components top down. The largest independent technology would
+    be the JDK. It comes with several tools for programmers, such as the javac compiler.
+    It also contains the JRE, which then contains the JVM. The JRE might be deployed
+    independently.
+   @Rationale: See links */
 JDK : Framework;
     = "http://www.oracle.com/technetwork/java/javase/documentation/jdk8-doc-downloads-2133158.html";
     = "http://www.oracle.com/technetwork/java/javase/tech/index.html";
@@ -52,14 +53,3 @@ JavaClassLibrary : Library; //component and library
     = "https://en.wikipedia.org/wiki/Java_Class_Library";
     partOf JRE; //non-optional part
     uses Java.
-/* The Java programming language,
-which is compiled into Java byte code, which is then interpreted using
-runtime data handled by the JVM. */
-compileJava : Java -> JavaByteCode.
-JavaC implements compileJava.
-?javaFiles : File+;
-    elementOf Java.
-?classFiles : File+;
-    elementOf JavaByteCode.
-compileJava(?javaFiles) |-> ?classFiles.
-//TODO: Cannot state eval, cannot express system state changes.

@@ -1,0 +1,23 @@
+module gson.innergson.deserialize.DeserializeGen
+
+import gson.TypeToken
+import gson.DeserializerGen
+import gson.innergson.DefaultTypeAdapter
+import gson.innergson.deserialize.Deserialize where {
+[
+?javaObject/ ?javaResultTransient,
+?typeOfTypeToken / ?javaTypeObject,
+?typeTokenOfJavaObject / ?javaObjectIn
+]
+}
+
+/* @Description:
+	The composition of functions used when deserializing a java object with generic
+	from json
+   @Rationale: See github repo:	https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/Gson.java
+    Line 836 and followings
+*/
+
+fromJsonGen composedOf typeTokenGet.
+fromJsonGen composedOf getAdapterForInput.
+fromJsonGen composedOf fromJson.

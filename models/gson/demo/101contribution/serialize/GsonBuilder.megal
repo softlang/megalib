@@ -1,0 +1,12 @@
+module gson.demo.101contribution.serialize.GsonBuilder
+
+import gson.demo.101contribution.serialize.GsonMain
+import gson.GsonBuilder where {
+[
+builder / ?builderTransientIn,
+gson / ?mainGsonTransient
+]
+}
+
+/* Entities */
+builder ~= "https://github.com/101companies/101simplejava/blob/38b566e845722029da0fe6abfce51417d54376d5/contributions/javaGsonObjects/src/main/java/org/softlang/company/features/Unparsing.java#L38".

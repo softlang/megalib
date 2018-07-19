@@ -15,7 +15,9 @@ AssemblyLanguage < Language;
 MachineLanguage < Language;
     = "wikipedia::Machine_code".
 CommandLineLanguage < Language; 
-    = "wikipedia::Command-line_interface".    
+    = "wikipedia::Command-line_interface".
+AnnotationLanguage < Language;
+	= "wikipedia::Annotation#Software_engineering".    
 
 DocumentLanguage < Language;
     = "wikipedia::Document". 
@@ -79,7 +81,9 @@ belongsTo < Language # TechnologySpace;
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".
 supports < Language # ProgrammingDomain.
 facilitates < Language # Paradigm.
+hasConstruct < Paradigm # Construct. 
 facilitates < Language # Construct.
+
 encodes < Language # Role . //Experimental
 facilitates < Language # AbstractProcess .
 

@@ -1,0 +1,15 @@
+module gson.demo.studytrails.innerGson.Serialize
+
+import gson.demo.studytrails.innerGson.GsonMain
+import gson.demo.studytrails.innerGson.DefaultTypeAdapter
+import gson.demo.studytrails.innerGson.Objects
+import gson.innergson.serialize.Serialize where {
+[
+animal / ?javaObject,
+defaultTypeAdapter / ?typeAdapter,
+json / ?jsonFile
+]
+}
+
+/* Leeres Kommentar */
+z: Artifact.

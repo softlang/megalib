@@ -1,0 +1,56 @@
+module gson.TypeAdapterCore
+
+import gson.GsonBuilder
+import gson.Core
+import javaplatform.Core
+
+/*
+@Description: Allows the customization of the de/serializing Process,
+by implementing corresponding interfaces / classes.
+(type Adapter Interface is recommended, json-de/serializer are the old way)
+@Rationale: See javadoc: https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/JsonDeserializer.html
+						 https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/JsonSerializer.html
+						 https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/TypeAdapter.html
+			And github: https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson
+*/
+			
+TypeAdapterLanguage: ValueLanguage;
+	="https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/TypeAdapter.html";
+	subsetOf JVMObjectLanguage.
+
+TypeAdapterLanguageOld: ValueLanguage;
+	= "https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/JsonDeserializer.html";
+    = "https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/JsonSerializer.html";
+	subsetOf TypeAdapterLanguage.
+	
+gsonTypeAdapterClass: File;
+		~= "https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/TypeAdapter.java";
+		elementOf Java;
+		partOf GSON;
+		defines TypeAdapterLanguage;
+		hasRole AbstractProduct.
+		
+gsonTypeAdapterFactoryInterface: File;
+		~= "https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/TypeAdapterFactory.java";
+		elementOf Java;
+		partOf GSON;
+		hasRole Interface;
+		hasRole AbstractFactory.
+
+gsonJsonSerializerInterface: File;
+		~= "https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/JsonSerializer.java";
+		elementOf Java;
+		partOf GSON;
+		defines TypeAdapterLanguageOld;
+		hasRole Interface.
+		
+gsonJsonDeserializerInterface: File;
+		~= "https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/JsonDeserializer.java";
+		elementOf Java;
+		partOf GSON;
+		defines TypeAdapterLanguageOld;
+		hasRole Interface.
+		
+?typeAdapter: Transient;
+	elementOf TypeAdapterLanguage;
+	correspondsTo gsonTypeAdapterClass.

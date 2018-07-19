@@ -1,0 +1,24 @@
+module gson.demo.studytrails.innerGson.SerializeGen
+
+import gson.demo.studytrails.innerGson.JavaPlatformReflection
+import gson.demo.studytrails.innerGson.TypeTokenCore
+import gson.demo.studytrails.innerGson.DefaultTypeAdapter
+import gson.demo.studytrails.innerGson.Serialize
+import gson.innergson.serialize.SerializeGen where {
+[
+animal / ?javaObject,
+animalTypeDog /?typeOfTypeToken,
+json / ?jsonFile,
+defaultTypeAdapter / ?typeAdapter,
+gson / ?mainGsonTransient,
+dog / ?genericOfJavaObject,
+typeTokenAnimalDog / ?typeToken,
+typeTokenAnimalDog / ?javaObjectIn,
+animalTypeDog / ?javaTypeObject,
+animalTypeDog / ?typeOfTypeToken,
+builder / ?builderTransientIn
+]
+}
+
+/* Leeres Kommentar */
+l: Artifact.

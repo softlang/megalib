@@ -1,0 +1,36 @@
+module javaplatform.Reflection
+
+import javaplatform.Core
+
+/* @Description:
+The java Reflection Library offers methods to get informations about the internal
+attributes of a class
+@Rationale: see links
+*/
+JavaReflectionLibrary: Library;
+    = "https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/package-summary.html";
+	uses Java;
+	partOf JavaClassLibrary.
+	
+JavaTypeObjectLanguage: ValueLanguage;
+		="https://docs.oracle.com/javase/6/docs/api/java/lang/reflect/Type.html";
+		subsetOf JVMObjectLanguage.
+		
+javaGetType: JVMObjectLanguage -> JavaTypeObjectLanguage.
+JavaReflectionLibrary implements javaGetType.
+
+javaTypeInterface: File;
+		~= "https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Type.html";
+		elementOf JVMObjectLanguage;
+		defines JavaTypeObjectLanguage;
+		partOf JavaReflectionLibrary.
+		
+?javaObjectIn: Transient;
+	elementOf JVMObjectLanguage.
+	
+?javaTypeObject: Transient;
+	elementOf JavaTypeObjectLanguage;
+	defines ?javaObjectIn.
+	
+javaGetType(?javaObjectIn) |-> ?javaTypeObject.
+?javaObjectIn conformsTo ?javaTypeObject.

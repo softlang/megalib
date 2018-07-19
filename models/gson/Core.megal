@@ -1,0 +1,28 @@
+module gson.Core
+
+/* @Description: GSON is a java library which converts a java object into a json file
+or vice versa. Therefore it is using the features parsing and reflection.
+It has an own annotation language and the possibility to extend it by self-written
+de/serializers.
+
+@Rationale: See github repo: https://github.com/google/gson/tree/master/gson/src/main/java/com/google/gson
+            and java-doc: https://www.javadoc.io/doc/com.google.code.gson/gson/2.8.5
+*/
+
+GSON: Library;
+		="https://github.com/google/gson/tree/master/gson/src/main/java/com/google/gson";
+		uses Java;
+		uses AbstractFactoryPattern;
+		uses BuilderPattern;
+		uses Reflection;
+		uses Parsing;
+		uses Annotation;
+		facilitates Serialization;
+		facilitates ObjectJsonMapping;
+		facilitates PrettyPrinting;
+		belongsTo JavaWare;
+		bridgesTo JSONWare.
+		
+GsonAnnotationLanguage: AnnotationLanguage;
+	="https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/annotations/package-summary.html".
+	

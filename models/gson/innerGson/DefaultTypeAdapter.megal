@@ -1,0 +1,27 @@
+module gson.innergson.DefaultTypeAdapter
+
+import gson.Core
+import gson.TypeAdapterCore
+import gson.TypeTokenCore
+import gson.GsonMain
+
+/* 
+   @Description:
+	Function which finds a TypeAdapter for a given Object, given by a typeToken.
+	Function is needed in de/serialization.
+   @Rationale:
+    See github repo: https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/Gson.java
+	Line 696 for serialization
+	Line 926 for deserialization
+*/
+
+defaultTypeAdapter: Transient;
+    ~= "https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/Gson.java#L433-L437";
+	elementOf TypeAdapterLanguage;
+	partOf ?mainGsonTransient.
+	
+getAdapterForInput: GsonMainLanguage # TypeTokenLanguage -> TypeAdapterLanguage.
+gsonClass defines getAdapterForInput.
+GSON implements getAdapterForInput.
+
+getAdapterForInput(?mainGsonTransient, ?typeToken) |-> ?typeAdapter.

@@ -1,0 +1,24 @@
+module gson.DeserializerGen
+
+import gson.Core
+import gson.TypeTokenCore
+import gson.GsonMain
+import javaplatform.Reflection
+import gson.Objects where {
+[
+?typeToken/ ?javaObjectIn,
+?typeOfTypeToken / ?javaTypeObject
+]
+}
+
+/* @Description:
+	Deserialization method for java objects with a specific generic type
+   @Rationale:
+	See java-doc: https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/Gson.html#fromJson-com.google.gson.JsonElement-java.lang.reflect.Type-
+*/
+
+fromJsonGen: GsonMainLanguage # JavaTypeObjectLanguage # JSON -> JVMObjectLanguage.
+gsonClass defines fromJsonGen.
+GSON implements fromJsonGen.
+
+fromJsonGen(?mainGsonTransient, ?typeOfTypeToken, ?jsonFile) |-> ?javaObject.

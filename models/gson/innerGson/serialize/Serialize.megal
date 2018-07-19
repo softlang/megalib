@@ -1,0 +1,21 @@
+module gson.innergson.serialize.Serialize
+
+import gson.Core
+import gson.TypeAdapterCore
+import gson.GsonMain
+import gson.Objects
+import gson.innergson.DefaultTypeAdapter
+import javaplatform.Core
+
+/* @Description:
+	Function which creates the json object from a java object
+   @Rationale:
+   See github repo: https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/Gson.java
+   Line 704
+*/
+
+toJson: JVMObjectLanguage # TypeAdapterLanguage -> JSON.
+gsonClass defines toJson.
+GSON implements toJson.
+
+toJson(?javaObject, ?typeAdapter) |-> ?jsonFile.

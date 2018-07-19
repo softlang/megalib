@@ -1,0 +1,24 @@
+module gson.TypeAdapter
+
+import gson.GsonBuilder
+import gson.Core
+import javaplatform.Reflection
+import gson.TypeAdapterCore
+
+/*
+@Description: The function to add a given TypeAdapter to a builder Object
+Therefore it needs an type and the typeAdapter itself
+@Rationale: See official javadoc - https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/GsonBuilder.html#registerTypeAdapter-java.lang.reflect.Type-java.lang.Object-
+*/
+
+addTypeAdapterForType: GsonBuilderLanguage # TypeAdapterLanguage # JavaTypeObjectLanguage -> GsonBuilderLanguage.
+gsonBuilderClass defines addTypeAdapterForType.
+GSON implements addTypeAdapterForType.
+
+?builderTransientOut: Transient;
+	elementOf GsonBuilderLanguage.
+
+addTypeAdapterForType(?builderTransientIn, ?typeAdapter, ?javaTypeObject) |-> ?builderTransientOut.
+?typeAdapter partOf ?builderTransientOut.
+?javaTypeObject partOf ?typeAdapter.
+?typeAdapter conformsTo ?javaTypeObject.

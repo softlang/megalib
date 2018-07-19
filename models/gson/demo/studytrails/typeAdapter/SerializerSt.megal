@@ -1,0 +1,15 @@
+module gson.demo.studytrails.typeAdapter.SerializerSt
+
+import gson.demo.studytrails.typeAdapter.GsonMain
+import gson.demo.studytrails.typeAdapter.JavaPlatformReflection
+import gson.SerializerSt where {
+[
+album / ?javaObject,
+album / ?javaObjectIn,
+json / ?jsonFile,
+gson / ?mainGsonTransient
+]
+}
+
+/* Leeres Kommentar */
+q: Artifact.

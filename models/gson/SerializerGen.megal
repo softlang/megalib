@@ -1,0 +1,23 @@
+module gson.SerializerGen
+
+import gson.GsonMain
+import gson.TypeTokenCore
+import gson.Objects
+import javaplatform.Reflection where {
+[
+?typeToken / ?javaObjectIn,
+?typeOfTypeToken / ?javaTypeObject
+]
+}
+
+/* @Description:
+	Serialization method for objects with a generic Type.
+   @Rationale:
+	See official javadoc: https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/Gson.html#toJson-java.lang.Object-java.lang.reflect.Type-
+	*/
+
+toJsonGen: GsonMainLanguage # JVMObjectLanguage # JavaTypeObjectLanguage -> JSON.
+gsonClass defines toJsonGen.
+GSON implements toJsonGen.
+
+toJsonGen(?mainGsonTransient, ?javaObject, ?typeOfTypeToken) |-> ?jsonFile.

@@ -1,0 +1,25 @@
+module gson.GsonMain
+
+import gson.Core
+import javaplatform.Core
+
+/* @Description: 
+	The main object of Gson, which always needs to be created.
+	If offers de/serialization methods.
+   @Rationale:
+	See java-doc: https://static.javadoc.io/com.google.code.gson/gson/2.8.2/com/google/gson/Gson.html
+*/
+
+GsonMainLanguage: ValueLanguage;
+	="https://static.javadoc.io/com.google.code.gson/gson/2.8.2/com/google/gson/Gson.html";
+	subsetOf JVMObjectLanguage.
+	
+gsonClass: File;
+	~="https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/Gson.java";
+	elementOf Java;
+	partOf GSON;
+	defines GsonMainLanguage.
+	
+?mainGsonTransient: Transient;
+	elementOf GsonMainLanguage.
+	

@@ -1,0 +1,40 @@
+module gson.innergson.deserialize.DeserializeSt
+
+import gson.Core
+import gson.TypeToken
+import gson.DeserializerSt
+import javaplatform.Reflection
+import gson.innergson.DefaultTypeAdapter
+import gson.innergson.deserialize.Deserialize where {
+[
+?typeTokenOfTypeObject / ?typeToken,
+?javaTempObject / ?javaResultTransient
+]
+}
+
+/* @Description:
+	The composition of functions used when deserializing a java object without generic
+	from json
+   @Rationale: See github repo:	https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/Gson.java
+    Line 812 and followings
+*/
+WrapperLanguage: ValueLanguage;
+	subsetOf JVMObjectLanguage.
+	
+primitiveClass: File;
+	~="https://github.com/google/gson/blob/0636635cbffa08157bdbd558b1212e4d806474eb/gson/src/main/java/com/google/gson/internal/Primitives.java";
+	elementOf Java;
+	partOf GSON;
+	defines WrapperLanguage.
+	
+wrapper: JVMObjectLanguage # JavaTypeObjectLanguage -> JVMObjectLanguage.
+primitiveClass defines wrapper.
+GSON implements wrapper.
+
+wrapper(?javaTempObject, ?javaTypeObject) |-> ?javaObject.
+
+fromJsonSt composedOf javaGetType.
+fromJsonSt composedOf typeTokenGet.
+fromJsonGen composedOf getAdapterForInput.
+fromJsonGen composedOf fromJson.
+fromJsonSt composedOf wrapper.

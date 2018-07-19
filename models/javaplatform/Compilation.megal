@@ -1,0 +1,17 @@
+module javaplatform.Compilation
+
+import javaplatform.Core
+
+/* @Description: The Java programming language,
+which is compiled into Java byte code, which is then interpreted using
+runtime data handled by the JVM.
+
+@Rationale: See links */
+compileJava : Java -> JavaByteCode.
+JavaC implements compileJava.
+?javaFiles : File+;
+    elementOf Java.
+?classFiles : File+;
+    elementOf JavaByteCode.
+compileJava(?javaFiles) |-> ?classFiles.
+//TODO: Cannot state eval, cannot express system state changes.

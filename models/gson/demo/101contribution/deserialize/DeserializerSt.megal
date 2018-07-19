@@ -1,0 +1,19 @@
+module gson.demo.101contribution.deserialize.DeserializerSt
+
+
+import gson.demo.101contribution.deserialize.JavaPlatformReflection
+import gson.demo.101contribution.deserialize.Objects
+import gson.demo.101contribution.deserialize.GsonMain
+import gson.DeserializerSt where {
+[
+ 101json / ?jsonFile,
+ gson / ?mainGsonTransient,
+ res / ?javaObjectIn,
+ resClass / ?javaTypeObject,
+ res / ?javaObject
+]
+}
+
+/* Leerer Kommentar */
+
+a : Artifact.

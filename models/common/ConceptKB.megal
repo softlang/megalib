@@ -2,7 +2,7 @@ module common.ConceptKB
 
 import common.Concept
 
-/* All concepts that are general so far. */
+/* @Description: All concepts that are general so far. */
 // Design pattern 
 ObserverPattern : DesignPattern;
     = "wikipedia::Observer_pattern".
@@ -16,6 +16,8 @@ TemplateMethodPattern : DesignPattern;
     = "wikipedia::Template_method_pattern".
 DecoratorPattern : DesignPattern;
     = "wikipedia::Decorator_pattern".
+BuilderPattern: DesignPattern;
+	= "wikipedia::Builder_pattern".
 
 // Architectural pattern 
 ModelViewController : ArchitecturalPattern;
@@ -237,6 +239,8 @@ Annotation : Construct;
     aspectOf ObjectOrientedProgramming.
 SoftwareInterface : Construct;
 	= "wikipedia::Interface_(computing)".
+Generic: Construct;
+	="https://en.wikipedia.org/wiki/Generic_programming".
     
 // Roles as terms that certain artifacts are denoted by.
 Monad : Role; // propose a Monad construct
@@ -445,6 +449,19 @@ Decorator-AbstractDecorator : Role;
 Decorator-ConcreteDecorator : Role;
     = "wikipedia::Decorator_pattern";
     participantOf DecoratorPattern.
+    
+BuilderDirector: Role;
+	="https://en.wikipedia.org/wiki/Builder_pattern";
+	participantOf BuilderPattern.
+Builder: Role;
+	="https://en.wikipedia.org/wiki/Builder_pattern";
+	participantOf BuilderPattern.
+ConcreteBuilder: Role;
+	="https://en.wikipedia.org/wiki/Builder_pattern";
+	participantOf BuilderPattern.
+BuilderProduct: Role;
+	="https://en.wikipedia.org/wiki/Builder_pattern";
+	participantOf BuilderPattern.
     
 // Concepts that need further classification 
 SIMT : Concept; 
