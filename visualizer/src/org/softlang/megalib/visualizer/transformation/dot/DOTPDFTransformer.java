@@ -24,7 +24,7 @@ import org.stringtemplate.v4.STGroupFile;
  *
  * @author Dmitri Nikonov <dnikonov at uni-koblenz.de>
  */
-public class DOTTransformer extends Transformer {
+public class DOTPDFTransformer extends Transformer {
 
     private static final ConfigItem<String, String> DEFAULT_CONFIG = new ConfigItem<String, String>()
         .put("color", "black")
@@ -32,7 +32,7 @@ public class DOTTransformer extends Transformer {
 
     private TransformerConfiguration config = new DOTConfigurationBuilder().buildConfiguration();
 
-    public DOTTransformer(VisualizerOptions options) {
+    public DOTPDFTransformer(VisualizerOptions options) {
         super(options);
     }
 
@@ -71,8 +71,9 @@ public class DOTTransformer extends Transformer {
     	text = text.replaceAll("\\r", "");
     	text = text.replaceAll("\\n", "\\\\n");
         text = text.replaceAll("\"", "'");
-        text = text.replace("@Description:", "");
+        text = text.replace("@Description:", "Description:");
         text = Pattern.compile("@Rationale(.*?)\\*/", Pattern.DOTALL).matcher(text).replaceAll("").trim();
+        text = "File: " + g.getName().replace(".", "/") + "\\n" + text;
         template.add("text", text);
         return template.render();
     }

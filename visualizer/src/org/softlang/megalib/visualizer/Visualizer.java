@@ -25,9 +25,11 @@ public class Visualizer {
 
     private Transformer transformer;
 	private String fileEnding;
+	private String type;
 
     public Visualizer(VisualizerOptions options) {
-    	fileEnding = options.getTransformationType();
+    	fileEnding = options.getFileEnding();
+    	type = options.getTransformationType();
         transformer = TransformerRegistry.getInstance(options);
     }
 
@@ -54,12 +56,18 @@ public class Visualizer {
         path = "../output/"+gLegend.getName().replaceAll("\\.", "/")+"."+fileEnding;
         File fLegend = new File(path);
         Files.write(fLegend.toPath(),transformer.transform(gLegend).getBytes(StandardCharsets.UTF_8));
-        if(fileEnding.equals("dot")) {
+        if(type.equals("dot")) {
             	MutableGraph g = Parser.read(FileUtils.openInputStream(f));
             	MutableGraph gMutableLegend = Parser.read(FileUtils.openInputStream(fLegend));
             Graphviz.fromGraph(g).render(Format.PNG).toFile(new File("../output/"+graph.getName().replaceAll("\\.", "/")+".png"));
             Graphviz.fromGraph(gMutableLegend).render(Format.PNG).toFile(new File("../output/"+gLegend.getName().replaceAll("\\.", "/")+".png"));
         }
+        else if(type.equals("dot_pdf")) {
+        	MutableGraph g = Parser.read(FileUtils.openInputStream(f));
+        	MutableGraph gMutableLegend = Parser.read(FileUtils.openInputStream(fLegend));
+        Graphviz.fromGraph(g).render(Format.PS).toFile(new File("../output/"+graph.getName().replaceAll("\\.", "/")+".ps"));
+        Graphviz.fromGraph(gMutableLegend).render(Format.PS).toFile(new File("../output/"+gLegend.getName().replaceAll("\\.", "/")+".ps"));
+    }
         } catch (IOException ex) {
         	ex.printStackTrace();
         }
