@@ -1,7 +1,7 @@
 grammar Megalib;
 
 //Head of the construct, containing entity or function
-declaration: module (imports)* block+ EOF;
+declaration: module (imports)* block* EOF;
 
 block: BLOCKCOMMENT statement+;
 
