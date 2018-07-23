@@ -78,7 +78,7 @@ public class ImportTest {
     public void testMissingModule() throws IOException {
     		ml = new ModelLoader();
         ml.loadFile("testsample/ImportDemo/F.megal");
-        assertEquals("Error at Import resolution from F to E",ml.getTypeErrors().get(0));        
+        assertEquals("Error Missing import target: from F to E",ml.getTypeErrors().get(0));
     }
 
 }
