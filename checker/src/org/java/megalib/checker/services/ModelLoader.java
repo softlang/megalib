@@ -9,12 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -22,9 +18,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.io.FileUtils;
 import org.java.megalib.models.MegaModel;
-import org.java.megalib.models.Relation;
 import org.java.megalib.parser.ErrorListener;
-import org.java.megalib.parser.ImportListener;
 import org.java.megalib.parser.ParserException;
 import org.java.megalib.parser.ParserListener;
 
@@ -34,14 +28,12 @@ import main.antlr.techdocgrammar.MegalibParser;
 
 public class ModelLoader {
 
-    private Queue<String> todos;
     private File root;
 
     private MegaModel model;
     private List<String> typeErrors;
 
     public ModelLoader(String preludePath){
-        todos = new LinkedList<>();
         model = new MegaModel();
         typeErrors = new ArrayList<>();
         try{
@@ -58,6 +50,10 @@ public class ModelLoader {
 
     public MegaModel getModel() {
         return model;
+    }
+    
+    public File getRoot() {
+    		return root;
     }
 
     public List<String> getTypeErrors() {
@@ -86,7 +82,7 @@ public class ModelLoader {
 
     private boolean loadCompleteModelFrom(String data, String abspath) {
         try {
-            resolveImports(data, abspath);
+        		Queue<String> todos = Importer.resolveImports(data, abspath,this);
             if(!abspath.contains("common")) {
             	System.out.println("Loading:");
             	todos.forEach(t -> System.out.println(" "+t));
@@ -129,52 +125,7 @@ public class ModelLoader {
         return listener;
     }
 
-    private void resolveImports(String data, String abspath) throws ParserException, IOException {
-        List<Relation> imports = new LinkedList<>();
-        Set<String> processed = new HashSet<>();
-        Set<String> toProcess = new HashSet<>();
-
-        ImportListener l = (ImportListener) parse(data, new ImportListener());
-        String loadedModuleName = l.getName();
-        imports.addAll(l.getImports());
-        processed.add(loadedModuleName);
-        toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject()).collect(Collectors.toSet()));
-        toProcess.removeAll(processed);
-
-        // Resolve module name to file path
-        int lvl = loadedModuleName.split("\\.").length;
-        root = new File(abspath);
-        // Get root folder
-        for (int i = 0; i < lvl; i++) {
-            root = root.getParentFile();
-        }
-        // Fill the import map
-        while (!toProcess.isEmpty()) {
-            String p = toProcess.iterator().next();
-            String pdata = FileUtils.readFileToString(new File(root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/")
-                                                               + ".megal"));
-            l = (ImportListener) parse(pdata, new ImportListener());
-            if(!p.equals(l.getName()))
-                throw new ParserException("Error at Import Resolution: Identified wrong spelling in 'import " + p + "'. Expected '"+l.getName()+"'");
-            imports.addAll(l.getImports());
-            processed.add(l.getName());
-            toProcess.addAll(l.getImports().parallelStream().map(r -> r.getObject())
-                              .collect(Collectors.toSet()));
-            toProcess.removeAll(processed);
-        }
-        // order import map in a set-based approach
-        while (!imports.isEmpty()) {
-            Set<String> subjects = imports.parallelStream().map(r -> r.getSubject()).collect(Collectors.toSet());
-            Set<String> objects = imports.parallelStream().map(r -> r.getObject()).collect(Collectors.toSet());
-            Set<String> diff = new HashSet<>(objects);
-            diff.removeAll(subjects);
-            if (diff.isEmpty())
-                throw new ParserException("Error : Cycle identified in imports");
-            todos.addAll(diff);
-            imports.removeIf(r -> diff.contains(r.getObject()));
-        }
-        if (!loadedModuleName.equals("")) {
-            todos.add(loadedModuleName);
-        }
-    }
+	void setRoot(File root) {
+		this.root = root;
+	}
 }

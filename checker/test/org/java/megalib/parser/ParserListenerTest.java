@@ -610,4 +610,12 @@ public class ParserListenerTest {
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
     }
+    
+    @Test
+    public void checkEmpty() throws ParserException, IOException {
+        ModelLoader ml = new ModelLoader();
+        String input = "";
+        ml.loadString(input);
+        assertEquals(0, ml.getTypeErrors().size());
+    }
 }
