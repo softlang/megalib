@@ -1,0 +1,20 @@
+module git.functions.pull
+
+import git.functions.fetch
+import git.functions.merge
+import git.basics
+
+/*
+@Description:
+	Git pull command
+@Rationale:
+	merges remote history with local history
+	see Link
+*/
+gitPull: GitConfigFileLanguage # GitRemoteConfigLanguage # GitObjectLanguage # GitReferenceLanguage # CommitFileLanguage -> GitReferenceLanguage # GitObjectLanguage # CommitFileLanguage.
+gitPull(?gitConfigFileFetchIn , ?remoteNameFetchIn, ?gitObjectStreamPre, ?gitReferenceStreamPre,?fileArtifactStreamPre) |-> (?gitReferenceStreamPost, ?gitObjectStreamPost, ?fileArtifactStreamPost).
+gitPull = "gitdoc::git-pull";
+		composedOf gitFetch;
+		composedOf gitMerge.
+		
+Git implements gitPull.

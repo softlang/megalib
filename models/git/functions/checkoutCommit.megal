@@ -1,0 +1,34 @@
+module git.functions.checkoutCommit
+
+import git.files.languages
+import git.basics
+
+
+/*
+@Description:
+	Artifical Container for all files before and after an operation
+@Rationale:
+	As possibly all files in the file system are changed during a checkout and megal has no containers of its own this is nessesary to represent the change.
+*/
+?fileArtifactStreamPre : File+;
+		elementOf CommitFileLanguage.
+?fileArtifactStreamPost : File+;
+		elementOf CommitFileLanguage.
+
+/*
+@Description:
+	Git's checkout Command for commits
+@Rationale:
+	Sets all files to the state the had at given commit time.
+	see Link
+*/
+?gitHeadPre : File;
+	elementOf GitReferenceLanguage.
+?gitHeadPost : File;
+	elementOf GitReferenceLanguage.	
+?gitCommitObject : File;
+	elementOf GitCommitObjectLanguage.
+gitCheckoutCommit : GitCommitObjectLanguage # CommitFileLanguage # GitReferenceLanguage -> CommitFileLanguage # GitReferenceLanguage.
+gitCheckoutCommit(?gitCommitObject, ?fileArtifactStreamPre, ?gitHeadPre ) |-> (?fileArtifactStreamPost, ?gitHeadPost).
+gitCheckoutCommit = "gitdoc::git-checkout#git-checkout-emgitcheckoutem--detachltcommitgt".
+Git implements gitCheckoutCommit.

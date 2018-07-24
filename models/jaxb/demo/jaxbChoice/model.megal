@@ -1,0 +1,45 @@
+module jaxb.demo.model
+
+import jaxb.demo.JAXBChoice
+import jaxb.model where {
+	[ 
+	  companyXSD / ?xmlSchema,
+	  companyModel / ?objectModel,
+	  objectFactory / ?objectFactory,
+ 	  companyFile / ?anXMLDoc,
+	  companyObject / ?contentTree
+					 ] }
+
+/*
+@Description
+    local deployment of JAXB101
+    
+@Rationale
+    See line 13-19 in "JAXBCHOICE::build.gradle"
+*/
+
+companyXSD : File;
+    ~= "JAXBCHOICE::inputs/Company.xsd";
+    partOf JAXB101;
+    defines CompanyXML.
+
+companyModel : File+;
+    ~= "JAXBCHOICE::src/main/java/org/softlang/company/model";
+    partOf JAXB101;
+    defines CompanyObjectLanguage.
+
+objectFactory : File;
+    ~= "JAXBCHOICE::src/main/java/org/softlang/company/models/ObjectFactory.java";
+    partOf JAXB101.
+
+companyFile : File;
+    ~= "JAXBCHOICE::outputs/sampleCompany.tmp";
+    partOf JAXB101;
+    elementOf CompanyXML.
+
+companyObject : Transient;
+    ~= "JAXBCHOICE::src/test/java/org/softlang/company/tests/SerializationTest.java#L18";
+    ~= "JAXBCHOICE::src/main/java/org/softlang/company/features/Serialization.java#L38";
+    partOf JAXB101;
+    elementOf CompanyObjectLanguage.
+  

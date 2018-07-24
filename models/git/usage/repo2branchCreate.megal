@@ -1,0 +1,43 @@
+module git.usage.repo2branchCreate
+
+import git.functions.branchCreate where {
+[
+newBranchName / ?gitReferenceNameIn,
+repoHead / ?gitHeadIn,
+newBranch / ?localBranch
+]
+}
+
+import git.files.head where {
+[
+repoHead / ?gitHead,
+repoMasterBranch / ?headReferenceFile
+]
+}
+
+import git.files.refs where {
+[
+commit / ?referencedCommitObject,
+repoMasterBranch / ?gitReferenceFile,
+repoMasterBranchName / ?gitReferenceName
+];
+[
+commit / ?referencedCommitObject,
+newBranch / ?gitReferenceFile,
+newBranchName / ?gitReferenceName
+]
+}
+
+/*
+@Description:
+	Creation of a new Branch
+	(step 30)
+*/
+
+repoHead ~= "file://./demo_run.json#106649-106652".
+commit ~= "file://./demo_run.json#l108263-108299".
+repoMasterBranch ~= "file://./demo_run.json#l107259-107262".
+repoMasterBranchName ~= "file://./demo_run.json#l107259".
+newBranch ~= "file://./demo_run.json#l109755-109758".
+newBranchName ~= "file://./demo_run.json#l109755".
+newBranchName ~= "file://./demo_run.json#l105969".

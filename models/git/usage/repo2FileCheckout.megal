@@ -1,0 +1,50 @@
+module git.usage.repo2FileCheckout
+
+import git.functions.checkoutFile where {
+[
+TextFileLanguage / ?Language,
+deletedDemoFile / ?fileArtifactPre,
+repo2IndexPre / ?gitIndexPre,
+demoFile / ?fileArtifactPost,
+repo2IndexPost / ?gitIndexPost
+]}
+import git.files.index where {
+[
+repo2IndexPre / ?gitIndex,
+demoFileIndexEntryPre / ?gitIndexEntry,
+demoFileMetaChangeTimePre / ?gitMetaChangeTime,
+demoFileDataChangeTimePre / ?gitDataChangeTime,
+demoFilePath / ?gitEntryFilePath,
+demoFileBlob / ?gitEntryReferencedBlob,
+demoFileBlobHash / ?gitEntryBlobHash
+];
+[
+repo2IndexPost / ?gitIndex,
+demoFileIndexEntryPost / ?gitIndexEntry,
+demoFileMetaChangeTimePost / ?gitMetaChangeTime,
+demoFileDataChangeTimePost / ?gitDataChangeTime,
+demoFilePath / ?gitEntryFilePath,
+demoFileBlob / ?gitEntryReferencedBlob,
+demoFileBlobHash / ?gitEntryBlobHash
+]
+}
+
+/*
+@Descripion:
+	git checkout File (Step 19)
+*/
+repo2IndexPre ~= "file://./demo_run.json#l56642-56677".
+demoFileIndexEntryPre ~= "file://./demo_run.json#l56647-56666".
+demoFileMetaChangeTimePre ~= "file://./demo_run.json#l56657".
+demoFileDataChangeTimePre ~= "file://./demo_run.json#l56649".
+demoFilePath ~= "file://./demo_run.json#l56658".
+demoFileBlob ~= "file://./demo_run.json#l56766-56773".
+demoFileBlobHash ~= "file://./demo_run.json#l56659".
+repo2IndexPost ~= "file://./demo_run.json#l5894-58930".
+demoFileIndexEntryPost ~= "file://./demo_run.json#l56658".
+demoFileMetaChangeTimePost ~= "file://./demo_run.json#l58910".
+demoFileDataChangeTimePost ~= "file://./demo_run.json#l58902".
+demoFilePath ~= "file://./demo_run.json#l58911".
+demoFileBlob ~= "file://./demo_run.json#l59019-59026".
+demoFileBlobHash ~= "file://./demo_run.json#l58912".
+demoFile ~= "file://./demo_run.json#l58149-58151".

@@ -1,0 +1,54 @@
+module git.usage.repo2Move
+
+import git.functions.move where {
+[
+	repo2IndexPre / ?gitIndexPre,
+	repo2IndexPost / ?gitIndexPost,
+	TextFileLanguage / ?Language,
+	demoFile / ?fileArtifactPre,
+	demoFileMoved / ?fileArtifactPost
+]
+}
+import git.files.index where {
+[
+	repo2IndexPre / ?gitIndex,
+	demoFileIndexEntryPre / ?gitIndexEntry,
+	demoFileMetaChangeTimePre / ?gitMetaChangeTime,
+	demoFileDataChangeTimePre / ?gitDataChangeTime,
+	demoFilePathPre / ?gitEntryFilePath,
+	demoFileBlob / ?gitEntryReferencedBlob,
+	demoFileBlobHash / ?gitEntryBlobHash
+];
+[
+	repo2IndexPost / ?gitIndex,
+	demoFileIndexEntryPost / ?gitIndexEntry,
+	demoFileMetaChangeTimePost / ?gitMetaChangeTime,
+	demoFileDataChangeTimePost / ?gitDataChangeTime,
+	demoFilePathPost / ?gitEntryFilePath,
+	demoFileBlob / ?gitEntryReferencedBlob,
+	demoFileBlobHash / ?gitEntryBlobHash
+]
+}
+
+/*
+@Description:
+	Git move file (step 23)
+*/
+demoFile ~= "file://./demo_run.json#l73940-73942".
+demoFileMoved ~= "file://./demo_run.json#l76193-76195".
+repo2IndexPre ~= "file://./demo_run.json#l74685-7421".
+demoFileIndexEntryPre ~= "file://./demo_run.json#l74691-74710".
+demoFileMetaChangeTimePre ~= "file://./demo_run.json#l74701".
+demoFileDataChangeTimePre ~= "file://./demo_run.json#l74693".
+demoFilePathPre ~= "file://./demo_run.json#l74702";
+	refersTo demoFile.
+demoFileBlob ~= "file://./demo_run.json#l74810-74817".
+demoFileBlobHash ~= "file://./demo_run.json#l74073".
+repo2IndexPost ~= "file://./demo_run.json#l76938-76963".
+demoFileIndexEntryPost ~= "file://./demo_run.json#l76945-76963".
+demoFileMetaChangeTimePost ~= "file://./demo_run.json#l76954".
+demoFileDataChangeTimePost ~= "file://./demo_run.json#l76946".
+demoFilePathPost ~= "file://./demo_run.json#l76955";
+	refersTo demoFileMoved.
+demoFileBlob ~= "file://./demo_run.json#l77063-77070".
+demoFileBlobHash ~= "file://./demo_run.json#l76956".

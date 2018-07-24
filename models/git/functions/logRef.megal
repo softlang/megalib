@@ -1,0 +1,21 @@
+module git.functions.logRef
+
+import git.functions.refResolve
+import git.functions.logCommit
+import git.basics
+
+/*
+@Description:
+	git log command
+@Rationale:
+	Returns the changes and metadata of given commit
+	see Link
+*/
+gitLogRef : GitReferenceLanguage -> GitCommitMetadataLanguage.
+gitLogRef(?gitReferenceFileIn) |-> ?commitMetadataOut.
+gitLogRef	composedOf gitReferenceResolve;
+			composedOf gitLogCommit.
+gitLogRef = "gitdoc::git-log";
+			= "gitbook::Git-Basics-Viewing-the-Commit-History".
+			
+Git implements gitLogRef.

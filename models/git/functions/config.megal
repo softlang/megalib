@@ -1,0 +1,37 @@
+module git.functions.config
+
+
+import git.basics
+import git.files.languages
+
+/*
+@Desctiption: 
+	General value-Placeholder for git-config value
+@Rationale: 
+	I would have liked to specify it to int, string or bool.
+*/
+GitConfigValueLanguage : ValueLanguage;
+		= "gitdoc::git-config".
+
+?genericValue : Transient;
+	elementOf GitConfigValueLanguage.
+//	manifestsAs Transient.
+
+/*
+@Description:
+	Git config command
+@Rationale:
+	Get and set repository options
+	see Link
+*/
+?gitConfigFilePre : File;
+	elementOf GitConfigFileLanguage.
+?gitConfigFileOption : Transient;
+	elementOf GitConfigFileOptionLanguage.
+?gitConfigFilePost : File;
+	elementOf GitConfigFileLanguage.
+gitConfigCmd : GitConfigFileLanguage # GitConfigFileOptionLanguage # GitConfigValueLanguage -> GitConfigFileLanguage.
+gitConfigCmd(?gitConfigFilePre, ?gitConfigFileOption, ?genericValue) |-> ?gitConfigFilePost.
+gitConfigCmd = "gitdoc::git-config".
+
+Git implements gitConfigCmd.

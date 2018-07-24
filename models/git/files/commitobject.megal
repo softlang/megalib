@@ -1,0 +1,61 @@
+module git.files.commitobject
+
+import git.basics
+import git.files.languages
+
+/*
+* @Description:
+*	Git's Commit Storage, which span the Graph Structure
+*/
+
+?gitCommitObject : File;
+		elementOf GitCommitObjectLanguage;
+		hasRole Vertex.
+
+?parentCommitObject : File;
+		elementOf GitCommitObjectLanguage;
+		hasRole Vertex.
+
+?referencedTreeObject : File;
+		elementOf GitTreeObjectLanguage.
+		
+?treeReference : Artifact;
+        elementOf GitCommitObjectLanguage;
+		refersTo ?referencedTreeObject;
+		partOf ?gitCommitObject.
+?parentCommitReference : Artifact;
+        elementOf GitCommitObjectLanguage;
+		refersTo ?parentCommitObject;
+		partOf ?gitCommitObject.
+
+
+?commitMetadata : Artifact;
+          elementOf GitCommitMetadataLanguage;
+		partOf ?gitCommitObject.
+
+?authorName : Artifact;
+          elementOf GitCommitMetadataLanguage;
+          partOf ?commitMetadata.
+?authorEmail : Artifact;
+          elementOf GitCommitMetadataLanguage;
+          partOf ?commitMetadata.
+?authorDate : Artifact;
+          elementOf GitCommitMetadataLanguage;
+          partOf ?commitMetadata.
+?committerName : Artifact;
+          elementOf GitCommitMetadataLanguage;
+          partOf ?commitMetadata.
+?committerEmail : Artifact;
+          elementOf GitCommitMetadataLanguage;
+          partOf ?commitMetadata.
+?committerDate : Artifact;
+          elementOf GitCommitMetadataLanguage;
+          partOf ?commitMetadata.
+//?signature : Artifact;
+//          elementOf GitCommitMetadataLanguage;
+//          partOf ?commitMetadata.
+
+?commitMessage : Artifact;
+          elementOf GitCommitMetadataLanguage;
+          partOf ?commitMetadata.
+

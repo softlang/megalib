@@ -1,0 +1,65 @@
+module jaxb.JAXBBinding
+
+import jaxb.Core
+import jaxb.model
+import jaxb.XJC
+
+/*
+@Description
+    The process of marshalling and unmarshalling describes the process of retrieving
+    an XML representation of Java objects and vice versa.
+    
+@Rationale
+    See description of https://101wiki.softlang.org/Technology:JAXB
+    See https://docs.oracle.com/javaee/7/api/javax/xml/bind/package-summary.html
+*/
+JAXB.Binding : Framework;
+    = "JAXBRI::runtime/jaxb1/src/main/java/com/sun/xml/bind";
+    partOf JAXB;
+    uses Java;
+    uses Transformation;
+    uses Validation;
+    facilitates Serialization;
+    facilitates Mapping;
+    facilitates XMLDataBinding.
+
+/*
+@Description
+    The marshaller is a class in the JAXB API, 
+    which deals with the marshalling of Objects to XML
+
+@Rationale
+    See JAXBRI::runtime/jaxb1/src/main/java/com/sun/xml/bind/marshaller/MarshallerImpl.java
+    for the concrete implementation and
+    https://docs.oracle.com/javase/7/docs/api/javax/xml/bind/Marshaller.html
+    for a description
+*/
+?marshaller : Transient;
+    ~= "JAXBRI::runtime/jaxb1/src/main/java/com/sun/xml/bind/marshaller/MarshallerImpl.java";
+    elementOf JVMObjectLanguage; 
+    partOf JAXB.
+
+/*
+@Description
+    The unmarshaller is a class in the JAXB API,
+    which deals with the unmarshalling of XML to Objects
+
+@Rationale
+    See JAXBRI::runtime/jaxb1/src/main/java/com/sun/xml/bind/unmarshaller/UnmarshallerImpl.java
+    for the concrete implementation and
+    https://docs.oracle.com/javase/7/docs/api/javax/xml/bind/Unmarshaller.html
+    for a description
+*/
+?unmarshaller: Transient;
+    ~= "JAXBRI::runtime/jaxb1/src/main/java/com/sun/xml/bind/unmarshaller/UnmarshallerImpl.java";
+    elementOf JVMObjectLanguage;
+    partOf JAXB.
+    
+marshal : JVMObjectLanguage # JVMObjectLanguage -> JAXBXML.
+marshal(?contentTree, ?marshaller) |-> ?anXMLDoc.
+
+unmarshal : JAXBXML # JVMObjectLanguage -> JVMObjectLanguage.
+unmarshal(?anXMLDoc, ?unmarshaller) |-> ?contentTree.
+
+JAXB.Binding implements marshal;
+    implements unmarshal.

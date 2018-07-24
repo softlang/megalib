@@ -1,0 +1,23 @@
+module git.functions.branchCreate
+
+import git.files.languages
+import git.basics
+
+/*
+*@Description:
+*	Git branch add method
+*@Rationale:
+*	Create a new branch (reference) from current Head	
+	see Link
+*/
+?gitReferenceNameIn : Artifact;
+	elementOf  GitReferenceNameLanguage.
+?gitHeadIn : File;
+	elementOf GitReferenceLanguage.
+?localBranch : File;
+	elementOf GitReferenceLanguage.
+gitBranchCreate : GitReferenceNameLanguage # GitReferenceLanguage -> GitReferenceLanguage.
+gitBranchCreate(?gitReferenceNameIn, ?gitHeadIn) |-> ?localBranch.
+gitBranchCreate = "gitdoc::git-branch".
+
+Git implements gitBranchCreate.

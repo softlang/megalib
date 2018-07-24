@@ -1,0 +1,27 @@
+module git.functions.init
+
+
+import git.basics
+import git.files.languages
+
+
+/*
+@Descripton:
+	git init command
+@Rationale:
+	creates a new git repository at given location
+	see Link
+*/
+?folderPath : Artifact;
+	elementOf FilePathLanguage.
+?gitConfigFileInitial : File;
+	elementOf GitConfigFileLanguage.
+?gitHeadPostInit : File;
+	elementOf GitReferenceLanguage.
+?gitMasterPostInit : File;
+	elementOf GitReferenceLanguage.
+gitInit : FilePathLanguage -> GitConfigFileLanguage # GitReferenceLanguage # GitReferenceLanguage.
+gitInit(?folderPath) |-> (?gitConfigFileInitial, ?gitHeadPostInit, ?gitMasterPostInit).
+gitInit = "gitdoc::git-init".
+
+Git implements gitInit.

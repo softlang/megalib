@@ -1,0 +1,41 @@
+module jaxb.XJC
+
+import jaxb.Core
+import jaxb.model
+
+/*
+@Description:
+    As a part of JAXB, XJC deals with schema compilation.
+    XJC servers as JAXBs binding compiler and generates annotated Java classes from a Schema input.
+    
+@Rationale:
+    See description of https://101wiki.softlang.org/Technology:JAXB
+    See https://javaee.github.io/jaxb-v2/doc/user-guide/ch04.html#tools-xjc 
+    See https://docs.oracle.com/cd/E19575-01/819-3669/bnbal/index.html for compiler options
+*/
+XJC : Compiler;
+    = "101wiki::Technology:xjc";
+    = "JAXBRI::xjc/src/main/java/com/sun/tools/xjc";
+    partOf JAXB;
+    uses Java;
+    uses XSD;
+    uses Annotation;
+    facilitates Compilation;
+    facilitates XMLDataBinding;
+    facilitates Mapping;
+    facilitates Transformation. 
+
+/*
+@Description:
+    The function bind takes an XSD Schema and generates annotated Java objects and an ObjectFactory.
+    It can be used via xjc command-line command.
+
+@Rationale: 
+    See https://docs.oracle.com/javase/tutorial/jaxb/intro/arch.html
+    See https://docs.oracle.com/javase/8/docs/technotes/tools/unix/xjc.html for command-line usage
+*/
+bind : XSD -> XJCClassifierJava # XJCFactoryJava.
+bind(?xmlSchema) |-> (?objectModel, ?objectFactory).
+
+XJC implements bind;
+    implements XJCFactoryJava.

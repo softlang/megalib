@@ -1,0 +1,44 @@
+module git.App
+
+import git.Core
+import git.files.refs
+
+/*
+@Description:
+	GitRepository
+@Rationale:
+	Only GitRepository because local and remote Repositories are only present at Transactions
+*/
+?GitRepository : System;
+            = "wikipedia::Repository_(version_control)".
+
+
+/*
+@Description:
+	Git Branches
+@Rationale:
+	Git branches are internally just named references which are overwritten with each commit
+*/			
+?references : File+;
+        partOf ?GitRepository;
+        elementOf GitReferenceLanguage.
+
+// ~= "file:://./.git/refs/heads/"
+?localBranches : File+;
+       partOf ?branches;
+       elementOf GitReferenceLanguage.
+
+// ~= "file:://./.git/refs/remote/_/"
+?remoteBranches : File+;
+       partOf ?branches;
+       elementOf GitReferenceLanguage.
+	   
+// ~= "file:://./.git/refs/tags/"
+?tags : File+;
+		partOf ?references;
+		elementOf GitReferenceLanguage.
+
+// ~= "file:://./.git/objects/"		
+?objects : File+;
+		elementOf GitObjectLanguage;
+		partOf ?GitRepository.

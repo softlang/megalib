@@ -1,0 +1,36 @@
+module git.usage.repo2FileRemove
+
+import git.files.index where {
+	[
+	repo2IndexPre / ?gitIndex,
+	demoFileIndexEntry / ?gitIndexEntry,
+	demoFileMetaChangeTime / ?gitMetaChangeTime,
+	demoFileDataChangeTime / ?gitDataChangeTime,
+	demoFilePath / ?gitEntryFilePath,
+	demoFileBlob / ?gitEntryReferencedBlob,
+	demoFileBlobHash / ?gitEntryBlobHash
+	]}
+import git.functions.remove where {
+	[
+	TextFileLanguage / ?Language,
+	repo2DemoTextFile / ?fileArtifact,
+	repo2IndexPre / ?gitIndexPre,
+	repo2IndexPost / ?gitIndexPost
+	]}
+
+	
+/*
+@Description: 
+	Removal of one file in git (step 17)
+@Problem: 
+	Deletion/Absence of objects not describable 	
+*/
+repo2DemoTextFile ~= "file://./demo_run.json#l47609".
+repo2IndexPre ~= "file://./demo_run.json#l47677-47713".
+repo2IndexPost ~= "file://./demo_run.json#l49925-4941".
+demoFileIndexEntry ~= "file://./demo_run.json#l47683-4702".
+demoFileMetaChangeTime ~= "file://./demo_run.json#l4793".
+demoFileDataChangeTime ~= "file://./demo_run.json#l47685".
+demoFilePath ~= "file://./demo_run.json#l47694".
+demoFileBlob ~= "file://./demo_run.json#l47802-47808".
+demoFileBlobHash ~= "file://./demo_run.json#l47695".

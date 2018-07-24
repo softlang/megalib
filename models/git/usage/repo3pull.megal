@@ -1,0 +1,34 @@
+module git.usage.repo3pull
+
+import git.usage.final.repo3config
+import git.functions.pull where {
+[
+repo3ConfigFile / ?gitConfigFileFetchIn , 
+repo3Orign / ?remoteNameFetchIn, 
+repo3ObjectsPre / ?gitObjectStreamPre,
+repo3ReferencesPre / ?gitReferenceStreamPre,
+repo3FilesPre / ?fileArtifactStreamPre,
+repo3ObjectsPost / ?gitReferenceStreamPost, 
+repo3ReferencesPost / ?gitObjectStreamPost, 
+repo3FilesPost / ?fileArtifactStreamPost,
+repo3MasterPre / ?gitReferenceIn1, 
+originMaster / ?gitReferenceIn2,
+repo3MasterPost / ?gitReferenceOut
+]
+}
+
+/*
+@Description:
+	git pull (step 26)
+*/
+repo3ConfigFile ~= "file://./demo_run.json#l86417-86436".
+repo3Orign ~= "file://./demo_run.json#l86428".
+repo3ObjectsPre ~="file://./demo_run.json#l88680".
+repo3ReferencesPre ~= "file://./demo_run.json#l88283-88290".
+repo3FilesPre ~= "file://./demo_run.json#l88291-88294".
+repo3ObjectsPost ~= "file://./demo_run.json#l91054-91146".
+repo3ReferencesPost ~= "file://./demo_run.json#l90647-90658".
+repo3FilesPost ~= "file://./demo_run.json#l90659-90662".
+repo3MasterPre ~= "file://./demo_run.json#l88283-88286".
+originMaster ~= "file://./demo_run.json#l90655-90658".
+repo3MasterPost ~= "file://./demo_run.json#l90651-90654".

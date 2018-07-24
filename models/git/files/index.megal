@@ -1,0 +1,33 @@
+module git.files.index
+
+import git.basics
+import git.files.languages
+/*
+@Description:
+	Git's index file
+@Rationale:
+	It keeps describes the last known state of versioned/added files (versioning stage)
+	For reading those files use https://github.com/sbp/gin
+*/
+//Dircache     ~= "file://./.git/index";
+?gitIndex : File;
+    elementOf GitIndexFileLanguage.
+?gitIndexEntry : Artifact;
+    partOf ?gitIndex;
+    elementOf GitIndexFileLanguage.
+?gitMetaChangeTime : Artifact;
+    partOf ?gitIndexEntry;
+    elementOf GitIndexFileLanguage.
+?gitDataChangeTime : Artifact;
+    partOf ?gitIndexEntry;
+    elementOf GitIndexFileLanguage.
+?gitEntryFilePath : Artifact;
+    partOf ?gitIndexEntry;
+    elementOf GitIndexFileLanguage.
+//Blobfile
+?gitEntryReferencedBlob : File;
+	elementOf GitBlobObjectLanguage.
+?gitEntryBlobHash : Artifact;
+	partOf ?gitIndexEntry;
+	elementOf GitIndexFileLanguage;
+	refersTo ?gitEntryReferencedBlob.

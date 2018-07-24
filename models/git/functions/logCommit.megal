@@ -1,0 +1,22 @@
+module git.functions.logCommit
+
+import git.basics
+import git.files.languages
+
+/*
+@Description:
+	git log command
+@Rationale:
+	Returns the changes and metadata of given commit
+	see Link
+*/
+?gitCommitObjectIn : File;
+	elementOf GitCommitObjectLanguage.
+?commitMetadataOut : Artifact;
+	elementOf GitCommitMetadataLanguage.
+gitLogCommit : GitCommitObjectLanguage -> GitCommitMetadataLanguage.
+gitLogCommit(?gitCommitObjectIn) |-> ?commitMetadataOut.
+gitLogCommit = "gitdoc::git-log";
+			= "gitbook::Git-Basics-Viewing-the-Commit-History".
+
+Git implements gitLogCommit.

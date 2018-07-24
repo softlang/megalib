@@ -1,0 +1,32 @@
+module git.functions.pushRevisionTag
+
+import git.basics
+import git.files.languages
+/*
+@Description:
+	git push command Special case for Revision Tags
+@Rationale:
+	sends revision tag to remote repository
+	see Link
+*/
+?gitConfigFilePushIn : File;
+		elementOf GitConfigFileLanguage.
+?remoteNamePushIn : Artifact;
+		elementOf GitRemoteConfigLanguage.
+?gitTagObjectLocal : File;
+		elementOf GitRevisionTagObjectLanguage.
+?gitTagObjectRemote : File;
+		elementOf GitRevisionTagObjectLanguage;
+		correspondsTo ?gitTagObjectLocal.
+?gitTagReferenceFileLocal : File;
+		elementOf GitReferenceLanguage;
+		refersTo ?gitTagObjectLocal.
+?gitTagReferenceFileRemote : File;
+		elementOf GitReferenceLanguage;
+		refersTo ?gitTagObjectRemote;
+		correspondsTo ?gitTagReferenceFileLocal.
+gitPushRevisionTag: GitConfigFileLanguage # GitRemoteConfigLanguage # GitRevisionTagObjectLanguage # GitReferenceLanguage -> GitRevisionTagObjectLanguage # GitReferenceLanguage.
+gitPushRevisionTag(?gitConfigFilePushIn, ?remoteNamePushIn, ?gitTagObjectLocal, ?gitTagReferenceFileLocal) |-> (?gitTagObjectRemote, ?gitTagReferenceFileRemote).
+gitPushRevisionTag ="gitdoc::git-push".
+
+Git implements gitPushRevisionTag.

@@ -146,6 +146,11 @@ ClusterManagementWare : TechnologySpace;
 	subspaceOf ClusterWare.
 GraphWare : TechnologySpace;
     = "wikipedia::Category:Application-specific_graphs".
+VersionControl : TechnologySpace;
+    = "wikipedia::Version_control".
+DistributedVersionControl : TechnologySpace;
+    = "wikipedia::Distributed_version_control";
+    subspaceOf VersionControl.
 
 // Abstract Processes 
 PrettyPrinting : AbstractProcess; 
@@ -228,6 +233,18 @@ ParserGeneration : AbstractProcess;
     = "101wiki::Parser_generation".
 UnifiedShaderModel : AbstractProcess;
 	= "wikipedia::Unified_shader_model".
+VersionMerging : AbstractProcess.
+VersionMerging = "wikipedia::Merge_(version_control)".
+AtomicOperation : AbstractProcess.
+AtomicOperation = "wikipedia::Atomicity_(database_systems)".
+AtomicCommit : AbstractProcess;
+          = "wikipedia::Atomic_commit";
+          refines AtomicOperation.
+Branching : AbstractProcess.
+Branching = "wikipedia::Branching_(version_control)".
+RevisionTagging : AbstractProcess. //As used in Version Marking like v1
+RevisionTagging = "wikipedia::Revision_tag".
+
 HTTP : Protocol;
     = "wikipedia::HTTP".
 HTTPS : Protocol ;
@@ -370,6 +387,11 @@ AST : Role;
    = "https://en.wikipedia.org/wiki/Abstract_syntax_tree".
 Invariant : Role; 
  		= "wikipedia::Invariant_(computer_science)".
+//For idetifcation revisongraph Nodes
+Vertex : Role;
+		= "wikipedia::Vertex_(graph_theory)".
+HEAD : Role;
+	= "wikipedia::Version_control#Common_vocabulary".
 
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";

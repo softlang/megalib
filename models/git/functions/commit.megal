@@ -1,0 +1,33 @@
+module git.functions.commit
+
+import git.basics
+import git.files.languages
+
+/*
+@Description:
+	Git commit command
+@Rationale:
+	Record changes to the repository
+	see Link
+*/
+?commitMetadataIn : Artifact;
+	elementOf GitCommitMetadataLanguage.
+?gitIndexPreCommit : File;
+	elementOf GitIndexFileLanguage.
+?gitHeadPreCommit : File;
+	elementOf GitReferenceLanguage.
+?gitCommitObjectOut : File;
+	elementOf GitCommitObjectLanguage.
+?gitTreeObjectOut : File;
+	elementOf GitTreeObjectLanguage.
+?gitReferencePostCommit : File;
+	elementOf GitReferenceLanguage.
+?gitIndexPostCommit : File;
+	elementOf GitIndexFileLanguage.
+gitCommit : GitCommitMetadataLanguage # GitIndexFileLanguage # GitReferenceLanguage -> GitCommitObjectLanguage # GitTreeObjectLanguage # GitReferenceLanguage # GitIndexFileLanguage.
+gitCommit(?commitMetadataIn, ?gitIndexPreCommit, ?gitHeadPreCommit) |-> (?gitCommitObjectOut, ?gitTreeObjectOut, ?gitReferencePostCommit, ?gitIndexPostCommit).
+gitCommit = "gitdoc::git-commit"; 
+		concretizes AtomicCommit.
+//According to wikipedia::Comparison_of_version_control_software#Features
+		
+Git implements gitCommit.

@@ -1,0 +1,30 @@
+module git.files.refs
+
+import git.Core
+import git.files.languages
+
+/*
+@Description:
+	Git Refence resolution system
+@Rationale:
+	this is an essential Part of the branching and remote syncing feature 
+
+@Description: 
+	Git References (Branches and Revision-Tags)
+@Rationale: 
+	Both are the same, but I needed it as Components of  a Repository and artificial Reference Stream
+*/
+?referencedCommitObject : File;
+	elementOf GitCommitObjectLanguage.
+
+
+?gitReferenceFile : File;
+	elementOf GitReferenceLanguage;
+	refersTo ?referencedCommitObject.
+
+
+?gitReferenceName  : Artifact;
+	elementOf GitReferenceNameLanguage;
+	partOf ?gitReferenceFile.
+
+	

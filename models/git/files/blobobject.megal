@@ -1,0 +1,13 @@
+module git.files.blobobject
+
+import git.basics
+import git.files.languages
+
+/*
+*@Description:
+* A Git Binary Large Object
+*@Rationale:
+* This is how versioned Files' Content is stored.
+*/
+?gitBlobObject : File;
+	elementOf GitBlobObjectLanguage.

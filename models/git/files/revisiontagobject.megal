@@ -1,0 +1,44 @@
+module git.files.revisiontagobject
+
+import git.basics
+import git.files.languages
+
+/*
+*@Description:
+*	Git's Revision Tag Objects
+*@Rationale:
+*  A named reference to a certain commit
+*/		
+?gitTagObject : File;
+		elementOf GitRevisionTagObjectLanguage.
+?tagMetadata : Artifact;
+		elementOf GitTagMetadataLanguage;
+		partOf ?gitTagObject.
+
+
+?taggedCommitObject : File;
+		elementOf GitCommitObjectLanguage.
+?actualReference : File;
+		elementOf GitReferenceNameLanguage;
+		refersTo ?gitTagObject.
+		
+?tagName : Artifact;
+		elementOf GitTagMetadataLanguage;
+		elementOf GitReferenceNameLanguage;
+		partOf	?tagMetadata;
+		consistentWith ?actualReference.
+?taggerName : Artifact;
+		elementOf GitTagMetadataLanguage;
+		partOf	?tagMetadata.
+?taggerEmail : Artifact;
+		elementOf GitTagMetadataLanguage;
+		partOf	?tagMetadata.
+?taggingTime : Artifact;
+		elementOf GitTagMetadataLanguage;
+		partOf	?tagMetadata.
+?taggingMessage : Artifact;
+		elementOf GitTagMetadataLanguage;
+		partOf	?tagMetadata.
+?taggedCommitReference : Artifact;
+		elementOf GitRevisionTagObjectLanguage;
+		refersTo ?taggedCommitObject.

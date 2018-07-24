@@ -1,0 +1,22 @@
+module git.functions.checkoutBranch
+
+import git.files.languages
+import git.functions.checkoutCommit
+import git.functions.refResolve
+
+/*
+*@Description:
+*	Git checkout branch method
+*@Rationale:
+*	The method to switch to a specific branch
+	see Link
+*/
+?localBranch : File;
+	elementOf GitReferenceLanguage.
+gitCheckoutBranch : GitReferenceLanguage # CommitFileLanguage # GitReferenceLanguage -> CommitFileLanguage #  GitReferenceLanguage.
+gitCheckoutBranch(?localBranch, ?fileArtifactStreamPre, ?gitHeadPre) |-> (?fileArtifactStreamPost, ?gitHeadPost).
+gitCheckoutBranch = "gitdoc::git-checkout#git-checkout-emgitcheckoutemltbranchgt";
+				composedOf gitReferenceResolve;
+				composedOf gitCheckoutCommit.
+				
+Git implements gitCheckoutBranch.

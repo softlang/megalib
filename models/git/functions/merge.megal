@@ -1,0 +1,35 @@
+module git.functions.merge
+
+import git.basics
+import git.files.languages
+
+
+/*
+@Description:
+	Artifical Container for all files before and after an operation
+@Rationale:
+	As possibly all files in the file system are changed during a checkout and megal has no containers of its own this is nessesary to represent the change.
+*/
+?fileArtifactStreamPre : File+;
+		elementOf CommitFileLanguage.
+?fileArtifactStreamPost : File+;
+		elementOf CommitFileLanguage.
+/*
+@Description:
+	Git merge command
+@Rationale:
+	Join two or more development histories together
+	see Link
+*/
+?gitReferenceIn1: File;
+	elementOf GitReferenceLanguage.
+?gitReferenceIn2 : File;
+	elementOf GitReferenceLanguage.
+?gitReferenceOut : File;
+	elementOf GitReferenceLanguage.
+gitMerge : GitReferenceLanguage # GitReferenceLanguage # CommitFileLanguage -> GitReferenceLanguage # CommitFileLanguage.
+gitMerge(?gitReferenceIn1, ?gitReferenceIn2, ?fileArtifactStreamPre) |-> (?gitReferenceOut, ?fileArtifactStreamPost).
+gitMerge ="gitdoc::git-merge";
+	concretizes VersionMerging.
+
+Git implements gitMerge.
