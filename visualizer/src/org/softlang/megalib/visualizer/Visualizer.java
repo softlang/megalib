@@ -4,10 +4,18 @@
 package org.softlang.megalib.visualizer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
+import org.apache.batik.transcoder.Transcoder;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.commons.io.FileUtils;
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.Node;
@@ -15,7 +23,7 @@ import org.softlang.megalib.visualizer.models.transformation.Transformer;
 import org.softlang.megalib.visualizer.models.transformation.TransformerConfiguration;
 import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
 
-
+import org.apache.fop.svg.PDFTranscoder;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.MutableGraph;
@@ -65,12 +73,35 @@ public class Visualizer {
         else if(type.equals("dot_pdf")) {
         	MutableGraph g = Parser.read(FileUtils.openInputStream(f));
         	MutableGraph gMutableLegend = Parser.read(FileUtils.openInputStream(fLegend));
-        Graphviz.fromGraph(g).render(Format.PS).toFile(new File("../output/"+graph.getName().replaceAll("\\.", "/")+".ps"));
-        Graphviz.fromGraph(gMutableLegend).render(Format.PS).toFile(new File("../output/"+gLegend.getName().replaceAll("\\.", "/")+".ps"));
+        	File svgIn = new File("../output/"+graph.getName().replaceAll("\\.", "/")+".svg");
+        	File svgLegendIn = new File("../output/"+gLegend.getName().replaceAll("\\.", "/")+".svg");
+        	Graphviz.fromGraph(g).render(Format.SVG).toFile(svgIn);
+        	Graphviz.fromGraph(gMutableLegend).render(Format.SVG).toFile(svgLegendIn);
+        	File pdfOut = new File("../output/"+graph.getName().replaceAll("\\.", "/")+".pdf");
+        	File pdfLegendOut = new File("../output/"+gLegend.getName().replaceAll("\\.", "/")+".pdf");
+        	svg2pdf(svgIn,pdfOut);
+        	svg2pdf(svgLegendIn,pdfLegendOut);
     }
         } catch (IOException ex) {
         	ex.printStackTrace();
         }
     }
 
+    private static void svg2pdf(File in, File out) {
+    	try {
+			String uriIn = in.toURI().toURL().toString();
+			TranscoderInput svgIn = new TranscoderInput(uriIn);
+			OutputStream pdfOutStream = new FileOutputStream(out.toString());
+			TranscoderOutput pdfOut = new TranscoderOutput(pdfOutStream);
+			Transcoder transcoder = new PDFTranscoder();
+			transcoder.transcode(svgIn, pdfOut);
+			pdfOutStream.flush();
+			pdfOutStream.close();
+		} catch (TranscoderException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    }
 }

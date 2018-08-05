@@ -46,6 +46,18 @@
 			<artifactId>slf4j-nop</artifactId>
 			<version>1.7.25</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-rasterizer -->
+		<dependency>
+    		<groupId>org.apache.xmlgraphics</groupId>
+    		<artifactId>batik-rasterizer</artifactId>
+    	<version>1.10</version>
+    	</dependency>
+    	<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-transcoder -->
+		<dependency>
+    		<groupId>org.apache.xmlgraphics</groupId>
+    		<artifactId>batik-transcoder</artifactId>
+    		<version>1.7</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
