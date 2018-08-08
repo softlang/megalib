@@ -19,10 +19,10 @@ JAXB : Framework;
     uses Annotation;
     uses Reflection;
     facilitates Mapping;
-    facilitates XMLDataBinding;
+    facilitates XMLDataBinding.
 JAXBXML : DataExchangeLanguage;
     subsetOf XML;
-    ^implements JAXBXML.
+    ^implements JAXB.
 
 /*
 @Description:
@@ -57,7 +57,7 @@ XJCClassifierJava : ProgrammingLanguage;
 XJCFactoryJava : ProgrammingLanguage;
     = "JAXBRI::xjc/src/main/java/com/sun/tools/xjc/generator/bean/ObjectFactoryGeneratorImpl.java";
     subsetOf Java;
-    hasRole Factory;
+    encodes ConcreteFactory;
     ^implements JAXB.
 
 

@@ -1,6 +1,6 @@
-module jaxb.demo.model
+module jaxb.demo.jaxbChoice.model
 
-import jaxb.demo.JAXBChoice
+import jaxb.demo.jaxbChoice.App
 import jaxb.model where {
 	[ 
 	  companyXSD / ?xmlSchema,

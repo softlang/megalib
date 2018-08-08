@@ -1,4 +1,4 @@
-module jaxb.demo.JAXBChoice
+module jaxb.demo.jaxbChoice.App
 
 import jaxb.Core
 import jaxb.SchemaGen
