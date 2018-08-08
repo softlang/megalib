@@ -4,22 +4,34 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import javax.swing.SpringLayout;
+
+import org.eclipse.gef.layout.ILayoutAlgorithm;
+import org.eclipse.gef.layout.algorithms.HorizontalShiftAlgorithm;
 import org.eclipse.gef.layout.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.gef.layout.algorithms.SpaceTreeLayoutAlgorithm;
+import org.eclipse.gef.layout.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.gef.layout.algorithms.SugiyamaLayoutAlgorithm;
 import org.eclipse.gef.zest.fx.ZestProperties;
+
+import javafx.scene.shape.Sphere;
+
 import org.eclipse.gef.graph.Graph;
 
 public class GraphToGef {
 			private static final String LABEL = ZestProperties.LABEL__NE;
-		private static Set<org.eclipse.gef.graph.Node> nodes = new HashSet();
+		private Set<org.eclipse.gef.graph.Node> nodes = new HashSet();
 		
-		public static org.eclipse.gef.graph.Graph createGraph(model.Graph g){
+		public org.eclipse.gef.graph.Graph createGraph(model.Graph g){
 			LinkedList<org.eclipse.gef.graph.Edge> edges = new LinkedList();
 			g.forEachEdge(e-> edges.add(createEdge(e)));
 			org.eclipse.gef.graph.Graph.Builder builder = new org.eclipse.gef.graph.Graph.Builder();
-			return builder.nodes(nodes).edges(edges).attr(ZestProperties.LAYOUT_ALGORITHM__G, new RadialLayoutAlgorithm()).build();
+			SpringLayoutAlgorithm layout = new SpringLayoutAlgorithm();
+			layout.setSpringLength(60);
+			return builder.nodes(nodes).edges(edges).attr(ZestProperties.LAYOUT_ALGORITHM__G, layout).build();
 		}
 		
-		public static org.eclipse.gef.graph.Edge createEdge(Edge e){
+		public org.eclipse.gef.graph.Edge createEdge(Edge e){
 			Node origin = e.getOrigin();
 			Node destination = e.getDestination();
 			org.eclipse.gef.graph.Node nOrigin = createNode(origin);
@@ -29,7 +41,7 @@ public class GraphToGef {
 			return builder.buildEdge();
 		}
 		
-		public static org.eclipse.gef.graph.Node createNode(Node n){
+		public org.eclipse.gef.graph.Node createNode(Node n){
 			org.eclipse.gef.graph.Node.Builder builder = new org.eclipse.gef.graph.Node.Builder();
 			builder.attr(LABEL, n.getName());
 			org.eclipse.gef.graph.Node node = builder.buildNode();

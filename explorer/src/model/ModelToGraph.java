@@ -28,7 +28,7 @@ public class ModelToGraph {
 	private String path;
 	private String modelid;
 
-	public Graph createGraph(String path1, String path2) {
+	public List<Graph> createGraph(String path1, String path2) {
 		Path p = Paths.get(path1, path2);
 		modelid = path2.replace(".megal", "").replaceAll("/", "\\."); 
 		loader = new ModelLoader();
@@ -40,13 +40,13 @@ public class ModelToGraph {
 		}	
 		List<Graph> graphs = new LinkedList<>();
 		String modelname = null;
+		int id = 0;
 		for (Block b : model.getBlocks()) {
 			if (b.getModule().startsWith("common.")) {
 				continue;
 			}
-			if (!b.getModule().equals(modelname)){
-				graph = new Graph(b.getModule(), b.getText());
-			}
+			graph = new Graph(b.getModule() + id, b.getText());
+			id++;
 			// instance nodes
 			b.getInstanceOfMap().entrySet().stream().filter(entry -> !entry.getValue().equals("Link"))
 					.map(entry -> createNode(entry.getKey(), entry.getValue(), model)).forEach(graph::add);
@@ -56,11 +56,11 @@ public class ModelToGraph {
 					.forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
 			b.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
 			b.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
-			if(graph.getName().equals(modelid)){
+			if(b.getModule().equals(modelid)){
 			graphs.add(graph);
 			}
 		}
-		return graphs.get(0);
+		return graphs;
 	}
 
 	private Node createNode(String name, String type, MegaModel model) {
