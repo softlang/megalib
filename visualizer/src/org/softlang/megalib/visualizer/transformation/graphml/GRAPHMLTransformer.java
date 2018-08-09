@@ -4,6 +4,7 @@
 package org.softlang.megalib.visualizer.transformation.graphml;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -64,6 +65,20 @@ public class GRAPHMLTransformer extends Transformer {
         
         
         g.forEachNode(n -> old_nodes.add((n)));
+        
+        //creating legend nodes, using Set to avoid double elements
+        HashSet<Node> legendNodes = new HashSet<>();
+        for(Node n: old_nodes) {
+        	for(String s : n.getInstanceHierarchy()) {
+        		if(config.contains(s)) {
+        			n = new Node(s,s,"");
+        			legendNodes.add(n);
+        		}
+        	}
+        }
+        //add legend nodes to normal node list
+        old_nodes.addAll(legendNodes);
+        
         int i = 0;
         for( Node n : old_nodes) {
         	nodes.add(createGRAPHMLNode(n,i));
@@ -74,6 +89,8 @@ public class GRAPHMLTransformer extends Transformer {
         	edges.add(new GRAPHMLEdge(e,nodes,i));
         	i++;
         }
+        
+       
         
         template.add("name", options.getModelName());
         template.add("nodes", nodes);
