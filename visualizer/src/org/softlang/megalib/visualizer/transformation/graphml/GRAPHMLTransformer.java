@@ -67,21 +67,24 @@ public class GRAPHMLTransformer extends Transformer {
         g.forEachNode(n -> old_nodes.add((n)));
         
         //creating legend nodes, using Set to avoid double elements
-        HashSet<Node> legendNodes = new HashSet<>();
+        HashSet<Node> old_legendNodes = new HashSet<>();
         for(Node n: old_nodes) {
         	for(String s : n.getInstanceHierarchy()) {
         		if(config.contains(s)) {
         			n = new Node(s,s,"");
-        			legendNodes.add(n);
+        			old_legendNodes.add(n);
         		}
         	}
         }
-        //add legend nodes to normal node list
-        old_nodes.addAll(legendNodes);
-        
+               
         int i = 0;
         for( Node n : old_nodes) {
         	nodes.add(createGRAPHMLNode(n,i));
+        	i++;
+        }
+        LinkedList<GRAPHMLNode> legendNodes = new LinkedList();
+        for( Node n : old_legendNodes) {
+        	legendNodes.add(createGRAPHMLNode(n,i));
         	i++;
         }
         i = 0;
@@ -95,6 +98,7 @@ public class GRAPHMLTransformer extends Transformer {
         template.add("name", options.getModelName());
         template.add("nodes", nodes);
         template.add("edges", edges);
+        template.add("legendnodes", legendNodes);
         String text = g.getText();
         text = text.replace("/*", "");
     	text = text.replaceAll("\\r", "");

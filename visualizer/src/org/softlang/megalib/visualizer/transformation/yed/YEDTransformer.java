@@ -7,6 +7,7 @@ import org.softlang.megalib.visualizer.VisualizerOptions;
 import org.softlang.megalib.visualizer.exceptions.MegaModelVisualizerException;
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.transformation.Transformer;
+import org.softlang.megalib.visualizer.models.transformation.TransformerConfiguration;
 import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
 
 /**
@@ -17,7 +18,7 @@ import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry
 public class YEDTransformer extends Transformer {
 
     static {
-        TransformerRegistry.registerTransformer("yed", (VisualizerOptions options) -> new YEDTransformer(options));
+        TransformerRegistry.registerTransformer("yed","yed", (VisualizerOptions options) -> new YEDTransformer(options));
     }
 
     public YEDTransformer(VisualizerOptions options) {
@@ -28,5 +29,11 @@ public class YEDTransformer extends Transformer {
     public String transform(Graph g) {
         throw new MegaModelVisualizerException("Not supported yet.");
     }
+
+	@Override
+	public TransformerConfiguration getConfig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
