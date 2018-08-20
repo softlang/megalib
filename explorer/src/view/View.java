@@ -22,6 +22,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.GraphToGef;
 import model.ModelToGraph;
+import module.CustomModule;
 
 public class View extends Application {
 
@@ -103,7 +104,7 @@ public class View extends Application {
 		}
 
 		protected Module createModule() {
-			return new ZestFxModule();
+			return new CustomModule();
 		}
 
 }
