@@ -95,11 +95,12 @@ graph(name, nodes, legendnodes, edges, text) ::= <<\<?xml version="1.0" encoding
  
 node(n)	::= <<
     \<node id="<n.id>">
+    \<data key="d3" xml:space="preserve">\<![CDATA[<n.link>]]>\</data>
       \<data key="d5">
         \<y:GenericNode configuration="<n.shape>">
         \<y:Geometry height="70.0" width="<n.width>"/>
           \<y:Fill color="<n.color>" transparent="false"/>
-          \<y:NodeLabel iconData="<n.icon>" alignment="center" autoSizePolicy="content" horizontalTextPosition="right" iconTextGap="4" verticalTextPosition="center" visible="true"><n.name>\</y:NodeLabel>
+          \<y:NodeLabel iconData="<n.icon>" underlinedText="<n.underlined>" alignment="center" autoSizePolicy="content" horizontalTextPosition="right" iconTextGap="4" verticalTextPosition="center" visible="true"><n.name>\</y:NodeLabel>
         \</y:GenericNode>
       \</data>
     \</node>
@@ -107,7 +108,7 @@ node(n)	::= <<
 edge(e) ::= << \<edge id="<e.id>" source="<e.origin>" target="<e.destination>">  
 				\<data key="d9">
                 \<y:PolyLineEdge>	 
-				\<y:EdgeLabel alignment="center" ><e.label>\<y:LabelModel>
+				\<y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" modelName="centered" modelPosition="center" ><e.label>\<y:LabelModel>
               		\<y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             	\</y:LabelModel>   
             	\</y:EdgeLabel>

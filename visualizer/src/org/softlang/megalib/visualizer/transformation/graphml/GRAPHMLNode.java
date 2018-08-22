@@ -16,6 +16,8 @@ public class GRAPHMLNode extends Node {
     private String width;
     
     private String icon;
+    
+    private String underlined;
 
     public GRAPHMLNode(Node original, String color, String shape, int id, String icon) {
         super(original.getType(), original.getName(), original.getLink(), original.getInstanceHierarchy(), original.getEdges());
@@ -24,6 +26,11 @@ public class GRAPHMLNode extends Node {
         this.id = Integer.toString(id);
         this.width = Integer.toString(50 + this.getName().length() * 10);
         this.icon = icon;
+        if(this.getLink().equals("")) {
+        	this.underlined = "false";
+        }else{
+        	this.underlined = "true";
+        };
     }
 
     public String getColor() {
@@ -44,5 +51,9 @@ public class GRAPHMLNode extends Node {
 
     public String getIcon() {
     	return icon;
+    }
+    
+    public String getUnderlined() {
+    	return underlined;
     }
 }

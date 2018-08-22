@@ -4,6 +4,7 @@
 package org.softlang.megalib.visualizer.models;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -90,8 +91,24 @@ public class ModelToGraph {
 	}
 
 	private String getFirstInstanceLink(MegaModel model, String name) {
-		return Optional.ofNullable(model.getLinks(name)).filter(set -> !set.isEmpty()).map(set -> set.iterator().next())
-				.orElse("");
+		Set<Relation> r = new HashSet();
+		if(model.getRelationships().get("=") != null) {
+			r.addAll(model.getRelationships().get("="));
+		}
+		if(model.getRelationships().get("~=") !=null) {
+			r.addAll(model.getRelationships().get("~="));
+		}
+		for(Relation x:r) {
+			if(x.getSubject().equals(name)) {
+				String link = x.getObject();
+				if(link.contains("::")){
+		            String ns = link.split("::")[0];
+		            link = link.replace(ns + "::", model.getNamespace(ns) + "/");
+		        }
+				return link;
+			}
+		}
+		return "";
 	}
 
 	private void createEdgesByFunction(Graph graph, String functionName, Set<Function> funcs) {
