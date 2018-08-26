@@ -44,6 +44,7 @@ public class GraphToGef {
 		public org.eclipse.gef.graph.Node createNode(Node n){
 			org.eclipse.gef.graph.Node.Builder builder = new org.eclipse.gef.graph.Node.Builder();
 			builder.attr(LABEL, n.getName());
+			builder.attr("link", n.getLink());
 			org.eclipse.gef.graph.Node node = builder.buildNode();
 			for(org.eclipse.gef.graph.Node n1: nodes){
 				if(n1.attributesProperty().equals(node.attributesProperty())){

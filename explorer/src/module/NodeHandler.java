@@ -23,13 +23,49 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler{
 	}
 	
 	private Node getNodeAtPosition(double x, double y,List<Node> nodes){
-		//TODO Implement method which returns Node at position
+		for(Node n:nodes) {
+			Point p = (Point) n.attributesProperty().get("node-position");
+			Dimension size = (Dimension) n.attributesProperty().get("node-size");
+			if(p.x<x && x<p.x+size.getWidth() && p.y<y && y<p.y+size.getHeight()) {
+				System.out.println(n.attributesProperty().get("element-label"));
+				return n;
+			}
+		}
 		return null;
 	}
 	
-	private void goToLink(Node n){
-		//TODO Implement Method which takes Link from Node and redirects user
-		//TODO Add Link to node...
+	public static boolean openWebpage(URI uri) {
+	    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+	        try {
+	            desktop.browse(uri);
+	            return true;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return false;
 	}
-
+	
+	public static boolean openWebpage(URL url) {
+	    try {
+	        return openWebpage(url.toURI());
+	    } catch (URISyntaxException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	
+	private void goToLink(Node n){
+		if(!n.getAttributes().get("link").equals("")) {
+			URI link;
+			try {
+				link = new URI ((String) n.getAttributes().get("link"));
+				openWebpage(link);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }
