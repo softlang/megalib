@@ -3,14 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Explorer1
 Bundle-SymbolicName: Explorer1
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: checker_plug;bundle-version="1.0.0",
-  org.eclipse.gef.geometry;bundle-version="5.0.0",
-  org.eclipse.gef.zest.fx;bundle-version="5.0.1",
-  org.eclipse.gef.graph;bundle-version="5.0.0",
-  org.eclipse.gef.layout;bundle-version="5.0.0",
-  org.eclipse.gef.common;bundle-version="5.0.0",
-  org.eclipse.gef.fx;bundle-version="5.0.1",
-  org.eclipse.gef.mvc.fx;bundle-version="5.0.2"
+Require-Bundle: org.eclipse.gef.geometry;bundle-version="5.0.0",
+ org.eclipse.gef.zest.fx;bundle-version="5.0.1",
+ org.eclipse.gef.graph;bundle-version="5.0.0",
+ org.eclipse.gef.layout;bundle-version="5.0.0",
+ org.eclipse.gef.common;bundle-version="5.0.0",
+ org.eclipse.gef.fx;bundle-version="5.0.1",
+ org.eclipse.gef.mvc.fx;bundle-version="5.0.2",
+ visualizer_plugin;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: com.google.common.reflect;version="15.0.0",
   com.google.inject;version="1.3.0",

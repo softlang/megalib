@@ -18,11 +18,14 @@ import javafx.scene.shape.Sphere;
 
 import org.eclipse.gef.graph.Graph;
 
+import org.softlang.megalib.visualizer.models.Node;
+import org.softlang.megalib.visualizer.models.Edge;
+
 public class GraphToGef {
 			private static final String LABEL = ZestProperties.LABEL__NE;
 		private Set<org.eclipse.gef.graph.Node> nodes = new HashSet();
 		
-		public org.eclipse.gef.graph.Graph createGraph(model.Graph g){
+		public org.eclipse.gef.graph.Graph createGraph(org.softlang.megalib.visualizer.models.Graph g){
 			LinkedList<org.eclipse.gef.graph.Edge> edges = new LinkedList();
 			g.forEachEdge(e-> edges.add(createEdge(e)));
 			org.eclipse.gef.graph.Graph.Builder builder = new org.eclipse.gef.graph.Graph.Builder();

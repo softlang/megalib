@@ -21,7 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.GraphToGef;
-import model.ModelToGraph;
+import model.ModelDataToGraph;
 import module.CustomModule;
 
 public class View extends Application {
@@ -38,10 +38,10 @@ public class View extends Application {
 		System.out.println("Enter Path to Models Folder");
 		String path1 = scanner.next();
 		System.out.println("Enter Path to the model");
-		ModelToGraph m = new ModelToGraph();
+		ModelDataToGraph m = new ModelDataToGraph();
 		String path2 = scanner.next();
-		List<model.Graph> gs = m.createGraph(path1, path2);
-		for( model.Graph g: gs){
+		List<org.softlang.megalib.visualizer.models.Graph> gs = m.createGraph(path1, path2);
+		for( org.softlang.megalib.visualizer.models.Graph g: gs){
 			GraphToGef g2g = new GraphToGef();
 			graphs.add(g2g.createGraph(g));
 		}
@@ -49,7 +49,7 @@ public class View extends Application {
 	}
 	
 	@Override
-	public void start(final Stage primaryStage) throws Exception {
+	public void start(final Stage primaryStage) throws Exception {	
 	// configure application
 			for(int i = 0; i<graphs.size(); i++){
 				Injector injector = Guice.createInjector(createModule());
