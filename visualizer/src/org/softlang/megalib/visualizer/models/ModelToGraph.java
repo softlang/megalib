@@ -27,6 +27,10 @@ public class ModelToGraph {
 	public ModelToGraph(VisualizerOptions options) {
 		this.options = options;
 	}
+	
+	public ModelToGraph() {
+		
+	}
 
 	public boolean loadModel() {
 		loader = new ModelLoader();
@@ -76,7 +80,7 @@ public class ModelToGraph {
 		return graphs;
 	}
 
-	private Node createNode(String name, String type, MegaModel model) {
+	protected Node createNode(String name, String type, MegaModel model) {
 		Node result = new Node(type, name, getFirstInstanceLink(model, name));
 		applyInstanceHierarchy(result);
 		return result;
@@ -111,14 +115,14 @@ public class ModelToGraph {
 		return "";
 	}
 
-	private void createEdgesByFunction(Graph graph, String functionName, Set<Function> funcs) {
+	protected void createEdgesByFunction(Graph graph, String functionName, Set<Function> funcs) {
 		Iterator<Function> it = funcs.iterator();
 		for (int i = 0; it.hasNext(); i++) {
 			createEdgesByFunction(graph, functionName, it.next(), i);
 		}
 	}
 
-	private void createEdgesByFunction(Graph graph, String functionName, Function f, int i) {
+	protected void createEdgesByFunction(Graph graph, String functionName, Function f, int i) {
 		if (f.isDecl) {
 			f.getInputs().forEach(input -> createEdge(graph, input, functionName, "domainOf_" + i));
 			f.getOutputs().forEach(output -> createEdge(graph, functionName, output, "hasRange_" + i));
@@ -128,7 +132,7 @@ public class ModelToGraph {
 		}
 	}
 
-	private void createEdgesByRelations(Graph graph, String relationName, Set<Relation> relations) {
+	protected void createEdgesByRelations(Graph graph, String relationName, Set<Relation> relations) {
 		relations.stream()
 				.forEach(relation -> createEdge(graph, relation.getSubject(), relation.getObject(), relationName));
 	}
