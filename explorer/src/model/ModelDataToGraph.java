@@ -35,13 +35,11 @@ public class ModelDataToGraph extends ModelToGraph{
 	
 	public ModelDataToGraph(VisualizerOptions options) {
 		super(options);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public ModelDataToGraph() {
-
 	}
-
+	
 	public List<Graph> createGraph(String path1, String path2) {
 		Path p = Paths.get(path1, path2);
 		modelid = path2.replace(".megal", "").replaceAll("/", "\\."); 
@@ -76,7 +74,31 @@ public class ModelDataToGraph extends ModelToGraph{
 		}
 		return graphs;
 	}
+	
+	protected Node createNode(String name, String type, MegaModel model) {
+		Node result = new Node(type, name, getFirstInstanceLink(model, name));
+		applyInstanceHierarchy(result);
+		return result;
+	}
+
+
+	protected void applyInstanceHierarchy(Node node) {
+		String type = node.getType();
+		while (type != null && !type.isEmpty()) {
+			node.getInstanceHierarchy().add(type);
+			type = model.getSubtypesMap().get(type);
+		}
+	}
+
+	private String getFirstInstanceLink(MegaModel model, String name) {
+		return Optional.ofNullable(model.getLinks(name)).filter(set -> !set.isEmpty()).map(set -> set.iterator().next())
+				.orElse("");
+	}
+
+
+
 
 }
+
 
 
