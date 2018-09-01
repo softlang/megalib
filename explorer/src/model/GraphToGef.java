@@ -2,7 +2,10 @@ package model;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.SpringLayout;
 
@@ -19,10 +22,20 @@ import javafx.scene.shape.Sphere;
 import org.eclipse.gef.graph.Graph;
 
 import org.softlang.megalib.visualizer.models.Node;
+import org.softlang.megalib.visualizer.models.transformation.ConfigItem;
+import org.softlang.megalib.visualizer.models.transformation.TransformerConfiguration;
 import org.softlang.megalib.visualizer.models.Edge;
 
 public class GraphToGef {
-			private static final String LABEL = ZestProperties.LABEL__NE;
+	
+    	private static final ConfigItem<String, String> DEFAULT_CONFIG = new ConfigItem<String, String>()
+            .put("color", "black")
+            .put("shape", "oval");
+
+        private TransformerConfiguration config = new GefConfigurationBuilder().buildConfiguration();
+	
+	
+		private static final String LABEL = ZestProperties.LABEL__NE;
 		private Set<org.eclipse.gef.graph.Node> nodes = new HashSet();
 		
 		public org.eclipse.gef.graph.Graph createGraph(org.softlang.megalib.visualizer.models.Graph g){
@@ -48,6 +61,10 @@ public class GraphToGef {
 			org.eclipse.gef.graph.Node.Builder builder = new org.eclipse.gef.graph.Node.Builder();
 			builder.attr(LABEL, n.getName());
 			builder.attr("link", n.getLink());
+			
+			//Example:
+			//builder.attr("element", getConfigValue(n, "key");
+						
 			org.eclipse.gef.graph.Node node = builder.buildNode();
 			for(org.eclipse.gef.graph.Node n1: nodes){
 				if(n1.attributesProperty().equals(node.attributesProperty())){
@@ -61,5 +78,29 @@ public class GraphToGef {
 			return node;
 		}
 		
+		
+		
+		
+		private String getConfigValue(Node node, String attribute) {
+	        return getConfigItem(node, attribute).get(attribute);
+	    }
 
+	    private ConfigItem<String, String> getConfigItem(Node node, String attribute) {
+	        // Traverse the configuration hierarchy to determine if there is a configuration item present
+	        // Hence: name -> type -> supertype (until finished) -> default configuration
+	        for (String key : getKeyHierarchy(node)) {
+	            if (config.contains(key) && config.get(key).contains(attribute)) {
+					return config.get(key);
+				}
+	        }
+	        System.out.println("Default for "+node.getName()+":"+node.getType()+" at "+attribute);
+	        return DEFAULT_CONFIG;
+	    }
+
+	    private List<String> getKeyHierarchy(Node node) {
+	        return Stream.concat(
+	            Stream.of(node.getName(), node.getType()),
+	            node.getInstanceHierarchy().stream()
+	        ).collect(Collectors.toList());
+	    }
 }
