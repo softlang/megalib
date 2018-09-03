@@ -54,6 +54,7 @@ public class GraphToGef {
 			org.eclipse.gef.graph.Node nDestination = createNode(destination);
 			org.eclipse.gef.graph.Edge.Builder builder = new org.eclipse.gef.graph.Edge.Builder(nOrigin, nDestination).
 					attr(LABEL, e.getLabel());
+            //TODO add ArrowHead to Edge
 			return builder.buildEdge();
 		}
 		
@@ -62,6 +63,8 @@ public class GraphToGef {
 			builder.attr(LABEL, n.getName());
 			builder.attr("link", n.getLink());
 			
+			//TODO: Read from config instead hard-coded value
+			builder.attr(ZestProperties.SHAPE_CSS_STYLE__N, "-fx-fill: yellow");
 			//Example:
 			//builder.attr("element", getConfigValue(n, "key");
 						
