@@ -91,8 +91,24 @@ public class ModelDataToGraph extends ModelToGraph{
 	}
 
 	private String getFirstInstanceLink(MegaModel model, String name) {
-		return Optional.ofNullable(model.getLinks(name)).filter(set -> !set.isEmpty()).map(set -> set.iterator().next())
-				.orElse("");
+		Set<Relation> r = new HashSet();
+		if(model.getRelationships().get("=") != null) {
+			r.addAll(model.getRelationships().get("="));
+		}
+		if(model.getRelationships().get("~=") !=null) {
+			r.addAll(model.getRelationships().get("~="));
+		}
+		for(Relation x:r) {
+			if(x.getSubject().equals(name)) {
+				String link = x.getObject();
+				if(link.contains("::")){
+		            String ns = link.split("::")[0];
+		            link = link.replace(ns + "::", model.getNamespace(ns) + "/");
+		        }
+				return link;
+			}
+		}
+		return "";
 	}
 
 

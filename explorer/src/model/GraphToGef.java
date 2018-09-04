@@ -17,6 +17,8 @@ import org.eclipse.gef.layout.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.gef.layout.algorithms.SugiyamaLayoutAlgorithm;
 import org.eclipse.gef.zest.fx.ZestProperties;
 
+import javafx.scene.image.Image;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Sphere;
 
 import org.eclipse.gef.graph.Graph;
@@ -26,6 +28,8 @@ import org.softlang.megalib.visualizer.models.transformation.ConfigItem;
 import org.softlang.megalib.visualizer.models.transformation.TransformerConfiguration;
 import org.softlang.megalib.visualizer.models.Edge;
 
+import model.Triangle;
+
 public class GraphToGef {
 	
     	private static final ConfigItem<String, String> DEFAULT_CONFIG = new ConfigItem<String, String>()
@@ -33,7 +37,8 @@ public class GraphToGef {
             .put("shape", "oval");
 
         private TransformerConfiguration config = new GefConfigurationBuilder().buildConfiguration();
-	
+        
+        private static Image image = new Image("/Images/Icon.png",50,50,false,false);	
 	
 		private static final String LABEL = ZestProperties.LABEL__NE;
 		private Set<org.eclipse.gef.graph.Node> nodes = new HashSet();
@@ -55,6 +60,7 @@ public class GraphToGef {
 			org.eclipse.gef.graph.Edge.Builder builder = new org.eclipse.gef.graph.Edge.Builder(nOrigin, nDestination).
 					attr(LABEL, e.getLabel());
             //TODO add ArrowHead to Edge
+			builder.attr(ZestProperties.TARGET_DECORATION__E,new Triangle());
 			return builder.buildEdge();
 		}
 		
@@ -62,9 +68,16 @@ public class GraphToGef {
 			org.eclipse.gef.graph.Node.Builder builder = new org.eclipse.gef.graph.Node.Builder();
 			builder.attr(LABEL, n.getName());
 			builder.attr("link", n.getLink());
+			builder.attr(ZestProperties.ICON__N, image);
+			//TODO: add circle layout to nodes
+			//builder.attr(ZestProperties.SHAPE__N, new  Circle(30));
 			
-			//TODO: Read from config instead hard-coded value
-			builder.attr(ZestProperties.SHAPE_CSS_STYLE__N, "-fx-fill: yellow");
+			builder.attr(ZestProperties.SHAPE_CSS_STYLE__N, "-fx-fill: " + getConfigValue(n,"color"));
+			boolean haslink = false;
+			if(!n.getLink().equals("")) {
+				haslink = true;
+			}
+			builder.attr(ZestProperties.LABEL_CSS_STYLE__NE,"-fx-fill: #000000;-fx-underline:" + haslink); 
 			//Example:
 			//builder.attr("element", getConfigValue(n, "key");
 						
