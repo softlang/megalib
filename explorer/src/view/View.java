@@ -17,6 +17,8 @@ import com.google.inject.Module;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -34,22 +36,18 @@ public class View extends Application {
 	private String path2;
 	
 	public static void main(String[] args){
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter Path to Models Folder");
-		String path1 = scanner.next();
-		System.out.println("Enter Path to the model");
-		ModelDataToGraph m = new ModelDataToGraph();
-		String path2 = scanner.next();
-		List<org.softlang.megalib.visualizer.models.Graph> gs = m.createGraph(path1, path2);
-		for( org.softlang.megalib.visualizer.models.Graph g: gs){
-			GraphToGef g2g = new GraphToGef();
-			graphs.add(g2g.createGraph(g));
-		}
 		Application.launch();
 	}
 	
 	@Override
 	public void start(final Stage primaryStage) throws Exception {	
+		Parent root = FXMLLoader.load(getClass().getResource("explorer.fxml"));
+		
+		primaryStage.setTitle("FXML Welcome");
+		primaryStage.setScene(new Scene(root));
+		
+		primaryStage.show();
+/*
 	// configure application
 			for(int i = 0; i<graphs.size(); i++){
 				Injector injector = Guice.createInjector(createModule());
@@ -89,18 +87,11 @@ public class View extends Application {
 					}
 				}
 			});
+			*/
 		}
 
 		protected Scene createScene(IViewer viewer) {
 			return new Scene(((IViewer) viewer).getCanvas());
-		}
-
-		protected int getStageHeight() {
-			return 500;
-		}
-
-		protected int getStageWidth() {
-			return 800;
 		}
 
 		protected Module createModule() {
