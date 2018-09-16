@@ -1,6 +1,7 @@
 package module;
 
 import org.eclipse.gef.common.adapt.AdapterKey;
+import org.eclipse.gef.layout.LayoutContext;
 import org.eclipse.gef.mvc.fx.handlers.HoverOnHoverHandler;
 import org.eclipse.gef.mvc.fx.parts.DefaultFocusFeedbackPartFactory;
 import org.eclipse.gef.mvc.fx.parts.DefaultHoverFeedbackPartFactory;
@@ -21,6 +22,12 @@ import com.google.inject.Provider;
 import com.google.inject.multibindings.MapBinder;
 
 public class CustomModule extends ZestFxModule {
+	
+	@Override
+	protected void bindGraphPartAdapters(MapBinder<AdapterKey<?>, Object> adapterMapBinder) {
+		adapterMapBinder.addBinding(AdapterKey.defaultRole()).to(LayoutContext.class);
+		adapterMapBinder.addBinding(AdapterKey.defaultRole()).to(CustomGraphLayoutBehavior.class);
+	}
 
 	@Override
 	public void bindNodePartAdapters(MapBinder adapterMapBinder) {
