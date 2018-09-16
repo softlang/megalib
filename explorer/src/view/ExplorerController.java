@@ -10,16 +10,22 @@ import org.eclipse.gef.fx.nodes.InfiniteCanvas;
 import org.eclipse.gef.graph.Graph;
 import org.eclipse.gef.mvc.fx.domain.IDomain;
 import org.eclipse.gef.mvc.fx.viewer.IViewer;
+import org.eclipse.gef.zest.fx.ZestFxModule;
+import org.eclipse.gef.zest.fx.parts.ZestFxContentPartFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import model.GraphToGef;
 import model.ModelDataToGraph;
 import module.CustomModule;
@@ -41,7 +47,7 @@ public class ExplorerController {
 	public BorderPane viewPane;
 	
 	public void loadGraphs() {
-		TextInputDialog dialog = new TextInputDialog("E:/Uni/Forschungspraktikum/megalib/models");
+		TextInputDialog dialog = new TextInputDialog("Enter path");
 		dialog.setTitle("Text Input Dialog");
 		dialog.setHeaderText("Look, a Text Input Dialog");
 		dialog.setContentText("Please enter your name:");
@@ -70,19 +76,16 @@ public class ExplorerController {
 			viewerList.add(domain.getAdapter(AdapterKey.get(IViewer.class, IDomain.CONTENT_VIEWER_ROLE)));
 		}
 
-		
-		InfiniteCanvas canvas = (InfiniteCanvas)viewerList.get(0).getCanvas();
-		viewPane.setCenter(canvas);
-	    canvas.sceneProperty().addListener((observable, oldValue, newValue) -> {
-	      if (canvas.getScene() != null) {
-	        domainList.get(0).activate();
-	        try {
-	        	viewerList.get(0).getContents().setAll(Collections.singletonList(graphs.get(0)));
-	        } catch (Exception e) {
-	          e.printStackTrace();
-	        }
-	      }
-	    });
+		viewPane.setCenter(viewerList.get(0).getCanvas());
+		domainList.get(0).activate();
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				for(int i = 0; i<graphs.size();i++){
+					viewerList.get(i).getContents().setAll(Collections.singletonList(graphs.get(i)));
+				}
+			}
+		});
 	}
 	
 	protected Module createModule() {
