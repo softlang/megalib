@@ -69,6 +69,7 @@ public class GraphToGef {
 			builder.attr(LABEL, n.getName());
 			builder.attr("link", n.getLink());
 			builder.attr(ZestProperties.ICON__N, image);
+			builder.attr(ZestProperties.INVISIBLE__NE, false);
 			//TODO: add circle layout to nodes
 			//builder.attr(ZestProperties.SHAPE__N, new  Circle(30));
 			

@@ -12,20 +12,32 @@ import org.eclipse.gef.graph.Graph;
 import org.eclipse.gef.graph.Node;
 import org.eclipse.gef.mvc.fx.handlers.AbstractHandler;
 import org.eclipse.gef.mvc.fx.handlers.IOnClickHandler;
+import org.eclipse.gef.zest.fx.ZestProperties;
 
 import javafx.scene.input.MouseEvent;
+import view.ExplorerController;
 
 public class NodeHandler extends AbstractHandler implements IOnClickHandler{
 	
 	@Override
 	public void click(MouseEvent e) {
-		System.out.println("Node clicked");
 		double x = e.getSceneX();
 		double y = e.getSceneY();
 		Graph g = (Graph) getHost().getAdaptable().getContents().get(0);
-		System.out.println(g);
-		Node n = getNodeAtPosition(x, y, g.getNodes());
-		goToLink(n);
+		Node n = getNodeAtPosition(x-200, y, g.getNodes());
+		if(e.isPrimaryButtonDown()) {
+			goToLink(n);
+		}
+		if(e.isSecondaryButtonDown()) {
+			//TODO: prüfen, richtigen Knoten ausblenden
+			for(Node q : g.getNodes()) {
+				if(!n.getNeighbors().contains(q) & !q.equals(n)) {
+					g.getNodes().remove(q);
+					q.getAttributes().replace("element-invisible", true);
+					g.getNodes().add(q);
+				}
+			}
+		}
 	}
 	
 	private Node getNodeAtPosition(double x, double y,List<Node> nodes){
@@ -33,7 +45,6 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler{
 			Point p = (Point) n.attributesProperty().get("node-position");
 			Dimension size = (Dimension) n.attributesProperty().get("node-size");
 			if(p.x<x && x<p.x+size.getWidth() && p.y<y && y<p.y+size.getHeight()) {
-				System.out.println(n.attributesProperty().get("element-label"));
 				return n;
 			}
 		}
