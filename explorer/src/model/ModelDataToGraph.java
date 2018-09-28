@@ -41,6 +41,7 @@ public class ModelDataToGraph extends ModelToGraph{
 	}
 	
 	public List<Graph> createGraph(String path1, String path2) {
+		path1 = path1.replaceAll("\\\\", "\\/");
 		Path p = Paths.get(path1, path2);
 		modelid = path2.replace(".megal", "").replaceAll("/", "\\."); 
 		loader = new ModelLoader();
