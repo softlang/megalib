@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import javax.swing.SpringLayout;
 
 import org.eclipse.gef.layout.ILayoutAlgorithm;
+import org.eclipse.gef.layout.algorithms.GridLayoutAlgorithm;
 import org.eclipse.gef.layout.algorithms.HorizontalShiftAlgorithm;
 import org.eclipse.gef.layout.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.gef.layout.algorithms.SpaceTreeLayoutAlgorithm;
@@ -43,12 +44,20 @@ public class GraphToGef {
 		private static final String LABEL = ZestProperties.LABEL__NE;
 		private Set<org.eclipse.gef.graph.Node> nodes = new HashSet();
 		
-		public org.eclipse.gef.graph.Graph createGraph(org.softlang.megalib.visualizer.models.Graph g){
+		public org.eclipse.gef.graph.Graph createGraphSpringLayout(org.softlang.megalib.visualizer.models.Graph g){
 			LinkedList<org.eclipse.gef.graph.Edge> edges = new LinkedList();
 			g.forEachEdge(e-> edges.add(createEdge(e)));
 			org.eclipse.gef.graph.Graph.Builder builder = new org.eclipse.gef.graph.Graph.Builder();
 			SpringLayoutAlgorithm layout = new SpringLayoutAlgorithm();
 			layout.setSpringLength(60);
+			return builder.nodes(nodes).edges(edges).attr(ZestProperties.LAYOUT_ALGORITHM__G, layout).build();
+		}
+		
+		public org.eclipse.gef.graph.Graph createGraphGridLayout(org.softlang.megalib.visualizer.models.Graph g){
+			LinkedList<org.eclipse.gef.graph.Edge> edges = new LinkedList();
+			g.forEachEdge(e-> edges.add(createEdge(e)));
+			org.eclipse.gef.graph.Graph.Builder builder = new org.eclipse.gef.graph.Graph.Builder();
+			GridLayoutAlgorithm layout = new GridLayoutAlgorithm();
 			return builder.nodes(nodes).edges(edges).attr(ZestProperties.LAYOUT_ALGORITHM__G, layout).build();
 		}
 		

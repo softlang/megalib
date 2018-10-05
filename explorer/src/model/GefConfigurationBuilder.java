@@ -27,7 +27,7 @@ public class GefConfigurationBuilder implements ConfigurationBuilder{
         }
     }
 
-    private TransformerConfiguration propertiesToConfiguration(Properties props) {
+    public TransformerConfiguration propertiesToConfiguration(Properties props) {
         TransformerConfiguration result = new TransformerConfiguration();
 
         for (String key : props.stringPropertyNames()) {

@@ -31,7 +31,7 @@
             </HBox>
             <TitledPane expanded="false" text="untitled" VBox.vgrow="SOMETIMES">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" />
+                <BorderPane fx:id="legendPane" />
               </content>
             </TitledPane>
          </children>
