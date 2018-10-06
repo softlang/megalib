@@ -19,6 +19,8 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -58,14 +60,16 @@ public class ExplorerController {
 	@FXML
 	public BorderPane legendPane;
 	
-	public void reset_data(){
-		graphs = new LinkedList<>();
-		domainList = new LinkedList<>();
-		viewerList = new LinkedList<>();
-		
-		legends = new LinkedList<>();
-		domainListLegends = new LinkedList<>();
-		viewerListLegends = new LinkedList<>();
+	@FXML
+	public void initialize(){
+		contentListView.getSelectionModel().selectedItemProperty().addListener(
+				new ChangeListener<String>() {
+				@Override
+				public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+            		int i = contentListView.getSelectionModel().getSelectedIndex();
+            		setGraphs(i);
+				}
+        });		
 	}
 	
 	public void loadGraphs() {
@@ -112,7 +116,6 @@ public class ExplorerController {
 		}
 		contentListView.setItems(FXCollections.observableArrayList(contentItems));
 		
-		
 		for(int i = 0; i<graphs.size(); i++){
 			Injector injector = Guice.createInjector(createModule());
 			IDomain domain = injector.getInstance(IDomain.class);
@@ -126,11 +129,8 @@ public class ExplorerController {
 			domainListLegends.add(domain);
 			viewerListLegends.add(domain.getAdapter(AdapterKey.get(IViewer.class, IDomain.CONTENT_VIEWER_ROLE)));
 		}
-
-		viewPane.setCenter(viewerList.get(0).getCanvas());
-		legendPane.setCenter(viewerListLegends.get(0).getCanvas());
-		domainList.get(0).activate();
-		domainListLegends.get(0).activate();
+		
+		setGraphs(0);
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -140,6 +140,23 @@ public class ExplorerController {
 				}
 			}
 		});
+	}
+	
+	public void reset_data(){
+		graphs = new LinkedList<>();
+		domainList = new LinkedList<>();
+		viewerList = new LinkedList<>();
+		
+		legends = new LinkedList<>();
+		domainListLegends = new LinkedList<>();
+		viewerListLegends = new LinkedList<>();
+	}
+	
+	public void setGraphs(int i){
+		viewPane.setCenter(viewerList.get(i).getCanvas());
+		legendPane.setCenter(viewerListLegends.get(i).getCanvas());
+		domainList.get(i).activate();
+		domainListLegends.get(i).activate();
 	}
 	
 	protected Module createModule() {
