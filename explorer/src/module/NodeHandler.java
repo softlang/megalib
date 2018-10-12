@@ -25,16 +25,19 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler{
 		double x = e.getSceneX();
 		double y = e.getSceneY();
 		Graph g = (Graph) getHost().getAdaptable().getContents().get(0);
-		Node n = getNodeAtPosition(x-200, y, g.getNodes());
+		Node n = getNodeAtPosition(x-200, y-25, g.getNodes());
 		if(e.isPrimaryButtonDown()) {
 			goToLink(n);
 		}
 		if(e.isSecondaryButtonDown()) {
 			//TODO: prüfen, richtigen Knoten ausblenden
-			for(Node q : g.getNodes()) {
+			String s = "";
+			List<Node> nodelist = g.getNodes();
+			for(Node q : nodelist) {
 				if(!n.getNeighbors().contains(q) & !q.equals(n)) {
+					s = (String) q.getAttributes().get(ZestProperties.SHAPE_CSS_STYLE__N);
 					g.getNodes().remove(q);
-					q.getAttributes().replace("element-invisible", true);
+					q.getAttributes().replace(ZestProperties.SHAPE_CSS_STYLE__N, s + " -fx-border-color: #FF0000");
 					g.getNodes().add(q);
 				}
 			}
@@ -75,6 +78,8 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler{
 	}
 	
 	private void goToLink(Node n){
+		LinkedList<String> x = (LinkedList<String>) n.getAttributes().get("alllinks");
+		if(!x.isEmpty()) {
 			URI link;
 			for(String s:(LinkedList<String>) n.getAttributes().get("alllinks")) {
 				try {
@@ -85,5 +90,6 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler{
 					e.printStackTrace();
 				}
 			}
+		}
 	}
 }
