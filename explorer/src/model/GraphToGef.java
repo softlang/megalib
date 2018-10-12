@@ -73,10 +73,11 @@ public class GraphToGef {
 			return builder.buildEdge();
 		}
 		
-		public org.eclipse.gef.graph.Node createNode(Node n){
+		public org.eclipse.gef.graph.Node createNode(Node k){
+			GEFNode n = (GEFNode) k;
 			org.eclipse.gef.graph.Node.Builder builder = new org.eclipse.gef.graph.Node.Builder();
 			builder.attr(LABEL, n.getName());
-			builder.attr("link", n.getLink());
+			builder.attr("alllinks", n.getallLinks());
 			builder.attr(ZestProperties.ICON__N, image);
 			builder.attr(ZestProperties.INVISIBLE__NE, false);
 			//TODO: add circle layout to nodes

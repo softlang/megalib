@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.gef.geometry.planar.Dimension;
@@ -74,15 +75,15 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler{
 	}
 	
 	private void goToLink(Node n){
-		if(!n.getAttributes().get("link").equals("")) {
 			URI link;
-			try {
-				link = new URI ((String) n.getAttributes().get("link"));
-				openWebpage(link);
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			for(String s:(LinkedList<String>) n.getAttributes().get("alllinks")) {
+				try {
+					link = new URI (s);
+					openWebpage(link);
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
 	}
 }

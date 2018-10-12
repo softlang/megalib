@@ -76,8 +76,8 @@ public class ModelDataToGraph extends ModelToGraph{
 		return graphs;
 	}
 	
-	protected Node createNode(String name, String type, MegaModel model) {
-		Node result = new Node(type, name, getFirstInstanceLink(model, name));
+	protected GEFNode createNode(String name, String type, MegaModel model) {
+		GEFNode result = new GEFNode(new Node(type, name, getFirstInstanceLink(model, name)),getAllInstanceLink(model,name));
 		applyInstanceHierarchy(result);
 		return result;
 	}
@@ -110,6 +110,28 @@ public class ModelDataToGraph extends ModelToGraph{
 			}
 		}
 		return "";
+	}
+	
+	private LinkedList<String> getAllInstanceLink(MegaModel model, String name) {
+		LinkedList<String> result = new LinkedList<String>();
+		Set<Relation> r = new HashSet();
+		if(model.getRelationships().get("=") != null) {
+			r.addAll(model.getRelationships().get("="));
+		}
+		if(model.getRelationships().get("~=") !=null) {
+			r.addAll(model.getRelationships().get("~="));
+		}
+		for(Relation x:r) {
+			if(x.getSubject().equals(name)) {
+				String link = x.getObject();
+				if(link.contains("::")){
+		            String ns = link.split("::")[0];
+		            link = link.replace(ns + "::", model.getNamespace(ns) + "/");
+		        }
+				 result.add(link);
+			}
+		}
+		return result;
 	}
 
 
