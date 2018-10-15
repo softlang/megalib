@@ -79,11 +79,9 @@ public class GraphToGef {
 			builder.attr(LABEL, n.getName());
 			builder.attr("alllinks", n.getallLinks());
 			builder.attr(ZestProperties.ICON__N, image);
-			builder.attr(ZestProperties.INVISIBLE__NE, false);
-			//TODO: add circle layout to nodes
-			//builder.attr(ZestProperties.SHAPE__N, new  Circle(30));
-			
+			builder.attr(ZestProperties.INVISIBLE__NE, false);			
 			builder.attr(ZestProperties.SHAPE_CSS_STYLE__N, "-fx-fill: " + getConfigValue(n,"color"));
+			builder.attr("original_shape_color", "-fx-fill: " + getConfigValue(n,"color"));
 			boolean haslink = false;
 			if(!n.getLink().equals("")) {
 				haslink = true;
