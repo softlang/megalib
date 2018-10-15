@@ -30,19 +30,14 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler{
 			goToLink(n);
 		}
 		if(e.isSecondaryButtonDown()) {
-			//TODO: prüfen, richtigen Knoten ausblenden
-			String s = "";
-			List<Node> nodelist = g.getNodes();
-			for(Node q : nodelist) {
-				if(!n.getNeighbors().contains(q) & !q.equals(n)) {
-					s = (String) q.getAttributes().get(ZestProperties.SHAPE_CSS_STYLE__N);
-					g.getNodes().remove(q);
-					q.getAttributes().replace(ZestProperties.SHAPE_CSS_STYLE__N, s + " -fx-border-color: #FF0000");
-					g.getNodes().add(q);
+			n.getAttributes().replace(ZestProperties.SHAPE_CSS_STYLE__N, "-fx-fill: #FFFFFF; -fx-border-color:red");
+			for(Node q : n.getAllNeighbors()) {
+					q.getAttributes().replace(ZestProperties.SHAPE_CSS_STYLE__N, "-fx-fill: #FFFFFF; -fx-border-color:red");
 				}
+			getHost().getRoot().refreshVisual();
 			}
 		}
-	}
+		
 	
 	private Node getNodeAtPosition(double x, double y,List<Node> nodes){
 		for(Node n:nodes) {
