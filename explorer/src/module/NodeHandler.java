@@ -17,7 +17,7 @@ import org.eclipse.gef.mvc.fx.handlers.IOnClickHandler;
 import org.eclipse.gef.zest.fx.ZestProperties;
 
 import javafx.scene.input.MouseEvent;
-import view.ExplorerController;
+import explorer.parts.ExplorerController;
 
 public class NodeHandler extends AbstractHandler implements IOnClickHandler {
 

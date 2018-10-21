@@ -37,14 +37,15 @@ public class ModelDataToGraph extends ModelToGraph{
 		super(options);
 	}
 	
-	public ModelDataToGraph() {
+	public ModelDataToGraph(String path) {
+		this.path = path;
 	}
 	
 	public List<Graph> createGraph(String path1, String path2) {
 		path1 = path1.replaceAll("\\\\", "\\/");
 		Path p = Paths.get(path1, path2);
 		modelid = path2.replace(".megal", "").replaceAll("/", "\\."); 
-		loader = new ModelLoader();
+		loader = new ModelLoader(path);
 		model = loader.getModel();
 		try {
 			loader.loadFile(p.toAbsolutePath().toString());
