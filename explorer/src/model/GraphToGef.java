@@ -45,6 +45,7 @@ public class GraphToGef {
 		private Set<org.eclipse.gef.graph.Node> nodes = new HashSet();
 		
 		public org.eclipse.gef.graph.Graph createGraphSpringLayout(org.softlang.megalib.visualizer.models.Graph g){
+			nodes = new HashSet();
 			LinkedList<org.eclipse.gef.graph.Edge> edges = new LinkedList();
 			g.forEachEdge(e-> edges.add(createEdge(e)));
 			org.eclipse.gef.graph.Graph.Builder builder = new org.eclipse.gef.graph.Graph.Builder();
@@ -54,11 +55,13 @@ public class GraphToGef {
 		}
 		
 		public org.eclipse.gef.graph.Graph createGraphGridLayout(org.softlang.megalib.visualizer.models.Graph g){
+			nodes = new HashSet();
 			LinkedList<org.eclipse.gef.graph.Edge> edges = new LinkedList();
-			g.forEachEdge(e-> edges.add(createEdge(e)));
+			for(Node n: g.getNodes().values()) {
+				nodes.add(createNode(n));
+			}
 			org.eclipse.gef.graph.Graph.Builder builder = new org.eclipse.gef.graph.Graph.Builder();
-			GridLayoutAlgorithm layout = new GridLayoutAlgorithm();
-			return builder.nodes(nodes).edges(edges).attr(ZestProperties.LAYOUT_ALGORITHM__G, layout).build();
+			return builder.nodes(nodes).edges(edges).attr(ZestProperties.LAYOUT_ALGORITHM__G, new GridLayoutAlgorithm()).build();
 		}
 		
 		public org.eclipse.gef.graph.Edge createEdge(Edge e){
@@ -87,9 +90,6 @@ public class GraphToGef {
 				haslink = true;
 			}
 			builder.attr(ZestProperties.LABEL_CSS_STYLE__NE,"-fx-fill: #000000;-fx-underline:" + haslink); 
-			//Example:
-			//builder.attr("element", getConfigValue(n, "key");
-						
 			org.eclipse.gef.graph.Node node = builder.buildNode();
 			for(org.eclipse.gef.graph.Node n1: nodes){
 				if(n1.attributesProperty().equals(node.attributesProperty())){
@@ -111,8 +111,6 @@ public class GraphToGef {
 	    }
 
 	    private ConfigItem<String, String> getConfigItem(Node node, String attribute) {
-	        // Traverse the configuration hierarchy to determine if there is a configuration item present
-	        // Hence: name -> type -> supertype (until finished) -> default configuration
 	        for (String key : getKeyHierarchy(node)) {
 	            if (config.contains(key) && config.get(key).contains(attribute)) {
 					return config.get(key);

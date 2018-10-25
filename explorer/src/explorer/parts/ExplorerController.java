@@ -9,8 +9,6 @@ import org.eclipse.gef.common.adapt.AdapterKey;
 import org.eclipse.gef.graph.Graph;
 import org.eclipse.gef.mvc.fx.domain.IDomain;
 import org.eclipse.gef.mvc.fx.viewer.IViewer;
-import org.eclipse.gef.zest.fx.ZestFxModule;
-import org.eclipse.gef.zest.fx.parts.ZestFxContentPartFactory;
 import org.softlang.megalib.visualizer.models.transformation.TransformerConfiguration;
 
 import com.google.inject.Guice;
@@ -21,15 +19,11 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import model.GEFNode;
 import model.GefConfigurationBuilder;
 import model.GraphToGef;
 import model.ModelDataToGraph;
@@ -111,14 +105,14 @@ public class ExplorerController {
 	        for(org.softlang.megalib.visualizer.models.Node n: g.getNodes().values()) {
 	        	for(String s : n.getInstanceHierarchy()) {
 	        		if(transformerConfig.contains(s)) {
-	        			n = new org.softlang.megalib.visualizer.models.Node(s,s,"");
-	        			gLegend.add(n);
+	        			org.softlang.megalib.visualizer.models.Node newNode = new GEFNode(new org.softlang.megalib.visualizer.models.Node(s,s,""), new LinkedList<>());
+	        			gLegend.add(newNode);
 	        		}
 	        	}
 	        }
 	        legends.add(g2g.createGraphGridLayout(gLegend));
 		}
-		
+				
 		List<String> contentItems = new LinkedList();
 		for(int i = 0; i <graphs.size();i++){
 			contentItems.add("Block "+i);
