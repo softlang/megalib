@@ -7,29 +7,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.swing.SpringLayout;
-
-import org.eclipse.gef.layout.ILayoutAlgorithm;
 import org.eclipse.gef.layout.algorithms.GridLayoutAlgorithm;
-import org.eclipse.gef.layout.algorithms.HorizontalShiftAlgorithm;
-import org.eclipse.gef.layout.algorithms.RadialLayoutAlgorithm;
-import org.eclipse.gef.layout.algorithms.SpaceTreeLayoutAlgorithm;
 import org.eclipse.gef.layout.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.gef.layout.algorithms.SugiyamaLayoutAlgorithm;
 import org.eclipse.gef.zest.fx.ZestProperties;
-
-import javafx.scene.image.Image;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Sphere;
-
-import org.eclipse.gef.graph.Graph;
-
+import org.softlang.megalib.visualizer.models.Edge;
 import org.softlang.megalib.visualizer.models.Node;
 import org.softlang.megalib.visualizer.models.transformation.ConfigItem;
 import org.softlang.megalib.visualizer.models.transformation.TransformerConfiguration;
-import org.softlang.megalib.visualizer.models.Edge;
 
-import model.Triangle;
+import javafx.scene.image.Image;
+import module.DotCustomLayout;
 
 public class GraphToGef {
 	
@@ -52,6 +39,10 @@ public class GraphToGef {
 			SpringLayoutAlgorithm layout = new SpringLayoutAlgorithm();
 			layout.setSpringLength(60);
 			return builder.nodes(nodes).edges(edges).attr(ZestProperties.LAYOUT_ALGORITHM__G, layout).build();
+			//return builder.nodes(nodes).edges(edges).attr(ZestProperties.LAYOUT_ALGORITHM__G, 
+			//new DotCustomLayout(Add local path to graphvizz executable: bin/dot here")).build();
+
+		
 		}
 		
 		public org.eclipse.gef.graph.Graph createGraphGridLayout(org.softlang.megalib.visualizer.models.Graph g){
