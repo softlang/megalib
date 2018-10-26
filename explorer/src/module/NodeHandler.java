@@ -15,6 +15,7 @@ import org.eclipse.gef.graph.Node;
 import org.eclipse.gef.mvc.fx.handlers.AbstractHandler;
 import org.eclipse.gef.mvc.fx.handlers.IOnClickHandler;
 import org.eclipse.gef.zest.fx.ZestProperties;
+import org.eclipse.gef.zest.fx.parts.NodePart;
 
 import javafx.scene.input.MouseEvent;
 import explorer.parts.ExplorerController;
@@ -27,8 +28,12 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler {
 	public void click(MouseEvent e) {
 		double x = e.getSceneX();
 		double y = e.getSceneY();
-		Graph g = (Graph) getHost().getAdaptable().getContents().get(0);
-		Node n = getNodeAtPosition(x - 200, y - 25, g.getNodes());
+		//get NodePart of selected Node
+		NodePart nPart = (NodePart) getHost();
+		//get selected Node by using NodePart.getContent()
+		Node n = nPart.getContent();
+		//get Graph of Node
+		Graph g = n.getGraph();
 		if (e.isPrimaryButtonDown()) {
 			goToLink(n);
 		}
@@ -57,17 +62,6 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler {
 			}
 			getHost().getRoot().refreshVisual();
 		}
-	}
-
-	private Node getNodeAtPosition(double x, double y, List<Node> nodes) {
-		for (Node n : nodes) {
-			Point p = (Point) n.attributesProperty().get("node-position");
-			Dimension size = (Dimension) n.attributesProperty().get("node-size");
-			if (p.x < x && x < p.x + size.getWidth() && p.y < y && y < p.y + size.getHeight()) {
-				return n;
-			}
-		}
-		return null;
 	}
 
 	public static boolean openWebpage(URI uri) {
