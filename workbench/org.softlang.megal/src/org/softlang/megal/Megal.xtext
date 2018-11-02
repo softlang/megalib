@@ -1,0 +1,50 @@
+grammar org.softlang.megal.MegaL with org.eclipse.xtext.common.Terminals
+
+generate megaL "http://www.softlang.org/megal/MegaL"
+
+Module : 
+	'module' name=ID
+	imports+=Import*
+	(blocks+=Block (statements+=Statement)+)*
+;
+
+Import : ImportNo | Substitutes ;
+
+ImportNo : 'import' importNamespace=FQN ;
+
+Substitutes : 'import' importNamespace=FQN '{' (substituteBlocks+=SubstituteBlock)+ '}';
+SubstituteBlock : '[' substitutes+=Substitute (',' substitutes+=Substitute)* ']';
+Substitute : left = ID '/' right=ID;
+
+Block : '{-' '@Description:' description=STRING '@Rationale:' rationale=STRING '-}' ;
+
+Statement : Type | Instance | RelDecl | RelInst | FunDecl | FunApp
+;
+	
+Type: name=ID '<' (supertype=[Type] | 'Entity')
+		(';' '=' '"' links+=STRING '"')* '.'
+;	
+	
+Instance : name=ID ':' type=[Type]
+	(';' '~=' '"' binds+=STRING '"')*
+	(';' '=' '"' links+=STRING '"')*
+	(';' relEdges+=RelEdge)* '.'
+;
+	
+RelDecl : name=ID (reltedges+=RelTypes) 
+	(';' reltedges+=RelTypes)* '.'
+; 
+
+RelInst : left=[Instance] reledges+=RelEdge
+	(';' reledges+=RelEdge) '.'
+;
+
+RelEdge : rel=[RelDecl] right=[Instance];
+RelTypes : '<' left=[Type] '#' right=[Type];
+
+FunDecl : name=ID ':' domains+=[Instance] ('#' domains+=[Instance])* 
+				'->' ranges+=[Instance] ('#' ranges+=[Instance])*;
+
+FunApp : f=[FunDecl] '(' in+=[Instance]+ ')' '|->' out+=[Instance];
+
+FQN: ID ("." ID)*;
