@@ -1,41 +1,6 @@
 module git.Core
 
 /*
-@Desciption:
-	General VCS-Vocabulary
-*/
-
-VersionControl : TechnologySpace;
-        = "wikipedia::Version_control".
-DistributedVersionControl : TechnologySpace;
-        = "wikipedia::Distributed_version_control";
-        subspaceOf VersionControl.
-Graph aspectOf DistributedVersionControl.
-
-VersionMerging : AbstractProcess.
-VersionMerging = "wikipedia::Merge_(version_control)".
-
-AtomicOperation : AbstractProcess.
-AtomicOperation = "wikipedia::Atomicity_(database_systems)".
-
-AtomicCommit : AbstractProcess;
-          = "wikipedia::Atomic_commit";
-          refines AtomicOperation.
-
-Branching : AbstractProcess.
-Branching = "wikipedia::Branching_(version_control)".
-
-RevisionTagging : AbstractProcess. //As used in Version Marking like v1
-RevisionTagging = "wikipedia::Revision_tag".
-
-//For idetifcation revisongraph Nodes
-Vertex : Role;
-		= "wikipedia::Vertex_(graph_theory)".
-HEAD : Role;
-	= "wikipedia::Version_control#Common_vocabulary".
-
-
-/*
 @Description:
 	Git documentation sources
 */

@@ -1,6 +1,6 @@
 module git.functions.remoteRemove
 
-import git.basics
+import git.Core
 import git.files.languages
 
 /*

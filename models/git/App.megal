@@ -5,32 +5,26 @@ import git.files.refs
 
 /*
 @Description:
-	GitRepository
+	GitRepository mainly consists of a reference graph. 
+        Distinction between local and remote repos only present at transactions
+        Git branches are internally just named references which are overwritten with each commit.
 @Rationale:
-	Only GitRepository because local and remote Repositories are only present at Transactions
+	see links
 */
 ?GitRepository : System;
             = "wikipedia::Repository_(version_control)".
-
-
-/*
-@Description:
-	Git Branches
-@Rationale:
-	Git branches are internally just named references which are overwritten with each commit
-*/			
 ?references : File+;
         partOf ?GitRepository;
         elementOf GitReferenceLanguage.
 
 // ~= "file:://./.git/refs/heads/"
 ?localBranches : File+;
-       partOf ?branches;
+       partOf ?references;
        elementOf GitReferenceLanguage.
 
 // ~= "file:://./.git/refs/remote/_/"
 ?remoteBranches : File+;
-       partOf ?branches;
+       partOf ?references;
        elementOf GitReferenceLanguage.
 	   
 // ~= "file:://./.git/refs/tags/"

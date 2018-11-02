@@ -1,7 +1,7 @@
 module git.functions.checkoutFile
 
 import git.files.languages
-import git.basics
+import git.Core
 
 /*
 @Descripton:

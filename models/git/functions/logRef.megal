@@ -2,7 +2,7 @@ module git.functions.logRef
 
 import git.functions.refResolve
 import git.functions.logCommit
-import git.basics
+import git.Core
 
 /*
 @Description:

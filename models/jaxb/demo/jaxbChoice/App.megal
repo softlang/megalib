@@ -5,7 +5,7 @@ import jaxb.SchemaGen
 import jaxb.JAXBBinding
 import jaxb.XJC
 
-/* 
+/*
 @Description:
     jaxbChoice is an implementation of the 101companies feature model.
 
@@ -29,12 +29,12 @@ JAXB101 : Application;
 
 /*
 @Description
-    The XML and Classes of the 101Companies example also define a subset of 
-    JAXBXML respectively XJCClassifierJava. The instances of the latter form 
+    The XML and Classes of the 101Companies example also define a subset of
+    JAXBXML respectively XJCClassifierJava. The instances of the latter form
     a subset of the JVMObjectLanguage.
- 
+
 @Rationale
-    Any XSD schema creates a new subset of XML 
+    Any XSD schema creates a new subset of XML
     Same for Javaclasses and JVMObjectLanguage, more specific XJCClassifierJava
 */
 CompanyXML : DataExchangeLanguage;

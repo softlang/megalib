@@ -1,8 +1,9 @@
 module jaxb.demo.jaxbChoice.model
 
 import jaxb.demo.jaxbChoice.App
+import jaxb.demo.jaxbChoice.JAXBChoice
 import jaxb.model where {
-	[ 
+	[
 	  companyXSD / ?xmlSchema,
 	  companyModel / ?objectModel,
 	  objectFactory / ?objectFactory,
@@ -13,7 +14,7 @@ import jaxb.model where {
 /*
 @Description
     local deployment of JAXB101
-    
+
 @Rationale
     See line 13-19 in "JAXBCHOICE::build.gradle"
 */
@@ -42,4 +43,3 @@ companyObject : Transient;
     ~= "JAXBCHOICE::src/main/java/org/softlang/company/features/Serialization.java#L38";
     partOf JAXB101;
     elementOf CompanyObjectLanguage.
-  

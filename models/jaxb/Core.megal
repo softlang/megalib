@@ -2,24 +2,36 @@ module jaxb.Core
 
 import javaplatform.Core
 
-/* 
+/*
 @Description:
-    JAXB is used for mapping Java objects to XML based on annotations to Java classes.
-        
+    JAXB is used for mapping Java objects to XML.
+    Java classes can be generated from an XSD Schema
+    An XSD Schema can be generated from annotated Java classes
+    XML can be mapped to Java Objects and vice versa
+
 @Rationale:
     See headline of https://101wiki.softlang.org/Technology:JAXB
     See https://github.com/javaee/jaxb-v2
     See https://javaee.github.io/jaxb-v2/doc/user-guide/ch03.html
-        for the official user's guide 
+        for the official user's guide
 */
 JAXBRI :: "https://github.com/javaee/jaxb-v2/tree/master/jaxb-ri".
+
+
 JAXB : Framework;
     = "101wiki::Technology:JAXB";
     uses Java;
     uses Annotation;
-    uses Reflection;
     facilitates Mapping;
     facilitates XMLDataBinding.
+
+/*
+@Description
+    JAXB always uses XML files, which conform to an XML Schema
+
+@Rationale
+    See https://javaee.github.io/jaxb-v2/doc/user-guide/ch03.html for a guide
+*/
 JAXBXML : DataExchangeLanguage;
     subsetOf XML;
     ^implements JAXB.
@@ -35,7 +47,7 @@ JAXBXML : DataExchangeLanguage;
 @Rationale:
     See the AST here:
     https://github.com/javaee/jaxb-v2/tree/master/jaxb-ri/codemodel/codemodel/src/main/java/com/sun/codemodel
-    See 
+    See
     https://github.com/apache/servicemix-specs/tree/master/jaxb-api-2.1/src/main/java/javax/xml/bind/annotation
     for the package containing all valid annotations
 */
@@ -50,14 +62,11 @@ XJCClassifierJava : ProgrammingLanguage;
     The ObjectFactory can also be written manually using the
     annotated code of the XJCFactoryJava subset of the Java language.
 
-@Rationale See 
+@Rationale See
     https://docs.oracle.com/javaee/5/tutorial/doc/bnbah.html#bnbau
     for an Overview over the elements the ObjectFactory contains
 */
 XJCFactoryJava : ProgrammingLanguage;
     = "JAXBRI::xjc/src/main/java/com/sun/tools/xjc/generator/bean/ObjectFactoryGeneratorImpl.java";
     subsetOf Java;
-    encodes ConcreteFactory;
     ^implements JAXB.
-
-

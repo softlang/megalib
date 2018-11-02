@@ -2,7 +2,7 @@ module git.functions.pull
 
 import git.functions.fetch
 import git.functions.merge
-import git.basics
+import git.Core
 
 /*
 @Description:
