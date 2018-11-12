@@ -1,0 +1,26 @@
+module git.usage.repo2push
+
+import git.usage.final.repo2config
+import git.functions.push where {
+[repo2ObjectsOut / ?gitObjectStreamLocal,
+ repo1ObjectsIn / ?gitObjectStreamRemote,
+ repo1FilesPre / ?fileArtifactStreamRemotePre,
+ repo1FilesPost / ?fileArtifactStreamRemotePost,
+repo2ConfigFile / ?gitConfigFilePush,
+repo2Origin / ?remoteNamePush,
+repo2Master / ?gitReferenceFileLocal,
+repo1Master / ?gitReferenceFileRemote
+]
+}
+
+/*
+@Description:
+	pushing from repo2 to repo1
+*/
+repo2ObjectsOut ~= "file://./demo_run.json#l17853-17855".
+repo1ObjectsIn ~= "file://./demo_run.json#l19356-19403".
+repo1FilesPre ~= "file://./demo_run.json#l17870".
+repo1FilesPost ~= "file://./demo_run.json#l19249".
+repo2Master ~= "file://./demo_run.json#l17817-17819".
+repo1Master ~= "file://./demo_run.json#l16631-16634";
+	correspondsTo repo2MasterMergeDestination.

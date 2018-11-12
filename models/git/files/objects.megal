@@ -1,0 +1,20 @@
+module git.files.objects
+
+import git.Core
+import git.files.languages
+/*
+* @Description:
+*	Git's Storage Objects
+* @Rationale:
+*	a zlib-compressed content combined with the subtype of Object: commit, blob, tree, tag
+*/
+?gitObject : File;
+	elementOf GitObjectLanguage.
+
+?objectType : Artifact;
+      elementOf GitObjectLanguage;
+	  partOf ?gitObject.
+
+?compressedGitObjectContent : Artifact;
+      elementOf GitObjectLanguage;
+	  partOf ?gitObject.

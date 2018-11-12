@@ -1,0 +1,27 @@
+module git.usage.repo2branchPush
+
+import git.functions.push where {
+[
+repo2ConfigFile / ?gitConfigFilePush, 
+repo2Origin / ?remoteNamePush, 
+branch2Local / ?gitReferenceFileLocal, 
+objectsLocal / ?gitObjectStreamLocal, 
+filesRemote / ?fileArtifactStreamRemotePre,
+referenceRemote / ?gitReferenceFileRemote, 
+objectsRemote / ?gitObjectStreamRemote, 
+filesRemote / ?fileArtifactStreamRemotePost
+]
+}
+
+import git.usage.final.repo2config
+
+/*
+@Description:
+	push branch to repo
+	(step 32)
+*/
+branch2Local ~= "file://./demo_run.json#l117273-117276".
+objectsLocal ~= "file://./demo_run.json#l118267-118389".
+filesRemote ~= "file://./demo_run.json#l119156-119159".
+referenceRemote ~= "file://./demo_run.json#119144-119147".
+objectsRemote ~= "file://./demo_run.json#l120668-120788".

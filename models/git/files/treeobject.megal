@@ -1,0 +1,32 @@
+module git.files.treeobject
+
+import git.Core
+import git.files.languages
+/*
+*@Description: 
+*	Git Tree Objects
+*@Rationale:
+*	Describes the Files' state at a given commit and linkes file contents to their file name
+*/
+?gitTreeObject : File;
+	elementOf GitTreeObjectLanguage.
+	
+?subtreeObject : File;
+	elementOf GitTreeObjectLanguage.
+
+?namedBlobObject : File;
+	elementOf GitBlobObjectLanguage.
+	
+?gitTreeElement : Artifact;
+	elementOf GitTreeObjectLanguage;
+	refersTo ?namedBlobObject;
+	partOf ?gitTreeObject.
+
+?gitTreeElementName : Artifact;
+	elementOf GitTreeObjectLanguage;
+	partOf ?gitTreeObject.
+	
+?gitTreeSubtreeReference : Artifact;
+	elementOf GitTreeObjectLanguage;
+	refersTo ?subtreeObject;
+	partOf ?gitTreeObject.

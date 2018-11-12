@@ -47,32 +47,38 @@ public class ImportTest {
 
     @Test
     public void testBlockWisdom() {
-    	//every model's relationship knows its block and every block knows subject and object
-    	for(Set<Relation>rset : model.getRelationships().values()) {
-    		for(Relation r : rset) {
-    			if(model.getSubtypesMap().containsKey(r.getSubject())
-        				||model.getRelationshipDeclarationMap().containsKey(r.getSubject())) {
-        			continue;
-    			}
-        		Block b = r.getBlock();
-        		assertNotNull(b);
-        		assertNotNull(b.getInstanceOfMap().get(r.getSubject()));
-        		assertNotNull(b.getInstanceOfMap().get(r.getObject()));
-        	}
-    	}
-    	
-    	for(Block b : model.getBlocks()) {
-    		for(Set<Relation> rset : b.getRelationships().values()) {
-    			for(Relation r : rset) {
-    				if(model.getSubtypesMap().containsKey(r.getSubject())) {
-    					System.err.println(r.getSubject()+"---"+r.getObject());
-    				}
-    				assertNotNull(b.getInstanceOfMap().get(r.getSubject()));
-    				assertNotNull(b.getInstanceOfMap().get(r.getObject()));
-    			}
-    		}
-    		
-    	}
+	    	//every model's relationship knows its block and every block knows subject and object
+	    	for(Set<Relation>rset : model.getRelationships().values()) {
+	    		for(Relation r : rset) {
+	    			if(model.getSubtypesMap().containsKey(r.getSubject())
+	        				||model.getRelationshipDeclarationMap().containsKey(r.getSubject())) {
+	        			continue;
+	    			}
+	        		Block b = r.getBlock();
+	        		assertNotNull(b);
+	        		assertNotNull(b.getInstanceOfMap().get(r.getSubject()));
+	        		assertNotNull(b.getInstanceOfMap().get(r.getObject()));
+	        	}
+	    	}
+	    	
+	    	for(Block b : model.getBlocks()) {
+	    		for(Set<Relation> rset : b.getRelationships().values()) {
+	    			for(Relation r : rset) {
+	    				if(model.getSubtypesMap().containsKey(r.getSubject())) {
+	    					System.err.println(r.getSubject()+"---"+r.getObject());
+	    				}
+	    				assertNotNull(b.getInstanceOfMap().get(r.getSubject()));
+	    				assertNotNull(b.getInstanceOfMap().get(r.getObject()));
+	    			}
+	    		}
+	    	}
+    }
+    
+    @Test
+    public void testMissingModule() throws IOException {
+    		ml = new ModelLoader();
+        ml.loadFile("testsample/ImportDemo/F.megal");
+        assertEquals("Error Missing import target: from F to E",ml.getTypeErrors().get(0));
     }
 
 }

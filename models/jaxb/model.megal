@@ -1,0 +1,86 @@
+module jaxb.model
+
+import jaxb.Core
+
+/*
+@Description
+    The inputs folder holds the used XSD Schema.
+
+@Rationale
+    Description of the inputs folder
+*/
+inputs : Folder.
+
+/*
+@Description
+    JAXB always uses XML files, which conform to an XML Schema
+
+@Rationale
+    See https://javaee.github.io/jaxb-v2/doc/user-guide/ch03.html for a guide
+*/
+?xmlSchema :  File;
+    elementOf XSD;
+    hasRole Schema;
+    defines JAXBXML.
+
+/*
+@Description
+    The outputs folder holds the serialized XML
+
+@Rationale 
+    Description of the outputs folder
+*/
+outputs : Folder.
+
+?anXMLDoc : File;
+    elementOf JAXBXML;
+    hasRole Database.
+
+/*
+@Description
+    The objectModel contains the Java classes of the project's model.
+
+@Rationale
+    See https://docs.oracle.com/javaee/5/tutorial/doc/bnbah.html#bnbau for examples
+*/
+?objectModel : File+;
+    elementOf XJCClassifierJava;
+    hasRole POJO.
+
+/*
+@Description
+    The ObjectFactory provides factory methods for instantiating Java interfaces
+    representing XML content in the Java content tree.
+
+@Rationale
+    See https://docs.oracle.com/cd/E17802_01/webservices/webservices/docs/1.6/tutorial/doc/JAXBWorks2.html
+    for an example
+*/
+?objectFactory : File;
+    elementOf XJCFactoryJava;
+    hasRole ConcreteFactory.
+
+/*
+@Description 
+    The process of unmarshalling and the process of marshalling can produce a Content tree 
+    out of the XML subset used in JAXB and vice versa.
+    The content tree consists of data objects instantiated from the generated classes
+    and also represents the structure and content of the XML, when (un-)marshalled.
+
+@Rationale
+    See https://docs.oracle.com/javase/tutorial/jaxb/intro/arch.html for a brief description
+*/
+?contentTree : Transient;
+    elementOf JVMObjectLanguage.
+
+?xmlSchema correspondsTo ?anXMLDoc.
+?anXMLDoc correspondsTo ?xmlSchema.
+
+?anXMLDoc correspondsTo ?contentTree.
+?anXMLDoc conformsTo ?xmlSchema.
+
+?contentTree correspondsTo ?anXMLDoc.
+?contentTree conformsTo ?objectModel.
+
+?objectModel correspondsTo ?xmlSchema.
+?xmlSchema correspondsTo ?objectModel.

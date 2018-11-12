@@ -1,0 +1,15 @@
+module gson.Annotations
+
+import gson.Core
+
+/* @Description: Package containing class which define Annotations that
+can be used in Java Files, to customize de/serialization.
+
+@Rationale: See java-doc: https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/annotations/package-summary.html
+*/
+
+gsonAnnotationPackage: File+;
+	~= "https://github.com/google/gson/tree/master/gson/src/main/java/com/google/gson/annotations";
+	elementOf Java;
+	partOf GSON;
+	defines GsonAnnotationLanguage.

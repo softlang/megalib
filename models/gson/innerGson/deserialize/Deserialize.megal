@@ -1,0 +1,24 @@
+module gson.innergson.deserialize.Deserialize
+
+import gson.Core
+import gson.GsonMain
+import javaplatform.Reflection
+import gson.TypeAdapterCore
+import gson.DeserializerGen
+import gson.innergson.DefaultTypeAdapter
+
+/* @Description:
+	Function which creates the java object from a json object
+   @Rationale:
+   See github repo: https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/Gson.java
+   Line 927
+*/
+
+fromJson: JSON # TypeAdapterLanguage -> JVMObjectLanguage.
+gsonClass defines fromJson.
+GSON implements fromJson.
+
+?javaResultTransient: Transient;
+	elementOf JVMObjectLanguage.
+	
+fromJson(?jsonFile, ?typeAdapter) |-> ?javaResultTransient.

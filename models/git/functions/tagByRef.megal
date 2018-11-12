@@ -1,0 +1,31 @@
+module git.functions.tagByRef
+
+import git.Core
+import git.files.languages
+import git.functions.refResolve
+import git.functions.tag
+
+/*
+@Description:
+	Git tag command
+@Rationale:
+	creates a Revison tag (reference) to referenced commit
+	see Link
+*/
+?tagMetadata : Artifact;
+	elementOf GitTagMetadataLanguage.
+?gitReferenceFile : File;
+	elementOf GitReferenceLanguage.
+?gitTagObject : File;
+	elementOf GitRevisionTagObjectLanguage.
+//?gitReferenceFileOut : File;
+//	elementOf GitReferenceLanguage.
+
+gitTagByRef : GitTagMetadataLanguage # GitReferenceLanguage -> GitRevisionTagObjectLanguage # GitReferenceLanguage.
+gitTagByRef(?tagMetadata, ?gitReferenceFile) |-> (?gitTagObject, ?gitReferenceFileOut).
+gitTagByRef	= "gitdoc::git-tag";
+				concretizes RevisionTagging;
+				composedOf gitReferenceResolve;
+				composedOf gitTag.
+				
+Git implements gitTagByRef.

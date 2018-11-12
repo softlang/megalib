@@ -1,0 +1,37 @@
+module git.functions.add
+
+import git.files.languages
+import git.Core
+	
+/*
+*@Description:
+*	Placeholder for any file
+*@Rationale:
+*	Git's Versioning functions work with any kind of file
+*/
+?Language : Language.
+?fileArtifact : File;
+	elementOf ?Language.
+	
+
+
+/*
+*@Description:
+*	git's add Function
+*@Rationale:
+*	Adds a file to Git's staging area and creates the content's blob
+*	If this is the first element to be staged the indexFile does not exist beforehand
+	see Link
+*/
+?gitIndexPreAdd : File;
+		elementOf GitIndexFileLanguage.
+?gitIndexPostAdd : File;
+		elementOf GitIndexFileLanguage.
+?gitBlobObjectAddOut : File;
+		elementOf GitBlobObjectLanguage.
+gitAdd : ?Language # GitIndexFileLanguage -> GitIndexFileLanguage # GitBlobObjectLanguage.
+gitAdd(?fileArtifact, ?gitIndexPreAdd) |-> (?gitIndexPostAdd, ?gitBlobObjectAddOut).
+gitAdd = "gitdoc::git-add".
+
+
+Git implements gitAdd.

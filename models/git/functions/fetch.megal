@@ -1,0 +1,38 @@
+module git.functions.fetch
+
+import git.Core
+import git.files.languages
+
+
+/*
+@Description:
+	Artificial Container for all objects/references before and after an operation
+@Rationale:
+	Needes a Megal has no containers for representing the state of references/objects befor/after an operation
+*/
+?gitObjectStreamPre : File+;
+	elementOf GitObjectLanguage.
+?gitObjectStreamPost : File+;
+	elementOf GitObjectLanguage.
+?gitReferenceStreamPre : File+;
+	elementOf GitReferenceLanguage.
+?gitReferenceStreamPost : File+;
+	elementOf GitReferenceLanguage.
+
+
+/*
+@Description:
+	Git fetch command
+@Rationale:
+	Gets all references and objects from a remote Repository
+	see Link
+*/
+?gitConfigFileFetchIn : File;
+	elementOf GitConfigFileLanguage.
+?remoteNameFetchIn : Artifact;
+	elementOf GitRemoteConfigLanguage.
+gitFetch : GitConfigFileLanguage # GitRemoteConfigLanguage # GitObjectLanguage # GitReferenceLanguage -> GitObjectLanguage # GitReferenceLanguage.
+gitFetch(?gitConfigFileFetchIn, ?remoteNameFetchIn, ?gitObjectStreamPre, ?gitReferenceStreamPre) |-> (?gitObjectStreamPost, ?gitReferenceStreamPost).
+gitFetch = "gitdoc::git-fetch".
+
+Git implements gitFetch.

@@ -1,0 +1,46 @@
+module git.functions.push
+
+import git.Core
+import git.files.languages
+
+/*
+@Description:
+	Artificial Container for objects before and after an operation
+@Rationale:
+	Needed as Megal has no containers for representing states
+*/
+?gitObjectStreamLocal : File+;
+	elementOf GitObjectLanguage.
+?gitObjectStreamRemote : File+;
+	elementOf GitObjectLanguage;
+	correspondsTo ?gitObjectStreamLocal.	
+?fileArtifactStreamRemotePre : File+;
+		elementOf CommitFileLanguage.
+?fileArtifactStreamRemotePost : File+;
+		elementOf CommitFileLanguage;
+		correspondsTo ?gitObjectStreamRemote.
+	
+/*
+@Description:
+	git push command
+	simplified reference form single commit to container due to transitive refered objects
+@Rationale:
+	sends local changes to remote repository
+	see Link
+*/
+?gitConfigFilePush : File;
+	elementOf GitConfigFileLanguage.
+?remoteNamePush : Artifact;
+	elementOf GitRemoteConfigLanguage.
+?gitReferenceFileLocal : Artifact;
+	elementOf GitReferenceLanguage;
+	refersTo ?gitObjectStreamLocal.
+?gitReferenceFileRemote : Artifact;
+	elementOf GitReferenceLanguage;
+	refersTo ?gitObjectStreamRemote.
+gitPush: GitConfigFileLanguage # GitRemoteConfigLanguage # GitReferenceLanguage # GitObjectLanguage # CommitFileLanguage -> GitReferenceLanguage # GitObjectLanguage # CommitFileLanguage.
+gitPush(?gitConfigFilePush, ?remoteNamePush, ?gitReferenceFileLocal, ?gitObjectStreamLocal, ?fileArtifactStreamRemotePre ) |-> (?gitReferenceFileRemote, ?gitObjectStreamRemote, ?fileArtifactStreamRemotePost).
+gitPush ="gitdoc::git-push";
+		concretizes VersionMerging.
+
+Git implements gitPush.

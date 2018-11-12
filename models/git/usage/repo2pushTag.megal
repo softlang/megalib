@@ -1,0 +1,25 @@
+module git.usage.repo2pushTag
+
+import git.functions.pushRevisionTag where {
+[
+repo2ConfigFile / ?gitConfigFilePushIn, 
+repo2Origin / ?remoteNamePushIn, 
+tagObjectLocal / ?gitTagObjectLocal, 
+tagReferenceLocal / ?gitTagReferenceFileLocal,
+tagObjectRemote / ?gitTagObjectRemote, 
+tagReferenceRemote / ?gitTagReferenceFileRemote
+]
+}
+
+import git.usage.final.repo2config
+
+
+/*
+@Description: 
+	push RevisionTag
+	(step 28)
+*/
+tagObjectLocal ~="file://./demo_run.json#l98360-98390".
+tagReferenceLocal ~= "file://./demo_run.json#l97322-97325".
+tagObjectRemote ~= "file://./demo_run.json#l100729-100759".
+tagReferenceRemote ~= "file://./demo_run.json#l991467-99149".

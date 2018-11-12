@@ -1,0 +1,34 @@
+module gson.GsonBuilder
+
+import gson.GsonMain
+import gson.Core
+
+/* @Description: 
+	A builder allows the configuration of the main gson object.
+	From its own config it creates a main gson Object by fullfilling the builder pattern.
+   @Rationale: 
+    See java-doc: https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/GsonBuilder.html
+*/
+
+GsonBuilderLanguage: ValueLanguage;
+	="https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/GsonBuilder.html";
+	subsetOf JVMObjectLanguage.
+
+gsonBuilderClass: File;
+	~="https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/GsonBuilder.java";
+	elementOf Java;
+	partOf GSON;
+	defines GsonBuilderLanguage.
+	
+createGson: GsonBuilderLanguage -> GsonMainLanguage.
+gsonBuilderClass defines createGson.
+GSON implements createGson.
+
+?builderTransientIn: Transient;
+	hasRole ConcreteBuilder;
+	hasRole Configuration;
+	elementOf GsonBuilderLanguage.
+	
+createGson(?builderTransientIn) |-> ?mainGsonTransient.
+?mainGsonTransient hasRole BuilderProduct.
+?mainGsonTransient conformsTo ?builderTransientIn.

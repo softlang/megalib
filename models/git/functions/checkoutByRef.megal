@@ -1,0 +1,23 @@
+module git.functions.checkoutByRef
+
+import git.files.languages
+import git.functions.refResolve
+import git.functions.checkoutCommit
+
+/*
+@Description:
+	Git's checkout Command for abitrary References
+@Rationale:
+	Sets the current head to the commit which is referenced by the given reference 
+	see Link
+*/
+?gitTagObject : File;
+	elementOf GitRevisionTagObjectLanguage.
+gitCheckoutByRef : GitRevisionTagObjectLanguage # CommitFileLanguage # GitReferenceLanguage -> CommitFileLanguage #  GitReferenceLanguage.
+gitCheckoutByRef(?gitTagObject, ?fileArtifactStreamPre, ?gitHeadPre ) |-> (?fileArtifactStreamPost, ?gitHeadPost).
+gitCheckoutByRef = "gitdoc::git-checkout#git-checkout-emgitcheckoutem--detachltcommitgt";
+				= "gitbook::Git-Basics-Tagging";
+				composedOf gitReferenceResolve;
+				composedOf gitCheckoutCommit.
+
+Git implements gitCheckoutByRef.

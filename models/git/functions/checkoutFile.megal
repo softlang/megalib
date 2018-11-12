@@ -1,0 +1,33 @@
+module git.functions.checkoutFile
+
+import git.files.languages
+import git.Core
+
+/*
+@Descripton:
+	Placeholder for abitrary file
+@Rationale:
+	Version Control deals with any kind of file
+*/
+?Language : Language.
+?fileArtifactPre : File;
+	elementOf ?Language.
+?fileArtifactPost : File;
+	elementOf ?Language.
+	
+/*
+@Description:
+	git checkout file Command
+@Rationale:
+	Reverts the given file to the state it had at Head revision
+	see Link
+*/
+?gitIndexPre : File;
+	elementOf GitIndexFileLanguage.
+?gitIndexPost : File;
+	elementOf GitIndexFileLanguage.
+gitCheckoutFile : ?Language # GitIndexFileLanguage -> ?Language # GitIndexFileLanguage.
+gitCheckoutFile(?fileArtifactPre, ?gitIndexPre) |-> (?fileArtifactPost, ?gitIndexPost).
+gitCheckoutFile = "gitdoc::git-checkout#git-checkout-emgitcheckoutemlttree-ishgt--ltpathspecgt82308203".
+
+Git implements gitCheckoutFile.

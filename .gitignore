@@ -11,3 +11,5 @@ bin/
 target/
 visualizer/output/
 output/
+**/src-gen/
+**/xtend-gen/

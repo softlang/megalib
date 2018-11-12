@@ -1,0 +1,32 @@
+module git.usage.repo3fetch
+
+import git.usage.final.repo3config
+
+import git.functions.fetch where {
+[
+repo3ConfigFile / ?gitConfigFileFetchIn, 
+repo3Orign / ?remoteNameFetchIn, 
+preObjects / ?gitObjectStreamPre, 
+preReferences / ?gitReferenceStreamPre,
+postObjects / ?gitObjectStreamPost, 
+postReferences / ?gitReferenceStreamPost
+]
+}
+
+/*
+@Description: 
+	git fetch
+	(step 37)
+*/
+preObjects ~= "file://./demo_run.json#l144219-144311".
+preReferences ~= "file://./demo_run.json#l143607-143618".
+remoteObjects : File+;
+	~= "file://./demo_run.json#l143867-144042";
+		elementOf GitObjectLanguage.
+remoteReferences : File+;
+	~= "file://./demo_run.json#l142308-142319";
+	elementOf GitReferenceLanguage.
+postObjects ~= "file://./demo_run.json#l146910-147086";
+		correspondsTo remoteObjects.
+postReferences ~= "file://./demo_run.json#l146283-146302";
+		correspondsTo remoteReferences.

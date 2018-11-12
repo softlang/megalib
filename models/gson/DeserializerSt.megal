@@ -1,0 +1,23 @@
+module gson.DeserializerSt
+
+import gson.Core
+import gson.GsonMain
+import javaplatform.Reflection
+import gson.Objects where {
+[
+?javaObject /?javaObjectIn
+]
+}
+
+/* @Description:
+	Deserialization method for java objects without a generic
+	NOTIZ: HIER DISKUSSION WEGEN CLASS OBJ SUBTYPE VON TYPE OBJ????!!!!
+   @Rationale:
+	See java-doc: https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/Gson.html#fromJson-com.google.gson.JsonElement-java.lang.Class-
+	*/
+
+fromJsonSt: GsonMainLanguage # JavaTypeObjectLanguage # JSON -> JVMObjectLanguage.
+gsonClass defines fromJsonSt.
+GSON implements fromJsonSt.
+
+fromJsonSt(?mainGsonTransient, ?javaTypeObject, ?jsonFile) |-> ?javaObject.

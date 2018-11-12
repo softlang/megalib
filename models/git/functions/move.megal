@@ -1,0 +1,33 @@
+module git.functions.move
+
+import git.Core
+import git.files.languages
+
+/*
+@Descripton:
+	Placeholder for abitrary file
+@Rationale:
+	Version Control deals with any kind of file
+*/
+?Language : Language.
+?fileArtifactPre : File;
+	elementOf ?Language.
+?fileArtifactPost : File;
+	elementOf ?Language.
+
+/*
+@Descripton: 
+	git move command
+@Rationale:
+	Moves or renames a file
+	see Link
+*/
+?gitIndexPre : File;
+		elementOf GitIndexFileLanguage.
+?gitIndexPost : File;
+		elementOf GitIndexFileLanguage.
+gitMove : ?Language # GitIndexFileLanguage -> GitIndexFileLanguage # ?Language.
+gitMove(?fileArtifactPre, ?gitIndexPre) |-> (?gitIndexPost, ?fileArtifactPost).
+gitMove = "gitdoc::git-mv".
+
+Git implements gitMove.

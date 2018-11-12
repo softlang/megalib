@@ -1,0 +1,113 @@
+module git.files.config
+
+import git.Core
+import git.files.languages
+
+/*
+*@Description: 
+*	Git's Config File
+*@Rationale:
+*	Each distinct config block is modeled as sublanguage in order to adress the mseperately in the model.
+*/
+?gitConfigFile : File;
+	elementOf GitConfigFileLanguage.
+
+?gitConfigFileUserFragment : Artifact;
+	elementOf GitUserConfigLanguage.
+	
+?userName : Artifact;
+	elementOf GitUserConfigLanguage;
+	partOf ?gitConfigFileUserFragment.
+
+?userEmail : Artifact;
+	elementOf GitUserConfigLanguage;
+	partOf ?gitConfigFileUserFragment.
+
+//?userSigningKey : Artifact;
+//	elementOf GitUserConfigLanguage;
+//	partOf ?gitConfigFileUserFragment.
+	
+	
+/*
+	
+GitCommitConfigLanguage : ConfigurationLanguage;
+	="gitdoc::git-config";
+	subsetOf GitConfigFileLanguage.
+	
+	
+//commit.cleanup
+?commitCleanupBehavior : Artifact;
+	elementOf GitCommitConfigLanguage.
+
+//commit.gpgSign
+?commitDefaultGpgSignFlag : Artifact;
+	elementOf GitCommitConfigLanguage.
+
+//commit.status
+?commitMessageIncludeStatusFlag : Artifact;
+	elementOf GitCommitConfigLanguage.
+	
+//commit.template
+?commitMessageTemplate : Artifact;
+	elementOf GitCommitConfigLanguage.
+
+//commit.verbose
+?defaultCommitVerbosityLevel : Artifact;
+	elementOf GitCommitConfigLanguage. */
+	
+
+?gitConfigFileRemoteFragment : Artifact;
+	elementOf GitRemoteConfigLanguage.
+	
+//Nirgends Dokumeniert; alles reverse engeneered
+?remoteName : Artifact;
+	elementOf GitRemoteConfigLanguage;
+	partOf ?gitConfigFileRemoteFragment.
+?remoteNameURL : Artifact;
+	elementOf GitRemoteConfigLanguage;
+	elementOf URL;
+	partOf ?gitConfigFileRemoteFragment.
+?remoteFetchDirective : Artifact;
+	elementOf GitRemoteConfigLanguage;
+	partOf ?gitConfigFileRemoteFragment.
+	
+// In nicht zitierbaren Quellen erklärt	
+?branchReference : File;
+	elementOf GitReferenceLanguage.
+
+?remoteBranchReference : File;
+	elementOf GitReferenceLanguage.
+
+?gitConfigFileBranchFragment : Artifact;
+		elementOf GitBranchConfigLanguage.
+	
+//branch.<name>
+?branchName : Artifact;
+	elementOf GitBranchConfigLanguage;
+	refersTo ?branchReference;
+	partOf ?gitConfigFileBranchFragment.
+
+//branch.<name>.description
+?branchDescription : Artifact;
+	elementOf GitBranchConfigLanguage.
+
+//branch.<name>.remote
+?referedRemoteRepo : Artifact;
+	elementOf GitBranchConfigLanguage;
+	refersTo ?remoteName.
+	
+	
+//branch.<name>.merge
+?remoteMergeBranch : Artifact;
+	elementOf GitBranchConfigLanguage.
+	
+//branch.<name>.merge and branch.<name>.remote together create the reference to  the remotMergeBranch
+?remoteMergeDestination : Artifact;
+	elementOf GitBranchConfigLanguage;
+	refersTo ?remoteBranchReference;
+	partOf ?gitConfigFileBranchFragment.
+?remoteMergeBranch partOf ?remoteMergeDestination.
+?referedRemoteRepo partOf ?remoteMergeDestination.
+	
+
+

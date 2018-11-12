@@ -1,0 +1,113 @@
+module git.usage.repo2addCommit
+
+import git.usage.final.repo2config
+import git.files.head where {
+	[repo2Head / ?gitHead,
+	repo2MasterState1 / ?headReferenceFile]}
+import git.files.refs where {
+	[noneCommit / ?referencedCommitObject,
+	repo2MasterState1 / ?gitReferenceFile,
+	repo2MasterName / ?gitReferenceName]}
+import git.functions.add where {
+	[TextFileLanguage / ?Language,
+	repo2DemoTextFile / ?fileArtifact,
+	noIndexFile / ?gitIndexPreAdd,
+	repo2IndexFileState2 / ?gitIndexPostAdd,
+	repo2DemoTextFileBlobObject  / ?gitBlobObjectAddOut
+	]
+}
+import git.files.index where {
+	[repo2IndexFileState2 / ?gitIndex,
+	repo2DemoTextFileIndexEntry / ?gitIndexEntry,
+	repo2DemoTextFileIndexEntryMetaChangeTime / ?gitMetaChangeTime,
+	repo2DemoTextFileIndexEntryDataChangeTime / ?gitDataChangeTime,
+	repo2DemoTextFileIndexEntryFilePath / ?gitEntryFilePath,
+	repo2DemoTextFileBlobObject / ?gitEntryReferencedBlob,
+	repo2DemoTextFileBlobHash / ?gitEntryBlobHash
+	]
+}
+import git.functions.commit where {
+	[repo2Commit1Metadata / ?commitMetadataIn, 
+	repo2IndexFileState2 / ?gitIndexPreCommit, 
+	repo2Head / ?gitHeadPreCommit, 
+	repo2Commit1Object / ?gitCommitObjectOut, 
+	repo2Commit1TreeObject / ?gitTreeObjectOut, 
+	repo2MasterState3 / ?gitReferencePostCommit, 
+	repo2IndexFileState3 / ?gitIndexPostCommit
+	]
+}
+import git.files.commitobject where {
+	[repo2Commit1Object / ?gitCommitObject,
+	noneCommit / ?parentCommitObject,
+	repo2Commit1TreeObject  / ?referencedTreeObject,
+	repo2Commit1TreeRef / ?treeReference,
+	repo2Commit1parentCommtRef / ?parentCommitReference,
+	repo2Commit1Metadata / ?commitMetadata,
+	repo2Commit1AutorName / ?authorName,
+	repo2Commit1AutorEmail / ?authorEmail,
+	repo2Commit1AutorDate / ?authorDate,
+	repo2Commit1ComitterName / ?committerName,
+	repo2Commit1ComitterEmail / ?committerEmail,
+	repo2Commit1ComitterDate / ?committerDate,
+	repo2Commit1ComittMessage / ?commitMessage
+	]
+}
+import git.files.treeobject where {
+	[
+	repo2Commit1TreeObject / ?gitTreeObject,
+	noSubtree / ?subtreeObject,
+	repo2DemoTextFileBlobObject / ?namedBlobObject,
+	repo2Commit1TreeObjectDemoFileEntry / ?gitTreeElement,
+	repo2Commit1TreeObjectDemoFileEntryName / ?gitTreeElementName,
+	repo2Commit1TreeObjectSubtreeReference / ?gitTreeSubtreeReference
+	]
+}
+
+/*
+	pre-state
+*/
+repo2MasterState1 ~= "file://./repo2/.git/refs/heads/master".//File is generated on first commit
+repo2MasterName ~= "file://./repo2/.git/refs/heads/master".//Filename
+repo2Head ~= "file://./demo_run.json#l11958-11961".
+repo2Head ~= "file://./repo2/.git/HEAD".
+
+
+/*
+	git add demo.txt
+*/
+repo2DemoTextFile ~= "file://./demo_run.json#l12548-12550".
+repo2IndexFileState2 ~= "file://./demo_run.json#l13855-1386".
+repo2DemoTextFileBlobObject ~= "file://./demo_run.json#l13890-13897".
+repo2DemoTextFileIndexEntry ~= "file://./demo_run.json#l13861-13880".
+repo2DemoTextFileIndexEntryMetaChangeTime ~= "file://./demo_run.json#l13871".
+repo2DemoTextFileIndexEntryDataChangeTime ~= "file://./demo_run.json#l13863".
+repo2DemoTextFileIndexEntryFilePath ~= "file://./demo_run.json#l13872";
+	refersTo repo2DemoTextFile.
+repo2DemoTextFileBlobHash  ~= "file://./demo_run.json#l13873".
+	
+	
+/*
+	git commit -m \"Added demo.txt\"
+*/
+repo2Commit1Metadata ~= "file://./demo_run.json#l16558-16578".
+repo2Commit1Object ~= "file://./demo_run.json#l16552-16582".
+repo2Commit1TreeObject ~= "file://./demo_run.json#l16545-16551".
+repo2MasterState3 ~= "file://./demo_run.json#l16443".
+repo2IndexFileState3 ~= "file://./demo_run.json#l16496-16532".
+repo2Commit1TreeRef ~= "file://./demo_run.json#l16555-16556".
+repo2Commit1parentCommtRef ~= "file://./demo_run.json#l16557-1658".
+repo2Commit1AutorName ~= "file://./demo_run.json#l16560-16561";
+	correspondsTo repo2User.
+repo2Commit1AutorEmail ~= "file://./demo_run.json#l16562";
+	correspondsTo repo2UserMail.
+repo2Commit1AutorDate ~= "file://./demo_run.json#l16563-15564".
+repo2Commit1ComitterName ~= "file://./demo_run.json#l16568-16569";
+	correspondsTo repo2User.
+repo2Commit1ComitterEmail ~= "file://./demo_run.json#l16570";
+	correspondsTo repo2UserMail.
+repo2Commit1ComitterDate ~= "file://./demo_run.json#l16571".
+repo2Commit1ComittMessage ~= "file://./demo_run.json#l16575-16578".
+repo2Commit1TreeObjectSubtreeReference ~= "file://./demo_run.json#l16550".
+repo2Commit1TreeObjectDemoFileEntryName ~= "file://./demo_run.json#l16549".
+repo2Commit1TreeObjectDemoFileEntry ~= "file://./demo_run.json#l16549".
+repo2Head refersTo repo2Master.

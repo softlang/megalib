@@ -1,0 +1,17 @@
+module gson.Objects
+
+import javaplatform.Core
+
+/* @Description:
+	The java and json object, which are input and output of de/serialization.
+   @Rationale: Can be any java/json object
+*/
+
+?javaObject: Transient;
+	elementOf JVMObjectLanguage.
+
+?jsonFile: Transient;
+	elementOf JSON.
+	
+?jsonFile correspondsTo ?javaObject.
+?javaObject correspondsTo ?jsonFile.

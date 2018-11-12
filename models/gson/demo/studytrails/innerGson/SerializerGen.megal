@@ -1,0 +1,20 @@
+module gson.demo.studytrails.innerGson.SerializerGen
+
+import gson.demo.studytrails.innerGson.GsonMain
+import gson.demo.studytrails.innerGson.TypeTokenCore
+import gson.demo.studytrails.innerGson.Objects
+import gson.demo.studytrails.innerGson.JavaPlatformReflection
+import gson.SerializerGen where {
+[
+animal / ?javaObject,
+json / ?jsonFile,
+gson / ?mainGsonTransient,
+animalTypeDog / ?typeOfTypeToken,
+typeTokenAnimalDog / ?typeToken,
+dogGeneric / ?genericOfJavaObject
+]
+}
+
+/* Leeres Kommentar */
+
+ccc: Artifact.

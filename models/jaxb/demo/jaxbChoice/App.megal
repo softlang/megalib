@@ -1,0 +1,46 @@
+module jaxb.demo.jaxbChoice.App
+
+import jaxb.Core
+import jaxb.SchemaGen
+import jaxb.JAXBBinding
+import jaxb.XJC
+
+/*
+@Description:
+    jaxbChoice is an implementation of the 101companies feature model.
+
+@Rationale:
+    See https://101wiki.softlang.org/Contribution:jaxbchoice
+*/
+JAXBCHOICE :: "https://github.com/101companies/101simplejava/blob/master/contributions/jaxbChoice".
+
+
+JAXB101 : Application;
+    = "101wiki::Contribution:jaxbChoice";
+    reuses JAXB;
+    uses Java;
+    uses XML;
+    uses XSD;
+    uses Mapping;
+    uses XMLDataBinding;
+    reuses XJC;
+    uses Compilation.
+
+
+/*
+@Description
+    The XML and Classes of the 101Companies example also define a subset of
+    JAXBXML respectively XJCClassifierJava. The instances of the latter form
+    a subset of the JVMObjectLanguage.
+
+@Rationale
+    Any XSD schema creates a new subset of XML
+    Same for Javaclasses and JVMObjectLanguage, more specific XJCClassifierJava
+*/
+CompanyXML : DataExchangeLanguage;
+    = "JAXBCHOICE::outputs/company.xml";
+    subsetOf JAXBXML.
+
+CompanyObjectLanguage : ValueLanguage;
+    = "JAXBCHOICE::src/main/java/org/softlang/company/xjc";
+    subsetOf JVMObjectLanguage.

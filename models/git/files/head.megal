@@ -1,0 +1,18 @@
+module git.files.head
+
+import git.files.languages
+
+/*
+@Description:
+	Git Head reference
+@Rationale:
+	Refers to the current active branch or commit
+*/
+?headReferenceFile : File;
+	elementOf GitReferenceLanguage.
+
+?gitHead : File;
+	elementOf GitReferenceLanguage;
+	hasRole HEAD;
+	refersTo ?headReferenceFile.
+	// ~=  "file://./.git/HEAD"

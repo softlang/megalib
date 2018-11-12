@@ -1,0 +1,13 @@
+module gson.demo.studytrails.innerGson.JavaPlatformReflection
+
+import javaplatform.Reflection where {
+[
+typeTokenAnimalDog /?javaObjectIn,
+animalTypeDog / ?javaTypeObject
+]
+}
+
+/* Enitäten */
+
+typeTokenAnimalDog ~= "https://github.com/MithilShah/Java-Examples/blob/5ca27ffb11fc8566a31e3affa408046decc8de0f/src/com/studytrails/json/gson/GenericTypesExample8.java#L18".
+animalTypeDog ~= "https://github.com/MithilShah/Java-Examples/blob/5ca27ffb11fc8566a31e3affa408046decc8de0f/src/com/studytrails/json/gson/GenericTypesExample8.java#L18".

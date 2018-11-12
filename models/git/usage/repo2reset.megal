@@ -1,0 +1,33 @@
+module git.usage.repo2reset
+
+import git.functions.reset where {
+	[
+	repo2IndexPre / ?gitIndexPre, 
+	repo2Head / ?gitReferenceFile,
+	repo2IndexPost / ?gitIndexPost
+	]}
+import git.files.index where {
+	[
+	repo2IndexPost / ?gitIndex,
+	demoFileIndexEntry / ?gitIndexEntry,
+	demoFileMetaChangeTime / ?gitMetaChangeTime,
+	demoFileDataChangeTime / ?gitDataChangeTime,
+	demoFilePath / ?gitEntryFilePath,
+	demoFileBlob / ?gitEntryReferencedBlob,
+	demoFileBlobHash / ?gitEntryBlobHash
+	]}
+
+
+/*
+@Descripion:
+	git reset (step 18)
+*/
+repo2IndexPre ~= "file://./demo_run.json#l52158-52174".
+repo2Head ~= "file://./demo_run.json#l50803-50806".
+repo2IndexPost ~= "file://./demo_run.json#l54387-54423".
+demoFileIndexEntry ~= "file://./demo_run.json#l54393-54412".
+demoFileMetaChangeTime ~= "file://./demo_run.json#l54403".
+demoFileDataChangeTime ~="file://./demo_run.json#l54395".
+demoFilePath ~= "file://./demo_run.json#l54404".
+demoFileBlob ~= "file://./demo_run.json#l52263-5270".
+demoFileBlobHash ~= "file://./demo_run.json#l54405".

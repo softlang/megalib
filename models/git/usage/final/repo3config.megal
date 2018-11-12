@@ -1,0 +1,42 @@
+module git.usage.final.repo3config
+
+
+import git.files.config where {
+	[repo3ConfigFile	/ ?gitConfigFile,
+	repo3UserConfig / ?gitConfigFileUserFragment,
+	repo3User / ?userName,
+	repo3UserMail / ?userEmail,
+	repo3RemoteOriginConfig / ?gitConfigFileRemoteFragment,
+	repo3Orign /  ?remoteName,
+	repo1Fldr / ?remoteNameURL,
+	repo3OriginFetchDirective / ?remoteFetchDirective,
+	repo3MasterBranchConfig / ?gitConfigFileBranchFragment,
+	repo3Master / ?branchReference,
+	repo3MasterRemote / ?remoteBranchReference,
+	repo3MasterNameConfig / ?branchName,
+	repo3MasterRemoteRepo / ?referedRemoteRepo,
+	repo3MasterMerge / ?remoteMergeBranch,
+	repo3MasterMergeDestination / ?remoteMergeDestination]}
+
+/*
+@Description:
+	Final repo3 config file
+*/
+repo1Fldr ~= "file://./repo1".
+repo3Master ~= "file://./repo3/.git/refs/heads/master".//File is generated on first commit
+repo3RemoteOriginConfig ~= "file://./demo_run.json#l32204-32207";
+	partOf repo3ConfigFile.
+repo3Orign ~= "file://./demo_run.json#l32204".
+repo3OriginFetchDirective ~= "file://./demo_run.json#l32205".
+repo3MasterRemote ~= "file://.repo1/.git/refs/heads/master".
+repo3MasterBranchConfig ~= "file://./demo_run.json#l32194-32197";
+	partOf repo3ConfigFile.
+repo3MasterNameConfig ~= "file://./demo_run.json#l32194".
+repo3MasterRemoteRepo ~= "file://./demo_run.json#l32196".
+repo3MasterMerge ~= "file://./demo_run.json#32195".
+repo3MasterMergeDestination ~= "file://./demo_run.json#l32195-32196".
+repo3ConfigFile ~= "file://./demo_run.json#l32193-32212".
+repo3UserConfig ~= "file://./demo_run.json#l32208-32211";
+		partOf repo3ConfigFile.
+repo3UserMail ~= "file://./demo_run.json#l32209".
+repo3User ~= "file://./demo_run.json#l32210".

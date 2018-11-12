@@ -1,0 +1,14 @@
+module gson.demo.101contribution.serialize.SerializerSt
+
+import gson.demo.101contribution.serialize.GsonMain
+import gson.demo.101contribution.serialize.Objects where {
+[
+res / ?javaObject,
+101json / ?jsonFile,
+gson / ?mainGsonTransient
+]
+}
+
+/* Leeres Kommentar */
+
+d: Artifact.

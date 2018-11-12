@@ -1,0 +1,49 @@
+module git.functions.clone
+
+import git.Core
+import git.files.languages
+
+
+
+/*
+@Description:
+	Artifical Container for all files/objects/references before and after an operation
+@Rationale:
+	As possibly all files in the file system are changed during a checkout and megal has no containers of its own this is nessesary to represent the change.
+
+*/
+?gitObjectStreamLocal : File+;
+	elementOf GitObjectLanguage.
+?gitObjectStreamRemote : File+;
+	elementOf GitObjectLanguage.
+?gitReferenceStreamLocal : File+;
+	elementOf GitReferenceLanguage.
+?gitReferenceStreamRemote : File+;
+	elementOf GitReferenceLanguage.
+CommitFileLanguage : ContainerLanguage;
+      = "wikipedia::File_system".
+?fileArtifactStream : File+;
+		elementOf CommitFileLanguage.
+
+
+	
+
+/*
+@Description:
+	git clone command
+@Rationale:
+	Creates a local copy of the remote Repository
+	If you clone an empty repository the master branch is not created
+	see Link
+*/
+?folderPathClone : Artifact;
+	elementOf FilePathLanguage.	
+?cloneSourceURL : Artifact;
+	elementOf URL.
+?gitConfigFilePostClone : File;
+	elementOf GitConfigFileLanguage.
+gitClone: FilePathLanguage # URL # GitObjectLanguage # GitReferenceLanguage -> GitObjectLanguage # GitReferenceLanguage # CommitFileLanguage # GitConfigFileLanguage.
+gitClone(?folderPathClone, ?cloneSourceURL, ?gitObjectStreamRemote, ?gitReferenceStreamRemote) |-> (?gitObjectStreamLocal, ?gitReferenceStreamLocal, ?fileArtifactStream, ?gitConfigFilePostClone).
+gitClone = "gitdoc::git-clone".
+
+Git implements gitClone.

@@ -1,0 +1,38 @@
+module git.usage.repo2checkoutBranch
+
+import git.functions.checkoutBranch where {
+[
+branch2 / ?localBranch,
+filesPre / ?fileArtifactStreamPre, 
+headPre / ?gitHeadPre,
+masterBranch / ?gitReferenceFileIn,
+branch2CurrentCommit / ?referencedGitCommitObject,
+branch2CurrentCommit / ?gitCommitObject,
+filesPost / ?fileArtifactStreamPost, 
+headPost / ?gitHeadPost
+]
+}
+
+import git.files.head where {
+[
+headPre / ?gitHead,
+masterBranch / ?headReferenceFile
+];
+[
+headPost / ?gitHead,
+branch2 / ?headReferenceFile
+]
+}
+
+/*
+@Description:
+	git checkout branch2
+	(step 31)
+*/
+branch2 ~= "file://./demo_run.json#l112262-112265".
+filesPre ~= "file://./demo_run.json#l112278-112281".
+headPre ~= "file://./demo_run.json#l111648-111651".
+masterBranch ~= "file://./demo_run.json#l11266-112269".
+branch2CurrentCommit ~= "file://./demo_run.json#l113272-113308".
+filesPost ~= "file://./demo_run.json#l114781-114784".
+headPost ~= "file://./demo_run.json#l114150".

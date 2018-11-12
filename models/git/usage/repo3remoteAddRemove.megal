@@ -1,0 +1,49 @@
+module git.usage.repo3remoteAddRemove
+
+import git.usage.final.repo3config
+import git.functions.remoteAdd where {
+	[repo3ConfigFile / ?gitConfigFilePreRemoteAdd,
+	repo3R2Link / ?remoteNameA,
+	repo3R2URL / ?remoteNameURLA,
+	repo3ConfigFileWithR2 / ?gitConfigFilePostRemoteAdd
+	]}
+import git.functions.remoteRemove where {
+	[
+	repo3ConfigFileWithR2 / ?gitConfigFilePreRemoteRemove,
+	repo3R2Link / ?remoteNameR,
+	repo3ConfigFile / ?gitConfigFilePostRemoteRemove
+	]}
+import git.files.config where {
+	[repo3ConfigFileWithR2	/ ?gitConfigFile,
+	repo3UserConfig / ?gitConfigFileUserFragment,
+	repo3User / ?userName,
+	repo3UserMail / ?userEmail,
+	repo3RemoteR2Config / ?gitConfigFileRemoteFragment,
+	repo3R2 /  ?remoteName,
+	repo2Fldr / ?remoteNameURL,
+	repo3R2FetchDirective / ?remoteFetchDirective,
+	repo3MasterBranchConfig / ?gitConfigFileBranchFragment,
+	repo3Master / ?branchReference,
+	repo3MasterRemote / ?remoteBranchReference,
+	repo3MasterNameConfig / ?branchName,
+	repo3MasterRemoteRepo / ?referedRemoteRepo,
+	repo3MasterMerge / ?remoteMergeBranch,
+	repo3MasterMergeDestination / ?remoteMergeDestination]}
+	
+/*
+@Description:
+	Adding and afterwards removing an additional remote Repository
+	(step 14 & 15)
+*/
+repo2Fldr ~= "file://./repo2".
+repo2Fldr ~= "file://./demo_run.json#l34452".
+repo3RemoteR2Config ~= "file://./demo_run.json#l34450-34453";
+	partOf repo3ConfigFileWithR2.
+repo3R2 ~= "file://./demo_run.json#l34450".
+repo3R2FetchDirective ~= "file://./demo_run.json#l34451".
+repo3ConfigFileWithR2 ~= "file://./demo_run.json#l34435-34458".
+repo3MasterBranchConfig partOf repo3ConfigFileWithR2.
+repo3RemoteOriginConfig partOf repo3ConfigFileWithR2.
+repo3UserConfig partOf repo3ConfigFileWithR2.
+repo3R2Link ~= "file://./demo_run.json#l32153".
+repo3R2URL ~= "file://./demo_run.json#l32153".

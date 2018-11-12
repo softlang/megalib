@@ -1,0 +1,37 @@
+module gson.TypeTokenCore
+
+import gson.Core
+import gson.Objects
+import javaplatform.Core
+
+/* @Description:
+    Definition and creation of a typeToken. It saves the generic of a class and makes it
+	accesible during de/serialization.
+	@Rationale:
+	See java-doc: https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/reflect/TypeToken.html
+*/
+
+TypeTokenLanguage: ValueLanguage;
+	=  "https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/reflect/TypeToken.html";
+	subsetOf JVMObjectLanguage.
+	
+typeTokenClass: File;
+	~= "https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/reflect/TypeToken.java";
+	partOf GSON;
+	elementOf Java;
+	defines TypeTokenLanguage.
+	
+createTypeToken: JVMObjectLanguage # JVMObjectLanguage -> TypeTokenLanguage.
+typeTokenClass defines createTypeToken.
+GSON implements createTypeToken.
+
+?genericOfJavaObject: Transient;
+		elementOf JVMObjectLanguage;
+		^refersTo ?javaObject.
+		
+?typeToken: Transient;
+	elementOf TypeTokenLanguage.
+	
+createTypeToken(?javaObject, ?genericOfJavaObject) |-> ?typeToken.
+?typeToken conformsTo ?javaObject.
+?genericOfJavaObject ^refersTo ?typeToken.

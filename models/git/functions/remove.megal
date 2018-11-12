@@ -1,0 +1,31 @@
+module git.functions.remove
+
+import git.Core
+import git.files.languages
+	
+/*
+@Description:
+	Placeholder for any file
+@Rationale:
+	Git's Versioning functions work with any kind of file
+*/
+?Language : Language.
+?fileArtifact : File;
+	elementOf ?Language.
+	
+/*
+@Description:
+	Git remove command
+@Rationale:
+	removes a file from file system and adds this change to git index
+	see Link
+*/
+?gitIndexPre : File;
+		elementOf GitIndexFileLanguage.
+?gitIndexPost : File;
+		elementOf GitIndexFileLanguage.
+gitRemove : ?Language # GitIndexFileLanguage -> GitIndexFileLanguage.
+gitRemove(?fileArtifact, ?gitIndexPre) |-> ?gitIndexPost.
+gitRemove = "gitdoc::git-rm".
+
+Git implements gitRemove.

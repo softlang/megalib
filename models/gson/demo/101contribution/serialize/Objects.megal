@@ -1,0 +1,12 @@
+module gson.demo.101contribution.serialize.Objects
+
+import gson.demo.101contribution.serialize.JavaPlatformReflection
+import gson.Objects where {
+[
+ 101json / ?jsonFile,
+ res / ?javaObject
+]
+}
+
+/* Entities */
+101json ~= "https://github.com/101companies/101simplejava/blob/master/contributions/javaGsonObjects/inputs/sampleCompany.json".

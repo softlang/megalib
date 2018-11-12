@@ -2,7 +2,7 @@ module common.ConceptKB
 
 import common.Concept
 
-/* All concepts that are general so far. */
+/* @Description: All concepts that are general so far. */
 // Design pattern 
 ObserverPattern : DesignPattern;
     = "wikipedia::Observer_pattern".
@@ -16,6 +16,8 @@ TemplateMethodPattern : DesignPattern;
     = "wikipedia::Template_method_pattern".
 DecoratorPattern : DesignPattern;
     = "wikipedia::Decorator_pattern".
+BuilderPattern: DesignPattern;
+	= "wikipedia::Builder_pattern".
 
 // Architectural pattern 
 ModelViewController : ArchitecturalPattern;
@@ -144,6 +146,11 @@ ClusterManagementWare : TechnologySpace;
 	subspaceOf ClusterWare.
 GraphWare : TechnologySpace;
     = "wikipedia::Category:Application-specific_graphs".
+VersionControl : TechnologySpace;
+    = "wikipedia::Version_control".
+DistributedVersionControl : TechnologySpace;
+    = "wikipedia::Distributed_version_control";
+    subspaceOf VersionControl.
 
 // Abstract Processes 
 PrettyPrinting : AbstractProcess; 
@@ -226,6 +233,18 @@ ParserGeneration : AbstractProcess;
     = "101wiki::Parser_generation".
 UnifiedShaderModel : AbstractProcess;
 	= "wikipedia::Unified_shader_model".
+VersionMerging : AbstractProcess.
+VersionMerging = "wikipedia::Merge_(version_control)".
+AtomicOperation : AbstractProcess.
+AtomicOperation = "wikipedia::Atomicity_(database_systems)".
+AtomicCommit : AbstractProcess;
+          = "wikipedia::Atomic_commit";
+          refines AtomicOperation.
+Branching : AbstractProcess.
+Branching = "wikipedia::Branching_(version_control)".
+RevisionTagging : AbstractProcess. //As used in Version Marking like v1
+RevisionTagging = "wikipedia::Revision_tag".
+
 HTTP : Protocol;
     = "wikipedia::HTTP".
 HTTPS : Protocol ;
@@ -237,6 +256,8 @@ Annotation : Construct;
     aspectOf ObjectOrientedProgramming.
 SoftwareInterface : Construct;
 	= "wikipedia::Interface_(computing)".
+Generic: Construct;
+	="https://en.wikipedia.org/wiki/Generic_programming".
     
 // Roles as terms that certain artifacts are denoted by.
 Monad : Role; // propose a Monad construct
@@ -366,6 +387,11 @@ AST : Role;
    = "https://en.wikipedia.org/wiki/Abstract_syntax_tree".
 Invariant : Role; 
  		= "wikipedia::Invariant_(computer_science)".
+//For idetifcation revisongraph Nodes
+Vertex : Role;
+		= "wikipedia::Vertex_(graph_theory)".
+HEAD : Role;
+	= "wikipedia::Version_control#Common_vocabulary".
 
 MvcModel : Role; //data classes plus minor business logics
     = "wikipedia::Model-view-controller";
@@ -445,6 +471,19 @@ Decorator-AbstractDecorator : Role;
 Decorator-ConcreteDecorator : Role;
     = "wikipedia::Decorator_pattern";
     participantOf DecoratorPattern.
+    
+BuilderDirector: Role;
+	="https://en.wikipedia.org/wiki/Builder_pattern";
+	participantOf BuilderPattern.
+Builder: Role;
+	="https://en.wikipedia.org/wiki/Builder_pattern";
+	participantOf BuilderPattern.
+ConcreteBuilder: Role;
+	="https://en.wikipedia.org/wiki/Builder_pattern";
+	participantOf BuilderPattern.
+BuilderProduct: Role;
+	="https://en.wikipedia.org/wiki/Builder_pattern";
+	participantOf BuilderPattern.
     
 // Concepts that need further classification 
 SIMT : Concept; 

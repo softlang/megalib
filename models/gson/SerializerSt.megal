@@ -1,0 +1,17 @@
+module gson.SerializerSt
+
+import gson.GsonMain
+import gson.Core
+import gson.Objects
+
+/* @Description:
+	Serialization method for objects without an generic Type.
+   @Rationale:
+	See official javadoc: https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/Gson.html#toJson-java.lang.Object-
+*/
+
+toJsonSt: GsonMainLanguage # JVMObjectLanguage -> JSON.
+gsonClass defines toJsonSt.
+GSON implements toJsonSt.
+
+toJsonSt(?mainGsonTransient, ?javaObject) |-> ?jsonFile.

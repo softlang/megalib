@@ -1,0 +1,38 @@
+module git.App
+
+import git.Core
+import git.files.refs
+
+/*
+@Description:
+	GitRepository mainly consists of a reference graph. 
+        Distinction between local and remote repos only present at transactions
+        Git branches are internally just named references which are overwritten with each commit.
+@Rationale:
+	see links
+*/
+?GitRepository : System;
+            = "wikipedia::Repository_(version_control)".
+?references : File+;
+        partOf ?GitRepository;
+        elementOf GitReferenceLanguage.
+
+// ~= "file:://./.git/refs/heads/"
+?localBranches : File+;
+       partOf ?references;
+       elementOf GitReferenceLanguage.
+
+// ~= "file:://./.git/refs/remote/_/"
+?remoteBranches : File+;
+       partOf ?references;
+       elementOf GitReferenceLanguage.
+	   
+// ~= "file:://./.git/refs/tags/"
+?tags : File+;
+		partOf ?references;
+		elementOf GitReferenceLanguage.
+
+// ~= "file:://./.git/objects/"		
+?objects : File+;
+		elementOf GitObjectLanguage;
+		partOf ?GitRepository.

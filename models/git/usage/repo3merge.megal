@@ -1,0 +1,23 @@
+module git.usage.repo3merge
+
+import git.functions.merge where {
+[
+refIn1 / ?gitReferenceIn1, 
+refIn2 / ?gitReferenceIn2, 
+filesPre / ?fileArtifactStreamPre,
+refOut / ?gitReferenceOut,
+filesPost /?fileArtifactStreamPost
+]
+}
+
+
+/*
+@Description:
+	git merge
+	(step 39)
+*/
+refIn1 ~= "file://./demo_run.json#l154618-154621".
+refIn2 ~= "file://./demo_run.json#l154626-154629".
+filesPre ~= "file://./demo_run.json#l154638-154641".
+refOut ~= "file://./demo_run.json#l157395-157398".
+filesPost ~= "file://./demo_run.json#l157415-157421".

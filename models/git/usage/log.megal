@@ -1,0 +1,44 @@
+module git.usage.log
+
+import git.functions.logRef where {[
+tag1Ref / ?gitReferenceFileIn,
+commitObject / ?referencedGitCommitObject,
+commitObject / ?gitCommitObjectIn,
+commitMetadata / ?commitMetadataOut
+]}
+import git.files.commitobject where {[
+commitObject / ?gitCommitObject,
+commitParent / ?parentCommitObject,
+commitTree / ?referencedTreeObject,
+commitTreeRef / ?treeReference,
+commitParentRef / ?parentCommitReference,
+commitMetadata / ?commitMetadata,
+commitAuthorName / ?authorName,
+commitAuthorMail / ?authorEmail,
+commitAuthorDate / ?authorDate,
+commitComitterName / ?committerName,
+commitComitterMail / ?committerEmail,
+commitComitterDate / ?committerDate,
+commitMessage / ?commitMessage 
+]}
+
+/*
+@Description:
+	git log tag1
+	(step 29)
+*/
+tag1Ref ~= "file://./demo_run.json#l10164-101645".
+commitObject ~= "file://./demo_run.json#l103151-103187".
+commitMetadata ~= "file://./demo_run.json#l103161-103183".
+commitMetadata ~= "file://./demo_run.json#l100982".
+commitParent ~= "file://./demo_run.json#l103188-103218". 
+commitTree ~= "file://./demo_run.json#l103219-103225".
+commitTreeRef ~= "file://./demo_run.json#l103155".
+commitParentRef ~= "file://./demo_run.json#l103157-13160".
+commitAuthorName ~= "file://./demo_run.json#l103163-103164".
+commitAuthorMail ~= "file://./demo_run.json#l103165".
+commitAuthorDate ~= "file://./demo_run.json#l103166-103167".
+commitComitterName ~= "file://./demo_run.json#l103171-103172".
+commitComitterMail ~= "file://./demo_run.json#l103173".
+commitComitterDate ~= "file://./demo_run.json#l103174".
+commitMessage ~= "file://./demo_run.json#l103178-103183".

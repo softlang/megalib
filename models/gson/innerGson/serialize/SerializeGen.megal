@@ -1,0 +1,24 @@
+module gson.innergson.serialize.SerializeGen
+
+import gson.Core
+import javaplatform.Reflection
+import gson.SerializerGen
+import gson.TypeToken
+import gson.innergson.DefaultTypeAdapter
+import gson.innergson.serialize.Serialize where {
+[
+?typeToken / ?javaObjectIn,
+?typeOfTypeToken / ?javaTypeObject
+]
+}
+
+/* @Description:
+	Process which runs inside of gson, if a class with a generic gets serialized
+   @Rationale:
+	See github repo: https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/Gson.java
+	Line 636 and followings
+*/
+
+toJsonGen composedOf typeTokenGet.
+toJsonGen composedOf getAdapterForInput.
+toJsonGen composedOf toJson.

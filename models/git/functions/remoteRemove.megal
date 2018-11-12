@@ -1,0 +1,23 @@
+module git.functions.remoteRemove
+
+import git.Core
+import git.files.languages
+
+/*
+@Description:
+	git remote remove command
+@Rationale:
+	removes a remote repository from git config file
+	see Link
+*/
+?gitConfigFilePreRemoteRemove : File;
+	elementOf GitConfigFileLanguage.
+?remoteNameR : Artifact;
+	elementOf GitRemoteConfigLanguage.
+?gitConfigFilePostRemoteRemove : File;
+	elementOf GitConfigFileLanguage.
+gitRemoteRemove : GitConfigFileLanguage # GitRemoteConfigLanguage -> GitConfigFileLanguage.
+gitRemoteRemove(?gitConfigFilePreRemoteRemove, ?remoteNameR) |-> ?gitConfigFilePostRemoteRemove.
+gitRemoteRemove = "gitdoc::git-remote".
+
+Git implements gitRemoteRemove.

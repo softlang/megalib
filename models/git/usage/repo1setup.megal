@@ -1,0 +1,64 @@
+module git.usage.repo1setup
+
+import git.functions.init where {
+	[repo1Fldr / ?folderPath,
+	 repo1ConfigFileState1 / ?gitConfigFileInitial,
+	 repo1Head / ?gitHeadPostInit,
+	 repo1Master / ?gitMasterPostInit]}
+import git.files.head where {
+	[repo1Head / ?gitHead,
+	repo1Master/ ?headReferenceFile]}
+import git.files.refs where {
+	[noneCommit / ?referencedCommitObject,
+	repo1Master / ?gitReferenceFile,
+	repo1MasterName / ?gitReferenceName]}
+import git.functions.config where {
+	[repo1ConfigFileState1 / ?gitConfigFilePre,
+	repo1UserNameOption / ?gitConfigFileOption,
+	repo1UserValue / ?genericValue,
+	repo1ConfigFileState2 / ?gitConfigFilePost];
+	[repo1ConfigFileState2 / ?gitConfigFilePre,
+	repo1UserMailOption / ?gitConfigFileOption,
+	repo1MailValue / ?genericValue,
+	repo1ConfigFileState3 / ?gitConfigFilePost]}
+import git.files.config where {
+	[repo1ConfigFileState2 / ?gitConfigFile,
+	repo1UserConfigState2 / ?gitConfigFileUserFragment,
+	repo1User / ?userName,
+	mailUndefined1 / ?userEmail];
+	[repo1ConfigFileState3 / ?gitConfigFile,
+	repo1UserConfigState3 / ?gitConfigFileUserFragment,
+	repo1User / ?userName,
+	repo1UserMail / ?userEmail]}
+	
+/*
+	git init
+*/
+repo1Fldr ~= "file://./repo1".
+repo1ConfigFileState1 ~= "file://./demo_run.json#l15-22".
+repo1Head ~= "file://./demo_run.json#l26-29".
+repo1Head ~= "file://./repo1/.git/HEAD".
+repo1Master ~= "file://./repo1/.git/refs/heads/master".//File is generated on first commit
+repo1MasterName ~= "file://./repo1/.git/refs/heads/master".//Filename
+//noneCommit references to nothing/Parent Commit to initial commit
+
+
+/*
+	git config user.name \"Demonstration User\"
+*/
+repo1ConfigFileState2 ~= "file://./demo_run.json#l1258-1268".
+repo1User ~= "file://./demo_run.json#l1226".
+repo1UserConfigState2 ~= "file://./demo_run.json#l1265-1267";
+		partOf repo1ConfigFileState2.
+repo1UserNameOption ~= "file://./demo_run.json#l634".
+repo1UserValue ~= "file://./demo_run.json#l634".
+
+/*
+	git config user.email \"user@repo1.example\"
+*/
+repo1ConfigFileState3 ~= "file://./demo_run.json#l2511-2522".
+repo1UserConfigState3 ~= "file://./demo_run.json#l2518-2521";
+		partOf repo1ConfigFileState3.
+repo1UserMail ~= "file://./demo_run.json#l2519".
+repo1UserMailOption ~= "file://./demo_run.json#l1882".
+repo1MailValue ~= "file://./demo_run.json#l1882".

@@ -1,0 +1,20 @@
+module git.functions.refResolve
+
+import git.Core
+import git.files.languages
+
+/*
+@Description:
+	Mapping function for reference to commitobject
+@Rationale:
+	Minimizes duplicate code in model for function with either take a commit directly or an reference pointing to it.
+*/
+?gitReferenceFileIn : File;
+			elementOf GitReferenceLanguage.
+?referencedGitCommitObject : File;
+			elementOf GitCommitObjectLanguage.
+gitReferenceResolve : GitReferenceLanguage -> GitCommitObjectLanguage.
+gitReferenceResolve(?gitReferenceFileIn) |-> ?referencedGitCommitObject.
+gitReferenceResolve concretizes AtomicOperation.
+
+Git implements gitReferenceResolve.

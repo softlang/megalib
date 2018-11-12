@@ -1,0 +1,99 @@
+module git.usage.repo2config
+
+
+import git.functions.config where {
+	[repo2ConfigFileState1 / ?gitConfigFilePre,
+	repo2UserNameOption / ?gitConfigFileOption,
+	repo2UserValue / ?genericValue,
+	repo2ConfigFileState2 / ?gitConfigFilePost];
+	[repo2ConfigFileState2 / ?gitConfigFilePre,
+	repo2UserMailOption / ?gitConfigFileOption,
+	repo2MailValue / ?genericValue,
+	repo2ConfigFileState3 / ?gitConfigFilePost]}
+import git.files.config where {
+	[repo2ConfigFileState1 / ?gitConfigFile,
+	repo2RemoteOriginConfig / ?gitConfigFileRemoteFragment,
+	repo2Origin /  ?remoteName,
+	repo1Fldr / ?remoteNameURL,
+	repo2OriginFetchDirective / ?remoteFetchDirective,
+	repo2MasterBranchConfig / ?gitConfigFileBranchFragment,
+	repo2Master / ?branchReference,
+	repo2MasterRemote / ?remoteBranchReference,
+	repo2MasterNameConfig / ?branchName,
+	repo2MasterRemoteRepo / ?referedRemoteRepo,
+	repo2MasterMerge / ?remoteMergeBranch,
+	repo2MasterMergeDestination / ?remoteMergeDestination];
+	[repo2ConfigFileState2 / ?gitConfigFile,
+	repo2UserConfigState2 / ?gitConfigFileUserFragment,
+	repo2User / ?userName,
+	mailUndefined / ?userEmail,
+	repo2RemoteOriginConfig / ?gitConfigFileRemoteFragment,
+	repo2Origin /  ?remoteName,
+	repo1Fldr / ?remoteNameURL,
+	repo2OriginFetchDirective / ?remoteFetchDirective,
+	repo2MasterBranchConfig / ?gitConfigFileBranchFragment,
+	repo2Master / ?branchReference,
+	repo2MasterRemote / ?remoteBranchReference,
+	repo2MasterNameConfig / ?branchName,
+	repo2MasterRemoteRepo / ?referedRemoteRepo,
+	repo2MasterMerge / ?remoteMergeBranch,
+	repo2MasterMergeDestination / ?remoteMergeDestination];
+	[repo2ConfigFileState3 / ?gitConfigFile,
+	repo2UserConfigState3 / ?gitConfigFileUserFragment,
+	repo2User / ?userName,
+	repo2UserMail / ?userEmail,
+	repo2RemoteOriginConfig / ?gitConfigFileRemoteFragment,
+	repo2Origin /  ?remoteName,
+	repo1Fldr / ?remoteNameURL,
+	repo2OriginFetchDirective / ?remoteFetchDirective,
+	repo2MasterBranchConfig / ?gitConfigFileBranchFragment,
+	repo2Master / ?branchReference,
+	repo2MasterRemote / ?remoteBranchReference,
+	repo2MasterNameConfig / ?branchName,
+	repo2MasterRemoteRepo / ?referedRemoteRepo,
+	repo2MasterMerge / ?remoteMergeBranch,
+	repo2MasterMergeDestination / ?remoteMergeDestination]}
+
+/*
+	pre state
+*/
+repo1Fldr ~= "file://./repo1".
+repo2ConfigFileState1 ~= "file://./demo_run.json#l6308-6323".
+repo2Master ~= "file://./repo2/.git/refs/heads/master".//File is generated on first commit
+repo2RemoteOriginConfig ~= "file://./demo_run.json#l5061-5064";
+	partOf repo2ConfigFileState1;
+	partOf repo2ConfigFileState2;
+	partOf repo2ConfigFileState3.
+repo2Origin ~= "file://./demo_run.json#l5061".
+repo2OriginFetchDirective ~= "file://./demo_run.json#l5063".
+repo2MasterRemote ~= "file://.repo1/.git/refs/heads/master".
+repo2MasterBranchConfig ~= "file://./demo_run.json#l5051-5054";
+	partOf repo2ConfigFileState1;
+	partOf repo2ConfigFileState2;
+	partOf repo2ConfigFileState3.
+repo2MasterNameConfig ~= "file://./demo_run.json#l5051".
+repo2MasterRemoteRepo ~= "file://./demo_run.json#l5053".
+repo2MasterMerge ~= "file://./demo_run.json#5052".
+repo2MasterMergeDestination ~= "file://./demo_run.json#l5052-5053".
+
+
+
+/*
+	git config user.name \"Demo User\"
+*/
+repo2ConfigFileState2 ~= "file://./demo_run.json#l7561-7579".
+repo2User ~= "file://./demo_run.json#l7577".
+repo2UserConfigState2 ~= "file://./demo_run.json#l7576-7578";
+		partOf repo2ConfigFileState2.
+repo2UserNameOption ~= "file://./demo_run.json#l6288".
+repo2UserValue ~= "file://./demo_run.json#l6288".
+
+/*
+	git config user.name \"Demo User\"
+*/
+repo2ConfigFileState3 ~= "file://./demo_run.json#l10082-10101".
+repo2UserConfigState3 ~= "file://./demo_run.json#l10097-10100";
+		partOf repo2ConfigFileState3.
+repo2UserMail ~= "file://./demo_run.json#l910098".
+repo2UserMailOption ~= "file://./demo_run.json#l8804".
+repo2MailValue ~= "file://./demo_run.json#l8804".

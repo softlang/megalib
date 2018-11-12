@@ -1,0 +1,46 @@
+module git.usage.repo2createTag
+
+
+import git.usage.final.repo2config
+import git.functions.tag where {
+[
+tagMetadata / ?tagMetadataIn, 
+taggedCommitObject / ?gitCommitObject,
+tagObject / ?gitTagObjectOut, 
+tagReferenceFile / ?gitReferenceFileOut
+]
+}
+import git.files.revisiontagobject where {
+[
+tagObject / ?gitTagObject,
+tagMetadata / ?tagMetadata,
+taggedCommitObject / ?taggedCommitObject,
+tagReferenceFile / ?actualReference,
+tagName / ?tagName,
+taggerName / ?taggerName,
+taggerEmail / ?taggerEmail,
+taggingTime / ?taggingTime,
+taggingMessage / ?taggingMessage,
+taggedCommitReference / ?taggedCommitReference
+]}
+
+/*
+@Description:
+	git tag 
+	(step 27)
+*/
+tagMetadata ~= "file://./demo_run.json#l95906-95929".
+taggedCommitObject ~= "file://./demo_run.json#l95825-95861".
+taggedCommitObject ~= "file://./demo_run.json#l93401-93437".
+tagObject ~= "file://./demo_run.json#l95900-95930".
+tagReferenceFile  ~= "file://./demo_run.json#l94862-94865".
+tagName ~= "file://./demo_run.json#l95912".
+tagName ~= "file://./demo_run.json#l91150".
+taggerName ~= "file://./demo_run.json#l95916-95917";
+	correspondsTo repo2User.
+taggerEmail  ~= "file://./demo_run.json#l95918";
+	correspondsTo repo2UserMail.
+taggingTime~= "file://./demo_run.json#l95919-95920".
+taggingMessage  ~= "file://./demo_run.json#l95924-95926".
+taggingMessage ~= "file://./demo_run.json#l91150".
+taggedCommitReference ~= "file://./demo_run.json#l95904".

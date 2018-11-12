@@ -1,0 +1,113 @@
+module git.files.languages
+
+import git.Core
+
+/*
+* @Description:
+*	Git's Storage Objects
+* @Rationale:
+*	a zlib-compressed content combined with the subtype of Object: commit, blob, tree, tag
+*/
+
+GitObjectLanguage : DatabaseLanguage;
+      = "gitmagic::ch08.html";
+      = "gitbook::Git-Internals-Git-Objects".
+
+
+GitBlobObjectLanguage : DatabaseLanguage;
+    = "gitmagic::ch08.html#_blobs";
+    = "gitbook::Git-Internals-Git-Objects";
+    dialectOf GitObjectLanguage.
+	
+GitCommitObjectLanguage : DatabaseLanguage;
+                = "gitmagic::ch08.html#_commits";
+                = "gitbook::Git-Internals-Git-Objects";
+                dialectOf GitObjectLanguage.
+
+
+GitCommitMetadataLanguage : LogLanguage;
+      = "gitdoc::git-commit-tree#_commit_information";
+      = "gitdoc::git-log#_pretty_formats";
+      subsetOf GitCommitObjectLanguage.
+	  
+	  
+/*
+*@Description:
+*	Git's Revision Tag Objects
+*@Rationale:
+*  A named reference to a certain commit
+*/		
+GitRevisionTagObjectLanguage : DatabaseLanguage;
+		= "gitbook::Git-Internals-Git-References";
+		dialectOf GitObjectLanguage.
+
+GitTagMetadataLanguage : LogLanguage;
+		= "gitbook::Git-Internals-Git-References";
+		subsetOf GitRevisionTagObjectLanguage.
+		
+		
+/*
+*@Description: 
+*	Git Tree Objects
+*@Rationale:
+*	Describes the Files' state at a given commit and linkes file contents to their file name
+*/
+GitTreeObjectLanguage : DatabaseLanguage;
+        = "gitmagic::ch08.html#_trees";
+        = "gitbook::Git-Internals-Git-Objects";
+        dialectOf GitObjectLanguage.
+	  
+/*
+@Description:
+	Git's index file
+@Rationale:
+	It keeps describes the last known state of versioned/added files (versioning stage)
+	For reading those files use https://github.com/sbp/gin
+*/
+GitIndexFileLanguage : DatabaseLanguage;
+    = "gittecdoc::index-format.txt";
+	= "gitmagic::ch07.html#_the_index_git_8217_s_staging_area".
+/*	
+@Description:
+	Git Refence resolution system
+@Rationale:
+	this is an essential Part of the branching and remote syncing feature 
+*/
+GitReferenceLanguage : ReferenceLanguage;
+	= "gitbook::Git-Internals-Git-References".
+	
+//for named references (branches,tags)
+GitReferenceNameLanguage : DataExchangeLanguage;
+	= "gitdoc::git-check-ref-format".
+	
+	  
+GitConfigFileLanguage : ConfigurationLanguage;
+	="gitbook::Customizing-Git-Git-Configuration";
+	="gitdoc::git-config";
+	="gitman::git-config.html".
+	
+//second parameter for config Command
+GitConfigFileOptionLanguage : ConfigurationLanguage;	
+	="gitdoc::git-config";
+	="gitman::git-config.html".
+	
+GitCoreConfigLanguage : ConfigurationLanguage;
+	="gitbook::Customizing-Git-Git-Configuration";
+	="gitdoc::git-config";
+	="gitman::git-config.html";
+	subsetOf GitConfigFileLanguage.
+	
+GitUserConfigLanguage : ConfigurationLanguage;
+	="gitdoc::git-config";
+	subsetOf GitConfigFileLanguage.
+	
+//Nirgends Dokumeniert; alles reverse engeneered
+GitRemoteConfigLanguage : ConfigurationLanguage;
+	="gitdoc::git-config";
+	subsetOf GitConfigFileLanguage.
+	
+// In nicht zitierbaren Quellen erklärt	
+GitBranchConfigLanguage : ConfigurationLanguage;
+	="gitdoc::git-config";
+	="https://stackoverflow.com/questions/658885/how-do-you-get-git-to-always-pull-from-a-specific-branch";
+	subsetOf GitConfigFileLanguage.

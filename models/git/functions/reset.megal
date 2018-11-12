@@ -1,0 +1,23 @@
+module git.functions.reset
+
+import git.Core
+import git.files.languages
+
+/*
+@Description:
+	git reset command
+@Rationale:
+	sets the git index to the stage at referenced commit's time
+	see Link
+*/
+?gitIndexPre : File;
+		elementOf GitIndexFileLanguage.
+?gitIndexPost : File;
+		elementOf GitIndexFileLanguage.
+?gitReferenceFile : File;
+		elementOf GitReferenceLanguage.
+gitReset: GitIndexFileLanguage # GitReferenceLanguage -> GitIndexFileLanguage.
+gitReset(?gitIndexPre, ?gitReferenceFile) |-> ?gitIndexPost.
+gitReset = "gitdoc::git-reset".
+
+Git implements gitReset.

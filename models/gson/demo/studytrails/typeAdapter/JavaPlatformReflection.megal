@@ -1,0 +1,13 @@
+module gson.demo.studytrails.typeAdapter.JavaPlatformReflection
+
+import gson.demo.studytrails.typeAdapter.GsonMain
+import javaplatform.Reflection where {
+[
+datasetClass / ?javaTypeObject,
+album / ?javaObjectIn
+]
+}
+
+/* Entities */
+
+datasetClass = "https://github.com/MithilShah/Java-Examples/blob/5ca27ffb11fc8566a31e3affa408046decc8de0f/src/com/studytrails/json/gson/DatasetTypeAdapterExample8.java#L19".

@@ -1,0 +1,24 @@
+module gson.innergson.serialize.SerializeSt
+
+import gson.Core
+import gson.GsonMain
+import gson.SerializerSt
+import gson.TypeToken
+import javaplatform.Reflection
+import gson.innergson.DefaultTypeAdapter
+import gson.innergson.serialize.Serialize where {
+[
+?javaObject / ?javaObjectIn,
+?javaClassOfObject / ?javaTypeObject
+]
+}
+
+/* @Description:
+	Process which runs inside of gson, if a class without a generic gets serialized
+   @Rationale:
+	See github repo: https://github.com/google/gson/blob/master/gson/src/main/java/com/google/gson/Gson.java
+	Line 614 and followings. */
+toJsonSt composedOf javaGetType.
+toJsonSt composedOf typeTokenGet.
+toJsonSt composedOf getAdapterForInput.
+toJsonSt composedOf toJson.

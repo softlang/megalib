@@ -1,0 +1,60 @@
+module git.usage.repo3clone
+
+import git.files.head where {
+	[repo3Head / ?gitHead,
+	repo3Master/ ?headReferenceFile]}
+import git.files.refs where {
+	[demoAddCommit / ?referencedCommitObject,
+	repo3Master / ?gitReferenceFile,
+	repo3MasterName / ?gitReferenceName]}
+import git.files.config where {
+	[repo3ConfigFile / ?gitConfigFile,
+	repo3RemoteOriginConfig / ?gitConfigFileRemoteFragment,
+	repo3Orign /  ?remoteName,
+	repo1Fldr / ?remoteNameURL,
+	repo3OriginFetchDirective / ?remoteFetchDirective,
+	repo3MasterBranchConfig / ?gitConfigFileBranchFragment,
+	repo3Master / ?branchReference,
+	repo3MasterRemote / ?remoteBranchReference,
+	repo3MasterNameConfig / ?branchName,
+	repo3MasterRemoteRepo / ?referedRemoteRepo,
+	repo3MasterMerge / ?remoteMergeBranch,
+	repo3MasterMergeDestination / ?remoteMergeDestination]}
+import git.functions.clone where {
+	[repo3Objects / ?gitObjectStreamLocal,
+	repo1Objects / ?gitObjectStreamRemote,
+	repo3Refs / ?gitReferenceStreamLocal,
+	repo1Refs / ?gitReferenceStreamRemote,
+	repo3Files / ?fileArtifactStream,
+	repo3Fldr / ?folderPathClone,
+	repo1Fldr / ?cloneSourceURL,
+	repo3ConfigFile / ?gitConfigFilePostClone]}
+	
+
+/*
+	git clone -l repo1 repo3
+*/
+repo1Fldr ~= "file://./repo1".
+repo1Fldr ~= "file://./demo_run.json#l20999".
+repo1Objects ~= "file://./demo_run.json#l20852-20898".
+repo1Refs ~= "file://./demo_run.json#l19499-19502".
+repo3Refs ~= "file://./demo_run.json#l22831-22838".
+repo3Objects ~= "file://./demo_run.json#l23134-23181".
+repo3Files ~= "file://./demo_run.json#l22839-22641".
+repo3Fldr ~= "file://./repo3".
+repo3ConfigFile ~= "file://./demo_run.json#l20986-21001".
+repo3Master ~= "file://./repo3/.git/refs/heads/master".
+repo3MasterName ~= "file://./repo3/.git/refs/heads/master#filename".
+repo3Head ~= "file://./demo_run.json#l22227-22229".
+repo3Head ~= "file://./repo3/.git/HEAD".
+repo3RemoteOriginConfig ~= "file://./demo_run.json#l20997-21000";
+	partOf repo3ConfigFile.
+repo3Orign ~= "file://./demo_run.json#l20997".
+repo3OriginFetchDirective ~= "file://./demo_run.json#l20998".
+repo3MasterRemote ~= "file://.repo1/.git/refs/heads/master".
+repo3MasterBranchConfig ~= "file://./demo_run.json#l20987-20990";
+	partOf repo3ConfigFile.
+repo3MasterNameConfig ~= "file://./demo_run.json#l20987".
+repo3MasterRemoteRepo ~= "file://./demo_run.json#l20989".
+repo3MasterMerge ~= "file://./demo_run.json#l20988".
+repo3MasterMergeDestination ~= "file://./demo_run.json#l20988-20989".

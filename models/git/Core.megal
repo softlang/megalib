@@ -1,0 +1,41 @@
+module git.Core
+
+/*
+@Description:
+	Git documentation sources
+*/
+gitdoc::"https://git-scm.com/docs/".
+gitbook::"https://git-scm.com/book/en/v2/".
+gittecdoc::"https://github.com/git/git/blob/master/Documentation/technical/".
+gitmagic::"http://www-cs-students.stanford.edu/~blynn/gitmagic/".
+gitman::"https://www.kernel.org/pub/software/scm/git/docs/".
+
+	
+/*
+@Description:
+	Git binary
+@Rationale:
+	Implements all git funtions.
+*/
+Git : Application;
+      = "wikipedia::Git";
+      belongsTo DistributedVersionControl;
+      facilitates AtomicCommit;
+	  facilitates Branching;
+      facilitates VersionMerging;
+      uses C.
+
+/*
+@Description:
+	A container Laguage for committed Files
+*/
+CommitFileLanguage : ContainerLanguage;
+	= "wikipedia::Computer_file".
+
+/*
+@Rationale:
+	For the use case as simple file type
+*/
+TextFileLanguage : DocumentLanguage;
+	= "wikipedia::Text_file";
+	encodedAs Text.

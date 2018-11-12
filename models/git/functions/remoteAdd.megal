@@ -1,0 +1,25 @@
+module git.functions.remoteAdd
+
+import git.Core
+import git.files.languages
+
+/*
+@Description:
+	git remote add command
+@Rationale:
+	adds a new remote repository to git config file
+	see Link
+*/
+?gitConfigFilePreRemoteAdd : File;
+	elementOf GitConfigFileLanguage.
+?remoteNameA : Artifact;
+	elementOf GitRemoteConfigLanguage.
+?remoteNameURLA : Artifact;
+	elementOf URL.
+?gitConfigFilePostRemoteAdd : File;
+	elementOf GitConfigFileLanguage.
+gitRemoteAdd : GitConfigFileLanguage # GitRemoteConfigLanguage # URL -> GitConfigFileLanguage.
+gitRemoteAdd(?gitConfigFilePreRemoteAdd, ?remoteNameA, ?remoteNameURLA) |-> ?gitConfigFilePostRemoteAdd.
+gitRemoteAdd = "gitdoc::git-remote".
+
+Git implements gitRemoteAdd.
