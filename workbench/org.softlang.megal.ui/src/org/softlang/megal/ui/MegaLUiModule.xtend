@@ -3,11 +3,21 @@
  */
 package org.softlang.megal.ui
 
+import org.eclipse.ui.plugin.AbstractUIPlugin
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.eclipse.xtext.ui.editor.XtextEditor
+import org.softlang.megal.ui.editor.MegaLEditor
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
  */
-@FinalFieldsConstructor
+
 class MegaLUiModule extends AbstractMegaLUiModule {
+		new(AbstractUIPlugin plugin) {
+		super(plugin)
+	}
+	
+		def Class<? extends XtextEditor> bindXtextEditor() {
+		MegaLEditor
+	}
 }
