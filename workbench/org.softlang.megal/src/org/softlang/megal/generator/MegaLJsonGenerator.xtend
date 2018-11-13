@@ -12,6 +12,8 @@ import org.softlang.megal.megaL.impl.TypeImpl
 import org.softlang.megal.megaL.impl.InstanceImpl
 import org.softlang.megal.megaL.impl.FunDeclImpl
 import org.softlang.megal.megaL.impl.FunAppImpl
+import org.softlang.megal.megaL.impl.RelDeclImpl
+import org.softlang.megal.megaL.impl.RelInstImpl
 
 /**
  * Generates code from your model files on save.
@@ -26,38 +28,38 @@ class MegaLJsonGenerator extends AbstractGenerator {
 
 	private def toJson(ModuleImpl it) {
 		// TODO: Write JSON
-		'''Model: «it.name»
+		'''Model: ï¿½it.nameï¿½
 			Nodes:
-			«FOR statement : it.statements»
-				«IF statement instanceof TypeImpl»
-					«statement.printNode»
-				«ELSEIF statement instanceof InstanceImpl»
-					«statement.printNode»
-				«ELSEIF statement instanceof FunDeclImpl»
-					«statement.printNode»
-				«ELSEIF statement instanceof FunAppImpl»
-					«statement.printNode»
-				«ENDIF»	 
-			«ENDFOR»
+			ï¿½FOR statement : it.statementsï¿½
+				ï¿½IF statement instanceof TypeImplï¿½
+					ï¿½statement.printNodeï¿½
+				ï¿½ELSEIF statement instanceof InstanceImplï¿½
+					ï¿½statement.printNodeï¿½
+				ï¿½ELSEIF statement instanceof FunDeclImplï¿½
+					ï¿½statement.printNodeï¿½
+				ï¿½ELSEIF statement instanceof FunAppImplï¿½
+					ï¿½statement.printNodeï¿½
+				ï¿½ENDIFï¿½	 
+			ï¿½ENDFORï¿½
 			Edges:
-			«FOR statement : it.statements»
-				«IF statement instanceof TypeImpl»
-					«statement.printEdge»
-				«ELSEIF statement instanceof InstanceImpl»
-					«statement.printEdge»
-				«ELSEIF statement instanceof FunDeclImpl»
-					«statement.printEdge»
-				«ELSEIF statement instanceof FunAppImpl»
-					«statement.printEdge»
-				«ENDIF»	 
-			«ENDFOR»
+			ï¿½FOR statement : it.statementsï¿½
+				ï¿½IF statement instanceof TypeImplï¿½
+					ï¿½statement.printEdgeï¿½
+				ï¿½ELSEIF statement instanceof InstanceImplï¿½
+					ï¿½statement.printEdgeï¿½
+				ï¿½ELSEIF statement instanceof FunDeclImplï¿½
+					ï¿½statement.printEdgeï¿½
+				ï¿½ELSEIF statement instanceof FunAppImplï¿½
+					ï¿½statement.printEdgeï¿½
+				ï¿½ENDIFï¿½	 
+			ï¿½ENDFORï¿½
 		'''
 	}
 
 	private def printNode(FunAppImpl t) {
 		'''
 			{
-			 "name": Application:«t.f.name»,
+			 "name": Application:ï¿½t.f.nameï¿½,
 			}
 		'''
 	}
@@ -65,7 +67,7 @@ class MegaLJsonGenerator extends AbstractGenerator {
 	private def printNode(FunDeclImpl t) {
 		'''
 			{
-			 "name": Declaration:«t.name»,
+			 "name": Declaration:ï¿½t.nameï¿½,
 			}
 		'''
 	}
@@ -73,9 +75,9 @@ class MegaLJsonGenerator extends AbstractGenerator {
 	private def printNode(InstanceImpl t) {
 		'''
 			{
-			 "name": «t.name»,
-			 "links": «t.links.printUrlArray»,
-			 "bindings": «t.binds.printUrlArray»	 	 
+			 "name": ï¿½t.nameï¿½,
+			 "links": ï¿½t.links.printUrlArrayï¿½,
+			 "bindings": ï¿½t.binds.printUrlArrayï¿½	 	 
 			}
 		'''
 	}
@@ -83,47 +85,47 @@ class MegaLJsonGenerator extends AbstractGenerator {
 	private def printNode(TypeImpl t) {
 		'''
 			{
-			 "name":  «t.name»,
-			 "links": «t.links.printUrlArray»	 
+			 "name":  ï¿½t.nameï¿½,
+			 "links": ï¿½t.links.printUrlArrayï¿½	 
 			}
 		'''
 	}
 
 	private def printEdge(FunAppImpl t) {
 		'''
-			«FOR in : t.in»
+			ï¿½FOR in : t.inï¿½
 				{
 				 "label: in", 
-				 "source": «in.name»,
-				 "target": «t.f.name»	
+				 "source": ï¿½in.nameï¿½,
+				 "target": ï¿½t.f.nameï¿½	
 				}
-			«ENDFOR»
-			«FOR out : t.out»
+			ï¿½ENDFORï¿½
+			ï¿½FOR out : t.outï¿½
 				{
 				 "label: out", 
-				 "source": «out.name»,
-				 "target": «t.f.name»	
+				 "source": ï¿½out.nameï¿½,
+				 "target": ï¿½t.f.nameï¿½	
 				}
-			«ENDFOR»
+			ï¿½ENDFORï¿½
 		'''
 	}
 
 	private def printEdge(FunDeclImpl t) {
 		'''
-			«FOR domain : t.domains»
+			ï¿½FOR domain : t.domainsï¿½
 				{
 				 "label: inputOf", 
-				 "source": «domain.name»,
-				 "target": «t.name»	
+				 "source": ï¿½domain.nameï¿½,
+				 "target": ï¿½t.nameï¿½	
 				}
-			«ENDFOR»
-			«FOR range : t.ranges»
+			ï¿½ENDFORï¿½
+			ï¿½FOR range : t.rangesï¿½
 				{
 				 "label: outputOf", 
-				 "source": «range.name»,
-				 "target": «t.name»	
+				 "source": ï¿½range.nameï¿½,
+				 "target": ï¿½t.nameï¿½	
 				}
-			«ENDFOR»
+			ï¿½ENDFORï¿½
 		'''
 	}
 
@@ -131,38 +133,38 @@ class MegaLJsonGenerator extends AbstractGenerator {
 		'''
 			{
 			 "label: elementOf", 
-			 "source": «t.name»,
-			 "target": «t.type.name»	
+			 "source": ï¿½t.nameï¿½,
+			 "target": ï¿½t.type.nameï¿½	
 			},
 			
-			«FOR relation : t.relEdges»
+			ï¿½FOR relation : t.relEdgesï¿½
 				{
-				 "label": «relation.rel.name»,
-				 "source":«t.name»,
-				 "target":«relation.right.name»
+				 "label": ï¿½relation.rel.nameï¿½,
+				 "source":ï¿½t.nameï¿½,
+				 "target":ï¿½relation.right.nameï¿½
 				}
-			«ENDFOR»
+			ï¿½ENDFORï¿½
 		'''
 	}
 
 	private def printEdge(TypeImpl t) {
 		'''
-			«IF t.supertype !== null»
+			ï¿½IF t.supertype !== nullï¿½
 			{
 				"label: subtypeOf", 
-				"source":  «t.name»,
-				"target":  «t.supertype.name»
+				"source":  ï¿½t.nameï¿½,
+				"target":  ï¿½t.supertype.nameï¿½
 			}
-			«ENDIF»
+			ï¿½ENDIFï¿½
 		'''
 	}
 
 	private def printUrlArray(String[] urls) {
 		'''
 			[
-			«FOR url : urls»
-				«url»
-				«ENDFOR»
+			ï¿½FOR url : urlsï¿½
+				ï¿½urlï¿½
+				ï¿½ENDFORï¿½
 			]
 		'''
 	}
