@@ -45,7 +45,7 @@ class MegaLEditor extends XtextEditor implements IShowInSource, IShowInTargetLis
 
 	override String[] getShowInTargetIds() {
 		val dotFile = generatedDotFile
-		return #["org.eclipse.gef.dot.internal.ui.DotGraphView"]
+		return #["org.softlang.java.parts.GraphView"]
 	}
 
 	def private getGeneratedDotFile() {
@@ -55,12 +55,12 @@ class MegaLEditor extends XtextEditor implements IShowInSource, IShowInTargetLis
 		var List<IFile> generatedResources = null
 		try {
 			generatedResources = root.findDerivedResources(uri.toString)
+			System.out.println(generatedResources)
 		} catch (CoreException e) {
 			e.printStackTrace
 			return null
 		}
-
-		generatedResources.findFirst[fileExtension == "dot"]
+		generatedResources.findFirst[fileExtension == "json"]
 	}
 
 	private def IStorage getStorage(IEditorPart editor) {

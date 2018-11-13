@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="org.softlang.java.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            apply="notexists"
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+        point="org.eclipse.ui.views">
+        <view
+            class="org.softlang.java.parts.GraphView"
+            id="org.softlang.java.parts.GraphView"
+            icon="icons/Sample.png"
+            category="org.eclipse.gef.visualization"
+            name="MegaL Graph View"
+            restorable="true">
+        </view>
+    </extension>
+
+</plugin>

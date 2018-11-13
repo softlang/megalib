@@ -22,11 +22,12 @@ class MegaLJsonGenerator extends AbstractGenerator {
 	}
 	
 	private def toJson(ModuleImpl it){
-		'''Model: «it.name»
-		«FOR block : it.blocks»
-		«block.description»
-		«block.eContainer»
-		«ENDFOR»
+		//TODO: Write JSON
+		'''Model: ï¿½it.nameï¿½
+		ï¿½FOR block : it.blocksï¿½
+		ï¿½block.descriptionï¿½
+		ï¿½block.eContainerï¿½
+		ï¿½ENDFORï¿½
 		'''
 	}
 
