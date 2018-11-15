@@ -28,144 +28,150 @@ class MegaLJsonGenerator extends AbstractGenerator {
 
 	private def toJson(ModuleImpl it) {
 		// TODO: Write JSON
-		'''Model: ï¿½it.nameï¿½
-			Nodes:
-			ï¿½FOR statement : it.statementsï¿½
-				ï¿½IF statement instanceof TypeImplï¿½
-					ï¿½statement.printNodeï¿½
-				ï¿½ELSEIF statement instanceof InstanceImplï¿½
-					ï¿½statement.printNodeï¿½
-				ï¿½ELSEIF statement instanceof FunDeclImplï¿½
-					ï¿½statement.printNodeï¿½
-				ï¿½ELSEIF statement instanceof FunAppImplï¿½
-					ï¿½statement.printNodeï¿½
-				ï¿½ENDIFï¿½	 
-			ï¿½ENDFORï¿½
-			Edges:
-			ï¿½FOR statement : it.statementsï¿½
-				ï¿½IF statement instanceof TypeImplï¿½
-					ï¿½statement.printEdgeï¿½
-				ï¿½ELSEIF statement instanceof InstanceImplï¿½
-					ï¿½statement.printEdgeï¿½
-				ï¿½ELSEIF statement instanceof FunDeclImplï¿½
-					ï¿½statement.printEdgeï¿½
-				ï¿½ELSEIF statement instanceof FunAppImplï¿½
-					ï¿½statement.printEdgeï¿½
-				ï¿½ENDIFï¿½	 
-			ï¿½ENDFORï¿½
+		'''{"Model": "«it.name»",
+			"Nodes":[
+			«FOR statement : it.statements»
+				«IF statement instanceof TypeImpl»
+					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+				«ELSEIF statement instanceof InstanceImpl»
+					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+				«ELSEIF statement instanceof FunDeclImpl»
+					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+				«ELSEIF statement instanceof FunAppImpl»
+					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+				«ELSEIF statement instanceof RelDeclImpl»
+					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+				«ENDIF»	 
+			«ENDFOR»
+			],
+			"Edges":[
+			«FOR statement : it.statements»
+				«IF statement instanceof TypeImpl»
+					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+				«ELSEIF statement instanceof InstanceImpl»
+					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF»
+				«ELSEIF statement instanceof FunDeclImpl»
+					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF»
+				«ELSEIF statement instanceof FunAppImpl»
+					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF»
+				«ELSEIF statement instanceof RelDeclImpl»
+					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF»
+				«ENDIF»	 
+			«ENDFOR»
+			]
+		}
+		'''
+	}
+
+	private def printNode(RelDeclImpl t) {
+		'''
+			{"name": "«t.name»"}	
 		'''
 	}
 
 	private def printNode(FunAppImpl t) {
 		'''
-			{
-			 "name": Application:ï¿½t.f.nameï¿½,
-			}
+			{"name": "Application:«t.f.name»"}
 		'''
 	}
 
 	private def printNode(FunDeclImpl t) {
 		'''
-			{
-			 "name": Declaration:ï¿½t.nameï¿½,
-			}
+			{"name": "Declaration:«t.name»"}
 		'''
 	}
 
 	private def printNode(InstanceImpl t) {
 		'''
-			{
-			 "name": ï¿½t.nameï¿½,
-			 "links": ï¿½t.links.printUrlArrayï¿½,
-			 "bindings": ï¿½t.binds.printUrlArrayï¿½	 	 
-			}
+			{"name": "«t.name»",
+			 "links": «t.links.printUrlArray»,
+			 "bindings": «t.binds.printUrlArray»}
 		'''
 	}
 
 	private def printNode(TypeImpl t) {
 		'''
-			{
-			 "name":  ï¿½t.nameï¿½,
-			 "links": ï¿½t.links.printUrlArrayï¿½	 
-			}
+			{"name":  "«t.name»",
+			 "links": «t.links.printUrlArray»}
+		'''
+	}
+
+	private def printEdge(RelDeclImpl t) {
+		'''
+			«FOR edge : t.reltedges»
+				{"label": "left", 
+				 "source": "«edge.left»",
+				 "target": "«t.name»"},
+				{"label": "right", 
+				 "source": "«edge.right»",
+				 "target": "«t.name»"}«IF !(edge.equals(t.reltedges.get(t.reltedges.size-1)))», «ENDIF»
+			«ENDFOR»
 		'''
 	}
 
 	private def printEdge(FunAppImpl t) {
 		'''
-			ï¿½FOR in : t.inï¿½
-				{
-				 "label: in", 
-				 "source": ï¿½in.nameï¿½,
-				 "target": ï¿½t.f.nameï¿½	
-				}
-			ï¿½ENDFORï¿½
-			ï¿½FOR out : t.outï¿½
-				{
-				 "label: out", 
-				 "source": ï¿½out.nameï¿½,
-				 "target": ï¿½t.f.nameï¿½	
-				}
-			ï¿½ENDFORï¿½
+			«FOR in : t.in»
+				{"label": "in", 
+				 "source": "«in.name»",
+				 "target": "«t.f.name»"}«IF !(t.out.empty && in.equals(t.in.get(t.in.size-1)))», «ENDIF»
+			«ENDFOR»
+			«FOR out : t.out»
+				{"label": "out", 
+				 "source": "«out.name»",
+				 "target": "«t.f.name»"}«IF !(out.equals(t.out.get(t.out.size-1)))», «ENDIF»
+			«ENDFOR»
 		'''
 	}
 
 	private def printEdge(FunDeclImpl t) {
 		'''
-			ï¿½FOR domain : t.domainsï¿½
-				{
-				 "label: inputOf", 
-				 "source": ï¿½domain.nameï¿½,
-				 "target": ï¿½t.nameï¿½	
-				}
-			ï¿½ENDFORï¿½
-			ï¿½FOR range : t.rangesï¿½
-				{
-				 "label: outputOf", 
-				 "source": ï¿½range.nameï¿½,
-				 "target": ï¿½t.nameï¿½	
-				}
-			ï¿½ENDFORï¿½
+			«FOR domain : t.domains»
+				{"label": "inputOf", 
+				 "source": "«domain.name»",
+				 "target": "«t.name»"}«IF !(t.ranges.empty && domain.equals(t.domains.get(t.domains.size-1)))», «ENDIF»
+			«ENDFOR»
+			«FOR range : t.ranges»
+				{"label": "outputOf", 
+				 "source": "«range.name»",
+				 "target": "«t.name»"}«IF !(range.equals(t.ranges.get(t.ranges.size-1)))», «ENDIF»
+			«ENDFOR»
 		'''
 	}
 
 	private def printEdge(InstanceImpl t) {
 		'''
-			{
-			 "label: elementOf", 
-			 "source": ï¿½t.nameï¿½,
-			 "target": ï¿½t.type.nameï¿½	
-			},
-			
-			ï¿½FOR relation : t.relEdgesï¿½
-				{
-				 "label": ï¿½relation.rel.nameï¿½,
-				 "source":ï¿½t.nameï¿½,
-				 "target":ï¿½relation.right.nameï¿½
-				}
-			ï¿½ENDFORï¿½
+			{"label": "elementOf", 
+			 "source": "«t.name»",
+			 "target": "«t.type.name»"}«IF !(t.relEdges.empty)», «ENDIF»
+			«FOR relation : t.relEdges»
+				{"label": "«relation.rel.name»",
+				 "source":"«t.name»",
+				 "target":"«relation.right.name»"}«IF !(relation.equals(t.relEdges.get(t.relEdges.size-1)))», «ENDIF»
+				 
+			«ENDFOR»
 		'''
 	}
 
 	private def printEdge(TypeImpl t) {
 		'''
-			ï¿½IF t.supertype !== nullï¿½
-			{
-				"label: subtypeOf", 
-				"source":  ï¿½t.nameï¿½,
-				"target":  ï¿½t.supertype.nameï¿½
-			}
-			ï¿½ENDIFï¿½
+			«IF t.supertype !== null»
+			{"label": "subtypeOf", 
+			 "source":  "«t.name»",
+			 "target":  "«t.supertype.name»"}
+			«ELSE»
+			{"label": "subtypeOf", 
+			 "source":  "«t.name»",
+			 "target":  "Entity"}
+			«ENDIF»
 		'''
 	}
 
 	private def printUrlArray(String[] urls) {
 		'''
-			[
-			ï¿½FOR url : urlsï¿½
-				ï¿½urlï¿½
-				ï¿½ENDFORï¿½
-			]
+			[«FOR url : urls»
+			 	"«url»" «IF !(url.equals(urls.get(urls.size-1)))», «ENDIF»
+			 «ENDFOR»]
 		'''
 	}
 
