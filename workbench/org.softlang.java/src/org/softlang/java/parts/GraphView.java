@@ -11,11 +11,12 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.LinkedList;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 import org.apache.commons.io.FileUtils;
+import org.eclipse.gef.graph.Edge;
 import org.eclipse.gef.graph.Graph;
+import org.eclipse.gef.graph.Node;
+import org.eclipse.gef.graph.Node.Builder;
+import org.eclipse.gef.zest.fx.ZestProperties;
 import org.eclipse.gef.zest.fx.ui.parts.ZestFxUiView;
 import org.eclipse.ui.part.IShowInTarget;
 import org.eclipse.ui.part.ShowInContext;
@@ -24,6 +25,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -66,36 +68,43 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 	}
 
 	public void createWatchService(File f) {
-		Task<Graph> task = new Task<Graph>() {
+		ScheduledService<Graph> s = new ScheduledService() {
 			@Override
-			protected Graph call() throws Exception {
-				Graph g;
-				WatchKey keyTemp;
-				while ((keyTemp = w.take()) != null) {
-					for (WatchEvent<?> event : k.pollEvents()) {
-						if (event.context().toString().equals(fname)) {
-							// TODO: READ IN FILE AGAIN AND UPDATE GRAPH
+			protected Task<Graph> createTask() {
+				Task<Graph> task = new Task<Graph>() {
+					@Override
+					protected Graph call() throws Exception {
+						WatchKey keyTemp;
+						while ((keyTemp = w.take()) != null) {
+							for (WatchEvent<?> event : k.pollEvents()) {
+								if (event.context().toString().equals(fname)) {
+									Path completeFilePath = Paths.get(path.toString(),event.context().toString());
+									k.reset();
+									return createGraphFromJson(completeFilePath);
+								}
+							}
+							k.reset();
 						}
+						return null;
 					}
-					k.reset();
-				}
-				return null;
-			}
+				};
+				return task;
 		};
-		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+		};
+		s.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent event) {
-				setGraph(task.getValue());
-				//restart task after completion
-				new Thread(task).start();
+				setGraph(s.getValue());
 			}
 		});
-		new Thread(task).start();
+		s.start();
 	}
 
 	private Graph createGraphFromJson(Path f) {
 		String json;
 		try {
+			nodeList = new LinkedList<Node>();
+			edgeList = new LinkedList<Edge>();
 			LinkedList<String> urls = null;
 			LinkedList<String> bindings = null;
 			

@@ -21,5 +21,19 @@
             restorable="true">
         </view>
     </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.softlang.java.preferences.MegaLPreference"
+            id="org.softlang.java.preferences.SamplePreferencePage"
+            name="MegaL Preference">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.softlang.java.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>
