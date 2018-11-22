@@ -37,7 +37,7 @@ public class CustomDotLayout implements ILayoutAlgorithm{
 			private String dotExecutablePath;
 
 			//set path to graphvizz executable
-			public CustomDotLayout(String path) {
+			public CustomDotLayout() {
 				IEclipsePreferences preferences = ConfigurationScope.INSTANCE
 					    .getNode("org.softlang.java");
 				dotExecutablePath = preferences.get("Graphvizz", "null");

@@ -65,19 +65,22 @@ class MegaLJsonGenerator extends AbstractGenerator {
 
 	private def printNode(RelDeclImpl t) {
 		'''
-			{"name": "«t.name»"}	
+			{"name": "«t.name»",
+			"colour": "#118C01"}	
 		'''
 	}
 
 	private def printNode(FunAppImpl t) {
 		'''
-			{"name": "Application:«t.f.name»"}
+			{"name": "Application:«t.f.name»",
+			"colour": "#2E64FE"}
 		'''
 	}
 
 	private def printNode(FunDeclImpl t) {
 		'''
-			{"name": "Declaration:«t.name»"}
+			{"name": "Declaration:«t.name»",
+			"colour": "#A4A4A4"}
 		'''
 	}
 
@@ -85,14 +88,16 @@ class MegaLJsonGenerator extends AbstractGenerator {
 		'''
 			{"name": "«t.name»",
 			 "links": «t.links.printUrlArray»,
-			 "bindings": «t.binds.printUrlArray»}
+			 "bindings": «t.binds.printUrlArray»,
+			 "colour": "#A4A4A4"}
 		'''
 	}
 
 	private def printNode(TypeImpl t) {
 		'''
 			{"name":  "«t.name»",
-			 "links": «t.links.printUrlArray»}
+			 "links": «t.links.printUrlArray»,
+			 "colour": "#A4A4A4"}
 		'''
 	}
 
@@ -114,12 +119,12 @@ class MegaLJsonGenerator extends AbstractGenerator {
 			«FOR in : t.in»
 				{"label": "in", 
 				 "source": "«in.name»",
-				 "target": "«t.f.name»"}«IF !(t.out.empty && in.equals(t.in.get(t.in.size-1)))», «ENDIF»
+				 "target": "Application:«t.f.name»"}«IF !(t.out.empty && in.equals(t.in.get(t.in.size-1)))», «ENDIF»
 			«ENDFOR»
 			«FOR out : t.out»
 				{"label": "out", 
 				 "source": "«out.name»",
-				 "target": "«t.f.name»"}«IF !(out.equals(t.out.get(t.out.size-1)))», «ENDIF»
+				 "target": "Application:«t.f.name»"}«IF !(out.equals(t.out.get(t.out.size-1)))», «ENDIF»
 			«ENDFOR»
 		'''
 	}
@@ -129,12 +134,12 @@ class MegaLJsonGenerator extends AbstractGenerator {
 			«FOR domain : t.domains»
 				{"label": "inputOf", 
 				 "source": "«domain.name»",
-				 "target": "«t.name»"}«IF !(t.ranges.empty && domain.equals(t.domains.get(t.domains.size-1)))», «ENDIF»
+				 "target": "Declaration:«t.name»"}«IF !(t.ranges.empty && domain.equals(t.domains.get(t.domains.size-1)))», «ENDIF»
 			«ENDFOR»
 			«FOR range : t.ranges»
 				{"label": "outputOf", 
 				 "source": "«range.name»",
-				 "target": "«t.name»"}«IF !(range.equals(t.ranges.get(t.ranges.size-1)))», «ENDIF»
+				 "target": "Declaration:«t.name»"}«IF !(range.equals(t.ranges.get(t.ranges.size-1)))», «ENDIF»
 			«ENDFOR»
 		'''
 	}
