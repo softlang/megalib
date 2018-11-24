@@ -12,9 +12,12 @@ import java.nio.file.WatchService;
 import java.util.LinkedList;
 
 import org.apache.commons.io.FileUtils;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.gef.graph.Edge;
 import org.eclipse.gef.graph.Graph;
 import org.eclipse.gef.graph.Node;
+import org.eclipse.gef.layout.algorithms.GridLayoutAlgorithm;
 import org.eclipse.gef.zest.fx.ZestProperties;
 import org.eclipse.gef.zest.fx.ui.parts.ZestFxUiView;
 import org.eclipse.ui.part.IShowInTarget;
@@ -46,11 +49,26 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 	public boolean show(ShowInContext cxt) {
 		Object in = cxt.getInput();
 		if (in instanceof File) {
+			IEclipsePreferences preferences = ConfigurationScope.INSTANCE
+				    .getNode("org.softlang.java");
+			String dotExecutablePath = preferences.get("Graphvizz", "null");
+			
+			if(dotExecutablePath.endsWith("dot.exe")) {
 			File f = (File) in;
 			fname = f.getName();
 			setWatchService(f);
 			Graph g = createGraphFromJson(f.toPath());
 			setGraph(g);
+			}
+			else {
+				nodeList = new LinkedList();
+				nodeList.add(createNode("Please enter a valid path to your \n"
+						+ "dot.exe file under: \n"
+						+ "Window>Preferences>MegaLPreference", new LinkedList(), new LinkedList(), "#FFFFFF"));
+				Graph.Builder gbuilder = new Graph.Builder();
+				Graph g = gbuilder.nodes(nodeList).build();
+				setGraph(g);
+			}
 			return true;
 		}
 		return false;
@@ -102,8 +120,9 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 		s.start();
 	}
 
-	private Graph createGraphFromJson(Path f) {
+	private Graph createGraphFromJson(Path f) {	
 		String json;
+		nodeList = new LinkedList();
 		try {
 			LinkedList<Edge> edgeList = new LinkedList<Edge>();
 			LinkedList<String> urls = null;
