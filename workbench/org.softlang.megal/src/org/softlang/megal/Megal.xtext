@@ -22,12 +22,12 @@ Statement : Type | Instance | RelDecl | RelInst | FunDecl | FunApp
 ;
 	
 Type: name=ID '<' (supertype=[Type] | 'Entity')
-		(';' '=' '"' links+=STRING '"')* '.'
+		(';' '=' links+=STRING)* '.'
 ;	
 	
 Instance : name=ID ':' type=[Type]
-	(';' '~=' '"' binds+=STRING '"')*
-	(';' '=' '"' links+=STRING '"')*
+	(';' '~=' binds+=STRING)*
+	(';' '=' links+=STRING)*
 	(';' relEdges+=RelEdge)* '.'
 ;
 	
