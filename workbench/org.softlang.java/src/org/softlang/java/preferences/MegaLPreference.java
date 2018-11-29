@@ -20,6 +20,7 @@ public class MegaLPreference extends FieldEditorPreferencePage implements IWorkb
 
     public void createFieldEditors() {
         addField(new FileFieldEditor("Graphvizz", "Graphvizz bin/dot path:", getFieldEditorParent()));
+        addField(new FileFieldEditor("properties", "properties.json bin/dot path:", getFieldEditorParent()));
     }
 
     @Override

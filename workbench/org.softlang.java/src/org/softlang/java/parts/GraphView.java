@@ -43,6 +43,7 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 	WatchService w;
 	WatchKey k;
 	Path path;
+	String propertiesPath;
 	Boolean watchServiceRunning = false;
 	String LABEL = ZestProperties.LABEL__NE;
 	LinkedList<Node> nodeList = new LinkedList<Node>();
@@ -136,9 +137,13 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 			JsonArray nodes =  (JsonArray) root.getAsJsonObject().get("Nodes");
 			JsonArray edges = (JsonArray) root.getAsJsonObject().get("Edges");
 			
+			IEclipsePreferences preferences = ConfigurationScope.INSTANCE
+				    .getNode("org.softlang.java");
+			propertiesPath = preferences.get("properties", "null");
+			
 			for(JsonElement i:edges) {
 				JsonObject edge = i.getAsJsonObject();
-				if(edge.get("label").getAsString().equals("subtypOf")) {
+				if(edge.get("label").getAsString().equals("subtypeOf")) {
 					colour.put(edge.get("source").getAsString(), edge.get("target").getAsString());
 					}
 				}
@@ -214,7 +219,7 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 	}
 	
 	private String lookupcolour (String key ) {
-		File f = new File("enter path here");
+		File f = new File(propertiesPath);
 		String json;
 		try {
 			json = FileUtils.readFileToString(f);
@@ -228,9 +233,8 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 					return root.getAsJsonObject().get(key).getAsString();
 				}
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			return "#FFFFFF";
 		}
 		return "#FFFFFF";
 	}
