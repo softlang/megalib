@@ -9,7 +9,9 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
@@ -44,6 +46,7 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 	Boolean watchServiceRunning = false;
 	String LABEL = ZestProperties.LABEL__NE;
 	LinkedList<Node> nodeList = new LinkedList<Node>();
+	Map<String,String> colour = new HashMap<String,String>();
 
 	@Override
 	public boolean show(ShowInContext cxt) {
@@ -64,7 +67,7 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 				nodeList = new LinkedList();
 				nodeList.add(createNode("Please enter a valid path to your \n"
 						+ "dot.exe file under: \n"
-						+ "Window>Preferences>MegaLPreference", new LinkedList(), new LinkedList(), "#FFFFFF"));
+						+ "Window>Preferences>MegaLPreference", new LinkedList(), new LinkedList()));
 				Graph.Builder gbuilder = new Graph.Builder();
 				Graph g = gbuilder.nodes(nodeList).build();
 				setGraph(g);
@@ -133,9 +136,15 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 			JsonArray nodes =  (JsonArray) root.getAsJsonObject().get("Nodes");
 			JsonArray edges = (JsonArray) root.getAsJsonObject().get("Edges");
 			
+			for(JsonElement i:edges) {
+				JsonObject edge = i.getAsJsonObject();
+				if(edge.get("label").getAsString().equals("subtypOf")) {
+					colour.put(edge.get("source").getAsString(), edge.get("target").getAsString());
+					}
+				}
+			
 			for(JsonElement j: nodes) {
 				String name = j.getAsJsonObject().get("name").getAsString();
-				String colour = j.getAsJsonObject().get("colour").getAsString();
 				if(j.getAsJsonObject().has("links")) {
 					urls = new LinkedList<String>();
 					for(JsonElement u: j.getAsJsonObject().get("links").getAsJsonArray()) {
@@ -148,7 +157,7 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 					bindings.add(b.getAsString());
 					}
 				}
-				nodeList.add(createNode(name, urls, bindings, colour));						
+				nodeList.add(createNode(name, urls, bindings));						
 			}
 			
 			for(JsonElement i:edges) {
@@ -167,10 +176,10 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 
 	private Edge createEdge(String label, String source, String target){
 		if(!(checkifNodeinGraph(source))) {
-			nodeList.add(createNode(source,new LinkedList(),new LinkedList(),"#000000"));
+			nodeList.add(createNode(source,new LinkedList(),new LinkedList()));
 		}
 		if(!(checkifNodeinGraph(target))) {
-			nodeList.add(createNode(target,new LinkedList(),new LinkedList(),"#000000"));
+			nodeList.add(createNode(target,new LinkedList(),new LinkedList()));
 		}
 		Node nOrigin = null;
 		Node nDestination = null;
@@ -187,13 +196,13 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 		return builder.buildEdge();
 	}
 	
-	private Node createNode(String name, LinkedList<String> urls, LinkedList<String> bindings, String colour){
+	private Node createNode(String name, LinkedList<String> urls, LinkedList<String> bindings){
 		Node.Builder builder = new Node.Builder();
 		builder.attr(LABEL, name);
 		builder.attr("alllinks", urls);
 		builder.attr("bindings", bindings);
-		builder.attr(ZestProperties.INVISIBLE__NE, false);			
-		builder.attr(ZestProperties.SHAPE_CSS_STYLE__N, "-fx-fill:" + colour);
+		builder.attr(ZestProperties.INVISIBLE__NE, false);
+		builder.attr(ZestProperties.SHAPE_CSS_STYLE__N, "-fx-fill: " + lookupcolour(name));
 		builder.attr("original_shape_color", "-fx-fill: #118C01");
 		boolean haslink = false;
 		if(!urls.isEmpty()) {
@@ -202,6 +211,28 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 		builder.attr(ZestProperties.LABEL_CSS_STYLE__NE,"-fx-fill: #000000;-fx-underline:" + haslink); 
 		Node node = builder.buildNode();
 		return node;
+	}
+	
+	private String lookupcolour (String key ) {
+		File f = new File("enter path here");
+		String json;
+		try {
+			json = FileUtils.readFileToString(f);
+			JsonElement root = new JsonParser().parse(json);
+			if(root.getAsJsonObject().has(key)) {
+				return root.getAsJsonObject().get(key).getAsString();
+			}
+			while(colour.get(key) != null){
+				key = colour.get(key);
+				if(root.getAsJsonObject().has(key)) {
+					return root.getAsJsonObject().get(key).getAsString();
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "#FFFFFF";
 	}
 	
 	private boolean checkifNodeinGraph(String name) {
