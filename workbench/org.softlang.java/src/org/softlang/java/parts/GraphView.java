@@ -19,8 +19,9 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.gef.graph.Edge;
 import org.eclipse.gef.graph.Graph;
 import org.eclipse.gef.graph.Node;
-import org.eclipse.gef.layout.algorithms.GridLayoutAlgorithm;
+import org.eclipse.gef.zest.fx.ZestFxModule;
 import org.eclipse.gef.zest.fx.ZestProperties;
+import org.eclipse.gef.zest.fx.ui.ZestFxUiModule;
 import org.eclipse.gef.zest.fx.ui.parts.ZestFxUiView;
 import org.eclipse.ui.part.IShowInTarget;
 import org.eclipse.ui.part.ShowInContext;
@@ -29,6 +30,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.inject.Guice;
+import com.google.inject.util.Modules;
 
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
@@ -49,8 +52,13 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 	LinkedList<Node> nodeList = new LinkedList<Node>();
 	Map<String,String> colour = new HashMap<String,String>();
 
+	public GraphView() {
+		super(Guice.createInjector(Modules.override(new ZestFxUiModule()).with(new ZestFxUiCustom())));
+	}
+	
 	@Override
 	public boolean show(ShowInContext cxt) {
+		
 		Object in = cxt.getInput();
 		if (in instanceof File) {
 			IEclipsePreferences preferences = ConfigurationScope.INSTANCE
@@ -206,9 +214,9 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 		builder.attr(LABEL, name);
 		builder.attr("alllinks", urls);
 		builder.attr("bindings", bindings);
-		builder.attr(ZestProperties.INVISIBLE__NE, false);
+		builder.attr(ZestProperties.INVISIBLE__NE, false);			
+		builder.attr("original_shape_color", "-fx-fill:" + lookupcolour(name));
 		builder.attr(ZestProperties.SHAPE_CSS_STYLE__N, "-fx-fill: " + lookupcolour(name));
-		builder.attr("original_shape_color", "-fx-fill: #118C01");
 		boolean haslink = false;
 		if(!urls.isEmpty()) {
 			haslink = true;
