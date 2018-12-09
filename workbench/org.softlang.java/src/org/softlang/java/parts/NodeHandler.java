@@ -85,11 +85,12 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler {
 					link = new URI(s);
 					openWebpage(link);}
 					else if (s.startsWith("file")){
+					s = s.replaceFirst("file://", "");
 					String[] splitted = s.split("#");
 					int lineNumber = Integer.parseInt(splitted[splitted.length-1]);
 					String path = "";
-					for(String g : splitted) {
-						path += g;
+					for (int i = 0; i < splitted.length-1; i++) {
+						path += splitted[i];
 					}
 					openFile(new Path(path), lineNumber);
 					}
