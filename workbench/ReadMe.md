@@ -20,16 +20,23 @@ Please take care that you have installed the following programs:
 And the following Plugins in your Eclipse for DSL Developers:
 * GEF
 * e(fx)clipse
+
+Note: Both plugins can be downloaded from Eclipse Update-Sites. For example you could use:
+* http://download.eclipse.org/releases/2018-09
+* On this Update-Site you can find GEF under Application Development Framework (install all GEF SDKs)
+* e(fx)clipse can be found under General Purpose Tools
+
+If the com.google.inject plugin is missing you can also install it via a Updatesite eg.:
+* https://download.eclipse.org/tools/orbit/downloads/drops/R20181128170323/repository/
+* Install the Google Guava package to use com.google.inject
+
 ### Importing the Project:
-* Go the your Eclipse Application and import every folder as follow:
-    * Import-> Import from Folder or Archive
-* After importing the projects go in the org.softlang.megal project
-    * Right click the src/org.softlang.megal/GenerateMegaL.mwe2 file -> RunAs -> MWE2 Workflow. This creates additional files in the src-gen 
-    path of the other org.softlang.megal projects
-* Check in every project, if the src-gen folder is in the build path as a source folder
-    * If not right click the folder -> BuildPath -> Use as source folder
-* Now it could happen, that there are still some errors in some files. This could be solved by opening and closing the files in Eclipse.
-Sometimes it also works, if you restart your Eclipse Application
+* Go to Eclipse. Import every folder as follows
+     * Import Projects from File System or Archive
+     * Set the Workbench folder as the directory
+     * Deselect the workbench folder itself from the list below.
+     * Finish importing
+     * Wait for Eclipse to build and update the workspace.
 ### Running the project:
 Right click the org.softlang.megal project and run it as an Eclipse Application
     
