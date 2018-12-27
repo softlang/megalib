@@ -28,10 +28,10 @@ Note: Both plugins can be downloaded from Eclipse Update-Sites. For example you 
 
 If the com.google.inject plugin is missing you can also install it via a Updatesite eg.:
 * https://download.eclipse.org/tools/orbit/downloads/drops/R20181128170323/repository/
-* Install the Google Guava package to use com.google.inject
+* Install the Google Guice package to use com.google.inject
 
 ### Importing the Project:
-* Go to Eclipse. Import every folder as follows
+* Go to Eclipse.
      * Import Projects from File System or Archive
      * Set the Workbench folder as the directory
      * Deselect the workbench folder itself from the list below.
