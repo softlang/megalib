@@ -84,15 +84,26 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler {
 					if (s.startsWith("http")){
 					link = new URI(s);
 					openWebpage(link);}
-					else if (s.startsWith("file")){
+					else if (s.startsWith("file://")){
 					s = s.replaceFirst("file://", "");
 					String[] splitted = s.split("#");
-					int lineNumber = Integer.parseInt(splitted[splitted.length-1]);
+					boolean lineNumberAvailable = true;
+					Integer subForForLoop = -1;
+					Integer lineNumber = 0;
+					try {
+					lineNumber = Integer.parseInt(splitted[splitted.length-1]);
+					} catch (NumberFormatException e) {
+						lineNumberAvailable = false;
+						subForForLoop = 0;
+					}
 					String path = "";
-					for (int i = 0; i < splitted.length-1; i++) {
+					for (int i = 0; i < splitted.length+subForForLoop; i++) {
 						path += splitted[i];
 					}
+					if(lineNumberAvailable && lineNumber >= 0)
 					openFile(new Path(path), lineNumber);
+					else
+					openFile(new Path(path), 0);	
 					}
 				} catch (URISyntaxException e) {
 					// TODO Auto-generated catch block
@@ -117,7 +128,7 @@ public class NodeHandler extends AbstractHandler implements IOnClickHandler {
 			e1.printStackTrace();
 		}
 	}
-
+	
 	public static boolean openWebpage(URI uri) {
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {

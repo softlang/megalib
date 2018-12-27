@@ -65,7 +65,7 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 				    .getNode("org.softlang.java");
 			String dotExecutablePath = preferences.get("Graphvizz", "null");
 			
-			if(dotExecutablePath.endsWith("dot.exe")) {
+			if(dotExecutablePath.endsWith("dot.exe") || dotExecutablePath.endsWith("dot")) {
 			File f = (File) in;
 			fname = f.getName();
 			setWatchService(f);
@@ -75,7 +75,7 @@ public class GraphView extends ZestFxUiView implements IShowInTarget {
 			else {
 				nodeList = new LinkedList();
 				nodeList.add(createNode("Please enter a valid path to your \n"
-						+ "dot.exe file under: \n"
+						+ "dot.exe (Windows) or dot-file (Linux/Mac) under: \n"
 						+ "Window>Preferences>MegaLPreference", new LinkedList(), new LinkedList()));
 				Graph.Builder gbuilder = new Graph.Builder();
 				Graph g = gbuilder.nodes(nodeList).build();
