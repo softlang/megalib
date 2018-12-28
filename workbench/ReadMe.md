@@ -46,3 +46,4 @@ Right click the org.softlang.megal project and run it as an Eclipse Application
 * You need to add the path to your GraphViz .exe under Window-> Preferences -> MegaL Preferences, otherwise the Visualisation
 can not layout the graph
 * You can submit a properties file, which controls the color of the nodes of the graph
+* If you want to view a corresponding legend to the graph, you can use the MegaL Graph View Legend. This can be found under Window>View>Other...>Visualization
