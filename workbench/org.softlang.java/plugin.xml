@@ -13,12 +13,22 @@
    <extension
         point="org.eclipse.ui.views">
         <view
-            class="org.softlang.java.parts.GraphView"
-            id="org.softlang.java.parts.GraphView"
-            icon="icons/Sample.png"
-            category="org.eclipse.gef.visualization"
-            name="MegaL Graph View"
-            restorable="true">
+              allowMultiple="false"
+              category="org.eclipse.gef.visualization"
+              class="org.softlang.java.parts.GraphView"
+              icon="icons/Sample.png"
+              id="org.softlang.java.parts.GraphView"
+              name="MegaL Graph View"
+              restorable="true">
+        </view>
+        <view
+              allowMultiple="false"
+              category="org.eclipse.gef.visualization"
+              class="org.softlang.java.parts.GraphViewLegend"
+              icon="icons/Sample.png"
+              id="org.softlang.java.parts.GraphViewLegend"
+              name="MegaL Graph View Legend"
+              restorable="true">
         </view>
     </extension>
    <extension

@@ -1,13 +1,8 @@
 package org.softlang.java.preferences;
 
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
-import org.eclipse.jface.preference.RadioGroupFieldEditor;
-import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
@@ -20,7 +15,7 @@ public class MegaLPreference extends FieldEditorPreferencePage implements IWorkb
 
     public void createFieldEditors() {
         addField(new FileFieldEditor("Graphvizz", "Graphvizz bin/dot path:", getFieldEditorParent()));
-        addField(new FileFieldEditor("properties", "properties.json bin/dot path:", getFieldEditorParent()));
+        addField(new FileFieldEditor("properties", "properties.json path:", getFieldEditorParent()));
     }
 
     @Override
