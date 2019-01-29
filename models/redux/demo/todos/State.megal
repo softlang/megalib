@@ -1,0 +1,16 @@
+module redux.demo.todos.State
+
+import redux.State where {
+  [ visibilityFilterState / ?reduxState,
+    todosState / ?reduxState,
+    getTodosAppState / ?getState]
+}
+
+/*
+  @Description:
+    The todoItems and the filter state.
+    The todosApp uses a Provider imported from react-redux bindings which calls getState.
+*/
+visibilityFilterState ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/containers/FilterLink.js#L6".
+todosState ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/containers/VisibleTodoList.js#L20".
+getTodosAppState ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/index.js#L11-L13".

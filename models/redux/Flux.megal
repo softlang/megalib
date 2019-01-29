@@ -1,0 +1,30 @@
+module redux.Flux
+
+/*
+  @Description:
+    Flux is an application architecture for building user interfaces.
+  @Rationale:
+    See https://facebook.github.io/flux/
+*/
+FluxGithub :: "https://github.com/facebook/flux".
+Flux : ArchitecturalPattern;
+  = "https://facebook.github.io/flux/";
+  = "https://facebook.github.io/flux/docs/in-depth-overview.html#structure-and-data-flow".
+
+flux :: "https://github.com/facebook/flux/tree/master/examples/flux-concepts#".
+
+FluxAction : Role; // data in a store must only be mutated by responding to an action
+  = "flux::actions";
+  participantOf Flux.
+
+FluxDispatcher : Role; // receives actions and dispatches them
+  = "flux::dispatcher";
+  participantOf Flux.
+
+FluxStore : Role; // holds the data of an application
+  = "flux::store";
+  participantOf Flux.
+
+FluxView : Role; // subscribes to change events from a store and re-render on changes
+  = "flux::views";
+  participantOf Flux.

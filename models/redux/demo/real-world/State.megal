@@ -1,0 +1,31 @@
+module redux.demo.real-world.State
+
+import redux.State where {
+  [ errorMessageState / ?reduxState,
+    stargazersByRepoState / ?reduxState,
+    usersState / ?reduxState,
+    reposState / ?reduxState,
+    starredByUserState / ?reduxState,
+    entitiesState / ?reduxState,
+    paginationState / ?reduxState,
+    getRealWorldStateDev / ?getState,
+    getRealWorldStateProd / ?getState]
+}
+
+
+/*
+  @Description:
+    The state of the real-world example.
+    The real-world app uses a Provider imported from react-redux bindings which calls getState.
+    The getState is hidden inside a Provider imported from react-redux bindings.
+*/
+errorMessageState ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/App.js#L61".
+stargazersByRepoState ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/RepoPage.js#L77".
+usersState ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/RepoPage.js#L78".
+reposState ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/RepoPage.js#L78".
+starredByUserState ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/UserPage.js#L79".
+entitiesState ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/UserPage.js#L80".
+paginationState ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/UserPage.js#L79".
+
+getRealWorldStateProd ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.prod.js#L10-L18".
+getRealWorldStateDev ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.dev.js#L11-L20".

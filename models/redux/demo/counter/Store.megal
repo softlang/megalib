@@ -1,0 +1,11 @@
+module redux.demo.counter.Store
+
+import redux.Store where {
+  [ counterStore / ?reduxStore ]
+}
+
+/*
+  @Description:
+    The counter uses the store to hold its current count.
+*/
+counterStore ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L33".

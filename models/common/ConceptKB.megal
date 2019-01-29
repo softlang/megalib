@@ -18,6 +18,8 @@ DecoratorPattern : DesignPattern;
     = "wikipedia::Decorator_pattern".
 BuilderPattern: DesignPattern;
 	= "wikipedia::Builder_pattern".
+SingletonPattern : DesignPattern;
+    = "wikipedia::Singleton_pattern". 
 
 // Architectural pattern 
 ModelViewController : ArchitecturalPattern;

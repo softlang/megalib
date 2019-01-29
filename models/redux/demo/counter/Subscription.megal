@@ -1,0 +1,13 @@
+module redux.demo.counter.Subscription
+
+import redux.Subscription where {
+  [ subscribeCounter / ?subscribe,
+    renderListener / ?listener ]
+}
+
+/*
+  @Description:
+    The counter uses a subscription to notify the render listener on count changes. 
+*/
+subscribeCounter ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L41".
+renderListener ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L36-L38".

@@ -1,0 +1,41 @@
+module redux.demo.real-world.Dispatch
+
+import redux.Dispatch where {
+  [ dispatchUserRequestAction / ?dispatch,
+    dispatchUserSuccessAction / ?dispatch,
+    dispatchUserFailureAction / ?dispatch,
+    dispatchRepoRequestAction / ?dispatch,
+    dispatchRepoSuccessAction / ?dispatch,
+    dispatchRepoFailureAction / ?dispatch,
+    dispatchStarredRequestAction / ?dispatch,
+    dispatchStarredSuccessAction / ?dispatch,
+    dispatchStarredFailureAction / ?dispatch,
+    dispatchStargazersRequestAction / ?dispatch,
+    dispatchStargazersSuccessAction / ?dispatch,
+    dispatchStargazersFailureAction / ?dispatch,
+    dispatchResetErrorMessageAction / ?dispatch
+  ]
+}
+
+/*
+  @Description:
+    The real-world app uses dispatch to mutate its state.
+*/
+
+dispatchUserRequestAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L25".
+dispatchUserSuccessAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L25".
+dispatchUserFailureAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L25".
+
+dispatchRepoRequestAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L50".
+dispatchRepoSuccessAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L50".
+dispatchRepoFailureAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L50".
+
+dispatchStarredRequestAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L81".
+dispatchStarredSuccessAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L81".
+dispatchStarredFailureAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L81".
+
+dispatchStargazersRequestAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L112".
+dispatchStargazersSuccessAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L112".
+dispatchStargazersFailureAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L112".
+
+dispatchResetErrorMessageAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/App.js#L66".

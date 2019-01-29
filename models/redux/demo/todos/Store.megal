@@ -1,0 +1,11 @@
+module redux.demo.todos.Store
+
+import redux.Store where {
+  [ todosStore / ?reduxStore ]
+}
+
+/*
+  @Description:
+    The todoApp uses the store to hold its todoItems and filter.
+*/
+todosStore ~= "https://github.com/reactjs/redux/blob/master/examples/todos/src/index.js#L8".

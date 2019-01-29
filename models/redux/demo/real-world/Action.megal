@@ -1,0 +1,40 @@
+module redux.demo.real-world.Action
+
+import redux.Action where {
+  [ userRequestAction / ?reduxAction,
+    userSuccessAction / ?reduxAction,
+    userFailureAction / ?reduxAction,
+    repoRequestAction / ?reduxAction,
+    repoSuccessAction / ?reduxAction,
+    repoFailureAction / ?reduxAction,
+    starredRequestAction / ?reduxAction,
+    starredSuccessAction / ?reduxAction,
+    starredFailureAction / ?reduxAction,
+    stargazersRequestAction / ?reduxAction,
+    stargazersSuccessAction / ?reduxAction,
+    stargazersFailureAction / ?reduxAction,
+    resetErrorMessageAction / ?reduxAction
+  ]
+}
+
+/*
+  @Description:
+    The real-world app uses actions to specify why its state can change.
+*/
+
+userRequestAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L9-L15".
+userSuccessAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L9-L15".
+userFailureAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L9-L15".
+
+repoRequestAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L34-L40".
+repoSuccessAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L34-L40".
+repoFailureAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L34-L40".
+
+starredRequestAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L59-L66".
+starredSuccessAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L59-L66".
+starredFailureAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L59-L66".
+
+stargazersRequestAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L90-L97".
+stargazersSuccessAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L90-L97".
+stargazersFailureAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L90-L97".
+resetErrorMessageAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js#L118-L120".

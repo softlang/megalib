@@ -1,0 +1,11 @@
+module redux.demo.todos.CreateStore
+
+import redux.CreateStore where {
+  [ createTodosStore / ?createStore ]
+}
+
+/*
+  @Description:
+    The todosApp uses createStore to create the store.
+*/
+createTodosStore ~= "https://github.com/reactjs/redux/blob/master/examples/todos/src/index.js#L8".

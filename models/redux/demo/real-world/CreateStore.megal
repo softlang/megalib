@@ -1,0 +1,22 @@
+module redux.demo.real-world.CreateStore
+
+import redux.CreateStore where {
+  [ createDevCounterStore / ?createStore,
+    createProdCounterStore / ?createStore,
+    devToolsEnhancer / ?storeEnhancer,
+    devMiddlewareEnhancer / ?storeEnhancer,
+    prodMiddlewareEnhancer / ?storeEnhancer
+  ]
+}
+
+/*
+  @Description:
+    The real-world app uses createStore to create either a development or production store.
+    It enhances the store with middleware and development tools.
+*/
+createProdCounterStore ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.prod.js#L6-L10".
+prodMiddlewareEnhancer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.prod.js#L9".
+
+createDevCounterStore ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.dev.js#L9-L16".
+devMiddlewareEnhancer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.dev.js#L13".
+devToolsEnhancer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.dev.js#L14".

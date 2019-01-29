@@ -1,0 +1,33 @@
+module redux.demo.real-world.React
+
+import redux.React where {
+  [ appContainer / ?containerComponent,
+    devToolsContainer / ?containerComponent,
+    repoPageContainer / ?containerComponent,
+    devRootContainer / ?containerComponent,
+    rootContainer / ?containerComponent,
+    prodRootContainer / ?containerComponent,
+    userPageContainer / ?containerComponent,
+    exploreComponent / ?presentationalComponent,
+    listComponent / ?presentationalComponent,
+    repoComponent / ?presentationalComponent,
+    userComponent / ?presentationalComponent
+  ]
+}
+
+/*
+  @Description:
+    The real-world app uses react as its view.
+*/
+appContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/App.js".
+devToolsContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/DevTools.js".
+repoPageContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/RepoPage.js".
+devRootContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.dev.js".
+rootContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.js".
+prodRootContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.prod.js".
+userPageContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/UserPage.js".
+
+exploreComponent ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/components/Explore.js".
+listComponent ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/components/List.js".
+repoComponent ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/components/Repo.js".
+userComponent ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/components/User.js".

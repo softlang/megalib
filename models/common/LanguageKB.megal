@@ -92,6 +92,9 @@ JavaScriptNumber : ValueLanguage;
 JavaScriptObject : ValueLanguage; // we don't know whether it is one class that this is conforming to or more.
     = "http://www.w3schools.com/js/js_object_definition.asp";
     subsetOf JavaScriptValue.
+JavaScriptFunction : ValueLanguage;
+    = "https://www.w3schools.com/js/js_functions.asp";
+    subsetOf JavaScriptObject. // In JavaScript, functions are objects.
 CoffeeScript : ProgrammingLanguage;
     = "http://coffeescript.org/".
 HTML5 : DocumentLanguage; //TODO: vs HTML....

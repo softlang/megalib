@@ -1,0 +1,35 @@
+module redux.App
+
+import redux.Redux
+import redux.Reducer
+import redux.Action
+import redux.Store
+import redux.Subscription
+
+/*
+  @Description:
+    Any app that uses Redux contains
+      - a reducer
+      - a store
+      - an action
+  @Rationale:
+    Naming the most core elements for any JavaScript application that uses Redux
+*/
+
+?App : Application;
+	reuses Redux; 
+	uses JavaScript;
+  implements reduxReducer;
+  implements listener.
+
+?reducer : File;
+  partOf ?App;
+  elementOf JavaScript.
+
+?action : File;
+  partOf ?App;
+  elementOf JavaScript.
+
+?store : File;
+  partOf ?App;
+  elementOf JavaScript.

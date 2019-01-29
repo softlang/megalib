@@ -1,0 +1,24 @@
+module redux.demo.real-world.Subscription
+
+import redux.Subscription where {
+  [ subscribeRealWorldDev / ?subscribe,
+    listenRealWorldDev / ?listener,
+    unsubscribeRealWorldDev / ?unsubscribe,
+    subscribeRealWorldProd / ?subscribe,
+    listenRealWorldProd / ?listener,
+    unsubscribeRealWorldProd / ?unsubscribe
+  ]
+}
+
+/*
+  @Description:
+    The real-world app uses a Provider imported from react-redux bindings which handles
+    subscriptions to render the view on state changes. 
+*/
+subscribeRealWorldDev ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.dev.js#L11-L20".
+listenRealWorldDev ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.dev.js#L11-L20".
+unsubscribeRealWorldDev ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.dev.js#L11-L20".
+
+subscribeRealWorldProd ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.prod.js#L10-L18".
+listenRealWorldProd ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.prod.js#L10-L18".
+unsubscribeRealWorldProd ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/containers/Root.prod.js#L10-L18".

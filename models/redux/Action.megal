@@ -1,0 +1,24 @@
+module redux.Action
+
+import redux.Store
+
+/*
+  @Description:
+    Actions are payloads of information that send data from your application to your store.
+    The only required attribute is a type.
+  @Rationale:
+    see: https://redux.js.org/basics/actions#actions
+*/
+ActionLanguage : ValueLanguage;
+  = "ReduxGlossary::action";
+  subsetOf JavaScriptObject.
+
+?reduxAction : Transient+; 
+  = "ReduxGlossary::action";
+  hasRole FluxAction;
+  elementOf ActionLanguage.
+
+?actionType : Transient;
+  = "ReduxGlossary::action";
+  elementOf JavaScriptString;
+  partOf ?reduxAction.
