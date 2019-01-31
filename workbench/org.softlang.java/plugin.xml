@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="org.softlang.java.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            apply="notexists"
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+        point="org.eclipse.ui.views">
+        <view
+              allowMultiple="false"
+              category="org.eclipse.gef.visualization"
+              class="org.softlang.java.parts.GraphView"
+              icon="icons/Sample.png"
+              id="org.softlang.java.parts.GraphView"
+              name="MegaL Graph View"
+              restorable="true">
+        </view>
+        <view
+              allowMultiple="false"
+              category="org.eclipse.gef.visualization"
+              class="org.softlang.java.parts.GraphViewLegend"
+              icon="icons/Sample.png"
+              id="org.softlang.java.parts.GraphViewLegend"
+              name="MegaL Graph View Legend"
+              restorable="true">
+        </view>
+    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.softlang.java.preferences.MegaLPreference"
+            id="org.softlang.java.preferences.SamplePreferencePage"
+            name="MegaL Preference">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.softlang.java.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

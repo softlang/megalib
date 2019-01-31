@@ -24,7 +24,7 @@ public class ImportDemoTest {
 	
 	@Before
 	public void setUp() {
-		TransformerRegistry.registerTransformer("dot", (VisualizerOptions options)
+		TransformerRegistry.registerTransformer("dot", "dot", (VisualizerOptions options)
 	   		     -> new DOTTransformer(options));
 	    CommandLine cli = new CommandLine(Arrays.asList("graphviz", "dot"));
 

@@ -55,7 +55,7 @@ public class CommandLineTest {
 
     @Test
     public void testWebBrowser() {
-    	TransformerRegistry.registerTransformer("dot", (VisualizerOptions options)
+    	TransformerRegistry.registerTransformer("dot", "dot", (VisualizerOptions options)
    		     -> new DOTTransformer(options));
         CommandLine cli = new CommandLine(Arrays.asList("graphviz", "dot"));
 

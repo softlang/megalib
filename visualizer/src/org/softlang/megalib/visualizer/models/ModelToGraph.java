@@ -4,6 +4,7 @@
 package org.softlang.megalib.visualizer.models;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +26,10 @@ public class ModelToGraph {
 
 	public ModelToGraph(VisualizerOptions options) {
 		this.options = options;
+	}
+	
+	public ModelToGraph() {
+		
 	}
 
 	public boolean loadModel() {
@@ -75,7 +80,7 @@ public class ModelToGraph {
 		return graphs;
 	}
 
-	private Node createNode(String name, String type, MegaModel model) {
+	protected Node createNode(String name, String type, MegaModel model) {
 		Node result = new Node(type, name, getFirstInstanceLink(model, name));
 		applyInstanceHierarchy(result);
 		return result;
@@ -90,18 +95,34 @@ public class ModelToGraph {
 	}
 
 	private String getFirstInstanceLink(MegaModel model, String name) {
-		return Optional.ofNullable(model.getLinks(name)).filter(set -> !set.isEmpty()).map(set -> set.iterator().next())
-				.orElse("");
+		Set<Relation> r = new HashSet();
+		if(model.getRelationships().get("=") != null) {
+			r.addAll(model.getRelationships().get("="));
+		}
+		if(model.getRelationships().get("~=") !=null) {
+			r.addAll(model.getRelationships().get("~="));
+		}
+		for(Relation x:r) {
+			if(x.getSubject().equals(name)) {
+				String link = x.getObject();
+				if(link.contains("::")){
+		            String ns = link.split("::")[0];
+		            link = link.replace(ns + "::", model.getNamespace(ns) + "/");
+		        }
+				return link;
+			}
+		}
+		return "";
 	}
 
-	private void createEdgesByFunction(Graph graph, String functionName, Set<Function> funcs) {
+	protected void createEdgesByFunction(Graph graph, String functionName, Set<Function> funcs) {
 		Iterator<Function> it = funcs.iterator();
 		for (int i = 0; it.hasNext(); i++) {
 			createEdgesByFunction(graph, functionName, it.next(), i);
 		}
 	}
 
-	private void createEdgesByFunction(Graph graph, String functionName, Function f, int i) {
+	protected void createEdgesByFunction(Graph graph, String functionName, Function f, int i) {
 		if (f.isDecl) {
 			f.getInputs().forEach(input -> createEdge(graph, input, functionName, "domainOf_" + i));
 			f.getOutputs().forEach(output -> createEdge(graph, functionName, output, "hasRange_" + i));
@@ -111,7 +132,7 @@ public class ModelToGraph {
 		}
 	}
 
-	private void createEdgesByRelations(Graph graph, String relationName, Set<Relation> relations) {
+	protected void createEdgesByRelations(Graph graph, String relationName, Set<Relation> relations) {
 		relations.stream()
 				.forEach(relation -> createEdge(graph, relation.getSubject(), relation.getObject(), relationName));
 	}

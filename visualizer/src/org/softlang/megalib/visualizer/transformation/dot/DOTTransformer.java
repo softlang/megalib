@@ -36,6 +36,10 @@ public class DOTTransformer extends Transformer {
         super(options);
     }
 
+    public TransformerConfiguration getConfig() {
+	return config;
+    }
+    
     @Override
     public String transform(Graph g) {
         if (g == null) {
@@ -70,7 +74,6 @@ public class DOTTransformer extends Transformer {
         text = text.replace("@Description:", "");
         text = Pattern.compile("@Rationale(.*?)\\*/", Pattern.DOTALL).matcher(text).replaceAll("").trim();
         template.add("text", text);
-
         return template.render();
     }
 
