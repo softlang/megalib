@@ -1,0 +1,23 @@
+module redux.demo.real-world.Reducer
+
+import redux.Reducer where {
+  [ starredByUserReducer / ?reduxReducer,
+    stargazersByRepoReducer / ?reduxReducer,
+    paginationReducer / ?reduxReducer,
+    entitiesReducer / ?reduxReducer,
+    errorMessageReducer / ?reduxReducer,
+    rootReducer / ?reduxReducer
+  ]
+}
+
+/*
+  @Description:
+    The real-world app uses multiple reducers, which define how to mutate state.
+    The reducers are combined to one root reducer, that defines how to mutate the state of the whole application.
+*/
+starredByUserReducer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/reducers/index.js#L30-#L37".
+stargazersByRepoReducer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/reducers/index.js#L38-#L45".
+paginationReducer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/reducers/index.js#L29-L46".
+entitiesReducer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/reducers/index.js#L7-#L13".
+errorMessageReducer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/reducers/index.js#L16-#L26".
+rootReducer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/reducers/index.js#L48".

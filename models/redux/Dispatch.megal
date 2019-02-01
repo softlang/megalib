@@ -1,0 +1,25 @@
+module redux.Dispatch
+
+import redux.Store
+import redux.Action
+import redux.State
+
+/*
+  @Description:
+    Dispatches an action. This is the only way to trigger a state change.
+  @Rationale:
+    see: https://redux.js.org/basics/store#dispatching-actions
+*/
+
+DispatchLanguage : ValueLanguage;
+  = "ReduxAPI::Store.md#dispatchaction";
+  subsetOf JavaScriptFunction.
+
+?dispatch : Transient;
+  = "ReduxAPI::Store.md#dispatchaction";
+  elementOf DispatchLanguage;
+  hasRole FluxDispatcher.
+?dispatch partOf ?reduxStore.
+dispatch : ActionLanguage -> StateLanguage.
+dispatch(?reduxAction) |-> ?reduxState.
+Redux implements dispatch.

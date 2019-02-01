@@ -1,0 +1,21 @@
+module redux.Store
+
+import redux.Redux
+
+/*
+  @Description:
+    A store holds the state of an application.
+    The only way to change the state of an application is to dispatch an action.
+  @Rationale:
+    see: https://redux.js.org/api-reference/store
+*/
+StoreLanguage : ValueLanguage;
+  = "ReduxGlossary::store";
+  subsetOf JavaScriptObject.
+
+?reduxStore : Transient;
+  = "ReduxAPI::Store.md";
+  elementOf StoreLanguage;
+  partOf Redux;
+  hasRole FluxStore;
+  hasRole Subject.

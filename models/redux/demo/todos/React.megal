@@ -1,0 +1,27 @@
+module redux.demo.todos.React
+
+import redux.React where {
+  [ appComponent / ?presentationalComponent,
+    footerComponent / ?presentationalComponent,
+    linkComponent / ?presentationalComponent,
+    todoComponent / ?presentationalComponent,
+    todoListComponent / ?presentationalComponent,
+    addTodoContainer / ?containerComponent,
+    filterLinkContainer / ?containerComponent,
+    visibleTodoListContainer / ?containerComponent
+  ]
+}
+
+/*
+  @Description:
+    The todosApp uses React to display its todoItems and actions.
+*/
+appComponent ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/components/App.js".
+footerComponent ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/components/Footer.js".
+linkComponent ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/components/Link.js".
+todoComponent ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/components/Todo.js".
+todoListComponent ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/components/TodoList.js".
+
+addTodoContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/containers/AddTodo.js".
+filterLinkContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/containers/FilterLink.js".
+visibleTodoListContainer ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/containers/VisibleTodoList.js".

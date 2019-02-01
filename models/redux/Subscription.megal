@@ -1,0 +1,38 @@
+module redux.Subscription
+
+import redux.Store
+import redux.State
+
+/*
+  @Description:
+    Subscribe and unsubscribe listeners to store which will be called when state changes.
+  @Rationale:
+    see: https://github.com/reduxjs/redux/blob/master/docs/api/Store.md#subscribelistener
+*/
+ListenerLanguage : ValueLanguage;
+  = "ReduxAPI::Store.md#subscribelistener";
+  subsetOf JavaScriptFunction.
+
+listener : StateLanguage -> StateLanguage.
+listener(?reduxState) |-> ?reduxState.	  
+
+?listener : Transient;
+  = "ReduxAPI::Store.md#subscribelistener";
+  elementOf ListenerLanguage;
+  hasRole Observer.
+
+?unsubscribe : Transient;
+  = "ReduxAPI::Store.md#subscribelistener";
+  elementOf JavaScriptFunction.
+
+SubscriptionLanguage : ValueLanguage;
+  = "ReduxAPI::Store.md#subscribelistener";
+  subsetOf JavaScriptFunction.
+
+?subscribe : Transient;
+  = "ReduxAPI::Store.md#subscribelistener";
+  elementOf SubscriptionLanguage.
+?subscribe partOf ?reduxStore.
+subscribe : StoreLanguage # ListenerLanguage -> JavaScriptFunction.
+subscribe(?reduxStore, ?listener) |-> ?unsubscribe.
+Redux implements subscribe.

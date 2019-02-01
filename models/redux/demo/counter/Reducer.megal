@@ -1,0 +1,15 @@
+module redux.demo.counter.Reducer
+
+import redux.demo.counter.State
+import redux.demo.counter.Action
+import redux.Reducer
+
+import redux.Reducer where {
+  [ counterReducer / ?reduxReducer ]
+}
+
+/*
+  @Description:
+    The counter uses a reducer to define how to mutate the count. 
+*/
+counterReducer ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L18-L31".

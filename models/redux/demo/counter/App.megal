@@ -1,0 +1,18 @@
+module redux.demo.counter.App
+
+import redux.App where {
+  [ reducer / ?reducer,
+    action / ?action,
+    store / ?store,
+    CounterApp / ?App
+  ]
+}
+
+/*
+  @Description:
+    A counter application implementation with Redux.
+*/
+CounterApp = "https://github.com/reactjs/redux/tree/master/examples/counter-vanilla".
+reducer ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html".
+action ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html".
+store ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html".

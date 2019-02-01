@@ -1,0 +1,18 @@
+module redux.demo.todos.Subscription
+
+import redux.Subscription where {
+  [ subscribeTodosApp / ?subscribe,
+    unsubscribeTodosApp / ?unsubscribe,
+    listenTodosApp / ?listener
+  ]
+}
+
+/*
+  @Description:
+    The todosApp uses a Provider imported from react-redux bindings which handles
+    subscriptions to render the view on todoItem and filter changes. 
+*/
+
+subscribeTodosApp ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/index.js#L11-L13".
+unsubscribeTodosApp ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/index.js#L11-L13".
+listenTodosApp ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/index.js#L11-L13".

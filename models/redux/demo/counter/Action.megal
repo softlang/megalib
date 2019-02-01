@@ -1,0 +1,18 @@
+module redux.demo.counter.Action
+
+import redux.Action where {
+  [ increment / ?reduxAction,
+    decrement / ?reduxAction,
+    incrementIfOdd / ?reduxAction,
+    incrementAsync / ?reduxAction
+  ]
+}
+
+/*
+  @Description:
+    The counter uses actions to specify why its count can change.
+*/
+increment ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L45".
+decrement ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L50".
+incrementIfOdd ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L56".
+incrementAsync ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L63".

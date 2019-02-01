@@ -1,0 +1,47 @@
+module redux.CreateStore
+
+import redux.Store
+import redux.Reducer
+import redux.State
+
+/*
+  @Description:
+    Creates a Redux store that holds the complete state tree of your app.
+  @Rationale:
+    see: https://redux.js.org/api/createstore
+*/
+
+StoreCreatorLanguage : ValueLanguage;
+  = "ReduxGlossary::store-creator";
+  subsetOf JavaScriptFunction.
+
+// store creators are factories that return a redux store
+?storeCreator : Transient;
+  = "ReduxGlossary::store-creator";
+  elementOf StoreCreatorLanguage.
+storeCreator : ReducerLanguage # StateLanguage -> StoreLanguage.
+storeCreator(?reduxReducer, ?reduxState) |-> ?reduxStore.
+
+StoreEnhancerLanguage : ValueLanguage;
+  = "ReduxGlossary::store-enhancer";
+  subsetOf JavaScriptFunction.
+
+// storeEnhancers are the way to extend redux stores, they return storeCreators
+// instead of inheriting from store they return the extended store 
+?storeEnhancer : Transient;
+  = "ReduxGlossary::store-enhancer";
+  elementOf StoreEnhancerLanguage.
+storeEnhancer : StoreCreatorLanguage -> StoreCreatorLanguage.
+storeEnhancer(?storeCreator) |-> ?storeCreator.
+
+// createStore is the default storeCreator
+?createStore : Transient;
+  = "ReduxGlossary::store-creator";
+  partOf Redux;
+  conformsTo ?storeCreator;
+  elementOf StoreCreatorLanguage.
+
+createStore : ReducerLanguage # StateLanguage # StoreEnhancerLanguage -> StoreLanguage.
+// reduxState is the initial (preloaded) state
+createStore(?reduxReducer, ?reduxState, ?storeEnhancer) |-> ?reduxStore.
+Redux implements createStore.

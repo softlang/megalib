@@ -1,0 +1,21 @@
+module redux.demo.real-world.Middleware
+
+import redux.Middleware where {
+  [ applyProdMiddleware / ?applyMiddleware,
+    applyDevMiddleware / ?applyMiddleware,
+    thunkMiddleware / ?middleware,
+    apiMiddleware / ?middleware,
+    loggerMiddleware / ?middleware
+  ]
+}
+
+/*
+  @Description:
+    The real-world app applies production or development middleware.
+    It uses proprietary api middleware as well as thunks and logger in case of development.
+*/
+applyProdMiddleware ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.prod.js#L9".
+applyDevMiddleware ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.dev.js#L13".
+apiMiddleware ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/middleware/api.js#L80-#L125".
+thunkMiddleware ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.prod.js#L2".
+loggerMiddleware ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.dev.js#L13".
