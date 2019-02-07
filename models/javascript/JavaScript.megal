@@ -1,0 +1,26 @@
+module javascript.JavaScript
+
+/*
+* JavaScript is a programming language that facilitates the oop and functional paradigms
+*/
+JavaScript : ProgrammingLanguage;
+    facilitates ObjectOrientedProgramming;
+    facilitates FunctionalProgramming;
+    supports GeneralPurposeProgramming;
+    typedBy DynamicTyping;
+    encodedAs Text.
+
+eval : JavaScript -> JavaScriptObject.
+JavaScriptRuntime : Interpreter;
+    = "https://en.wikipedia.org/wiki/JavaScript#Miscellaneous";
+    implements JavaScript;
+    implements eval;
+    uses C++;
+    supports MetaProgramming.
+
+?javaScriptFiles : File+;
+    elementOf JavaScript.
+
+?runtimeOutput : Transient;
+    elementOf JavaScriptObject.
+eval(?javaScriptFiles) |-> ?runtimeOutput.

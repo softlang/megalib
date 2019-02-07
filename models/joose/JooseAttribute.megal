@@ -1,0 +1,61 @@
+module joose.JooseAttribute
+
+import joose.JooseIO
+
+/*
+ * The joose attribute language is a subset of the joose object language that provides a language syntax to build object attribute schemas.
+ *
+ */
+AttributeLanguage : SchemaLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html";
+    supports MetaProgramming;
+    subsetOf JooseObjectLanguage;
+    facilitates ObjectOrientedProgramming.
+Attribute : Role;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html".
+
+JooseIO implements AttributeLanguage.
+
+AttributeVisibilityLanguage : SchemaLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html";
+    supports MetaProgramming;
+    subsetOf JooseObjectLanguage;
+    facilitates ObjectOrientedProgramming.
+AccessModifier : Role;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html".
+
+/*
+ * An attribute corresponds to 0 - 2 accessors after an instantiation. The resulting number depends on the visibility type.
+ */
+?attribute : Transient+;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html";
+    elementOf AttributeLanguage;
+    hasRole Attribute.
+?visibility : Transient;
+    elementOf AttributeVisibilityLanguage;
+    partOf ?attribute;
+    hasRole AccessModifier.
+
+Accessor : Role;
+    = "http://www.mathcs.emory.edu/~cheung/Courses/170.2010/Syllabus/02/access+mutate.html".
+Mutator : Role;
+    = "https://en.wikipedia.org/wiki/Mutator_method".
+
+?getter : Transient;
+    elementOf JavaScriptObject;
+    correspondsTo ?attribute;
+    hasRole Accessor;
+    hasRole Interface.
+?setter : Transient;
+    elementOf JavaScriptObject;
+    correspondsTo ?attribute;
+    hasRole Mutator;
+    hasRole Interface.
+
+generateAccessors : AttributeLanguage # AttributeVisibilityLanguage -> JavaScriptObject # JavaScriptObject.
+generateAccessors(?attribute, ?visibility) |-> (?getter, ?setter).
+
+/*
+ * JooseIO implements the functions
+ */
+JooseIO implements generateAccessors.

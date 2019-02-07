@@ -1,0 +1,45 @@
+module joose.JooseMethodModifiers
+
+import joose.JooseIO
+import joose.JooseClass
+
+/*
+ * Method modifiers are decorators that are able to extend methodological behavior of properties before and after a call.
+ */
+ModifierLanguage : SchemaLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/MethodModifiers.html";
+    supports MetaProgramming;
+    facilitates AspectOrientedProgramming;
+    encodedAs Text;
+    subsetOf JooseObjectLanguage.
+
+BeforeMethod : SchemaLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/MethodModifiers.html";
+    subsetOf ModifierLanguage.
+
+AfterMethod : SchemaLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/MethodModifiers.html";
+    subsetOf ModifierLanguage.
+
+CallChain : ValueLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/MethodModifiers.html";
+    subsetOf ModifierLanguage.
+
+?aBeforeModifier : Transient+;
+    elementOf BeforeMethod.
+
+?anAfterModifier : Transient+;
+    elementOf AfterMethod.
+
+?aCallChain : Transient;
+    represents ?aBeforeModifier;
+    represents ?anAfterModifier;
+    represents ?aMethod;
+    elementOf CallChain.
+
+wire : BeforeMethod # JooseObjectLanguage # AfterMethod -> CallChain.
+wire(?aBeforeModifier, ?aMethod, ?anAfterModifier) |-> ?aCallChain.
+
+JooseIO implements wire.
+    
+    

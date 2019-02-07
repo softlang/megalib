@@ -13,3 +13,5 @@ visualizer/output/
 output/
 **/src-gen/
 **/xtend-gen/
+*node_modules/
+.DS_STORE

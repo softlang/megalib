@@ -1,0 +1,45 @@
+module joose.demo.JooseClass
+
+import joose.JooseClass where {
+    [
+        companyClass / ?aClass,
+        companyName / ?anAttribute,
+        companyEmployees / ?anAttribute,
+        cutMethod / ?aMethod,
+        reportMethod / ?aMethod,
+
+        employeeClass / ?aSuperClass,
+        freelancerClass / ?aSubClass,
+
+        emp1 / ?anInstance,
+        emp2 / ?anInstance,
+        freelancer1 / ?anInstance,
+        company1 / ?anInstance,
+
+        niceClass / ?aMetaClass,
+        eventEmitterMetaClass / ?aJsClass
+    ]
+}
+
+/* Class schemas, attributes and methods */
+companyClass            ~= "file://../models/joose/demo/src/Company.js#L4-16".
+companyName             ~= "file://../models/joose/demo/src/Company.js#L6".
+companyEmployees        ~= "file://../models/joose/demo/src/Company.js#L7".
+cutMethod               ~= "file://../models/joose/demo/src/Company.js#L10".
+reportMethod            ~= "file://../models/joose/demo/src/Company.js#L11-14".
+
+employeeClass           ~= "file://../models/joose/demo/src/Company.js#L18-32".
+
+freelancerClass         ~= "file://../models/joose/demo/src/Company.js#L34-49".
+
+
+/* Instances */
+emp1                    ~= "file://../models/joose/demo/src/Company.js#L52".
+emp2                    ~= "file://../models/joose/demo/src/Company.js#L53".
+freelancer1             ~= "file://../models/joose/demo/src/Company.js#L54".
+company1                ~= "file://../models/joose/demo/src/Company.js#L56".
+
+/* Meta class instantiation */
+niceClass               ~= "file://../models/joose/demo/src/Meta.js#L5-13".
+eventEmitterMetaClass   ~= "file://../models/joose/demo/src/Meta.js#L7".
+

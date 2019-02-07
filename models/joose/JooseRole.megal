@@ -1,0 +1,35 @@
+module joose.JooseRole
+
+import joose.JooseIO
+import joose.JooseClass
+import joose.JooseAttribute
+
+/*
+ * Joose roles provide a mixin like mechanism to inherit behavioral schemas to class schemas
+ */
+RoleLanguage : SchemaLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Roles.html".
+/*
+ * Like classes, roles contain several
+ */
+?aRole : Transient+;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Roles.html";
+    elementOf RoleLanguage;
+    partOf ?aClass.
+?aRoleAttribute : Transient+;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Roles.html";
+    elementOf AttributeLanguage;
+    partOf ?aRole.
+?aRoleMethod : Transient+;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Roles.html";
+    elementOf JooseObjectLanguage;
+    partOf ?aRole.
+
+?aClassWithRole : Transient;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Roles.html";
+    elementOf ClassLanguage;
+    conformsTo ?aClass;
+    conformsTo ?aRole.
+
+compose : ClassLanguage # RoleLanguage -> ClassLanguage.
+compose(?aClass, ?aRole) |-> ?aClassWithRole.
