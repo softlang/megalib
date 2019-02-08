@@ -11,8 +11,8 @@ import joose.JooseRole where {
 }
 
 /* A role declaration containing its attribute and a method, including a class composition of this role */
-confidence          ~= "file://../models/joose/demo/src/RoleInjection.js#L3-15".
-selfConfidence      ~= "file://../models/joose/demo/src/RoleInjection.js#L5".
-negotiate           ~= "file://../models/joose/demo/src/RoleInjection.js#L9-13".
+confidence          ~= "file://../showcases/joose/RoleInjection.js#L3-15".
+selfConfidence      ~= "file://../showcases/joose/RoleInjection.js#L5".
+negotiate           ~= "file://../showcases/joose/RoleInjection.js#L9-13".
 
-confidentFreelancer ~= "file://../models/joose/demo/src/RoleInjection.js#L17-20".
+confidentFreelancer ~= "file://../showcases/joose/RoleInjection.js#L17-20".

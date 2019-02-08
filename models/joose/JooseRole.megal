@@ -9,12 +9,16 @@ import joose.JooseAttribute
  */
 RoleLanguage : SchemaLanguage;
     = "http://joose.github.io/Joose/doc/html/Joose/Manual/Roles.html".
+Mixin : Role;
+    = "https://en.wikipedia.org/wiki/Mixin".
+
 /*
  * Like classes, roles contain several
  */
 ?aRole : Transient+;
     = "http://joose.github.io/Joose/doc/html/Joose/Manual/Roles.html";
     elementOf RoleLanguage;
+    hasRole Mixin;
     partOf ?aClass.
 ?aRoleAttribute : Transient+;
     = "http://joose.github.io/Joose/doc/html/Joose/Manual/Roles.html";
@@ -33,3 +37,8 @@ RoleLanguage : SchemaLanguage;
 
 compose : ClassLanguage # RoleLanguage -> ClassLanguage.
 compose(?aClass, ?aRole) |-> ?aClassWithRole.
+
+/*
+ * JooseIO implements the functions.
+ */
+JooseIO implements compose.

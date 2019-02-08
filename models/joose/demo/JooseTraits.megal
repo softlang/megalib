@@ -9,6 +9,6 @@ import joose.JooseTraits where {
 }
 
 /* inject a trait into a normal javascript object instance */
-confidence              ~= "file://../models/joose/demo/src/TraitInjection.js#L3-15".
-freelancerInstance      ~= "file://../models/joose/demo/src/TraitInjection.js#L17-21".
-confidentFreelancer     ~= "file://../models/joose/demo/src/TraitInjection.js#L27-29".
+confidence              ~= "file://../showcases/joose/TraitInjection.js#L3-15".
+freelancerInstance      ~= "file://../showcases/joose/TraitInjection.js#L17-21".
+confidentFreelancer     ~= "file://../showcases/joose/TraitInjection.js#L27-29".

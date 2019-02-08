@@ -12,7 +12,7 @@ ClassLanguage : SchemaLanguage;
     supports MetaProgramming;
     facilitates ObjectOrientedProgramming;
     encodedAs Text;
-    subsetOf ClassLanguage.
+    subsetOf JooseObjectLanguage.
 
 /*
  * Class schemas contain multiple attributes. An attribute accessability corresponds to its visibility

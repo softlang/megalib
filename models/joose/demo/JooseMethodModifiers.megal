@@ -9,6 +9,6 @@ import joose.JooseMethodModifiers where {
 }
 
 /* Method modifiers injecting code before and after the cut function */
-beforeCut            ~= "file://../models/joose/demo/src/MethodModification.js#L7-9".
-afterCut             ~= "file://../models/joose/demo/src/MethodModification.js#L13-15".
-cut                  ~= "file://../models/joose/demo/src/MethodModification.js#L25".
+beforeCut            ~= "file://../showcases/joose/MethodModification.js#L7-9".
+afterCut             ~= "file://../showcases/joose/MethodModification.js#L13-15".
+cut                  ~= "file://../showcases/joose/MethodModification.js#L25".
