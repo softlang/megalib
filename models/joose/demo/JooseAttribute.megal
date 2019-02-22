@@ -1,0 +1,25 @@
+module joose.demo.JooseAttribute
+
+import joose.JooseAttribute where {
+    [
+        companyName / ?attribute,
+        nameReadSetting / ?visibility,
+        nameGetter / ?getter
+    ];
+    [
+        companyEmployees / ?attribute,
+        employeesReadWriteSetting / ?visibility,
+        employeesGetter / ?getter,
+        employeesSetter / ?setter
+    ]
+}
+
+/* Company attributes, accessors, visiblity settings */
+companyName ~= "file://../showcases/joose/Company.js#L6".
+nameReadSetting ~= "file://../showcases/joose/Company.js#L6".
+nameGetter ~= "file://../showcases/joose/Company.js#L59".
+
+companyEmployees ~= "file://../showcases/joose/Company.js#L7".
+employeesReadWriteSetting ~= "file://../showcases/joose/Company.js#L7".
+employeesGetter ~= "file://../showcases/joose/Company.js#L61".
+employeesSetter ~= "file://../showcases/joose/Company.js#L62".

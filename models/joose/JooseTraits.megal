@@ -1,0 +1,35 @@
+module joose.JooseTraits
+
+import joose.JooseIO
+import joose.JooseClass
+import joose.JooseAttribute
+import joose.JooseRole
+
+/*
+ * Joose trait provide a mixin like mechanism to inherit behavioral schemas to concrete class instances
+ */
+TraitLanguage : SchemaLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Traits.html";
+    dialectOf RoleLanguage.
+
+
+JooseIO implements TraitLanguage.
+
+?aTrait : Transient;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Traits.html";
+    elementOf TraitLanguage;
+    hasRole Mixin.
+
+?anInstanceWithTrait : Transient;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Traits.html";
+    elementOf JavaScriptObject;
+    conformsTo ?aTrait;
+    represents ?anInstance.
+
+injectTrait : JavaScriptObject # TraitLanguage -> JavaScriptObject.
+injectTrait(?anInstance, ?aTrait) |-> ?anInstanceWithTrait.
+
+/*
+ * JooseIO implements the functions.
+ */
+JooseIO implements injectTrait.
