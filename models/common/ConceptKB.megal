@@ -296,6 +296,9 @@ Grammar : Role;   //syntax definition
     = "wikipedia::Context-free_grammar".
 Database : Role;  //any artifact that only stores data
     = "wikipedia::Database".
+DocumentOrientedDatabase : Role;
+	= "wikipedia::Document-oriented_database";
+	refines Database.
 Schema : Role;  //provide a schema
     = "wikipedia::Database_schema".
 Query : Role;  //a search declaration to satisfy information needs of software or humans
