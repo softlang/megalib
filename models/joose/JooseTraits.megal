@@ -1,6 +1,6 @@
 module joose.JooseTraits
 
-import joose.JooseIO
+import joose.Core
 import joose.JooseClass
 import joose.JooseAttribute
 import joose.JooseRole

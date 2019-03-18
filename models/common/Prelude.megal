@@ -90,6 +90,8 @@ Service < Technology;
 Platform < Technology; 
     = "wikipedia::Computing_platform".
 
+RunTimeEnvironment < Application;
+    = "wikipedia::Runtime_system".
 IDE < Application; // an environment to facilitate writing systems or technologies.
     = "wikipedia::Integrated_development_environment".
 LanguageWorkbench < Application;

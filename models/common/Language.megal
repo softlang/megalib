@@ -75,7 +75,9 @@ embeddedInto < Language # Language;
 dialectOf < Language # Language;
     = "wikipedia::Dialect_(computing)".
 influencedBy < Language # Language;
-    = "https://exploringdata.github.io/vis/programming-languages-influence-network/". 
+    = "https://exploringdata.github.io/vis/programming-languages-influence-network/".
+composedOf < Language # Language;
+    = "https://dblp.uni-trier.de/db/conf/sle/". //researchy term 'Language Composition'. composedOf is now overloaded.
 
 belongsTo < Language # TechnologySpace;
     = "https://www.researchgate.net/publication/228580557_Technological_Spaces_An_Initial_Appraisal".

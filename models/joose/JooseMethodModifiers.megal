@@ -1,6 +1,6 @@
 module joose.JooseMethodModifiers
 
-import joose.JooseIO
+import joose.Core
 import joose.JooseClass
 
 /*

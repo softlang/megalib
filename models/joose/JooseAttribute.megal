@@ -1,6 +1,6 @@
 module joose.JooseAttribute
 
-import joose.JooseIO
+import joose.Core
 
 /*
  * The joose attribute language is a subset of the joose object language that provides a language syntax to build object attribute schemas.

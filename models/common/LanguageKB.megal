@@ -79,7 +79,7 @@ BSON : DataExchangeLanguage;
 	= "http://bsonspec.org/";
     = "https://www.mongodb.com/json-and-bson";
     = "https://docs.mongodb.com/manual/reference/bson-types/";
-    = "https://en.wikipedia.org/wiki/BSON".
+    = "https://en.wikipedia.org/wiki/BSON";
 	influencedBy JSON;
 	facilitates Serialization;
 	encodedAs Binary.

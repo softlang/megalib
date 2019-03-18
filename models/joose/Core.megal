@@ -1,0 +1,39 @@
+module joose.Core
+
+import nodejs.Core
+
+/*
+@Description: Joose is a meta programming language to improve and ease the javascript object system. It supports creating schemata in a declarative way including extensions the JavaScript Object System does not support.
+*/
+JooseIO : Library;
+    = "http://joose.it/#!/home";
+    facilitates Transformation;
+    uses JavaScript;
+    uses DecoratorPattern;
+    reuses NodeJS.
+    
+JooseObjectLanguage : SchemaLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Concepts.html";
+    ^implements JooseIO;
+    supports MetaProgramming;
+    subsetOf JavaScript;
+    facilitates ObjectOrientedProgramming;
+    encodedAs Text.
+
+/*
+@Description: Availability of NPM
+*/
+NPMModuleLanguage : ContainerLanguage;
+    = "https://docs.npmjs.com/getting-started/packages".
+
+jooseNodeModule : File+;
+    ~= "https://www.npmjs.com/package/joose";
+    elementOf NPMModuleLanguage;
+    hasRole Plugin;
+    ^managedBy JooseIO.
+
+NPM : Node;
+    = "https://docs.npmjs.com/getting-started/packages".
+
+JooseIO deployedAs jooseNodeModule.
+jooseNodeModule deployedAt NPM.

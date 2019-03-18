@@ -1,6 +1,6 @@
 module joose.JooseClass
 
-import joose.JooseIO
+import joose.Core
 import joose.JooseAttribute
 
 /*
