@@ -1,6 +1,6 @@
 module redux.App
 
-import redux.Redux
+import redux.Core
 import redux.Reducer
 import redux.Action
 import redux.Store

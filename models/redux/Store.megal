@@ -1,6 +1,6 @@
 module redux.Store
 
-import redux.Redux
+import redux.Core
 
 /*
   @Description:
@@ -16,6 +16,5 @@ StoreLanguage : ValueLanguage;
 ?reduxStore : Transient;
   = "ReduxAPI::Store.md";
   elementOf StoreLanguage;
-  partOf Redux;
   hasRole FluxStore;
   hasRole Subject.

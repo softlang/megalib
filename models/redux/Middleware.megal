@@ -1,6 +1,6 @@
 module redux.Middleware
 
-import redux.Redux
+import redux.Core
 import redux.CreateStore
 import redux.Store
 import redux.Dispatch

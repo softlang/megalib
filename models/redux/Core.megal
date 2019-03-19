@@ -1,6 +1,4 @@
-module redux.Redux
-
-import redux.Flux
+module redux.Core
 
 /*
   @Description:

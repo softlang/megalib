@@ -43,6 +43,10 @@ GraphicsPipeline : ArchitecturalPattern; //TODO: maybe specialization of PipeFil
     = "https://en.wikipedia.org/wiki/Graphics_pipeline".
 MemoryHierarchy : ArchitecturalPattern;
 	= "wikipedia::Memory_hierarchy".
+Flux : ArchitecturalPattern;
+  = "https://en.wikipedia.org/wiki/React_(JavaScript_library)#Use_of_the_Flux_architecture";
+  = "https://facebook.github.io/flux/";
+  = "https://facebook.github.io/flux/docs/in-depth-overview.html#structure-and-data-flow".
 
 // Paradigm
 ParallelProgramming : Paradigm;
@@ -489,7 +493,20 @@ ConcreteBuilder: Role;
 BuilderProduct: Role;
 	="https://en.wikipedia.org/wiki/Builder_pattern";
 	participantOf BuilderPattern.
-    
+
+FluxAction : Role; // data in a store must only be mutated by responding to an action
+  = "https://github.com/facebook/flux/tree/master/examples/flux-concepts#actions";
+  participantOf Flux.
+FluxDispatcher : Role; // receives actions and dispatches them
+  = "https://github.com/facebook/flux/tree/master/examples/flux-concepts#dispatcher";
+  participantOf Flux.
+FluxStore : Role; // holds the data of an application
+  = "https://github.com/facebook/flux/tree/master/examples/flux-concepts#store";
+  participantOf Flux.
+FluxView : Role; // subscribes to change events from a store and re-render on changes
+  = "https://github.com/facebook/flux/tree/master/examples/flux-concepts#views";
+  participantOf Flux.
+
 // Concepts that need further classification 
 SIMT : Concept; 
 	= "wikipedia::Single_instruction,_multiple_threads";
