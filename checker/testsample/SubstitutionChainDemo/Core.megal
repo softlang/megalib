@@ -1,0 +1,11 @@
+module SubstitutionChainDemo.Core
+
+/*
+    @Description: Some Translator
+    @Rationale: We start with basic statements
+*/
+TechX : Framework;
+    = "http://www.softlang.org";
+    uses Java;
+    facilitates Compilation;
+    supports Metaprogramming.
