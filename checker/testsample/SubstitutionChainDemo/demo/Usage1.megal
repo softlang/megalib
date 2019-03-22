@@ -1,0 +1,35 @@
+module SubstitutionChainDemo.demo.Usage1
+
+import SubstitutionChainDemo.demo.App
+
+import SubstitutionChainDemo.Usage1 where{
+    [
+        crazyTranslator / ?techXtranslator,
+        umlInstanceModel / ?instanceModel1,
+        jsonInstanceModel / ?instanceModel2
+    ]
+}
+/* @Result:
+TechXRuleLanguage : TransformationLanguage;
+    = "https://softlang.org".
+crazyTranslator : File;
+    elementOf TechXRuleLanguage;
+    partOf CrazyApp.
+
+umlInstanceModel : File+;
+    elementOf UML;
+    conformsTo umlModel.
+jsonInstanceModel : File+;
+    elementOf JSON;
+    conformsTo jsonModel.
+techXtranslation : UML -> JSON ;
+    ^defines crazyTranslator.
+techXtranslation(umlInstanceModel) |-> jsonInstanceModel.
+
+techXtranslation : JSON -> UML ;
+    ^defines crazyTranslator.
+techXtranslation(jsonInstanceModel) |-> umlInstanceModel.
+*/
+crazyTranslator ~= "https://softlang.org".
+umlInstanceModel ~= "https://softlang.org".
+jsonInstanceModel ~= "https://softlang.org".

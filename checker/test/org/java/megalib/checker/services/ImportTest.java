@@ -32,7 +32,7 @@ public class ImportTest {
 
     @Test
     public void testNoWarnings() {
-        WellformednessCheck c = new WellformednessCheck(model, true);
+        TypeWarningCheck c = new TypeWarningCheck(model, true);
         c.getWarnings().forEach(System.out::println);
         assertEquals(0, c.getWarnings().size());
     }

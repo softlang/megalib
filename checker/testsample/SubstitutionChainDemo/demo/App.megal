@@ -4,9 +4,9 @@ import SubstitutionChainDemo.App where{
     [
         CrazyApp / ?App,
         umlModel / ?model1,
-        UML / ?dsmlanguage1,
+        UML / ?dsmLanguage1,
         jsonModel / ?model2,
-        JSON / ?dsmlanguage2
+        JSON / ?dsmLanguage2
     ]
 }
 /* @Result:
@@ -25,3 +25,7 @@ JSON : Language;
     ^defines jsonModel.
 */
 CrazyApp = "https://softlang.org".
+umlModel = "https://softlang.org".
+UML = "https://softlang.org".
+jsonModel = "https://softlang.org".
+JSON = "https://softlang.org".

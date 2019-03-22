@@ -264,6 +264,10 @@ SoftwareInterface : Construct;
 	= "wikipedia::Interface_(computing)".
 Generic: Construct;
 	="https://en.wikipedia.org/wiki/Generic_programming".
+Attribute : Construct;
+    ="https://en.wikipedia.org/wiki/Attribute_(computing)".
+Method : Construct;
+    ="https://en.wikipedia.org/wiki/Method_(computer_programming)".
     
 // Roles as terms that certain artifacts are denoted by.
 Monad : Role; // propose a Monad construct

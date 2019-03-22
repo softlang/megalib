@@ -18,9 +18,9 @@ TechXRuleLanguage : TransformationLanguage;
 ?instanceModel2 : File+;
     elementOf ?dsmLanguage2;
     conformsTo ?model2.
-techXtranslation : ?dsmLanguage1 -> ?dsmLanguage2 ;
-    ^defines techXtranslator.
+techXtranslation : ?dsmLanguage1 -> ?dsmLanguage2;
+   ^defines ?techXtranslator.
 techXtranslation(?instanceModel1) |-> ?instanceModel2.
+
+techXtranslation : ?dsmLanguage2 -> ?dsmLanguage1 .
 techXtranslation(?instanceModel2) |-> ?instanceModel1.
-techXtranslation : ?dsmLanguage2 -> ?dsmLanguage1 ;
-    ^defines techXtranslator.

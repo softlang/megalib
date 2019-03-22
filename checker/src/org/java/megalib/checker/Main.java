@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.java.megalib.checker.services.WellformednessCheck;
+import org.java.megalib.checker.services.TypeWarningCheck;
 import org.java.megalib.checker.services.ModelLoader;
 
 
@@ -87,7 +87,7 @@ public class Main {
             return;
         }
         if(ml.getTypeErrors().isEmpty()){
-            WellformednessCheck check = new WellformednessCheck(ml.getModel(), nocon);
+            TypeWarningCheck check = new TypeWarningCheck(ml.getModel(), nocon);
             if(check.getWarnings().isEmpty()){
                 System.out.println("  Congratulations! There are no warnings.");
             }else{

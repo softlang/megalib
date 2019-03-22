@@ -11,11 +11,11 @@ import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
 
-public class TypeCheck {
+public class TypeErrorCheck {
 
     private List<String> errors;
 
-    public TypeCheck() {
+    public TypeErrorCheck() {
         errors = new ArrayList<>();
     }
 

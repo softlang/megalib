@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.java.megalib.checker.services.WellformednessCheck;
+import org.java.megalib.checker.services.TypeWarningCheck;
 import org.java.megalib.checker.services.ModelLoader;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.parser.ParserException;
@@ -19,7 +19,7 @@ public class CheckTest {
         ModelLoader ml = new ModelLoader();
         assertEquals(0, ml.getTypeErrors().size());
         MegaModel m = ml.getModel();
-        WellformednessCheck c = new WellformednessCheck(m);
+        TypeWarningCheck c = new TypeWarningCheck(m);
         assertEquals(0, c.getWarnings().size());
         c.checkAllLinks();
         assertEquals(0,c.getWarnings().size());
@@ -31,7 +31,7 @@ public class CheckTest {
         String input = "/**/?T : Technology. " + "?L : ProgrammingLanguage. " + "?T uses ?L.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, c.getWarnings().size());
     }
 
@@ -41,7 +41,7 @@ public class CheckTest {
         String input = "/**/T : Technology;=\"http://softlang.org/\". " + "?L : ProgrammingLanguage. " + "T uses ?L.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(1, c.getWarnings().size());
         assertEquals("State a specific subtype of Technology for T.", c.getWarnings().get(0));
     }
@@ -52,7 +52,7 @@ public class CheckTest {
         String input = "/**/?T : Library. " + "?L : Language. " + "?T uses ?L.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(0, c.getWarnings().size());
     }
@@ -63,7 +63,7 @@ public class CheckTest {
         String input = "/**/?T : Library. " + "L : Language;=\"http://softlang.org/\";^uses ?T;^implements ?T.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
@@ -76,7 +76,7 @@ public class CheckTest {
         String input = "/**/T : Library. " + "?L : ProgrammingLanguage. " + "T uses ?L.";
         ml.loadString(input);
         assertEquals(0, ml.getTypeErrors().size());
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
 
         assertEquals(1, c.getWarnings().size());
         assertEquals("Link missing for entity T.", c.getWarnings().get(0));
@@ -87,7 +87,7 @@ public class CheckTest {
         ModelLoader ml = new ModelLoader();
         String input = "/**/T : Library; = \"http://softlang.wikidot.com/\".";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
 
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
@@ -100,7 +100,7 @@ public class CheckTest {
         String input = "/**/?L : ProgrammingLanguage. " + "f : ?L -> ?L. " + "?a : File. " + "?a elementOf ?L. "
                        + "?a hasRole MvcModel. " + "f(?a)|->?a.";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
 
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
@@ -114,7 +114,7 @@ public class CheckTest {
                        + "?a hasRole MvcModel. " + "?T : Library. " + "?T uses ?L. "
                        + "?T implements f.";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings().contains("The function f is not applied yet. Please state an actual application."));
@@ -125,7 +125,7 @@ public class CheckTest {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?a : File. " + "?a hasRole MvcModel. ";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings().contains("Language missing for artifact ?a"));
@@ -136,7 +136,7 @@ public class CheckTest {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?a : Folder. " + "?a hasRole MvcModel. ";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(0, c.getWarnings().size());
     }
@@ -147,7 +147,7 @@ public class CheckTest {
         String input = "/**/?L : ProgrammingLanguage. " + "?a : Artifact. " + "?a elementOf ?L. "
                        + "?a hasRole MvcModel. ";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(0, c.getWarnings().size());
     }
@@ -157,7 +157,7 @@ public class CheckTest {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?L : ProgrammingLanguage. " + "?a : File. " + "?a elementOf ?L. ";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(0, c.getWarnings().size());
     }
@@ -167,7 +167,7 @@ public class CheckTest {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?L : ProgrammingLanguage. a : File; ~= \"http://softlang.org/\". a elementOf ?L.";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(0, c.getWarnings().size());
     }
@@ -178,7 +178,7 @@ public class CheckTest {
         String input = "/**/?L1 : ProgrammingLanguage. " + "?L2 : ProgrammingLanguage. " + "?L3 : ProgrammingLanguage. "
                        + "?L1 subsetOf ?L2. " + "?L2 subsetOf ?L3. " + "?L3 subsetOf ?L2.";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(), true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(), true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertTrue(c.getWarnings()
@@ -190,7 +190,7 @@ public class CheckTest {
         ModelLoader ml = new ModelLoader();
         String input = "/**/?L : ProgrammingLanguage; " + " = \"http://www.nowebsitehere.de\".";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel());
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(1, c.getWarnings().size());
         assertEquals("Cannot resolve link to ?L: http://www.nowebsitehere.de", c.getWarnings().get(0));
@@ -201,7 +201,7 @@ public class CheckTest {
     	ModelLoader ml = new ModelLoader();
         String input = "/**/a : File; ~= \"file://checker.jar/org/main/antlr/techdocgrammar/Megalib.g4\"; elementOf Java.";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel());
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(0, c.getWarnings().size());
     }
@@ -211,7 +211,7 @@ public class CheckTest {
         ModelLoader ml = new ModelLoader();
         String input = "/**/a : File; ~= \"file://../checker\"; elementOf Java.";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel());
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(0, c.getWarnings().size());
     }
@@ -221,7 +221,7 @@ public class CheckTest {
         ModelLoader ml = new ModelLoader();
         String input = "/**/a : Transient; elementOf Java.";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel());
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel());
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(2, c.getWarnings().size());
         assertEquals("Binding missing for Artifact a.", c.getWarnings().get(0));
@@ -235,7 +235,7 @@ public class CheckTest {
         String input = "/**/a : Transient; ~= \"softlang.org\"; elementOf Java. f : Java # Java # Java -> Java # Java # Java. "
                        + "?T : Technology; implements f. f(a,a,a) |-> (a,a,a).";
         ml.loadString(input);
-        WellformednessCheck c = new WellformednessCheck(ml.getModel(),true);
+        TypeWarningCheck c = new TypeWarningCheck(ml.getModel(),true);
         assertEquals(0, ml.getTypeErrors().size());
         assertEquals(0, c.getWarnings().size());
     }

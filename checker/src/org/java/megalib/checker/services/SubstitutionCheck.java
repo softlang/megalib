@@ -28,6 +28,11 @@ public class SubstitutionCheck {
     }
 
     private boolean substitutes(String by, String e, MegaModel m, Map<String,Set<String>> substByGroup) {
+        if(by.startsWith("?")) {
+            errors.add("Unable to substitute by " + by + " since " + by
+                       + " is a placeholder. No such chains are allowed.");
+            return false;
+        }
         if(isCyclicSubst(by, substByGroup))
             return false;
 

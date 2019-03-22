@@ -13,10 +13,10 @@ import SubstitutionChainDemo.Core
 
 ?model1 : File+;
     partOf ?App.
-?dsmlanguage1 : Language;
+?dsmLanguage1 : Language;
     ^defines ?model1.
 
 ?model2 : File+;
     partOf ?App.
-?dsmlanguage2 : Language;
+?dsmLanguage2 : Language;
     ^defines ?model2.

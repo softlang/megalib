@@ -14,16 +14,16 @@ import org.java.megalib.models.Function;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.models.Relation;
 
-public class WellformednessCheck {
+public class TypeWarningCheck {
 
     private MegaModel model;
     private List<String> warnings;
 
-    public WellformednessCheck(MegaModel model){
+    public TypeWarningCheck(MegaModel model){
         doChecks(model, false);
     }
 
-    public WellformednessCheck(MegaModel model, boolean nocon){
+    public TypeWarningCheck(MegaModel model, boolean nocon){
         doChecks(model, nocon);
     }
 

@@ -8,4 +8,5 @@ TechX : Framework;
     = "http://www.softlang.org";
     uses Java;
     facilitates Compilation;
-    supports Metaprogramming.
+    supports MetaProgramming;
+    supports WebApplicationDevelopment.
