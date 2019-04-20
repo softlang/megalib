@@ -3,6 +3,19 @@
  */
 package org.softlang.megal.scoping
 
+import org.softlang.megal.megaL.MegaLPackage
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.scoping.IScope
+import org.eclipse.xtext.scoping.Scopes
+import org.softlang.megal.megaL.Module
+import org.softlang.megal.MegaLModelUtil
+import org.softlang.megal.megaL.Instance
+import com.google.inject.Inject
+import org.softlang.megal.megaL.Type
+import org.softlang.megal.megaL.RelDecl
+import org.softlang.megal.megaL.FunDecl
+
 /**
  * This class contains custom scoping description.
  * 
@@ -11,4 +24,35 @@ package org.softlang.megal.scoping
  */
 class MegaLScopeProvider extends AbstractMegaLScopeProvider {
 
+	val epackage = MegaLPackage.eINSTANCE
+	
+	@Inject extension MegaLModelUtil
+	
+	override getScope(EObject context, EReference reference) {
+		//val x = epackage.
+		//val container = context.eContainer
+		println("----------------")
+		println("Class is :" + context.class)
+		println("Reference is :" + reference.class)
+		println("----------------")
+		return switch (context) {
+			Module: {
+				if(context instanceof Instance){
+					return Scopes.scopeFor(context.instances)
+				}else if(context instanceof Type){
+					return Scopes.scopeFor(context.types)
+				}else if(context instanceof RelDecl){
+					return Scopes.scopeFor(context.relations)
+				}else if(context instanceof FunDecl){
+					return Scopes.scopeFor(context.functions)
+				}else{
+					return super.getScope(context, reference)
+				}
+			}
+			default: {
+				super.getScope(context, reference)
+			}
+		}
+	}
+	
 }

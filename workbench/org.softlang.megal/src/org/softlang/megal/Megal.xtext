@@ -3,20 +3,23 @@ grammar org.softlang.megal.MegaL with org.eclipse.xtext.common.Terminals
 generate megaL "http://www.softlang.org/megal/MegaL"
 
 Module : 
-	'module' name=ID
+	'module' name=FQN
 	imports+=Import*
-	(blocks+=Block (statements+=Statement)+)*
+	(blocks+=Block
+		(statements+=Statement)+
+	)*
 ;
 
 Import : ImportNo | Substitutes ;
 
-ImportNo : 'import' importNamespace=FQN ;
+ImportNo : 'import' importedNamespace = FQN ;
 
-Substitutes : 'import' importNamespace=FQN '{' (substituteBlocks+=SubstituteBlock)+ '}';
+Substitutes : 'imports' importedNamespace = FQN 'where' '{' (substituteBlocks+=SubstituteBlock)+ '}';
 SubstituteBlock : '[' substitutes+=Substitute (',' substitutes+=Substitute)* ']';
 Substitute : left = ID '/' right=ID;
 
-Block : '{-' '@Description:' description=STRING '@Rationale:' rationale=STRING '-}' ;
+Block : '{-' '@Description:' description=STRING '@Rationale:' rationale=STRING '-}' 
+;
 
 Statement : Type | Instance | RelDecl | RelInst | FunDecl | FunApp
 ;
@@ -25,7 +28,7 @@ Type: name=ID '<' (supertype=[Type] | 'Entity')
 		(';' '=' links+=STRING)* '.'
 ;	
 	
-Instance : name=ID ':' type=[Type]
+Instance : '?'? name=ID ':' type=[Type]
 	(';' '~=' binds+=STRING)*
 	(';' '=' links+=STRING)*
 	(';' relEdges+=RelEdge)* '.'

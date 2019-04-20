@@ -3,10 +3,17 @@
  */
 package org.softlang.megal.ui.contentassist
 
+import org.eclipse.emf.ecore.EObject
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
  * on how to customize the content assistant.
  */
 class MegaLProposalProvider extends AbstractMegaLProposalProvider {
+	
+	/*override getStyledDisplayString(EObject element, String qualifiedNameAsString, String shortName) {
+		super.getStyledDisplayString(element, qualifiedNameAsString, shortName)
+	}
+	* 
+	*/
 }

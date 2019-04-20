@@ -25,7 +25,8 @@ Import-Package: com.google.gson;version="2.7.0",
  org.eclipse.xtext.ui;bundle-version="[2.7.3,3.0.0)",
  org.eclipse.xtext.ui.shared;bundle-version="[2.7.3,3.0.0)"
 Automatic-Module-Name: org.softlang.java
-Require-Bundle: org.eclipse.ui;bundle-version="3.110.0",
+Require-Bundle: 
+ org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.gef.layout,
  org.eclipse.gef.common;bundle-version="5.0.0",
