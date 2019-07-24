@@ -1,0 +1,42 @@
+module mongodb.ShellUpdateOne
+
+import mongodb.Shell
+import mongodb.StorageEngine
+
+/*
+	@Description:
+		updateOne() updates a single document within the collection based on
+		the filter.
+	@Rationale:
+		See https://docs.mongodb.com/manual/reference/method/db.collection.updateOne/
+		See https://docs.mongodb.com/manual/tutorial/update-documents/
+*/
+
+?preUpdateDatabase : Artifact;
+	elementOf MongoDBStorageEngineLanguage.
+
+?preUpdateCollection : Artifact;
+	elementOf MongoDBStorageEngineLanguage;
+	partOf ?preUpdateDatabase.
+
+?postUpdateDatabase : Artifact;
+	elementOf MongoDBStorageEngineLanguage.
+
+?postUpdateCollection : Artifact;
+	elementOf MongoDBStorageEngineLanguage;
+	partOf ?postUpdateDatabase.
+
+?updateQuery : Artifact;
+	= "mongodbmanual::reference/method/db.collection.updateOne/";
+	elementOf MongoShellLanguage;
+	hasRole Query.
+
+?updateResponse : Artifact;
+	= "mongodbmanual::reference/method/db.collection.updateOne/";
+	elementOf MongoShellLanguage;
+	hasRole Response.
+
+updateOne : MongoDBStorageEngineLanguage # MongoShellLanguage -> MongoDBStorageEngineLanguage # MongoShellLanguage.
+updateOne(?preUpdateCollection, ?updateQuery) |-> (?postUpdateCollection, ?updateResponse). 
+
+MongoShell implements updateOne.

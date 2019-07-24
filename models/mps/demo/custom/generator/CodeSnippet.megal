@@ -1,0 +1,20 @@
+module mps.demo.generator.CodeSnippet
+
+import mps.languageComponents.generator.CodeSnippet where {
+	[codeSnippet /?codeSnippet,
+	generatorMPS / ?generatorMPS,
+	generatorModel / ?generatorModel]
+}
+
+/*
+@Description:
+	Demonstration of the code snippet component
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Generator#Generator-GeneratorLanguageReference
+*/
+
+codeSnippet ~= "EXAMPLES::MPSProjects/mps.form/languages/FormCreator/generator/template/main@generator.mps". 
+
+generatorMPS ~= "EXAMPLES::MPSProjects/mps.form/languages/FormCreator/generator/template/main@generator.mps". 
+
+generatorModel ~= "EXAMPLES::MPSProjects/mps.form/languages/FormCreator/generator/source_gen/".

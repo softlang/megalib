@@ -1,0 +1,17 @@
+module django.Core
+
+/*
+@Description:
+@Rationale: See linked resources
+*/
+Django.URLDispatching : AbstractProcess;
+    = "https://docs.djangoproject.com/en/2.1/topics/http/urls/".
+Django.URLDispatcher : Role;
+    = "https://docs.djangoproject.com/en/2.1/topics/http/urls/".
+Django : Framework;
+    uses Python;
+    facilitates ModelViewController;
+    facilitates ObjectRelationalMapping;
+    facilitates Django.URLDispatching;
+    facilitates Testing;
+    facilitates TemplateProcessing.

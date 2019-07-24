@@ -1,0 +1,49 @@
+module django.RequestResponse
+
+import django.App
+import python.Core
+
+/*
+@Description: Any web application responds to requests.
+@Rationale: See Tutorial.
+*/
+?request : Transient;
+    elementOf HTTPRequest.
+?url : Transient;
+    elementOf URL;
+    partOf ?request.
+?response : Transient;
+    elementOf HTTPResponse.
+?responseHTML : Transient;
+    elementOf HTML5;
+    partOf ?response.
+respond : HTTPRequest -> HTTPResponse.
+?App implements respond.
+
+/*
+@Description: The first step to a response is returning the mapped view.
+@Rationale: See Tutorial.
+*/
+DjangoViewLanguage : ValueLanguage;
+    = "https://docs.djangoproject.com/en/2.1/intro/tutorial01/#write-your-first-view";
+    subsetOf PythonFunctionLanguage.
+?CustomViewLanguage : ValueLanguage;
+    subsetOf DjangoViewLanguage;
+    ^defines ?views.
+?customView : Transient;
+    elementOf ?CustomViewLanguage;
+    hasRole MvcView.
+?viewFunction : Transient;
+    elementOf DjangoViewLanguage.
+getView : URL -> DjangoViewLanguage. //TODO: Dispatch variant
+getView ^composedOf respond;
+        ^defines ?urls.
+getView(?url) |-> ?customView.
+
+/*
+@Description: The second step to a response is generating HTML based on a template.
+@Rationale: See Tutorial.
+*/
+generateHTML : HTTPRequest # DjangoTemplateLanguage -> HTML5 .
+?customView defines generateHTML.
+generateHTML(?request, ?template) |-> ?responseHTML .

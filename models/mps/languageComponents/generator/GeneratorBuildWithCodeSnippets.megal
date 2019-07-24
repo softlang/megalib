@@ -1,0 +1,18 @@
+module mps.languageComponents.generator.GeneratorBuildWithCodeSnippets
+
+import mps.languageComponents.generator.Generator
+import mps.languageComponents.generator.MappingConfiguration
+import mps.languageComponents.generator.CodeSnippet
+
+/*
+@Description:
+	Generator Build with mapping configuration and external templates  (code snippets).
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+makeGeneratorModelCS : MPS # MPS -> Java.
+
+makeGeneratorModelCS ^implements MPSEditor.
+
+makeGeneratorModelCS(?mappingConfiguarion, ?codeSnippet) |-> ?generatorModel.

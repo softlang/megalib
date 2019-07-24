@@ -1,0 +1,23 @@
+module mps.languageComponents.EditorBuild
+
+import mps.languageComponents.Editor
+
+/*
+@Description:
+	Editor Build.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Editor
+*/
+
+?editorLanguageModel : File+;
+	="MPSCONFLUENCE::Editor";
+	hasRole DescriptiveModel;
+	^correspondsTo ?editorMPS;
+	hasRole AST;
+	elementOf Java.
+
+makeEditorLanguageModel : MPS -> Java.
+
+makeEditorLanguageModel ^implements MPSEditor.
+
+makeEditorLanguageModel(?editorMPS) |-> ?editorLanguageModel.

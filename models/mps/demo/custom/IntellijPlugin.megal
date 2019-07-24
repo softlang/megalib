@@ -1,0 +1,15 @@
+module mps.demo.IntellijPlugin
+
+
+import mps.IntellijPlugin where {
+	[intellijPluginFiles / ?intellijPluginFiles]
+}
+ 
+/*
+@Description:
+	Demonstration of the Intellij plugin.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Building+IntelliJ+IDEA+language+plugins
+*/
+
+intellijPluginFiles ~= "EXAMPLES::MPSProjects/XMLJava/build/artifacts/XMLJava/XMLJava.zip".

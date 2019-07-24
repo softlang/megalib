@@ -1,0 +1,28 @@
+module mps.languageComponents.generator.MappingConfigurationProjection
+
+import mps.languageComponents.generator.MappingConfiguration
+
+/*
+@Description:
+	Projection of the mapping configuration file
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+?configuratonProjection : Transient;
+	="MPSCONFLUENCE::Editor";
+	elementOf MappingConfigurationLanguage.	
+
+mpsToConfiguratonProjection : MPS -> MappingConfigurationLanguage.
+
+mpsToConfiguratonProjection ^implements MPSEditor.
+mpsToConfiguratonProjection concretizes Projection.
+
+mpsToConfiguratonProjection(?mappingConfiguarion) |-> ?configuratonProjection.
+
+configuratonProjectionToMPS : MappingConfigurationLanguage -> MPS.
+
+configuratonProjectionToMPS ^implements MPSEditor.
+configuratonProjectionToMPS concretizes Projection.
+
+configuratonProjectionToMPS(?configuratonProjection) |-> ?mappingConfiguarion.

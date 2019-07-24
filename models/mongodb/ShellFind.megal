@@ -1,0 +1,35 @@
+module mongodb.ShellFind
+
+import mongodb.Shell
+import mongodb.StorageEngine
+
+/*
+	@Description:
+		find() selects documents in a collection or view and returns a cursor
+		to the selected documents.
+	@Rationale:
+		See https://docs.mongodb.com/manual/reference/method/db.collection.find/
+		See https://docs.mongodb.com/manual/tutorial/query-documents/
+*/
+
+?preFindDatabase : Artifact;
+	elementOf MongoDBStorageEngineLanguage.
+
+?preFindCollection : Artifact;
+	elementOf MongoDBStorageEngineLanguage;
+	partOf ?preFindDatabase.
+
+?findQuery : Artifact;
+	= "mongodbmanual::reference/method/db.collection.find/";
+	elementOf MongoShellLanguage;
+	hasRole Query.
+
+?findResponse : Artifact;
+	= "mongodbmanual::reference/method/db.collection.find/";
+	elementOf MongoShellLanguage;
+	hasRole Response.
+
+find : MongoDBStorageEngineLanguage # MongoShellLanguage -> MongoDBStorageEngineLanguage # MongoShellLanguage.
+find(?preFindCollection, ?findQuery) |-> (?preFindCollection, ?findResponse).
+
+MongoShell implements find.

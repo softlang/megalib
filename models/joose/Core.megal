@@ -12,7 +12,7 @@ JooseIO : Library;
     uses DecoratorPattern;
     reuses NodeJS.
     
-JooseObjectLanguage : SchemaLanguage;
+JooseObjectLanguage : ProgrammingLanguage;
     = "http://joose.github.io/Joose/doc/html/Joose/Manual/Concepts.html";
     ^implements JooseIO;
     supports MetaProgramming;

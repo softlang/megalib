@@ -1,0 +1,29 @@
+module mps.SolutionProjection
+
+import mps.Solution
+import mps.Projection
+
+/*
+@Description:
+	Projection of the build script
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Building+MPS+language+plugins
+*/
+
+?scriptProjection : Transient;
+	="MPSCONFLUENCE::Editor";
+	elementOf BuildSolutionLanguage.
+
+mpsToScriptProjection : MPS -> BuildSolutionLanguage.
+
+mpsToScriptProjection ^implements MPSEditor.
+mpsToScriptProjection concretizes Projection.
+
+mpsToScriptProjection(?buildscript) |-> ?scriptProjection.
+
+scriptProjectionToMPS : BuildSolutionLanguage -> MPS.
+
+scriptProjectionToMPS ^implements MPSEditor.
+scriptProjectionToMPS concretizes Projection.
+
+scriptProjectionToMPS(?scriptProjection) |-> ?buildscript.

@@ -1,0 +1,23 @@
+module mongodb.Shell
+
+import mongodb.Core
+
+/*
+	@Description:
+		The mongo shell is an interactive JavaScript interface to MongoDB
+	@Rationale:
+		See https://docs.mongodb.com/manual/mongo/
+		See https://docs.mongodb.com/manual/reference/program/mongo/
+		See https://docs.mongodb.com/manual/reference/method/
+*/
+
+MongoShellLanguage : DatabaseManagementLanguage;
+	= "mongodbmanual::reference/method/";
+	influencedBy JavaScript;
+	encodedAs Text.
+
+MongoShell : Application;
+	= "mongodbmanual::reference/program/mongo/";
+	uses MongoShellLanguage;
+	hasRole Client;
+	partOf MongoDB.

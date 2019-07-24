@@ -1,20 +1,16 @@
 module joose.JooseAttribute
 
 import joose.Core
+import joose.Class
 
-/*
- * The joose attribute language is a subset of the joose object language that provides a language syntax to build object attribute schemas.
- *
- */
+/* The joose attribute language is a subset of the joose object language that provides a language syntax to build object attribute schemas. */
 AttributeLanguage : SchemaLanguage;
     = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html";
     supports MetaProgramming;
     subsetOf JooseObjectLanguage;
-    facilitates ObjectOrientedProgramming.
-Attribute : Role;
-    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html".
-
-JooseIO implements AttributeLanguage.
+    facilitates ObjectOrientedProgramming;
+    facilitates Attribute;
+    ^implements JooseIO.
 
 AttributeVisibilityLanguage : SchemaLanguage;
     = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html";
@@ -25,12 +21,13 @@ AccessModifier : Role;
     = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html".
 
 /*
- * An attribute corresponds to 0 - 2 accessors after an instantiation. The resulting number depends on the visibility type.
+ * Class schemas contain attributes. An attribute accessability corresponds to its visibility. An attribute corresponds to 0 - 2 accessors after an instantiation. The resulting number depends on the visibility type.
  */
-?attribute : Transient+;
-    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Attributes.html";
+?attribute : Transient;
     elementOf AttributeLanguage;
+    partOf ?class;
     hasRole Attribute.
+    
 ?visibility : Transient;
     elementOf AttributeVisibilityLanguage;
     partOf ?attribute;

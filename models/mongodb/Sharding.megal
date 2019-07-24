@@ -1,0 +1,86 @@
+module mongodb.Sharding
+
+import mongodb.Core
+import mongodb.Communication
+import mongodb.StorageEngine
+
+/*
+	@Description:
+		MongoDB mongos instances route queries and write operations to shards
+		in a sharded cluster.
+	@Rationale:
+		See https://docs.mongodb.com/manual/reference/program/mongos/
+		See https://docs.mongodb.com/manual/core/sharded-cluster-query-router/
+*/
+
+Router : Role;
+	= "wikipedia::Router_(computing)".
+
+Mongos : Application;
+	= "mongodbmanual::reference/program/mongos/";
+	uses C++;
+	hasRole Router;
+	partOf MongoDB.
+
+/*
+	@Description:
+		Deployment of the components in a MongoDB sharded cluster
+	@Rationale:
+		See https://docs.mongodb.com/manual/core/sharded-cluster-components/
+		See https://docs.mongodb.com/manual/tutorial/deploy-shard-cluster/
+*/
+
+?RouterNode : Node.
+?ConfigServerNode : Node.
+?Shard1Node : Node.
+?Shard2Node : Node.
+
+// The mongos acts as a query router, providing an interface between client
+// applications and the sharded cluster.
+?router : Artifact;
+	= "mongodbmanual::core/sharded-cluster-query-router/";
+	deployedAt ?RouterNode.
+Mongos deployedAs ?router.
+
+// Config servers store metadata and configuration settings for the cluster.
+?configServer : Artifact;
+	= "mongodbmanual::core/sharded-cluster-config-servers/";
+	deployedAt ?ConfigServerNode.
+Mongod deployedAs ?configServer.
+
+// Each shard contains a subset of the sharded data.
+?shard1 : Artifact;
+	= "mongodbmanual::core/sharded-cluster-shards/";
+	deployedAt ?Shard1Node.
+Mongod deployedAs ?shard1.
+
+?shard2 : Artifact;
+	= "mongodbmanual::core/sharded-cluster-shards/";
+	deployedAt ?Shard2Node.
+Mongod deployedAs ?shard2.
+
+/*
+	@Description:
+		Sharding is a method for distributing data across multiple machines.
+		MongoDB shards data at the collection level, distributing the
+		collection data across the shards in the cluster.
+	@Rationale:
+		See https://docs.mongodb.com/manual/sharding/
+*/
+
+?database : Artifact;
+	elementOf MongoDBStorageEngineLanguage.
+
+?shardedCollection : Fragment;
+	elementOf MongoDBStorageEngineLanguage;
+	partOf ?database.
+
+?document1 : Fragment;
+	elementOf BSON;
+	partOf ?shardedCollection;
+	deployedAt ?Shard1Node.
+
+?document2 : Fragment;
+	elementOf BSON;
+	partOf ?shardedCollection;
+	deployedAt ?Shard2Node.

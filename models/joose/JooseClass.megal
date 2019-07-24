@@ -1,7 +1,6 @@
 module joose.JooseClass
 
 import joose.Core
-import joose.JooseAttribute
 
 /*
  * The Class package of joose provides an internal javascript style DSL to specify class schemas that are to be instantiated. 
@@ -15,61 +14,50 @@ ClassLanguage : SchemaLanguage;
     subsetOf JooseObjectLanguage.
 
 /*
- * Class schemas contain multiple attributes. An attribute accessability corresponds to its visibility
+ * After an instantiation of a class schema, the output result is an object instance
  */
-?aClass : Transient;
+?class : Transient;
     elementOf ClassLanguage;
     partOf JooseIO;
     hasRole Schema.
-?anAttribute : Transient+;
-    elementOf AttributeLanguage;
-    partOf ?aClass;
-    hasRole Attribute.
-?aMethod : Transient+;
-    elementOf JooseObjectLanguage;
-    partOf ?aClass.
-
-/*
- * After an instantiation of a class schema, the output result is an object instance
- */
-?anInstance : Transient;
+?instance : Transient;
     elementOf JavaScriptObject;
-    conformsTo ?aClass;
+    conformsTo ?class;
     hasRole Object.
 
 instantiate : ClassLanguage -> JavaScriptObject.
-instantiate(?aClass) |-> ?anInstance.
+instantiate(?class) |-> ?instance.
 
 /*
  * Superclasses are a composition of a subclass and a baseclass. It inherits the behavior of both of those classes.
  */
-?aSuperClass : Transient;
+?superClass : Transient;
     = "wikipedia::Inheritance_(object-oriented_programming)#Subclasses_and_superclasses";
     elementOf ClassLanguage;
-    partOf ?aClass.
-?aSubClass : Transient;
+    partOf ?class.
+?subClass : Transient;
     = "wikipedia::Inheritance_(object-oriented_programming)#Subclasses_and_superclasses";
     elementOf ClassLanguage;
     partOf JooseIO;
     hasRole Schema;
-    conformsTo ?aSuperClass.
+    conformsTo ?superClass.
 
 extendBehavior : ClassLanguage # ClassLanguage -> ClassLanguage.
-extendBehavior(?aClass,?aSuperClass) |-> ?aSubClass.
+extendBehavior(?class,?superClass) |-> ?subClass.
 
 /*
  * Meta schema classes are able to transform a common javascript class into a joose class schema.
  */
-?aMetaClass : Transient;
+?metaClass : Transient;
     elementOf ClassLanguage;
     hasRole Wrapper.
-?aJsClass : Transient;
+?jsClass : Transient;
     elementOf JavaScript;
-    partOf ?aMetaClass;
+    partOf ?metaClass;
     hasRole Schema.
 
 transformMeta : JavaScript # ClassLanguage -> ClassLanguage.
-transformMeta(?aJsClass, ?aMetaClass) |-> ?aClass.
+transformMeta(?jsClass, ?metaClass) |-> ?class.
 
 /*
  * JooseIO implements the functions

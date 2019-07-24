@@ -1,0 +1,18 @@
+module mps.languageComponents.generator.GeneratorBuildWithReductionTemplates
+
+import mps.languageComponents.generator.Generator
+import mps.languageComponents.generator.MappingConfiguration
+import mps.languageComponents.generator.ReductionTemplate
+
+/*
+@Description: 
+	Node reduction based on reduction templates
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator#Generator-ExternalTemplate
+*/
+
+makeGeneratorModelRT : MPS # MPS -> Java.
+
+makeGeneratorModelRT ^implements MPSEditor.
+
+makeGeneratorModelRT(?mappingConfiguarion, ?reductionTemplates) |-> ?generatorModel.

@@ -1,0 +1,29 @@
+module mps.languageComponents.generator.CodeSnippetProjection
+
+import mps.languageComponents.generator.CodeSnippet
+import mps.Projection
+
+/*
+@Description:
+	Code Snippet Projection.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+?snippetProjection : Transient;
+	="MPSCONFLUENCE::Editor";
+	elementOf DomainSpecificLanguage.
+
+mpsToSnippetProjection : MPS -> DomainSpecificLanguage.
+
+mpsToSnippetProjection ^implements MPSEditor.
+mpsToSnippetProjection concretizes Projection.
+
+mpsToSnippetProjection(?codeSnippet) |-> ?snippetProjection.
+
+snippetProjectionToMPS : DomainSpecificLanguage -> MPS.
+
+snippetProjectionToMPS ^implements MPSEditor.
+snippetProjectionToMPS concretizes Projection.
+
+snippetProjectionToMPS(?snippetProjection) |-> ?codeSnippet.

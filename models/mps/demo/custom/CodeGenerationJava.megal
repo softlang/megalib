@@ -1,0 +1,22 @@
+module mps.demo.CodeGenerationJava
+
+import mps.Core
+
+import mps.CodeGenerationJava where {
+	[intellijPluginFiles / ?intellijPluginFiles,
+	dslModel / ?dslModel,
+	outputCode / ?outputCode]
+}
+
+/*
+@Description:
+	Demonstration of the plugin usage for java code generation.
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Building+MPS+language+plugins
+*/
+
+intellijPluginFiles ~= "EXAMPLES::IntelljWithPlugin/FormCreatorPluginExample/plugin/mps.form.zip".
+
+dslModel ~= "EXAMPLES::IntelljWithPlugin/FormCreatorPluginExample/src/ModelExample.mps".
+
+outputCode ~= "EXAMPLES::IntelljWithPlugin/FormCreatorPluginExample/out/production/FormCreatorPluginExample/ModelExample".

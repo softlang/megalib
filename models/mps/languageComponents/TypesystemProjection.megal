@@ -1,0 +1,29 @@
+module mps.languageComponents.TypesystemProjection
+
+import mps.languageComponents.Typesystem
+
+/*
+@Description:
+	Typesystem Projection.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Typesystem	
+*/
+
+?typesystemProjection : Transient;
+	="MPSCONFLUENCE::Editor";
+	elementOf TypesystemLanguage.
+
+mpsToTypesystemProjection : MPS -> TypesystemLanguage.
+
+mpsToTypesystemProjection ^implements MPSEditor.
+mpsToTypesystemProjection concretizes Projection.
+
+mpsToTypesystemProjection(?typesystemMPS) |-> ?typesystemProjection.
+
+typesystemProjectionToMPS : TypesystemLanguage -> MPS.
+
+typesystemProjectionToMPS ^implements MPSEditor.
+typesystemProjectionToMPS concretizes Projection.
+
+typesystemProjectionToMPS(?typesystemProjection) |-> ?typesystemMPS.
+

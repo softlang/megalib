@@ -1,0 +1,19 @@
+module mps.IntellijPlugin
+
+import mps.Core
+
+/*
+@Description:
+	MPS can create a plugin for intellij so that the language can be used inside of the intellij IDE.
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Building+IntelliJ+IDEA+language+plugins
+*/
+
+?intellijPluginFiles : File;
+	="MPSCONFLUENCE::Building+MPS+language+plugins";
+	elementOf Zip.
+	
+IntellijLanguagePlugin : Plugin;
+	="MPSCONFLUENCE::Building+MPS+language+plugins";
+	uses DomainSpecificLanguage;
+	deployedAs ?intellijPluginFiles.

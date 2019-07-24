@@ -1,0 +1,31 @@
+module mps.languageComponents.EditorProjection
+
+import mps.Core
+import mps.Projection
+import mps.languageComponents.Editor
+
+/*
+@Description:
+	Editor Projection.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Editor
+*/
+
+?editorProjection : Transient;
+	="MPSCONFLUENCE:Editor";
+	elementOf EditorLanguage.
+
+mpsToEditorProjection : MPS -> EditorLanguage.
+
+mpsToEditorProjection ^implements MPSEditor.
+mpsToEditorProjection concretizes Projection.
+
+mpsToEditorProjection(?editorMPS) |-> ?editorProjection.
+
+editorProjectionToMPS : EditorLanguage -> MPS.
+
+editorProjectionToMPS ^implements MPSEditor.
+editorProjectionToMPS concretizes Projection.
+
+editorProjectionToMPS(?editorProjection) |-> ?editorMPS.
+

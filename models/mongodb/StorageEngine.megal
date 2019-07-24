@@ -1,0 +1,21 @@
+module mongodb.StorageEngine
+
+import mongodb.Core
+
+/*
+	@Description:
+		MongoDB supports multiple storage engines, that are responsible for
+		managing how data is stored on disk or in memory
+	@Rationale:
+		See https://docs.mongodb.com/manual/core/storage-engines/
+		See https://docs.mongodb.com/manual/faq/storage/
+*/
+
+MongoDBStorageEngineLanguage : DatabaseLanguage;
+	= "mongodbmanual::core/storage-engines/";
+	facilitates Serialization;
+	encodedAs Binary.
+
+?MongoDBStorageEngine : Plugin;
+	implements MongoDBStorageEngineLanguage;
+	partOf MongoDB.

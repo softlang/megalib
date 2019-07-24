@@ -1,0 +1,16 @@
+module mps.demo.Structure
+
+import mps.Core
+
+import mps.languageComponents.Structure where {
+	[structureMPS / ?structureMPS]
+}
+
+/*
+@Description:
+	Demonstration of the structure language components.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Structure
+*/
+
+structureMPS ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/models/structure.mps".

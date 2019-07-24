@@ -1,0 +1,17 @@
+module mps.demo.Editor
+
+import mps.Core
+
+import mps.languageComponents.Editor where {
+	[editorMPS / ?editorMPS]
+}
+
+/*
+@Description:
+	Demonstration of the editor language components.
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Editor
+*/
+
+editorMPS ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/models/editor.mps".
+

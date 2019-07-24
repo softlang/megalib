@@ -1,0 +1,33 @@
+module django.Administration
+
+import django.App
+import python.Core
+
+/*
+@Description : Initial generation of website artifacts.
+@Rationale : See https://docs.djangoproject.com/en/2.1/intro/tutorial01/
+*/
+?websiteParts : Artifact+;
+    elementOf Python;
+    ^partOf ?manage;
+    ^partOf ?settings;
+    ^partOf ?urls.
+?name : Transient;
+    elementOf PythonString.
+startProject : PythonString -> Python .
+startProject(?name) |-> (?websiteParts) .
+
+/*
+@Description : Initial generation of app artifacts.
+@Rationale : See https://docs.djangoproject.com/en/2.1/intro/tutorial01/
+*/
+?appParts : Artifact+;
+    elementOf Python;
+    ^partOf ?admin;
+    ^partOf ?models;
+    ^partOf ?tests;
+    ^partOf ?views.
+?appname : Transient;
+    elementOf PythonString.
+startApp : PythonString -> Python .
+startApp(?appname) |-> ?appParts.

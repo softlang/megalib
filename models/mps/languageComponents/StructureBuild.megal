@@ -1,0 +1,23 @@
+module mps.languageComponents.StructureBuild
+
+import mps.languageComponents.Structure
+
+/*
+@Description:
+	Structure Build.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Structure
+*/
+
+?structureLanguageModel : File+;
+	="MPSCONFLUENCE::Structure";
+	hasRole DescriptiveModel;
+	hasRole AST; 
+	^correspondsTo ?structureMPS;
+	elementOf Java.
+
+makeStructureModel : MPS -> Java.
+
+makeStructureModel ^implements MPSEditor.
+
+makeStructureModel(?structureMPS) |-> ?structureLanguageModel.

@@ -1,0 +1,22 @@
+module mps.languageComponents.generator.ReductionTemplate
+
+import mps.languageComponents.generator.Generator
+
+/*
+@Description:
+	Reduction template as a part of the generator component
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator#Generator-ExternalTemplate
+*/
+
+ReductionTemplateLanguage : TransformationLanguage;
+       ="MPSCONFLUENCE::Generator#GeneratorExternalTemplate";
+       facilitates Transformation;
+       facilitates Mapping.
+
+?reductionTemplates : File;
+       ="MPSCONFLUENCE::Generator#GeneratorTemplateSwitch";
+       elementOf MPS;
+       partOf ?generatorMPS;
+       hasRole Template;
+       hasRole TransformationRule.

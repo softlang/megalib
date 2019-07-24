@@ -1,0 +1,30 @@
+module mps.languageComponents.StructureProjection
+
+import mps.languageComponents.Structure
+import mps.Projection
+
+/*
+@Description:
+	Structure Projection.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Structure
+*/
+
+?structureProjection : Transient;
+	="MPSCONFLUENCE::Editor";
+	elementOf StructureLanguage. 
+
+mpsToStructureProjection : MPS -> StructureLanguage.
+
+mpsToStructureProjection ^implements MPSEditor.
+mpsToStructureProjection concretizes Projection.
+
+mpsToStructureProjection(?structureMPS) |-> ?structureProjection.
+
+structureProjectionToMPS : StructureLanguage -> MPS.
+
+structureProjectionToMPS ^implements MPSEditor.
+structureProjectionToMPS concretizes Projection.
+
+structureProjectionToMPS(?structureProjection) |-> ?structureMPS. 
+

@@ -1,0 +1,27 @@
+module mps.languageComponents.generator.ReductionTemplateProjection
+
+import mps.languageComponents.generator.ReductionTemplate
+import mps.Projection
+
+/*
+@Description:
+	Projection of the reduction template
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator#Generator-ExternalTemplate
+*/
+
+?templateProjection : Transient;
+       ="MPSCONFLUENCE::Editor";
+       elementOf ReductionTemplateLanguage.
+
+mpsToTemplateProjection : MPS -> ReductionTemplateLanguage.
+
+mpsToTemplateProjection ^implements MPSEditor.
+mpsToTemplateProjection concretizes Projection.
+
+mpsToTemplateProjection(?reductionTemplates) |-> ?templateProjection.
+
+templateProjectionToMPS : ReductionTemplateLanguage -> MPS.
+
+templateProjectionToMPS ^implements MPSEditor.
+templateProjectionToMPS concretizes Projection.

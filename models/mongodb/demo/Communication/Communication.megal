@@ -1,0 +1,21 @@
+module mongodb.demo.Communication.Communication
+
+import mongodb.Communication where {
+	[mongod / ?server,
+	mongo / ?client,
+	request / ?request,
+	response / ?response]
+}
+
+/*
+	@Description:
+		Packet capture of the communication between mongo and mongod during the
+		ShellInsertOne demo
+	@Rationale:
+		See https://en.wikipedia.org/wiki/Pcap
+*/
+
+mongod ~= "file:///usr/bin/mongod".
+mongo ~= "file:///usr/bin/mongo".
+request ~= "file://./demo.pcap".
+response ~= "file://./demo.pcap".

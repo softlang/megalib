@@ -1,0 +1,30 @@
+module mps.demo.generator.GeneratorBuildWithMultipleFragments
+
+import mps.Core
+
+import mps.languageComponents.generator.GeneratorBuildWithMultipleFragments where {
+	[mappingConfiguarion / ?mappingConfiguarion,
+	generatorModel / ?generatorModel,
+	reductionTemplates / ?reductionTemplates,
+	codeSnippet / ?codeSnippet,
+	generatorMPS / ?generatorMPS]
+}
+
+/*
+@Description
+	Demonstration of the general generator build.
+	It includes the mapping configuration, an external template and a reduction template. 
+	The external template is a mps BaseLanguage code snippet.  
+@Rationale
+	https://confluence.jetbrains.com/display/MPSD20182/Generator#Generator-GeneratorLanguageReference
+*/
+
+codeSnippet ~= "EXAMPLES::MPSProjects/JavaEncoder/languages/JavaEncoder/generator/template/main%40generator.mps".
+
+reductionTemplates ~= "EXAMPLES::MPSProjects/JavaEncoder/languages/JavaEncoder/generator/template/main%40generator.mps".
+
+mappingConfiguarion ~= "EXAMPLES::MPSProjects/JavaEncoder/languages/JavaEncoder/generator/template/main%40generator.mps".
+
+generatorModel ~= "EXAMPLES::MPSProjects/JavaEncoder/languages/JavaEncoder/generator/source_gen/".
+
+generatorMPS ~= "EXAMPLES::MPSProjects/mps.form/languages/FormCreator/generator/template/main@generator.mps". 

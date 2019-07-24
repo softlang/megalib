@@ -1,0 +1,15 @@
+module mps.languageComponents.generator.CodeSnippet
+
+import mps.languageComponents.generator.Generator
+
+/*
+@Description:
+	Code snippet as a part of the generator component
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+?codeSnippet : Artifact;
+	="MPSCONFLUENCE::Generator#Generator-ExternalTemplate";
+	partOf ?generatorMPS;
+	elementOf MPS.

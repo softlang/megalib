@@ -1,0 +1,15 @@
+module mongodb.demo.ShellFind.StorageEngine
+
+import mongodb.StorageEngine where {
+	[WiredTiger / ?MongoDBStorageEngine]
+}
+
+/*
+	@Description:
+		WiredTiger is the default storage engine
+	@Rationale:
+		See https://docs.mongodb.com/manual/core/storage-engines/
+		See https://docs.mongodb.com/manual/core/wiredtiger/
+*/
+
+WiredTiger ~= "https://github.com/mongodb/mongo/tree/master/src/mongo/db/storage/wiredtiger".

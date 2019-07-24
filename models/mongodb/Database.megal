@@ -1,0 +1,24 @@
+module mongodb.Database
+
+import mongodb.StorageEngine
+
+/*
+	@Description:
+		MongoDB stores BSON documents, i.e. data records, in collections; the
+		collections in databases.
+	@Rationale:
+		See https://docs.mongodb.com/manual/core/databases-and-collections/
+		See https://docs.mongodb.com/manual/core/document/
+*/
+
+?mongoDatabase : Artifact;
+	elementOf MongoDBStorageEngineLanguage;
+	hasRole DocumentOrientedDatabase.
+
+?mongoCollection : Fragment;
+	elementOf MongoDBStorageEngineLanguage;
+	partOf ?mongoDatabase.
+
+?mongoDocument : Fragment;
+	elementOf BSON;
+	partOf ?mongoCollection. 

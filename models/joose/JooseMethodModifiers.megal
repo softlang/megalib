@@ -4,6 +4,18 @@ import joose.Core
 import joose.JooseClass
 
 /*
+@Description: Methods
+*/
+JooseMethodLanguage : ProgrammingLanguage;
+    = "http://joose.github.io/Joose/doc/html/Joose/Manual/Concepts.html";
+    ^composedOf JooseObjectLanguage;
+    ^implements JooseIO;
+    facilitates Method.
+?method : Fragment;
+    elementOf JooseMethodLanguage;
+    partOf ?class.
+
+/*
  * Method modifiers are decorators that are able to extend methodological behavior of properties before and after a call.
  */
 ModifierLanguage : SchemaLanguage;
