@@ -1,0 +1,43 @@
+module python.Core
+
+/* @Description: Basic Python platform. 
+   @Rationale: see Links
+*/
+PythonPlatform : SoftwareSuite;
+    = "https://www.python.org/";
+    uses Python;
+    uses C.
+    
+CPython : Interpreter;
+    = "https://en.wikipedia.org/wiki/CPython";
+    implements Python;
+    uses C;
+    partOf PythonPlatform.
+
+/* 
+@Description: Parts of Python platform.
+@Rationale: see Links
+*/
+PythonSQLite3 : Library;
+    = "https://docs.python.org/2/library/sqlite3.html";
+    partOf PythonPlatform;
+    uses Python;
+    implements SQL.
+
+/*
+@Description: Python value types.
+@Rationale: see link to PythonValueLanguage for an overview.
+*/
+PythonValueLanguage : ValueLanguage;
+    = "https://docs.python.org/2/library/stdtypes.html";
+    ^implements CPython.
+PythonFunctionLanguage : ValueLanguage; // TODO: better link
+    = "https://docs.python.org/3.1/library/functools.html";
+    subsetOf PythonValueLanguage.
+PythonObjectLanguage : ValueLanguage;
+    = "https://www.w3schools.com/python/python_classes.asp";
+    encodes Object;
+    subsetOf PythonValueLanguage.
+PythonString : ValueLanguage;
+    = "https://docs.python.org/2/library/string.html";
+    subsetOf PythonObjectLanguage.

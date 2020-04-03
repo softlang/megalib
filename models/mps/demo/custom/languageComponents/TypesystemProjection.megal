@@ -1,0 +1,17 @@
+module mps.demo.TypesystemProjection
+
+import mps.languageComponents.TypesystemProjection where {
+	[typesystemMPS / ?typesystemMPS,
+	typesystemProjection / ?typesystemProjection]
+}
+
+/*
+@Description:
+	Demonstration of the typesystem projection
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Typesystem
+*/
+
+typesystemMPS ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/models/typesystem.mps".
+
+typesystemProjection ~= "EXAMPLES::Projection/Typesystem.bmp".

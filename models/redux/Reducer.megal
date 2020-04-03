@@ -1,0 +1,22 @@
+module redux.Reducer
+
+import redux.Store
+import redux.Action
+import redux.State
+
+/*
+  @Description:
+    Reducers are pure functions used to calculate the next state when an action was dispatched.
+  @Rationale:
+    see: https://redux.js.org/basics/reducers#reducers
+*/
+ReducerLanguage : ValueLanguage;
+  = "ReduxGlossary::reducer";
+  subsetOf JavaScriptFunction.
+
+?reduxReducer : Transient+;
+  = "ReduxGlossary::reducer";
+  elementOf ReducerLanguage.
+
+reduxReducer : StateLanguage # ActionLanguage -> StateLanguage.
+reduxReducer(?reduxState, ?reduxAction) |-> ?reduxState.

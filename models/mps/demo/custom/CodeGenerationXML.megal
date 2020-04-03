@@ -1,0 +1,22 @@
+module mps.demo.CodeGenerationXML
+
+import mps.Core
+
+import mps.CodeGenerationXML where {
+	[intellijPluginFiles / ?intellijPluginFiles,
+	dslModel / ?dslModel,
+	outputCode / ?outputCode]
+}
+
+/*
+@Description:
+	Demonstration of the plugin usage for xml code generation.
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Building+MPS+language+plugins
+*/
+
+intellijPluginFiles ~= "EXAMPLES::IntelljWithPlugin/XMLJavaPluginExample/plugin/XMLJava.zip".
+
+dslModel ~= "EXAMPLES::IntelljWithPlugin/XMLJavaPluginExample/src/XML.mps".
+
+outputCode ~= "EXAMPLES::IntelljWithPlugin/XMLJavaPluginExample/src/XML/AwesomeCode.xml".

@@ -1,0 +1,22 @@
+module mongodb.demo.ShellFind.ShellFind
+
+import mongodb.ShellFind where {
+	[findQuery / ?findQuery,
+	findResponse / ?findResponse,
+	preFindDatabase / ?preFindDatabase,
+	preFindCollection / ?preFindCollection]
+}
+
+/*
+	@Description:
+		This demo retrieves documents representing sample employees living in
+		Redmond from the employees collection in the MongoDB database.
+	@Rationale:
+		See https://101wiki.softlang.org/Feature:Flat_company
+*/
+
+findQuery ~= "file://./find.js".
+findResponse ~= "file://./output.js".
+// assuming MongoDB default database location
+preFindDatabase ~= "file:///var/lib/mongodb".
+preFindCollection ~= "file:///var/lib/mongodb".

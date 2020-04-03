@@ -1,0 +1,26 @@
+module SubstitutionChainDemo.Usage1
+
+import SubstitutionChainDemo.App
+
+/*
+    @Description: We define the first usage scenario.
+    @Rationale: Note, if you find a concrete instance of this scenario, the instance has to be related to an instance of App for the model to be consistent.
+*/
+TechXRuleLanguage : TransformationLanguage;
+    = "https://softlang.org".
+?techXtranslator : File;
+    elementOf TechXRuleLanguage;
+    partOf ?App.
+
+?instanceModel1 : File+;
+    elementOf ?dsmLanguage1;
+    conformsTo ?model1.
+?instanceModel2 : File+;
+    elementOf ?dsmLanguage2;
+    conformsTo ?model2.
+techXtranslation : ?dsmLanguage1 -> ?dsmLanguage2;
+   ^defines ?techXtranslator.
+techXtranslation(?instanceModel1) |-> ?instanceModel2.
+
+techXtranslation : ?dsmLanguage2 -> ?dsmLanguage1 .
+techXtranslation(?instanceModel2) |-> ?instanceModel1.

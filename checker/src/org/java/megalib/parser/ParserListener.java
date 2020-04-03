@@ -11,7 +11,7 @@ import java.util.Set;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.java.megalib.checker.services.Substitution;
 import org.java.megalib.checker.services.SubstitutionCheck;
-import org.java.megalib.checker.services.TypeCheck;
+import org.java.megalib.checker.services.TypeErrorCheck;
 import org.java.megalib.models.Block;
 import org.java.megalib.models.MegaModel;
 
@@ -34,13 +34,13 @@ public class ParserListener extends MegalibBaseListener {
     private int blockid;
     private Block block;
 
-    private TypeCheck typeCheck;
+    private TypeErrorCheck typeCheck;
     private Map<String,Set<String>> substByGroup;
     private SubstitutionCheck substCheck;
 
     public ParserListener(MegaModel m) {
         model = m;
-        typeCheck = new TypeCheck();
+        typeCheck = new TypeErrorCheck();
         substCheck = new SubstitutionCheck();
         substByGroup = new HashMap<>();
     }
@@ -211,23 +211,43 @@ public class ParserListener extends MegalibBaseListener {
     @Override
     public void enterFunctionDeclaration(FunctionDeclarationContext context) {
         String functionName = context.getChild(0).getText();
+        if(typeCheck.addInstanceOf(functionName, "Function", model, module + "block" + blockid)){
+            model.addInstanceOf(functionName, "Function", block);
+        }
         List<String> parameterTypes = new ArrayList<>();
         List<String> returnTypes = new ArrayList<>();
 
         boolean parameter = true;
+        boolean relationships = false;
         for(int childIndex = 2; childIndex < context.getChildCount() - 1; childIndex++){
-            if(!context.getChild(childIndex).getText().equals("#") && parameter
-                    && !context.getChild(childIndex).getText().equals("->")) {
-                parameterTypes.add(context.getChild(childIndex).getText());
+            if(parameter){
+                if(parameter && !context.getChild(childIndex).getText().equals("#")
+                   && !context.getChild(childIndex).getText().equals("->")){
+                    parameterTypes.add(context.getChild(childIndex).getText());
+                }
+                if(context.getChild(childIndex).getText().equals("->")){
+                    parameter = false;
+                    continue;
+                }
             }
-
-            if (context.getChild(childIndex).getText().equals("->")) {
-                parameter = false;
+            if(!parameter && !relationships){
+                if(!context.getChild(childIndex).getText().equals("#")
+                   && !context.getChild(childIndex).getText().equals(";")){
+                    returnTypes.add(context.getChild(childIndex).getText());
+                }
+                if(context.getChild(childIndex).getText().equals(";")){
+                    relationships = true;
+                }
             }
-
-            if(!context.getChild(childIndex).getText().equals("#") && !parameter
-                    && !context.getChild(childIndex).getText().equals("->")){
-                returnTypes.add(context.getChild(childIndex).getText());
+            if(relationships){
+                if(!context.getChild(childIndex).getText().equals(";")){
+                    ParseTree relship = context.getChild(childIndex);
+                    String rel = relship.getChild(0).getText();
+                    String obj = relship.getChild(1).getText();
+                    if(typeCheck.addRelationInstance(rel, functionName, obj, model, module + "block" + blockid)){
+                        model.addRelationInstance(rel, functionName, obj, block);
+                    }
+                }
             }
         }
 

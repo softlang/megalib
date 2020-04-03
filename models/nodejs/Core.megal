@@ -1,0 +1,11 @@
+module nodejs.Core
+
+/*
+ @Description: Classification of NodeJS
+*/
+NodeJS : API;
+    = "https://nodejs.org/en/";
+    = "https://en.wikipedia.org/wiki/Node.js";
+    uses C++;
+    uses JavaScript;
+    supports WebApplicationDevelopment.

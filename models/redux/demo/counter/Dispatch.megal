@@ -1,0 +1,14 @@
+module redux.demo.counter.Dispatch
+
+import redux.Dispatch where {
+  [ dispatchIncrement / ?dispatch,
+    dispatchDecrement / ?dispatch
+  ]
+}
+
+/*
+  @Description:
+    The counter uses dispatch to mutate its count.
+*/
+dispatchIncrement ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L45".
+dispatchDecrement ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L50".

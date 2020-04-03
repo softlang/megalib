@@ -1,0 +1,14 @@
+module redux.demo.counter.State
+
+import redux.State where {
+  [ getCounterState / ?getState,
+    counterState / ?reduxState ]
+}
+
+/*
+  @Description:
+    The count of the counter.
+*/
+counterState elementOf JavaScriptNumber.
+counterState ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L10".
+getCounterState ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L37".

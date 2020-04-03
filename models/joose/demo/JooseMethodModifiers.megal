@@ -1,0 +1,14 @@
+module joose.demo.JooseMethodModifiers
+
+import joose.JooseMethodModifiers where {
+    [
+        beforeCut / ?aBeforeModifier,
+        afterCut / ?anAfterModifier,
+        cut / ?aCallChain
+    ]
+}
+
+/* Method modifiers injecting code before and after the cut function */
+beforeCut            ~= "file://../showcases/joose/MethodModification.js#L7-9".
+afterCut             ~= "file://../showcases/joose/MethodModification.js#L13-15".
+cut                  ~= "file://../showcases/joose/MethodModification.js#L25".

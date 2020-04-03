@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -51,7 +52,7 @@ public class ModelLoader {
     public MegaModel getModel() {
         return model;
     }
-    
+
     public File getRoot() {
     		return root;
     }
@@ -82,7 +83,7 @@ public class ModelLoader {
 
     private boolean loadCompleteModelFrom(String data, String abspath) {
         try {
-        		Queue<String> todos = Importer.resolveImports(data, abspath,this);
+            Queue<String> todos = Importer.resolveImports(data, abspath, this);
             if(!abspath.contains("common")) {
             	System.out.println("Loading:");
             	todos.forEach(t -> System.out.println(" "+t));

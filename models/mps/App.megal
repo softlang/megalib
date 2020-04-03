@@ -1,0 +1,16 @@
+module mps.App
+
+import mps.Core
+
+/*
+@Description: MPS is used to implement DSLs
+*/
+?mpsApp : System;
+    uses Java;
+    reuses IntelliJ;
+    reuses MPS.
+
+?domainSpecificLanguage : ProgrammingLanguage;
+	="https://en.wikipedia.org/wiki/Domain-specific_language";
+	^implements MPSEditor;
+	^uses MPSEditor.

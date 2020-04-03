@@ -1,0 +1,17 @@
+module redux.demo.todos.Action
+
+import redux.Action where {
+  [ addTodo / ?reduxAction,
+    setVisibilityFilter / ?reduxAction,
+    toggleTodo / ?reduxAction
+  ]
+}
+
+
+/*
+  @Description:
+    The todosApp uses actions to specify why its todoItems can change.
+*/
+addTodo ~= "https://github.com/reactjs/redux/blob/master/examples/todos/src/actions/index.js#L2-L6".
+setVisibilityFilter ~= "https://github.com/reactjs/redux/blob/master/examples/todos/src/actions/index.js#L8-L11".
+toggleTodo ~= "https://github.com/reactjs/redux/blob/master/examples/todos/src/actions/index.js#L13-L16".

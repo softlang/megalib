@@ -1,0 +1,15 @@
+module mps.demo.Solution
+
+import mps.Solution where {
+	[buildscript / ?buildscript]
+}
+
+/*
+@Description:
+	Demonstration of the build script
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Building+MPS+language+plugins
+*/
+
+buildscript ~= "EXAMPLES::MPSProjects/XMLJava/solutions/XMLJava.build/models/XMLJava.build.mps".
+

@@ -1,0 +1,18 @@
+module mps.demo.EditorProjection
+
+import mps.languageComponents.EditorProjection where {
+	[editorProjection / ?editorProjection,
+	editorMPS / ?editorMPS]
+}
+
+/*
+@Description:
+	Demonstration of the editor projection.
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Editor
+*/
+
+editorProjection ~= "EXAMPLES::Projection/Editor.bmp".
+
+editorMPS ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/models/editor.mps".
+

@@ -1,0 +1,19 @@
+module mps.languageComponents.Editor
+
+import mps.Core
+
+/*
+@Description:
+	Editor model of the domain specific language.
+	It defines the structual editing of a node.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Editor
+*/
+
+EditorLanguage : GrammarLanguage;
+	="MPSCONFLUENCE::Editor";
+	subsetOf DomainSpecificLanguage.
+
+?editorMPS : File;
+	elementOf MPS.
+

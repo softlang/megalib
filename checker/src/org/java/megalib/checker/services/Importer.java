@@ -15,9 +15,10 @@ import org.java.megalib.parser.ImportListener;
 import org.java.megalib.parser.ParserException;
 
 public class Importer {
-	
 
-	static Queue<String> resolveImports(String data, String abspath, ModelLoader ml) throws ParserException, IOException {
+
+    static Queue<String> resolveImports(String data, String abspath, ModelLoader ml) throws ParserException,
+                                                                                            IOException {
         ImportListener l = (ImportListener) ml.parse(data, new ImportListener());
         String modname = l.getName();
         // Resolve module name to file path
@@ -28,15 +29,17 @@ public class Importer {
             root = root.getParentFile();
         }
         ml.setRoot(root);
-        
-        return getTodos(buildImportGraph(modname,ml,l), modname);
+
+        List<Relation> importGraph = buildImportGraph(modname, ml, l);
+        ml.getModel().setImportGraph(importGraph.stream().collect(Collectors.toList()));
+
+        return getTodos(importGraph, modname);
 	}
-        
+
     private static List<Relation> buildImportGraph(String modname, ModelLoader ml, ImportListener l) throws ParserException, IOException{
         for(Relation ir : l.getImports()){
-            if(!getFile(ir.getObject(),ml).exists()){
+            if(!getFile(ir.getObject(),ml).exists())
                 throw new ParserException("Error Missing import target: from "+modname+" to "+ir.getObject());
-            }
         }
 	    List<Relation> imports = new LinkedList<>();
         Set<String> parsed = new HashSet<>();
@@ -46,7 +49,7 @@ public class Importer {
         toparse.remove(modname);
         String oldmodname = modname;
 
-        
+
         // Fill the import graph
         while (!toparse.isEmpty()) {
             String p = toparse.iterator().next();
@@ -59,9 +62,8 @@ public class Importer {
             imports.addAll(l.getImports());
             parsed.add(l.getName());
             for(Relation ir : l.getImports()){
-                if(!getFile(ir.getObject(),ml).exists()){
+                if(!getFile(ir.getObject(),ml).exists())
                     throw new ParserException("Error Missing import target: from "+oldmodname+" to "+ir.getObject());
-                }
             }
             toparse.addAll(l.getImports().parallelStream().map(Relation::getObject)
                     .collect(Collectors.toSet()));
@@ -69,7 +71,7 @@ public class Importer {
         }
         return imports;
     }
-        
+
     private static Queue<String> getTodos(List<Relation> imports, String modname) throws ParserException{
 		Queue<String> todos = new LinkedList<>();
         while (!imports.isEmpty()) {

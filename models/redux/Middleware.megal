@@ -1,0 +1,34 @@
+module redux.Middleware
+
+import redux.Core
+import redux.CreateStore
+import redux.Store
+import redux.Dispatch
+
+/*
+  @Description:
+    Provides an extension point between dispatching an action, and the moment the reducer is called.
+  @Rationale:
+    see: https://redux.js.org/advanced/middleware#middleware
+*/
+
+MiddlewareLanguage : ValueLanguage;
+  = "ReduxGlossary::middleware";
+  subsetOf JavaScriptFunction.
+
+?middleware : Transient;
+  = "ReduxGlossary::middleware";
+  elementOf MiddlewareLanguage.
+middleware : StoreLanguage -> DispatchLanguage.
+middleware(?reduxStore) |-> ?dispatch.
+
+// applyMiddleware is a storeEnhancer that ships with redux
+// it receives the middleware chain to be applied (JavaScriptFunction*)
+// returns a storeCreator applying the middleware
+?applyMiddleware : Transient;
+  = "ReduxAPI::applyMiddleware.md";
+  conformsTo ?storeEnhancer;
+  elementOf StoreEnhancerLanguage.
+applyMiddleware : MiddlewareLanguage -> StoreCreatorLanguage.
+applyMiddleware(?middleware) |-> ?storeCreator.
+Redux implements applyMiddleware.

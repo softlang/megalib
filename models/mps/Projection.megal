@@ -1,0 +1,13 @@
+module mps.Projection
+
+import mps.Core
+
+/*
+@Description:
+	A projection feature of the mps editor.
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Editor
+*/
+
+Projection : AbstractProcess;
+	= "MPSCONFLUENCE::Editor".

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,7 @@ public class Substitution {
 		substByGroup.forEach((key, set) -> set.forEach(v -> {
             if(!model.getInstanceOfMap().containsKey(v)){
                 model.addInstanceOf(v, model.getInstanceOfMap().get(key),block);
+                model.addRelationInstance("/", v, key, block);
             }
         }));
 	}
@@ -61,7 +63,7 @@ public class Substitution {
 					for(String by : substByGroup.get(r.getSubject())) {
 						tempresult.add(new Relation(by, r.getObject()));
 					}
-					
+
 					if(substByGroup.containsKey(r.getObject())) {
 						//crossproduct
 						for(Relation tr : tempresult) {
@@ -81,33 +83,59 @@ public class Substitution {
 			}
 			resultMap.put(name, resultRelations);
 		}
+        Map<String,Set<Relation>> newrelations = new HashMap<>();
+        for(String k : resultMap.keySet()){
+            newrelations.put(k, new HashSet<>());
+        }
+        // check for previous substitutions
 		for(String name : resultMap.keySet()) {
 			for(Relation r : resultMap.get(name)) {
-				model.addRelationInstance(name, r.getSubject(), r.getObject(), block);
+
+                if(r.getSubject().startsWith("?")){
+                    for(Relation copyreplace : model.getRelationships().get("/")){
+                        if(copyreplace.getObject().equals(r.getSubject())) {
+                            newrelations.get(name).add(new Relation(copyreplace.getSubject(), r.getObject()));
+                        }
+                    }
+                }else if(r.getObject().startsWith("?")){
+                    for(Relation copyreplace : model.getRelationships().get("/")){
+                        if(copyreplace.getObject().equals(r.getObject())){
+                            newrelations.get(name).add(new Relation(r.getSubject(), copyreplace.getSubject()));
+                        }
+                    }
+                }else{
+                    newrelations.get(name).add(r);
+                }
 			}
 		}
+        for(Entry<String,Set<Relation>> entry : newrelations.entrySet()){
+            for(Relation r : entry.getValue()){
+                model.addRelationInstance(entry.getKey(), r.getSubject(), r.getObject(), block);
+            }
+        }
+
 	}
-    
+
     private void copyReplaceFunNetwork(boolean isDec) {
     	HashMap<String,Set<Function>> resultMap = new HashMap<>();
-    	
+
     	Map<String, Set<Function>> initMap = new HashMap<>();
 		if(isDec) {
-			model.getFunctionDeclarations().entrySet().stream().forEach(entry-> 
+			model.getFunctionDeclarations().entrySet().stream().forEach(entry->
 				initMap.put(entry.getKey(), entry.getValue().stream()
     					        .filter(f -> {
     					        	return new ArrayList<>(f.getInputs()).removeAll(substByGroup.keySet()) || new ArrayList<>(f.getOutputs()).removeAll(substByGroup.keySet());
     					        })
     					        .collect(Collectors.toSet())));
     	}else {
-    		model.getFunctionApplications().entrySet().stream().forEach(entry-> 
+    		model.getFunctionApplications().entrySet().stream().forEach(entry->
 				initMap.put(entry.getKey(), entry.getValue().stream()
 					        .filter(f -> {
 					        	return new ArrayList<>(f.getInputs()).removeAll(substByGroup.keySet()) || new ArrayList<>(f.getOutputs()).removeAll(substByGroup.keySet());
 					        })
 					        .collect(Collectors.toSet())));
     	}
-		
+
     	for(String name : initMap.keySet()) {
     		Set<Function> resultFun = new HashSet<>();
     		for(Function f : initMap.get(name)) {
@@ -148,10 +176,11 @@ public class Substitution {
     			resultFun.addAll(ftempFun);
     		}
     		resultMap.put(name, resultFun);
-    		if(isDec)
-    			resultMap.forEach((fname,set)-> set.forEach(f -> model.addFunctionDeclaration(fname, f.getInputs(), f.getOutputs(), block)));
-    		else
-    			resultMap.forEach((fname,set)-> set.forEach(f -> model.addFunctionApplication(fname, f.getInputs(), f.getOutputs(), block)));
+    		if(isDec){
+                resultMap.forEach((fname,set)-> set.forEach(f -> model.addFunctionDeclaration(fname, f.getInputs(), f.getOutputs(), block)));
+            }else{
+                resultMap.forEach((fname,set)-> set.forEach(f -> model.addFunctionApplication(fname, f.getInputs(), f.getOutputs(), block)));
+            }
     	}
     }
 

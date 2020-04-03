@@ -1,0 +1,17 @@
+module redux.demo.todos.Reducer
+
+import redux.Reducer where {
+  [ todos / ?reduxReducer,
+    visibilityFilter / ?reduxReducer,
+    todosReducer / ?reduxReducer
+  ]
+}
+
+
+/*
+  @Description:
+    The todosApp uses a reducer to define how to mutate and filter the todoItems. 
+*/
+todos ~= "https://github.com/reactjs/redux/blob/master/examples/todos/src/reducers/todos.js#L1-L21".
+visibilityFilter ~= "https://github.com/reactjs/redux/blob/master/examples/todos/src/reducers/visibilityFilter.js#L1-L10".
+todosReducer ~= "https://github.com/reactjs/redux/blob/master/examples/todos/src/reducers/index.js#L5-L8".

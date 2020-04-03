@@ -1,0 +1,48 @@
+module mps.Core
+
+import intellij.Core
+
+/* @Description:
+	MPS is a "Meta Programming System". It can be used to create domain specific languages.
+	@Rationale:
+	See https://www.jetbrains.com/mps/.
+*/
+
+MPSGITHUB :: "https://github.com/JetBrains/MPS".
+
+EXAMPLES :: "https://github.com/FabianBell/MPSExamples/blob/master/".
+
+MPSCONFLUENCE :: "https://confluence.jetbrains.com/display/MPSD20182/".
+
+MPSXML : DataExchangeLanguage;
+	="http://campagnelab.org/files/Freebie-MPSBook-3rd-edition-March-13-2016.pdf";
+	subsetOf XML.
+
+MPS : LanguageWorkbench;
+	="https://www.jetbrains.com/mps";
+	implements MPSXML;
+	uses MPSXML;
+	uses Java;
+	uses HTML5;
+	uses XML;
+	supports MetaProgramming.
+
+Java6 : ProgrammingLanguage;
+	="MPSCONFLUENCE::MPS+User's+Guide";
+	subsetOf Java.
+
+MPSBaseLanguage : ProgrammingLanguage;
+	="MPSCONFLUENCE::Base+Language";
+	^subsetOf Java6.
+
+MPSBaseOutputLanguage : ProgrammingLanguage;
+	="https://confluence.jetbrains.com/display/MPS/MPS+Languages+Repository";
+	subsetOf Java6.
+
+XMLCoreLanguage : DataExchangeLanguage;
+	="https://confluence.jetbrains.com/display/MPS/MPS+Languages+Repository";
+	subsetOf XML.
+
+XMLOutPutLanguage : DataExchangeLanguage;
+	="https://confluence.jetbrains.com/display/MPS/MPS+Languages+Repository";
+	^subsetOf XML.	

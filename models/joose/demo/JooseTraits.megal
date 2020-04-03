@@ -1,0 +1,14 @@
+module joose.demo.JooseTraits
+
+import joose.JooseTraits where {
+    [
+        confidence / ?aTrait,
+        freelancerInstance / ?anInstance,
+        confidentFreelancer / ?anInstanceWithTrait
+    ]
+}
+
+/* inject a trait into a normal javascript object instance */
+confidence              ~= "file://../showcases/joose/TraitInjection.js#L3-15".
+freelancerInstance      ~= "file://../showcases/joose/TraitInjection.js#L17-21".
+confidentFreelancer     ~= "file://../showcases/joose/TraitInjection.js#L27-29".

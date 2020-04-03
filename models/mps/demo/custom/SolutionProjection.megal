@@ -1,0 +1,17 @@
+module mps.demo.SolutionProjection
+
+import mps.SolutionProjection where {
+	[scriptProjection / ?scriptProjection,
+	buildscript / ?buildscript]
+}
+
+/*
+@Description:
+	Demonstration of the build script projection
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Building+MPS+language+plugins
+*/
+
+buildscript ~= "EXAMPLES::MPSProjects/XMLJava/solutions/XMLJava.build/models/XMLJava.build.mps".
+
+scriptProjection ~= "EXAMPLES::Projection/BuildScript.bmp".

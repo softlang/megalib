@@ -1,0 +1,21 @@
+module mps.IntellijPluginBuild
+
+import mps.IntellijPlugin
+import mps.languageComponents.generator.Generator
+import mps.languageComponents.EditorBuild 
+import mps.languageComponents.StructureBuild
+import mps.languageComponents.TypesystemBuild
+import mps.Solution
+
+/*
+@Description:
+	Plugin Build.
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Building+IntelliJ+IDEA+language+plugins
+*/
+
+makePlugin : Java # Java # Java # Java # MPS -> Zip.
+
+makePlugin ^implements MPSEditor.
+
+makePlugin(?structureLanguageModel, ?editorLanguageModel, ?typesystemModel, ?generatorModel, ?buildscript) |-> ?intellijPluginFiles.

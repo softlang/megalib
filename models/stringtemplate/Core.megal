@@ -1,6 +1,6 @@
 module stringtemplate.Core
 
-import javaplatform.JavaPlatform
+import javaplatform.Core
 
 /* StringTemplate is a library written in Java by the ANTLR guy that
 supports pretty printing. */

@@ -1,0 +1,17 @@
+module mps.languageComponents.Structure
+
+import mps.Core
+
+/*
+@Description:
+	Structure model of the domain specific language.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Structure
+*/
+
+StructureLanguage : TemplateLanguage;
+	="MPSCONFLUENCE::Structure".
+
+?structureMPS : File+;
+	elementOf MPS.
+

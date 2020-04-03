@@ -1,0 +1,26 @@
+module mongodb.demo.ShellUpdateOne.ShellUpdateOne
+
+import mongodb.ShellUpdateOne where {
+	[updateQuery / ?updateQuery,
+	updateResponse / ?updateResponse,
+	preUpdateDatabase / ?preUpdateDatabase,
+	postUpdateDatabase / ?postUpdateDatabase,
+    preUpdateCollection / ?preUpdateCollection,
+	postUpdateCollection / ?postUpdateCollection]
+}
+
+/*
+	@Description:
+		This demo updates the document representing sample employee named Erik
+		in the employees collection in the MongoDB database with a new salary.
+	@Rationale:
+		See https://101wiki.softlang.org/Feature:Flat_company
+*/
+
+updateQuery ~= "file://./updateOne.js".
+updateResponse ~= "file://./output.js".
+// assuming MongoDB default database location
+preUpdateDatabase ~= "file:///var/lib/mongodb".
+postUpdateDatabase ~= "file:///var/lib/mongodb".
+preUpdateCollection ~= "file:///var/lib/mongodb".
+postUpdateCollection ~= "file:///var/lib/mongodb".

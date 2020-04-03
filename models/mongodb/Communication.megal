@@ -1,0 +1,82 @@
+module mongodb.Communication
+
+import mongodb.Core
+
+/*
+	@Description:
+		The MongoDB Wire Protocol is a simple socket-based, request-response
+		style protocol.
+	@Rationale:
+		See https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/
+*/
+
+MongoDBWireProtocol : MessageLanguage;
+	= "mongodbmanual::reference/mongodb-wire-protocol/";
+	encodedAs Binary;
+	supports DatabaseProgramming.
+
+/*
+	@Description:
+		MongoDB uses a client–server model. mongod is the primary daemon
+		for MongoDB. 
+	@Rationale:
+		See https://docs.mongodb.com/manual/reference/program/mongod/
+		See https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/
+*/
+
+Mongod : Application;
+	= "mongodbmanual::reference/program/mongod/";
+	uses C++;
+	uses ClientServer;
+	hasRole Server;
+	partOf MongoDB;
+	implements MongoDBWireProtocol.
+
+?MongoDBClient : Application;
+	uses ClientServer;
+	hasRole Client;
+	implements MongoDBWireProtocol.
+
+/*
+	@Description:
+		Common client/server deployment
+	@Rationale:
+		See https://en.wikipedia.org/wiki/Client%E2%80%93server_model
+*/
+
+?ServerNode : Node.
+?ClientNode : Node.
+
+?server : Artifact;
+	hasRole Server;
+	hasRole Executable;
+	deployedAt ?ServerNode.
+
+?client : Artifact;
+	hasRole Client;
+	hasRole Executable;
+	deployedAt ?ClientNode.
+
+Mongod deployedAs ?server.
+?MongoDBClient deployedAs ?client.
+
+/*
+	@Description:
+		Clients initiate communication with the database server using the
+		MongoDB Wire Protocol
+	@Rationale:
+		See https://docs.mongodb.com/manual/reference/mongodb-wire-protocol/
+*/
+
+?request : Transient;
+	elementOf MongoDBWireProtocol;
+	hasRole Request.
+
+?response : Transient;
+	elementOf MongoDBWireProtocol;
+	hasRole Response.
+
+communicate : MongoDBWireProtocol -> MongoDBWireProtocol.
+communicate(?request) |-> ?response. 
+
+?MongoDBClient implements communicate.

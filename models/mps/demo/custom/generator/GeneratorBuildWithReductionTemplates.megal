@@ -1,0 +1,26 @@
+module mps.demo.generator.GeneratorBuildWithReductionTemplates
+
+import mps.Core
+
+import mps.languageComponents.generator.GeneratorBuildWithReductionTemplates where {
+	[reductionTemplates / ?reductionTemplates,
+	mappingConfiguarion / ?mappingConfiguarion,
+	generatorModel / ?generatorModel,
+	generatorMPS / ?generatorMPS]
+}
+
+/*
+@Description
+	Demonstration of the general generator build.
+	It includes the mapping configuration and a reduction template.  
+@Rationale
+	https://confluence.jetbrains.com/display/MPSD20182/Generator#Generator-GeneratorLanguageReference
+*/
+
+generatorModel ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/generator/source_gen/".
+
+reductionTemplates ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/generator/template/main@generator.mps".
+
+mappingConfiguarion ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/generator/template/main@generator.mps".
+
+generatorMPS ~= "EXAMPLES::MPSProjects/mps.form/languages/FormCreator/generator/template/main@generator.mps". 

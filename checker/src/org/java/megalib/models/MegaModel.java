@@ -25,6 +25,7 @@ public class MegaModel {
     private Set<String> substitutedLanguages;
 
     private List<Block> blocks;
+    private List<Relation> importGraph;
 
     public MegaModel() {
         subtypeOfMap = new HashMap<>();
@@ -140,9 +141,8 @@ public class MegaModel {
 	}
 
     public boolean isInstanceOf(String entity, String type) {
-        if (!instanceOfMap.containsKey(entity)) {
-			return false;
-		}
+        if (!instanceOfMap.containsKey(entity))
+            return false;
         String temp = instanceOfMap.get(entity);
         return temp.equals(type) ? true : isSubtypeOf(temp, type);
     }
@@ -150,9 +150,8 @@ public class MegaModel {
     public boolean isSubtypeOf(String subtype, String type) {
         String temp = subtype;
         while (!temp.equals(type)) {
-            if(temp.equals("Entity") || !subtypeOfMap.containsKey(temp)) {
-				return false;
-			}
+            if(temp.equals("Entity") || !subtypeOfMap.containsKey(temp))
+                return false;
             temp = subtypeOfMap.get(temp);
         }
         return true;
@@ -166,9 +165,8 @@ public class MegaModel {
     public boolean isSubsetOf(String subset, String superset) {
         String temp = subset;
         while(!temp.equals(superset)){
-            if(!subsetOfMap.containsKey(temp)) {
-				return false;
-			}
+            if(!subsetOfMap.containsKey(temp))
+                return false;
             temp = subsetOfMap.get(temp);
         }
         return true;
@@ -200,19 +198,26 @@ public class MegaModel {
     }
 
     public boolean containsRelationship(String source, String predicate, String target) {
-        if(!relationshipMap.containsKey(predicate)) {
-			return false;
-		}
+        if(!relationshipMap.containsKey(predicate))
+            return false;
         return relationshipMap.get(predicate).parallelStream()
                               .anyMatch(r -> r.getSubject().equals(source) && r.getObject().equals(target));
     }
-    
+
     public Set<String> getEntitiesByType(String type){
     	return getInstanceOfMap().entrySet()
 		   .parallelStream()
 		   .filter(e -> isInstanceOf(e.getKey(), type))
 		   .map(e -> e.getKey())
 		   .collect(Collectors.toSet());
+    }
+
+    public List<Relation> getImportGraph() {
+        return importGraph;
+    }
+
+    public void setImportGraph(List<Relation> importGraph) {
+        this.importGraph = importGraph;
     }
 
 }

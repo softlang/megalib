@@ -1,0 +1,29 @@
+module mps.languageComponents.generator.DSLModelProjection
+
+import mps.languageComponents.generator.DSLModel
+import mps.Projection
+
+/*
+@Description:
+	Projection of the domain specific language model
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+?dslModelProjection : Transient;
+	="MPSCONFLUENCE::Editor";
+	elementOf DomainSpecificLanguage.
+
+mpsToDSLModelProjection : MPS -> DomainSpecificLanguage.
+
+mpsToDSLModelProjection ^implements MPSEditor.
+mpsToDSLModelProjection concretizes Projection.
+
+mpsToDSLModelProjection(?dslModel) |-> ?dslModelProjection.
+
+dslModelProjectionToMPS : DomainSpecificLanguage -> MPS.
+
+dslModelProjectionToMPS ^implements MPSEditor.
+dslModelProjectionToMPS concretizes Projection.
+
+dslModelProjectionToMPS(?dslModelProjection) |-> ?dslModel.

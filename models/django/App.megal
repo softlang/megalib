@@ -1,0 +1,76 @@
+module django.App
+
+import django.Core
+
+/*
+@Description: Every Django App has a database in a supported language.
+@Rationale: See fulfilling projects.
+*/
+?App : WebApplication;
+    reuses Django;
+    uses Python.
+?AppDatabaseLanguage : Language;
+    ^implements Django.
+?database : Artifact;
+    elementOf ?AppDatabaseLanguage;
+    hasRole Database;
+    partOf ?App.
+
+/*
+@Description: Every webapp contains an administration script and a settings file.
+@Rationale: See fulfilling projects.
+*/
+?websiteFolder : Folder;
+    partOf ?App.
+?manage : File;
+    elementOf Python;
+    hasRole Administration;
+    partOf ?websiteFolder.
+?settings : File;
+    elementOf Python;
+    hasRole Configuration;
+    partOf ?websiteFolder.
+?urls : File;
+    elementOf Python;
+    hasRole Django.URLDispatcher;
+    partOf ?websiteFolder.
+
+/*
+@Description: Every website consists of one to multiple apps with administrative views, model, test script, and custom views.
+@Rationale: See fulfilling projects.
+*/
+?appFolder : Folder;
+    partOf ?websiteFolder.
+?admin : File;
+    elementOf Python;
+    hasRole MvcView;
+    partOf ?appFolder.
+?models : File;
+    elementOf Python;
+    hasRole MvcModel;
+    partOf ?appFolder.
+?tests : File;
+    elementOf Python;
+    hasRole TestCase;
+    partOf ?appFolder.
+?views : File;
+    elementOf Python;
+    hasRole MvcView;
+    partOf ?appFolder;
+    ^refersTo ?urls.
+
+/*
+@Description: Every app contains a set of templates from which HTML can be derived.
+@Rationale: See fulfilling projects.
+*/
+DjangoTemplateLanguage : TemplateLanguage;
+    = "https://docs.djangoproject.com/en/2.1/topics/templates/".
+?templates : Folder;
+    partOf ?websiteFolder.
+?appTemplates : Folder;
+    partOf ?templates.
+?template : File;
+    elementOf DjangoTemplateLanguage;
+    hasRole Template;
+    partOf ?appTemplates;
+    ^refersTo ?views.

@@ -1,0 +1,17 @@
+module mps.demo.TypesystemBuild
+
+import mps.languageComponents.TypesystemBuild where {
+	[typesystemModel / ?typesystemModel,
+	typesystemMPS / ?typesystemMPS]
+} 
+
+/*
+@Description::
+	Demonstration of the typesystem build.
+@Rationale:
+	https://confluence.jetbrains.com/display/MPSD20182/Typesystem
+*/
+
+typesystemMPS ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/models/typesystem.mps".
+
+typesystemModel ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/source_gen/XMLJava/typesystem". 

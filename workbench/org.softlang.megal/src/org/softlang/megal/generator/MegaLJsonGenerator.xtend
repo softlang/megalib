@@ -28,34 +28,35 @@ class MegaLJsonGenerator extends AbstractGenerator {
 
 	private def toJson(ModuleImpl it) {
 		// TODO: Write JSON
+		val stmts = it.statements
 		'''{"Model": "«it.name»",
 			"Nodes":[
-			«FOR statement : it.statements»
+			«FOR statement : stmts»
 				«IF statement instanceof TypeImpl»
-					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+					«statement.printNode»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF» 
 				«ELSEIF statement instanceof InstanceImpl»
-					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+					«statement.printNode»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF» 
 				«ELSEIF statement instanceof FunDeclImpl»
-					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+					«statement.printNode»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF» 
 				«ELSEIF statement instanceof FunAppImpl»
-					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+					«statement.printNode»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF» 
 				«ELSEIF statement instanceof RelDeclImpl»
-					«statement.printNode»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+					«statement.printNode»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF» 
 				«ENDIF»	 
 			«ENDFOR»
 			],
 			"Edges":[
-			«FOR statement : it.statements»
+			«FOR statement : stmts»
 				«IF statement instanceof TypeImpl»
-					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF» 
+					«statement.printEdge»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF» 
 				«ELSEIF statement instanceof InstanceImpl»
-					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF»
+					«statement.printEdge»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF»
 				«ELSEIF statement instanceof FunDeclImpl»
-					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF»
+					«statement.printEdge»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF»
 				«ELSEIF statement instanceof FunAppImpl»
-					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF»
+					«statement.printEdge»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF»
 				«ELSEIF statement instanceof RelDeclImpl»
-					«statement.printEdge»«IF !(statement.equals(it.statements.get(it.statements.size-1)))», «ENDIF»
+					«statement.printEdge»«IF !(statement.equals(stmts.get(stmts.size-1)))», «ENDIF»
 				«ENDIF»	 
 			«ENDFOR»
 			]

@@ -1,0 +1,23 @@
+module mps.languageComponents.TypesystemBuild
+
+import mps.languageComponents.Typesystem
+
+/*
+@Description:
+	Typesystem Build.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Typesystem	
+*/
+
+?typesystemModel : File+;
+	="MPSCONFLUENCE::Typesystem";
+	hasRole Constraint;
+	elementOf Java;
+	hasRole TransformationRule;
+	^correspondsTo ?typesystemMPS.
+
+makeTypesystemModel : MPS -> Java.
+
+makeTypesystemModel ^implements MPSEditor.
+
+makeTypesystemModel(?typesystemMPS) |-> ?typesystemModel.

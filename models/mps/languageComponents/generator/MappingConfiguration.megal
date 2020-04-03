@@ -1,0 +1,18 @@
+module mps.languageComponents.generator.MappingConfiguration
+
+import mps.languageComponents.generator.Generator
+
+/*
+@Description:
+	Mapping configuration as a configuration file for the generator language component.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+MappingConfigurationLanguage : ConfigurationLanguage;
+	="MPSCONFLUENCE::Generator#Generator-MappingConfiguration".
+
+?mappingConfiguarion : File;
+	="MPSCONFLUENCE::Generator#Generator-MappingConfiguration";
+	partOf ?generatorMPS;
+	elementOf MPS.

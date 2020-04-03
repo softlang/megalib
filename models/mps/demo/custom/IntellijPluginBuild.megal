@@ -1,0 +1,41 @@
+module mps.demo.IntellijPluginBuild
+
+import mps.IntellijPluginBuild where {
+	[structureLanguageModel / ?structureLanguageModel,
+	editorLanguageModel / ?editorLanguageModel,
+	typesystemModel / ?typesystemModel,
+	generatorModel / ?generatorModel,
+	buildscript / ?buildscript,
+	intellijPluginFiles / ?intellijPluginFiles,
+	editorMPS / ?editorMPS,
+	structureMPS / ?structureMPS,
+	typesystemMPS / ?typesystemMPS,
+	generatorMPS / ?generatorMPS]
+}
+
+/*
+@Description:
+	Demonstration of the Intellij plugin build.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Building+IntelliJ+IDEA+language+plugins
+*/
+
+structureLanguageModel ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/source_gen/XMLJava/structure".
+
+editorLanguageModel ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/source_gen/XMLJava/editor".
+
+typesystemModel ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/source_gen/XMLJava/typesystem". 
+
+generatorModel ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/generator/source_gen".
+
+buildscript ~= "EXAMPLES::MPSProjects/XMLJava/solutions/XMLJava.build/models/XMLJava.build.mps".
+
+intellijPluginFiles ~= "EXAMPLES::MPSProjects/XMLJava/build/artifacts/XMLJava/XMLJava.zip".
+
+editorMPS ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/models/editor.mps".
+
+structureMPS ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/models/structure.mps".
+
+typesystemMPS ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/models/typesystem.mps".
+
+generatorMPS ~= "EXAMPLES::MPSProjects/mps.form/languages/FormCreator/generator/template/main@generator.mps". 

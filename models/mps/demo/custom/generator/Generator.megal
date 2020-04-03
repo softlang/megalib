@@ -1,0 +1,17 @@
+module mps.demo.generator.Generator
+ 
+import mps.languageComponents.generator.Generator where {
+	[generatorModel / ?generatorModel,
+	generatorMPS / ?generatorMPS]
+}
+
+/*
+@Description:
+	Demonstration of the generator components.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+generatorModel ~= "EXAMPLES::MPSProjects/mps.form/languages/FormCreator/generator/source_gen/".
+
+generatorMPS ~= "EXAMPLES::MPSProjects/mps.form/languages/FormCreator/generator/template/main@generator.mps". 

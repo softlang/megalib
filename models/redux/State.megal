@@ -1,0 +1,25 @@
+module redux.State
+
+import redux.Store
+
+/*
+  @Description:
+    The application state.
+  @Rationale
+    see: https://redux.js.org/introduction/core-concepts
+*/
+StateLanguage : ValueLanguage;
+  = "ReduxGlossary::state";
+  subsetOf JavaScriptObject.
+
+?reduxState : Transient;
+  = "ReduxGlossary::state";
+  elementOf StateLanguage.
+
+?getState : Transient;
+  = "ReduxAPI::Store.md#getstate";
+  elementOf JavaScriptFunction.
+?getState partOf ?reduxStore.
+getState : StoreLanguage -> StateLanguage.
+getState(?reduxStore) |-> ?reduxState.
+Redux implements getState.

@@ -1,0 +1,26 @@
+module redux.demo.real-world.App
+
+import redux.React
+import redux.Middleware
+import redux.CreateStore
+
+import redux.App where {
+  [ realWorldReducer / ?reducer,
+    realWorldAction / ?action,
+    realWorldStore / ?store,
+    realWorldApp / ?App
+  ]
+}
+
+/*
+  @Description:
+    A real-world application implementation with Redux.
+*/
+realWorldApp = "https://github.com/reduxjs/redux/tree/master/examples/real-world";
+  implements middleware;
+  implements storeCreator;
+  implements storeEnhancer;
+  reuses React.
+realWorldReducer ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/reducers/index.js".
+realWorldAction ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/actions/index.js".
+realWorldStore ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/store/configureStore.js".

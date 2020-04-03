@@ -1,0 +1,19 @@
+module redux.Core
+
+/*
+  @Description:
+    Redux is a "predictable state container”. Thus, it is a library to manage application state.
+  @Rationale:
+    see https://redux.js.org/introduction/motivation
+*/
+ReduxGithub :: "https://github.com/reactjs/redux/blob/master/".
+Redux : Library; 
+  = "https://github.com/reactjs/redux";
+  uses JavaScript;
+  supports WebApplicationDevelopment;
+  uses ObserverPattern;
+  uses SingletonPattern;
+  facilitates Flux.
+
+ReduxGlossary :: "https://redux.js.org/glossary#".
+ReduxAPI :: "https://github.com/reactjs/redux/blob/master/docs/api/".

@@ -35,7 +35,7 @@ link: ('~=' | '=') LINK ;
 
 namespace: ID '::' LINK '.';
 
-functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* '.';
+functionDeclaration: ID ':' ID ('#' ID)* '->' ID ('#' ID)* (';' (link | relationship))* '.';
 
 functionApplication: ID '(' ID (',' ID)* ')' '|->' (ID | ('(' ID (',' ID)* ')')) '.';
 

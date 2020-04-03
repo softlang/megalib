@@ -1,0 +1,19 @@
+module mps.languageComponents.Typesystem
+
+import mps.Core
+import mps.Projection
+
+/*
+@Description:
+	The typesystem is pat of the language and assings types to the nodes.
+	It is used to check constrains on the nodes and thier types.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Typesystem	
+*/	
+
+TypesystemLanguage : ProgrammingLanguage; 
+	="MPSCONFLUENCE::Typesystem".
+
+?typesystemMPS : File;
+	elementOf MPS.
+

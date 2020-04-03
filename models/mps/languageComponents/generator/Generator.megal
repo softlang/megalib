@@ -1,0 +1,22 @@
+module mps.languageComponents.generator.Generator
+
+import mps.Core
+import mps.languageComponents.Structure
+import mps.languageComponents.Editor
+import mps.Projection
+
+/*
+@Description:
+	Generator for the mapping of the domain specific language to the mps base language.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+?generatorModel : File+;
+	="MPSCONFLUENCE::Generator#Generator-GeneratorModule";
+	elementOf Java.
+
+?generatorMPS : File;
+	elementOf MPS; 
+	correspondsTo ?generatorModel. 	
+

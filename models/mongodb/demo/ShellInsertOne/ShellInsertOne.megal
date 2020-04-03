@@ -1,0 +1,26 @@
+module mongodb.demo.ShellInsertOne.ShellInsertOne
+
+import mongodb.ShellInsertOne where {
+	[insertQuery / ?insertQuery,
+	insertResponse / ?insertResponse,
+	preInsertDatabase / ?preInsertDatabase,
+	postInsertDatabase / ?postInsertDatabase,
+	preInsertCollection / ?preInsertCollection,
+	postInsertCollection / ?postInsertCollection]
+}
+
+/*
+	@Description:
+		This demo adds two documents representing sample employees to the
+		employees collection in the MongoDB database.
+	@Rationale:
+		See https://101wiki.softlang.org/Feature:Flat_company
+*/
+
+insertQuery ~= "file://./insertOne.js".
+insertResponse ~= "file://./output.js".
+// assuming MongoDB default database location
+preInsertDatabase ~= "file:///var/lib/mongodb".
+postInsertDatabase ~= "file:///var/lib/mongodb".
+preInsertCollection ~= "file:///var/lib/mongodb".
+postInsertCollection ~= "file:///var/lib/mongodb".

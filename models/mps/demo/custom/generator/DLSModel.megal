@@ -1,0 +1,14 @@
+module mps.demo.generator.DSLModel
+
+import mps.languageComponents.generator.DSLModel where { 
+	[dslModel / ?dslModel]
+}
+
+/*
+@Description:
+	Demonstration of the domain specific language model
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+dslModel ~= "EXAMPLES::IntelljWithPlugin/FormCreatorPluginExample/src/ModelExample.mps".

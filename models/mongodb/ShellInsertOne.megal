@@ -1,0 +1,41 @@
+module mongodb.ShellInsertOne
+
+import mongodb.Shell
+import mongodb.StorageEngine
+
+/*
+	@Description:
+		insertOne() inserts a document into a collection.
+	@Rationale:
+		See https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
+		See https://docs.mongodb.com/manual/tutorial/insert-documents/
+*/
+
+?preInsertDatabase : Artifact;
+	elementOf MongoDBStorageEngineLanguage.
+
+?preInsertCollection : Artifact;
+	elementOf MongoDBStorageEngineLanguage;
+	partOf ?preInsertDatabase.
+
+?postInsertDatabase : Artifact;
+	elementOf MongoDBStorageEngineLanguage.
+
+?postInsertCollection : Artifact;
+	elementOf MongoDBStorageEngineLanguage;
+	partOf ?postInsertDatabase.
+
+?insertQuery : Artifact;
+	= "mongodbmanual::reference/method/db.collection.insertOne/";
+	elementOf MongoShellLanguage;
+	hasRole Query.
+
+?insertResponse : Artifact;
+	= "mongodbmanual::reference/method/db.collection.insertOne/";
+	elementOf MongoShellLanguage;
+	hasRole Response.
+
+insertOne : MongoDBStorageEngineLanguage # MongoShellLanguage -> MongoDBStorageEngineLanguage # MongoShellLanguage.
+insertOne(?preInsertCollection, ?insertQuery) |-> (?postInsertCollection, ?insertResponse).
+
+MongoShell implements insertOne.

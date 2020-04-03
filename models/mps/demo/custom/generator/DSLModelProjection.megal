@@ -1,0 +1,17 @@
+module mps.demo.generator.DSLModelProjection
+
+import mps.languageComponents.generator.DSLModelProjection where {
+	[dslModelProjection / ?dslModelProjection,
+	dslModel / ?dslModel]
+}
+
+/*
+@Description:
+	Demonstration of the domain specific language model projection.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+dslModel ~= "EXAMPLES::IntelljWithPlugin/FormCreatorPluginExample/src/ModelExample.mps".
+
+dslModelProjection ~= "dslModel.bmp".

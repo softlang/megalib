@@ -1,0 +1,16 @@
+module redux.demo.todos.Dispatch
+
+import redux.Dispatch where {
+  [ dispatchAddTodo / ?dispatch,
+    dispatchSetVisibilityFilter / ?dispatch,
+    dispatchToggleTodo / ?dispatch
+  ]
+}
+
+/*
+  @Description:
+    The todosApp uses dispatch to mutate and filter its todoItems.
+*/
+dispatchAddTodo ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/containers/AddTodo.js#L15".
+dispatchSetVisibilityFilter ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/containers/FilterLink.js#L10".
+dispatchToggleTodo ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/containers/FilterLink.js#L10".

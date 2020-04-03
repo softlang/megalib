@@ -1,0 +1,11 @@
+module redux.demo.counter.CreateStore
+
+import redux.CreateStore where {
+  [ createCounterStore / ?createStore ]
+}
+
+/*
+  @Description:
+    The counter uses createStore to create the store.
+*/
+createCounterStore ~= "https://github.com/reduxjs/redux/blob/master/examples/counter-vanilla/index.html#L33".

@@ -1,0 +1,22 @@
+module SubstitutionChainDemo.App
+
+import SubstitutionChainDemo.Core
+
+/*
+    @Description: An App uses the demo TechX. We state restrictions for the App here and statements that are in
+    all scenarios of technology usage correct.
+    @Rationale: This is the first point where something needs to be substituted.
+*/
+?App : WebApplication;
+    reuses TechX;
+    uses Java.
+
+?model1 : File+;
+    partOf ?App.
+?dsmLanguage1 : Language;
+    ^defines ?model1.
+
+?model2 : File+;
+    partOf ?App.
+?dsmLanguage2 : Language;
+    ^defines ?model2.

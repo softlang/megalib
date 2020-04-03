@@ -34,13 +34,15 @@ Protocol < AbstractProcess;
 Algorithm < AbstractProcess;
     = "wikipedia::Algorithm".
 
-Construct < Concept;
-    = "wikipedia::Language_construct";
-    = "wikipedia::Category:Programming_constructs".
-
+//Terms used for referring to certain artifacts
 Role < Concept;
     = "wikipedia::Artifact_(software_development)";
     = "wikipedia::Terminology".
+
+//syntactic Terminology, such as Method, Attribute, Class, Annotation, List, etc.
+Construct < Role;
+    = "wikipedia::Language_construct";
+    = "wikipedia::Category:Programming_constructs".
 
 composedOf < AbstractProcess # AbstractProcess.
     

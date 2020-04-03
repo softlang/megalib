@@ -1,0 +1,19 @@
+module mps.Solution
+
+import mps.Core
+
+/*
+@Description:
+	A solution defines the usage of the domain specific language.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Building+MPS+language+plugins
+*/
+
+BuildSolutionLanguage : BuildScriptLanguage;
+	="MPSCONFLUENCE::Building+MPS+language+plugins".
+
+?buildscript : File;
+	="MPSCONFLUENCE::Building+MPS+language+plugins";
+	elementOf MPS;
+	hasRole BuildScript.
+

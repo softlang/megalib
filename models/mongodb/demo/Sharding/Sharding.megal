@@ -1,0 +1,26 @@
+module mongodb.demo.Sharding 
+
+import mongodb.Sharding where {
+	[mongos / ?router,
+	mongod / ?configServer,
+	mongod / ?shard1,
+	mongod / ?shard2,
+	database / ?database,
+	shardedCollection / ?shardedCollection,
+	document1 / ?document1,
+	document2 / ?document2]
+}
+
+/*
+	@Description:
+		Sharding setup with two shards
+	@Rationale:
+		See https://docs.mongodb.com/manual/sharding/
+*/
+
+mongos ~= "file:///usr/bin/mongos".
+mongod ~= "file:///usr/bin/mongod".
+database ~= "file://./data/configsvr/".
+shardedCollection ~= "file://./data/configsvr/".
+document1 ~= "file://./data/shardsvr1/".
+document2 ~= "file://./data/shardsvr2/".

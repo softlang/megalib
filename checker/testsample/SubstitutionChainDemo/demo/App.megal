@@ -1,0 +1,31 @@
+module SubstitutionChainDemo.demo.App
+
+import SubstitutionChainDemo.App where{ 
+    [
+        CrazyApp / ?App,
+        umlModel / ?model1,
+        UML / ?dsmLanguage1,
+        jsonModel / ?model2,
+        JSON / ?dsmLanguage2
+    ]
+}
+/* @Result:
+CrazyApp : WebApplication;
+    reuses TechX;
+    uses Java.
+
+umlModel : File+;
+    partOf CrazyApp.
+UML : Language;
+    ^defines umlModel.
+
+jsonModel : File+;
+    partOf CrazyApp.
+JSON : Language;
+    ^defines jsonModel.
+*/
+CrazyApp = "https://softlang.org".
+umlModel = "https://softlang.org".
+UML = "https://softlang.org".
+jsonModel = "https://softlang.org".
+JSON = "https://softlang.org".

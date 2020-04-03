@@ -1,0 +1,24 @@
+module redux.demo.todos.App
+
+import redux.Middleware
+import redux.CreateStore
+import redux.React
+
+import redux.App where {
+  [ todosReducer / ?reducer,
+    todosAction / ?action,
+    todosStore / ?store,
+    todosApp / ?App
+  ]
+}
+
+
+/*
+  @Description:
+    A todos application implementation with Redux.
+*/
+todosApp = "https://github.com/reactjs/redux/tree/master/examples/todos";
+  reuses React.
+todosReducer ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/reducers/index.js".
+todosAction ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/actions/index.js".
+todosStore ~= "https://github.com/reduxjs/redux/blob/master/examples/todos/src/index.js".

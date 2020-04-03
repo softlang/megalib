@@ -1,0 +1,17 @@
+module mps.demo.StructureProjection
+
+import mps.languageComponents.StructureProjection where {
+	[structureProjection / ?structureProjection,
+	structureMPS / ?structureMPS]
+}
+
+/*
+@Description:
+	Demonstration of the structure projection.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Structure
+*/
+
+structureProjection ~= "EXAMPLES::Projection/Structure.bmp".
+
+structureMPS ~= "EXAMPLES::MPSProjects/XMLJava/languages/XMLJava/models/structure.mps".

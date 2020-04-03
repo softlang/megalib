@@ -1,0 +1,18 @@
+module joose.demo.JooseRole
+
+import joose.JooseRole where {
+    [
+        confidence / ?aRole,
+        selfConfidence / ?aRoleAttribute,
+        negotiate / ?aRoleMethod,
+
+        confidentFreelancer / ?aClassWithRole
+    ]
+}
+
+/* A role declaration containing its attribute and a method, including a class composition of this role */
+confidence          ~= "file://../showcases/joose/RoleInjection.js#L3-15".
+selfConfidence      ~= "file://../showcases/joose/RoleInjection.js#L5".
+negotiate           ~= "file://../showcases/joose/RoleInjection.js#L9-13".
+
+confidentFreelancer ~= "file://../showcases/joose/RoleInjection.js#L17-20".

@@ -1,0 +1,11 @@
+module redux.demo.real-world.Store
+
+import redux.Store where {
+  [ store / ?reduxStore ]
+}
+
+/*
+  @Description:
+    The real-world example uses the store to hold its state.
+*/
+store ~= "https://github.com/reduxjs/redux/blob/master/examples/real-world/src/index.js#L7".

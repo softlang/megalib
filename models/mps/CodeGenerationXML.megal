@@ -1,0 +1,21 @@
+module mps.CodeGenerationXML
+
+import mps.IntellijPlugin
+import mps.languageComponents.generator.DSLModel
+
+/*
+@Description: 
+	XML code generation inside of Intellij.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Using+MPS+inside+IntelliJ+IDEA
+*/
+
+?outputCode : File;
+	="MPSCONFLUENCE::Generator#Generator-Introduction";
+	elementOf XML.
+
+mapCSTToImplementation : Zip # MPS -> XML.
+
+mapCSTToImplementation ^implements Intellij.
+
+mapCSTToImplementation(?intellijPluginFiles, ?dslModel) |-> ?outputCode.

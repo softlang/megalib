@@ -1,0 +1,14 @@
+module mps.languageComponents.generator.DSLModel
+
+import mps.Core
+
+/*
+@Description:
+	Domain specific language model.
+@Rationale:
+	See https://confluence.jetbrains.com/display/MPSD20182/Generator
+*/
+
+?dslModel : File+;
+	="MPSCONFLUENCE::MPS+project+structure#MPSprojectstructure-Models";
+	elementOf MPS.

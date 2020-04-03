@@ -9,7 +9,6 @@
 			default="true"
 			extensions="megal"
 			id="org.softlang.megal.MegaL"
-			matchingStrategy="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.editor.JavaEditorInputMatcher"
 			name="MegaL Editor">
 		</editor>
 	</extension>
@@ -205,6 +204,15 @@
 			</activeWhen>
 		</handler>
 	</extension>
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+		<content-type
+			base-type="org.eclipse.core.runtime.text"
+			file-extensions="megal"
+			id="org.softlang.megal.MegaL.contenttype"
+			name="MegaL File"
+			priority="normal">
+		</content-type>
+	</extension>
 	<!-- adding resource factories -->
 	<extension
 		point="org.eclipse.emf.ecore.extension_parser">
@@ -240,6 +248,15 @@
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.expensive"/>
 		<persistent value="true"/>
+	</extension>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="org.softlang.megal.MegaL"
+			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
+			id="org.softlang.megal.MegaL.validator.preferencePage"
+			name="Errors/Warnings">
+			<keywordReference id="org.softlang.megal.ui.keyword_MegaL"/>
+		</page>
 	</extension>
 	<extension point="org.eclipse.xtext.builder.participant">
 		<participant
@@ -384,197 +401,23 @@
 			<keywordReference id="org.softlang.megal.ui.keyword_MegaL"/>
 		</page>
 	</extension>
-	<!-- Type Hierarchy  -->
-	<extension point="org.eclipse.ui.handlers">
-		<handler 
-			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.hierarchy.OpenTypeHierarchyHandler"
-			commandId="org.eclipse.xtext.xbase.ui.hierarchy.OpenTypeHierarchy">
-			<activeWhen>
-				<reference
-					definitionId="org.softlang.megal.MegaL.Editor.opened">
-				</reference>
-			</activeWhen>
-		</handler>
-		<handler 
-			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.hierarchy.QuickTypeHierarchyHandler"
-			commandId="org.eclipse.jdt.ui.edit.text.java.open.hierarchy">
-			<activeWhen>
-				<reference
-					definitionId="org.softlang.megal.MegaL.Editor.opened">
-				</reference>
-			</activeWhen>
-		</handler>
-		<handler
-			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.imports.OrganizeImportsHandler"
-			commandId="org.eclipse.xtext.xbase.ui.organizeImports">
-			<activeWhen>
-				<reference
-					definitionId="org.softlang.megal.MegaL.Editor.opened">
-				</reference>
-			</activeWhen>
-		</handler>
-	</extension>
-	<extension point="org.eclipse.ui.menus">
-		<menuContribution
-			locationURI="popup:#TextEditorContext?after=group.edit">
-			 <command
-				 commandId="org.eclipse.xtext.xbase.ui.organizeImports"
-				 style="push"
-				 tooltip="Organize Imports">
-				<visibleWhen checkEnabled="false">
-					<reference
-						definitionId="org.softlang.megal.MegaL.Editor.opened">
-					</reference>
-				</visibleWhen>
-			</command>
-		</menuContribution>
-		<menuContribution
-			locationURI="popup:#TextEditorContext?after=group.open">
-			<command commandId="org.eclipse.xtext.xbase.ui.hierarchy.OpenTypeHierarchy"
-				style="push"
-				tooltip="Open Type Hierarchy">
-				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.softlang.megal.MegaL.Editor.opened"/>
-				</visibleWhen>
-			</command>
-		</menuContribution>
-		<menuContribution
-			locationURI="popup:#TextEditorContext?after=group.open">
-			<command commandId="org.eclipse.jdt.ui.edit.text.java.open.hierarchy"
-				style="push"
-				tooltip="Quick Type Hierarchy">
-				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.softlang.megal.MegaL.Editor.opened"/>
-				</visibleWhen>
-			</command>
-		</menuContribution>
-	</extension>
-	<!-- Call Hierachy -->
-	<extension point="org.eclipse.ui.handlers">
-		<handler 
-			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.hierarchy.OpenCallHierachyHandler"
-			commandId="org.eclipse.xtext.xbase.ui.hierarchy.OpenCallHierarchy">
-			<activeWhen>
-				<reference
-					definitionId="org.softlang.megal.MegaL.Editor.opened">
-				</reference>
-			</activeWhen>
-		</handler>
-	</extension>
-	<extension point="org.eclipse.ui.menus">
-		<menuContribution
-			locationURI="popup:#TextEditorContext?after=group.open">
-			<command commandId="org.eclipse.xtext.xbase.ui.hierarchy.OpenCallHierarchy"
-				style="push"
-				tooltip="Open Call Hierarchy">
-				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.softlang.megal.MegaL.Editor.opened"/>
-				</visibleWhen>
-			</command>
-		</menuContribution>
-	</extension>
-	<extension point="org.eclipse.core.runtime.adapters">
-		<factory class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.builder.smap.StratumBreakpointAdapterFactory"
-			adaptableType="org.eclipse.xtext.ui.editor.XtextEditor">
-			<adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
-		</factory> 
-	</extension>
-	<extension point="org.eclipse.ui.editorActions">
-		<editorContribution targetID="org.softlang.megal.MegaL" 
-			id="org.softlang.megal.MegaL.rulerActions">
-			<action
-				label="Not Used"
-	 			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-				style="push"
-				actionID="RulerDoubleClick"
-				id="org.softlang.megal.MegaL.doubleClickBreakpointAction"/>
-		</editorContribution>
-	</extension>
-	<extension point="org.eclipse.ui.popupMenus">
-		<viewerContribution
-			targetID="org.softlang.megal.MegaL.RulerContext"
-			id="org.softlang.megal.MegaL.RulerPopupActions">
-			<action
-				label="Toggle Breakpoint"
-				class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-				menubarPath="debug"
-				id="org.softlang.megal.MegaL.rulerContextMenu.toggleBreakpointAction">
-			</action>
-			<action
-				label="Not used"
-				class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
-				menubarPath="debug"
-				id="org.softlang.megal.MegaL.rulerContextMenu.enableDisableBreakpointAction">
-			</action>
-			<action
-				label="Breakpoint Properties"
-				helpContextId="breakpoint_properties_action_context"
-				class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
-				menubarPath="group.properties"
-				id="org.softlang.megal.MegaL.rulerContextMenu.openBreapointPropertiesAction">
-			</action>
-		</viewerContribution>
-	</extension>
-	<!-- Introduce Local Variable Refactoring -->
-	<extension point="org.eclipse.ui.handlers">
-		<handler 
-			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.refactoring.ExtractVariableHandler"
-			commandId="org.eclipse.xtext.xbase.ui.refactoring.ExtractLocalVariable">
-			<activeWhen>
-				<reference
-					definitionId="org.softlang.megal.MegaL.Editor.opened">
-				</reference>
-			</activeWhen>
-		</handler>
-	</extension>
-	<extension point="org.eclipse.ui.menus">
-		<menuContribution
-			locationURI="popup:#TextEditorContext?after=group.edit">
-			<command commandId="org.eclipse.xtext.xbase.ui.refactoring.ExtractLocalVariable"
-				style="push">
-				<visibleWhen checkEnabled="false">
-					<reference
-						definitionId="org.softlang.megal.MegaL.Editor.opened">
-					</reference>
-				</visibleWhen>
-			</command>
-		</menuContribution>
-	</extension>
-	<!-- Open implementation -->
-	<extension point="org.eclipse.ui.handlers">
-		<handler
-			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.navigation.OpenImplementationHandler"
-			commandId="org.eclipse.xtext.xbase.ui.OpenImplementationCommand">
-			<activeWhen>
-				<reference
-					definitionId="org.softlang.megal.MegaL.Editor.opened">
-				</reference>
-			</activeWhen>
-		</handler>
-	</extension>
-	<extension point="org.eclipse.ui.menus">
-		<menuContribution
-			locationURI="menu:navigate?after=open.ext4">
-			<command commandId="org.eclipse.xtext.xbase.ui.OpenImplementationCommand">
-				<visibleWhen checkEnabled="false">
-					<reference
-						definitionId="org.softlang.megal.MegaL.Editor.opened">
-					</reference>
-				</visibleWhen>
-			</command>
-		</menuContribution>
-	</extension>
 	<extension point="org.eclipse.compare.contentViewers">
 		<viewer id="org.softlang.megal.MegaL.compare.contentViewers"
 			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="megal">
 		</viewer>
+		<contentTypeBinding
+			contentTypeId="org.softlang.megal.MegaL.contenttype"
+			contentViewerId="org.softlang.megal.MegaL.compare.contentViewers" />
 	</extension>
 	<extension point="org.eclipse.compare.contentMergeViewers">
 		<viewer id="org.softlang.megal.MegaL.compare.contentMergeViewers"
 			class="org.softlang.megal.ui.MegaLExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="megal" label="MegaL Compare">
 		</viewer>
+		<contentTypeBinding
+			contentTypeId="org.softlang.megal.MegaL.contenttype"
+			contentMergeViewerId="org.softlang.megal.MegaL.compare.contentMergeViewers" />
 	</extension>
 	<extension point="org.eclipse.ui.editors.documentProviders">
 		<provider id="org.softlang.megal.MegaL.editors.documentProviders"

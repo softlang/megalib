@@ -1,0 +1,26 @@
+module mongodb.Core
+
+/*
+	@Description:
+		The MongoDB software suite implements a scalable and flexible
+		document-oriented database using JSON-like documents.
+	@Rationale:
+		See https://www.mongodb.com/what-is-mongodb
+		See https://github.com/mongodb/mongo
+		See https://en.wikipedia.org/wiki/MongoDB
+*/
+
+mongodbmanual::"https://docs.mongodb.com/manual".
+
+NoSQLWare : TechnologySpace;
+	= "wikipedia::NoSQL".
+
+MongoDB : SoftwareSuite;
+	= "https://www.mongodb.com/";
+	uses C++;
+	uses JavaScript;
+	uses ClientServer;
+	implements BSON;
+	belongsTo NoSQLWare;
+	supports DatabaseProgramming;
+	supports DistributedComputing.
