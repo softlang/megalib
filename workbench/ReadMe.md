@@ -32,11 +32,25 @@ If the com.google.inject plugin is missing you can also install it via a Updates
 
 ### Importing the Project:
 * Go to Eclipse.
-     * Import Projects from File System or Archive
-     * Set the Workbench folder as the directory
-     * Deselect the workbench folder itself from the list below.
-     * Finish importing
-     * Wait for Eclipse to build and update the workspace.
+     * For every folder in the workbench folder ->Import it as 'Projects from File System or Archive', 
+     so that you have at the end the following projects:
+        * org.softlang.java
+        * org.softlang.megal
+        * org.softlang.megal.ide
+        * org.softlang.megal.tests
+        * org.softlang.megal.ui
+        * org.softlang.megal.ui.tests
+     * Open the org.softlang.megal project, go to src/org.softlang.megal and right-click the file
+     GenerateMegal.mwe2 and select 'RunAs' -> 'MWE2Workflow'
+     * Unexpand all projects and select all projects except org.softlang.java and right-click them, 
+     then go to 'Configure' -> 'Convert to Xtext Project'
+     * In the next step open the .megal projects and check if the src-gen folders are added to the build-path.
+     To check that, right click the folder, go to BuildPath. If you are now able to select Use as source folder 
+     click at it, otherwise the folder is already added to the build-path.
+     * At the end there could be some problems with imports in src or src-gen folders or with the Manifest.mf file, 
+     altough the needed resources exist.
+     Try to add a line-break to the problem source files anywhere and save it. Then eclipse should refresh everything
+     and detect the missing files.
 ### Running the project:
 Right click the org.softlang.megal project and run it as an Eclipse Application
     
